@@ -13,10 +13,10 @@ public class Drive implements Component{
     private DifferentialDrive differentialDrive;
 
     public Drive() {
-        driveRightFront = new WPI_TalonSRX(Const.Ports.DriveRightFront);
-        driveLeftFront = new WPI_TalonSRX(Const.Ports.DriveLeftFront);
-        driveRightBack = new VictorSPX(Const.Ports.DriveRightBack);
-        driveLeftBack = new VictorSPX(Const.Ports.DriveLeftBack);
+        driveRightFront = new WPI_TalonSRX(0);
+        driveLeftFront = new WPI_TalonSRX(1);
+        driveRightBack = new VictorSPX(2);
+        driveLeftBack = new VictorSPX(3);
 
         driveRightBack.follow(driveRightFront);
         driveLeftBack.follow(driveLeftFront);
@@ -64,16 +64,16 @@ public class Drive implements Component{
     public void applyState() {
         switch(State.driveState) {
             case s_fastDrive:
-                arcadeDrive(Const.Speeds.FastDrive * State.driveXSpeed, Const.Speeds.FastDrive * State.driveZRotation);
+                arcadeDrive(0.8 * State.driveXSpeed, 0.8 * State.driveZRotation);
                 break;
             case s_midDrive:
-                arcadeDrive(Const.Speeds.MidDrive * State.driveXSpeed, Const.Speeds.MidDrive * State.driveZRotation);
+                arcadeDrive(0.5 * State.driveXSpeed, 0.5 * State.driveZRotation);
                 break;
             case s_slowDrive:
-                arcadeDrive(Const.Speeds.SlowDrive * State.driveXSpeed, Const.Speeds.SlowDrive * State.driveZRotation); 
+                arcadeDrive(0.3 * State.driveXSpeed, 0.3 * State.driveZRotation); 
                 break;
             case s_stopDrive:
-                arcadeDrive(Const.Speeds.Neutral * State.driveXSpeed, Const.Speeds.Neutral * State.driveZRotation);
+                arcadeDrive(0 * State.driveXSpeed, 0 * State.driveZRotation);
                 break;
         }
         
