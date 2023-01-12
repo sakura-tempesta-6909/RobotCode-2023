@@ -25,4 +25,8 @@ public class State {
 
     }
 
+    public enum limelightState {
+        
+    }
+
 }
