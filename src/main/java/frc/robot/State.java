@@ -7,6 +7,11 @@ public class State {
     public static double driveXSpeed, driveZRotation;
     public static DriveState driveState;
 
+    public static double steering_adjust;
+    public static double heading_error;
+    public static double limelightZRotation;
+
+
     public static void StateInit() {
         XboxController driveController = new XboxController(0);
         XboxController operateController = new XboxController(1);
@@ -22,6 +27,7 @@ public class State {
         s_midDrive,
         s_slowDrive,
         s_stopDrive,
+        
 
     }
 
