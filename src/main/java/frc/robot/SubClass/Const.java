@@ -19,4 +19,9 @@ public class Const {
         public static double SlowDrive = 0.3;
 
     }
+
+    public static final class Arms {
+        public static double FirstArmLength = 90.0;
+        public static double SecondArmLength = 90.0;
+    }
 }
