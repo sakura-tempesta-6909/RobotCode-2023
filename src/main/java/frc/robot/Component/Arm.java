@@ -20,6 +20,14 @@ public class Arm implements Component{
         return l1 * Math.sin(theta1) - l2 * Math.sin(theta3);
     }
 
+    private double calculateZ(double theta1, double theta2) {
+        double theta3 = theta1 + theta2;
+        double l1 = Const.Arms.FirstArmLength;
+        double l2 = Const.Arms.SecondArmLength;
+
+        return l1 * Math.cos(theta1) - l2 * Math.cos(theta3);
+    }
+
     public Map<String, Double> calculateThetas(double X, double Z) {
         double l1 = Const.Arms.FirstArmLength;
         double l2 = Const.Arms.SecondArmLength;
