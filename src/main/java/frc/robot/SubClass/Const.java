@@ -23,5 +23,16 @@ public class Const {
     public static final class Arms {
         public static double FirstArmLength = 90.0;
         public static double SecondArmLength = 90.0;
+        public static double TargetModifyRatio = 0.5;
+        public static double kP1 = 0.07;
+        public static double kI1 = 0.02;
+        public static double kD1 = 0.01;
+
+        public static double kP2 = 0.1;
+        public static double kI2 = 0.000;
+        public static double kD2 = 0.000;
+
+        public static double Encoder1CountPerRotation = 14.3469;
+        public static double Encoder2CountPerRotation = 9.196;
     }
 }
