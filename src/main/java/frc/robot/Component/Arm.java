@@ -1,5 +1,7 @@
 package frc.robot.Component;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.State;
@@ -9,16 +11,36 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Arm implements Component{
-    private PIDController pidForTheta1, pidForTheta2;
+    private final PIDController pidForTheta1;
+    private final PIDController pidForTheta2;
 
-    private Encoder encoder1, encoder2;
+    private final WPI_TalonSRX underMotor;
+    private final WPI_TalonSRX topMotor;
+
+    private final Encoder encoder1;
+    private final Encoder encoder2;
 
     public Arm() {
+        encoder1 = new Encoder(2, 3);
+        encoder2 = new Encoder(0,1);
+
+        underMotor = new WPI_TalonSRX(6);
+        topMotor = new WPI_TalonSRX(7);
+
+        underMotor.setInverted(true);
+        topMotor.setInverted(true);
+
         pidForTheta1 = new PIDController(Const.Arms.kP1, Const.Arms.kI1, Const.Arms.kD1);
         pidForTheta2 = new PIDController(Const.Arms.kP2, Const.Arms.kI2, Const.Arms.kD2);
+
+        pidForTheta1.setIntegratorRange( -0.04 / Const.Arms.kI1, 0.04 / Const.Arms.kI1);
+        pidForTheta1.setTolerance(1);
+        pidForTheta2.setTolerance(1);
     }
 
     private double calculateX(double theta1, double theta2) {
+        theta1 = Math.toRadians(theta1);
+        theta2 = Math.toRadians(theta2);
         double theta3 = theta1 + theta2;
         double l1 = Const.Arms.FirstArmLength;
         double l2 = Const.Arms.SecondArmLength;
@@ -27,6 +49,8 @@ public class Arm implements Component{
     }
 
     private double calculateZ(double theta1, double theta2) {
+        theta1 = Math.toRadians(theta1);
+        theta2 = Math.toRadians(theta2);
         double theta3 = theta1 + theta2;
         double l1 = Const.Arms.FirstArmLength;
         double l2 = Const.Arms.SecondArmLength;
@@ -54,21 +78,18 @@ public class Arm implements Component{
                 ? theta1Cos : theta1Sin;
 
         Map<String, Double> thetas = new HashMap<String, Double>();
-        thetas.put("theta1", theta1);
-        thetas.put("theta2", theta2);
+        thetas.put("theta1", Math.toDegrees(theta1));
+        thetas.put("theta2", Math.toDegrees(theta2));
 
         return thetas;
     }
 
-    private void autoControlArm () {
-
+    private void pidControlArm(double theta1, double theta2) {
+        topMotor.set(ControlMode.PercentOutput, pidForTheta2.calculate(State.armTheta2, theta2));
+        underMotor.set(ControlMode.PercentOutput, pidForTheta1.calculate(State.armTheta1, theta1) + 0.2535 * Math.cos(State.armTheta1));
     }
 
     private void rotationControlArm () {
-
-    }
-
-    private void axisControlArm () {
 
     }
 
@@ -112,18 +133,16 @@ public class Arm implements Component{
     public void applyState() {
         Map<String, Double> thetas = calculateThetas(State.armTargetX, State.armTargetZ);
 
-        //モーターをこの通りに動かす
         //TODO 何回も計算する必要はないので、そこらへん考えておく
+        //モーターをこの通りに動かす
 
         switch (State.armState) {
             case s_autoCtrl:
-                autoControlArm();
+            case s_axisCtrl:
+                pidControlArm(thetas.get("theta1"), thetas.get("theta2"));
                 break;
             case s_rotationCtrl:
                 rotationControlArm();
-                break;
-            case s_axisCtrl:
-                axisControlArm();
                 break;
         }
     }
