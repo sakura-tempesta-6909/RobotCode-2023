@@ -1,12 +1,15 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import frc.robot.Component.Arm;
-import frc.robot.Component.Component;
-import frc.robot.Component.Drive;
-import frc.robot.Component.Hand;
-import frc.robot.Component.Intake;
-import frc.robot.SubClass.Const;
+import frc.robot.component.Arm;
+import frc.robot.component.Component;
+import frc.robot.component.Drive;
+import frc.robot.component.Hand;
+import frc.robot.component.Intake;
+import frc.robot.subClass.Const;
+import frc.robot.subClass.ExternalSensors;
+import frc.robot.subClass.MQTT;
+import frc.robot.subClass.Util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -16,7 +19,8 @@ public class Robot extends TimedRobot {
 
     ArrayList<Component> components;
 
-    //ExternalSensors externalSensors;
+    ExternalSensors externalSensors;
+    MQTT mqtt = new MQTT();
 
     PrintStream defaultConsole = System.out;
     ByteArrayOutputStream newConsole = new ByteArrayOutputStream();
@@ -24,21 +28,21 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
         System.setOut(new PrintStream(newConsole));
-        //Const.ConstInit();
-        //Thread thread = new Thread(() -> {
-        //     mqtt.connect();
-        // });
-        //thread.start();
+        Const.ConstInit();
+        Thread thread = new Thread(() -> {
+             mqtt.connect();
+         });
+        thread.start();
         components = new ArrayList<>();
         components.add(new Drive());
         components.add(new Intake());
         components.add(new Hand());
         components.add(new Arm());
 
-        //externalSensors = new ExternalSensors();
+        externalSensors = new ExternalSensors();
 
         State.StateInit();
-        //Util.sendSystemOut(defaultConsole, newConsole);
+        Util.sendSystemOut(defaultConsole, newConsole);
         defaultConsole.print(newConsole);
         newConsole = new ByteArrayOutputStream();
     }
@@ -60,7 +64,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousPeriodic() {
-        State.stateReset();
+        State.StateReset();
         //externalSensors.readExternalSensors();
         for (Component component : components) {
             component.readSensors();
@@ -84,7 +88,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
-        State.stateReset();
+        State.StateReset();
         externalSensors.readExternalSensors();
         for (Component component : components) {
             component.readSensors();
@@ -128,7 +132,7 @@ public class Robot extends TimedRobot {
     @Override
     public void testPeriodic() {
         externalSensors.readExternalSensors();
-        State.stateReset();
+        State.StateReset();
         for (Component component : components) {
             component.readSensors();
         }

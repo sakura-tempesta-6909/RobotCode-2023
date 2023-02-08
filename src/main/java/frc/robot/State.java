@@ -1,10 +1,13 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.Mode.Mode;
-import frc.robot.SubClass.Const;
+import frc.robot.mode.DriveMode;
+import frc.robot.mode.Mode;
+import frc.robot.mode.TestMode;
+import frc.robot.subClass.Const;
 
 public class State {
+    public static Modes mode;
     public static double driveXSpeed, driveZRotation;
     public static DriveState driveState;
     public static IntakeState intakeState;
@@ -66,5 +69,23 @@ public class State {
         s_moveArmMotor,
         /** アームをその場で固定する */
         s_fixArmPosition,
+    }
+
+    public enum Modes {
+        k_drive(new DriveMode()),
+        k_test(new TestMode());
+
+        private final Mode mode;
+        Modes(Mode mode) {
+            this.mode = mode;
+        }
+
+        public void changeMode() {
+            this.mode.changeMode();
+        }
+
+        public void changeState() {
+            this.mode.changeState();
+        }
     }
 }

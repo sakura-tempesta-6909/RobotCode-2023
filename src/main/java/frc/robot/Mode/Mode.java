@@ -1,4 +1,4 @@
-package frc.robot.Mode;
+package frc.robot.mode;
 
 import edu.wpi.first.wpilibj.XboxController;
 

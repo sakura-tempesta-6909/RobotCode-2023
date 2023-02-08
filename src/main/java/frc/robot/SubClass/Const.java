@@ -1,4 +1,4 @@
-package frc.robot.SubClass;
+package frc.robot.subClass;
 
 public class Const {
     public static final class Ports {
@@ -18,5 +18,9 @@ public class Const {
         public static double MidDrive = 0.5;
         public static double SlowDrive = 0.3;
 
+    }
+
+    public static void ConstInit() {
+        
     }
 }
