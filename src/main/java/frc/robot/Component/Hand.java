@@ -36,12 +36,11 @@ public class Hand implements Component{
 
     @Override
     public void applyState() {
-        // TODO Auto-generated method stub
         switch(State.handState) {
             case s_grabHand:
-
+                break;
             case s_releaseHand:
-            
+                break;            
         }
         
     }

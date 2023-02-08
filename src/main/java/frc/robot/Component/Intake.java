@@ -38,12 +38,11 @@ public class Intake implements Component{
     public void applyState() {
         switch(State.intakeState){
             case s_outtakeConveyor:
-
+                break;
             case s_intakeConveyor:
-
+                break;
             case s_stopConveyor:
+                break;
         }
-        // TODO Auto-generated method stub
     }
-    
 }

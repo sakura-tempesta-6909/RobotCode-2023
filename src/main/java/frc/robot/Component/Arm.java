@@ -37,13 +37,14 @@ public class Arm implements Component{
     @Override
     public void applyState() {
         switch(State.armState) {
-            case s_fixArmPosition:
-
             case s_moveArmMotor:
-
+                break;
             case s_moveArmToSpecifiedPosition:
+                break;
+            case s_fixArmPosition:
+                break;
+
         }
-        // TODO Auto-generated method stub
         
     }
     
