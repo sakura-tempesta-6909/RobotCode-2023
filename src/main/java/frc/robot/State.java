@@ -31,29 +31,40 @@ public class State {
     }
 
     public enum DriveState {
+        /** ロボットの速度を速くする */
         s_fastDrive,
+        /** ロボットの速度を中くらいにする */
         s_midDrive,
+        /** ロボットの速度を遅くする */
         s_slowDrive,
+        /** ロボットの速度を0にする */
         s_stopDrive,
 
     }
 
     public enum IntakeState {
+        /** インテイクを外向きに動かす */
         s_outtakeConveyor,
+        /** インテイクを内向きに動かす */
         s_intakeConveyor,
+        /** インテイクの動きを止める */
         s_stopConveyor,
 
     }
 
     public enum HandState {
+        /** 物体をつかむ */
         s_grabHand,
+        /** 物体を離す */
         s_releaseHand,
     }
 
     public enum ArmState {
+        /** アームを指定した場所に移動させる */
         s_moveArmToSpecifiedPosition,
+        /** アームの支点を動かす */
         s_moveArmMotor,
+        /** アームをその場で固定する */
         s_fixArmPosition,
     }
-
 }
