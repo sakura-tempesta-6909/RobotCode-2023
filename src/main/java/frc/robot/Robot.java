@@ -6,6 +6,7 @@ import frc.robot.component.Component;
 import frc.robot.component.Drive;
 import frc.robot.component.Hand;
 import frc.robot.component.Intake;
+import frc.robot.phase.Autonomous;
 import frc.robot.subClass.Const;
 import frc.robot.subClass.ExternalSensors;
 import frc.robot.subClass.MQTT;
@@ -49,7 +50,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
-        //Util.sendSystemOut(defaultConsole, newConsole);
+        Util.sendSystemOut(defaultConsole, newConsole);
         defaultConsole.print(newConsole);
         newConsole = new ByteArrayOutputStream();
     }
@@ -59,18 +60,18 @@ public class Robot extends TimedRobot {
         for (Component component : components) {
             component.autonomousInit();
         }
-        //Autonomous.autonomousInit();
+        Autonomous.autonomousInit();
     }
 
     @Override
     public void autonomousPeriodic() {
         State.StateReset();
-        //externalSensors.readExternalSensors();
+        externalSensors.readExternalSensors();
         for (Component component : components) {
             component.readSensors();
         }
 
-        //Autonomous.run();
+        Autonomous.run();
 
         for (Component component : components) {
             component.applyState();
