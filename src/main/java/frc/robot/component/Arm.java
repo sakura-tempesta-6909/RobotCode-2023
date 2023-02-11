@@ -43,7 +43,6 @@ public class Arm implements Component{
                 break;
             case s_fixArmPosition:
                 break;
-
         }
 
         switch(State.adjustArmState) {
