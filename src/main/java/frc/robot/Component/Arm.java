@@ -36,7 +36,7 @@ public class Arm implements Component{
 
     @Override
     public void applyState() {
-        switch(State.armState) {
+        switch(State.moveArmState) {
             case s_moveArmMotor:
                 break;
             case s_moveArmToSpecifiedPosition:
@@ -45,7 +45,12 @@ public class Arm implements Component{
                 break;
 
         }
-        
+
+        switch(State.adjustArmState) {
+            case s_moveArmLeftOrRight:
+                break;
+            case s_stopArmSideMovement:
+                break;
+        }
     }
-    
 }

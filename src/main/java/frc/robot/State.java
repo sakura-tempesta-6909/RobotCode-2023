@@ -11,8 +11,10 @@ public class State {
     public static double driveXSpeed, driveZRotation;
     public static DriveState driveState;
     public static IntakeState intakeState;
-    public static HandState handState;
-    public static ArmState armState;
+    public static GrabHandState grabHandState;
+    public static RotateHandState rotateHandState;
+    public static MoveArmState moveArmState;
+    public static AdjustArmState adjustArmState;
     /**
      * Enableされたときの状態
      */
@@ -20,7 +22,7 @@ public class State {
         XboxController driveController = new XboxController(Const.Ports.DriveController);
         XboxController operateController = new XboxController(Const.Ports.OperateController);
         Mode.addController(driveController, operateController);
-        handState = HandState.s_releaseHand;
+        grabHandState = GrabHandState.s_releaseHand;
         StateReset();
     }
 
@@ -30,7 +32,9 @@ public class State {
     public static void StateReset() {
         driveState = DriveState.s_stopDrive;
         intakeState = IntakeState.s_stopConveyor;
-        armState = ArmState.s_fixArmPosition;
+        moveArmState = MoveArmState.s_fixArmPosition;
+        rotateHandState = RotateHandState.s_stopHand;
+        adjustArmState = AdjustArmState.s_stopArmSideMovement;
     }
 
     public enum DriveState {
@@ -55,20 +59,34 @@ public class State {
 
     }
 
-    public enum HandState {
+    public enum GrabHandState {
         /** 物体をつかむ */
         s_grabHand,
         /** 物体を離す */
         s_releaseHand,
     }
 
-    public enum ArmState {
+    public enum RotateHandState {
+        /** 手首を回転させる */
+        s_rotateHand,
+        /** 手首の回転を止める */
+        s_stopHand,
+    }
+
+    public enum MoveArmState {
         /** アームを指定した場所に移動させる */
         s_moveArmToSpecifiedPosition,
         /** アームの支点を動かす */
         s_moveArmMotor,
         /** アームをその場で固定する */
         s_fixArmPosition,
+    }
+
+    public enum AdjustArmState {
+        /** アームを左右に動かす */
+        s_moveArmLeftOrRight,
+        /** アームの左右の動きを止める */
+        s_stopArmSideMovement,
     }
 
     public enum Modes {

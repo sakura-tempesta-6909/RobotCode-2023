@@ -36,13 +36,18 @@ public class Hand implements Component{
 
     @Override
     public void applyState() {
-        switch(State.handState) {
+        switch(State.grabHandState) {
             case s_grabHand:
                 break;
             case s_releaseHand:
                 break;            
         }
         
+        switch(State.rotateHandState) {
+            case s_rotateHand:
+                break;
+            case s_stopHand:
+                break;
+        }
     }
-    
 }
