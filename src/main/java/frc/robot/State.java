@@ -13,6 +13,25 @@ public class State {
     public static IntakeState intakeState;
     public static HandState handState;
     public static ArmState armState;
+
+    public static double armTargetAxisX;
+    public static double armTargetAxisZ;
+
+    public static double armActualTheta1, armActualTheta2;
+
+    public static double armTargetTheta1, armTargetTheta2;
+
+    public static double armActualAxisX;
+    public static double armActualAxisZ;
+
+    public static double leftY;
+    public static double rightX;
+
+    public static boolean isArmAtTarget;
+    public static boolean resetPidController;
+
+    public static double limelightTargetAxisX, limelightTargetAxisZ;
+
     /**
      * Enableされたときの状態
      */
