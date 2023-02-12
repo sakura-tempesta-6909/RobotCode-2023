@@ -23,6 +23,10 @@ public class Const {
     public static final class Arms {
         public static double FirstArmLength = 90.0;
         public static double SecondArmLength = 90.0;
+        public static double FirstArmBarycenter = 45.0;
+        public static double SecondArmBarycenter = 45.0;
+        public static double FirstArmMass = 0.0;
+        public static double SecondArmMass = 0.0;
         public static double TargetModifyRatio = 1;
         public static double kP1 = 0.2;
         public static double kI1 = 0.2;

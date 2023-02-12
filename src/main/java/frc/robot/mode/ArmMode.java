@@ -72,5 +72,8 @@ public class ArmMode extends Mode {
         Map<String, Double> targetThetas = Tools.calculateThetas(State.armTargetAxisX, State.armTargetAxisZ);
         State.armTargetTheta1 = targetThetas.get("theta1");
         State.armTargetTheta2 = targetThetas.get("theta2");
+
+        State.armTopMotorFeedforward = Tools.calculateTopMotorFeedforward(State.armActualTheta1, State.armActualTheta2);
+        State.armUnderMotorFeedforward = Tools.calculateUnderMotorFeedforward(State.armActualTheta1, State.armActualTheta2);
     }
 }

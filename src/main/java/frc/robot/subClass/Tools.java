@@ -70,4 +70,26 @@ public class Tools {
 
         return thetas;
     }
+
+    public static double calculateUnderMotorFeedforward (double theta1, double theta2) {
+        theta1 = Math.toRadians(theta1);
+        theta2 = Math.toRadians(theta2);
+        double theta3 = theta1 + theta2;
+        double l1 = Const.Arms.FirstArmLength;
+        double l2 = Const.Arms.SecondArmLength;
+        double fb = Const.Arms.FirstArmBarycenter; //FirstBarycenter -> fb
+        double sb = Const.Arms.SecondArmBarycenter; //SecondBarycenter -> sb
+        double m1 = Const.Arms.FirstArmMass;
+        double m2 = Const.Arms.SecondArmMass;
+
+        double ffMomentForFirstArm = fb * m1 * Math.cos(theta1);
+        double ffMomentForSecondArm = l1 * m2 * Math.sin(theta1) - sb * m2 * Math.sin(theta3);
+
+        //TODO feedforwardでmotor.setに渡す値はトルクの計算が必要
+        return ffMomentForFirstArm + ffMomentForSecondArm;
+    }
+
+    public static double calculateTopMotorFeedforward (double theta1, double theta2) {
+        return 0;
+    }
 }

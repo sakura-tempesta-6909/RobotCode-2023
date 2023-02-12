@@ -26,7 +26,8 @@ public class State {
 
     public static double leftY;
     public static double rightX;
-
+    public static double armUnderMotorFeedforward;
+    public static double armTopMotorFeedforward;
     public static boolean isArmAtTarget;
     public static boolean resetPidController;
 
@@ -40,6 +41,29 @@ public class State {
         XboxController operateController = new XboxController(Const.Ports.OperateController);
         Mode.addController(driveController, operateController);
         handState = HandState.s_releaseHand;
+
+        //init armMode value
+        armTargetAxisX = 0.0;
+        armTargetAxisZ = 0.0;
+
+        armActualAxisX = 0.0;
+        armActualAxisZ = 0.0;
+
+        armTargetTheta1 = 0.0;
+        armTargetTheta2 = 0.0;
+
+        armActualTheta1 = 0.0;
+        armActualTheta2 = 0.0;
+
+        leftY = 0.0;
+        rightX = 0.0;
+
+        limelightTargetAxisX = 10.0;
+        limelightTargetAxisZ = 80.0;
+
+        armUnderMotorFeedforward = 0.0;
+        armTopMotorFeedforward = 0.0;
+
         StateReset();
     }
 
@@ -50,6 +74,8 @@ public class State {
         driveState = DriveState.s_stopDrive;
         intakeState = IntakeState.s_stopConveyor;
         armState = ArmState.s_fixArmPosition;
+        isArmAtTarget = false;
+        resetPidController = false;
     }
 
     public enum DriveState {
