@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.component.Arm;
 import frc.robot.component.Component;
 import frc.robot.component.Drive;
@@ -57,6 +58,10 @@ public class Robot extends TimedRobot {
         Util.sendSystemOut(defaultConsole, newConsole);
         defaultConsole.print(newConsole);
         newConsole = new ByteArrayOutputStream();
+
+        Thread visionThread = new Thread(() -> apriltagVisionThreadProc());
+        visionThread.setDaemon(true);
+        visionThread.start();
     }
 
     @Override
@@ -202,6 +207,8 @@ public class Robot extends TimedRobot {
               var pt1 = new Point(detection.getCornerX(i), detection.getCornerY(i));
               var pt2 = new Point(detection.getCornerX(j), detection.getCornerY(j));
               Imgproc.line(mat, pt1, pt2, outlineColor, 2);
+              SmartDashboard.getNumber("X", detection.getCenterX());
+              SmartDashboard.getNumber("Y", detection.getCenterY());
             }
     
             var cx = detection.getCenterX();
@@ -214,6 +221,9 @@ public class Robot extends TimedRobot {
     
           // Give the output stream a new image to display
           outputStream.putFrame(mat);
+          
         }
+
+        detector.close(); 
     }
 }
