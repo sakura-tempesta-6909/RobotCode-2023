@@ -25,7 +25,7 @@ public class Const {
         public static double a = 68.5 * 16 / Math.sqrt(obliqueLine);
         public static double b = 68.5 * 9 / Math.sqrt(obliqueLine);
 
-        public static double f = 80 / Math.tan(59.7);
+        public static double f = 80 / Math.tan(Math.toRadians(59.7));
        
     }
 
