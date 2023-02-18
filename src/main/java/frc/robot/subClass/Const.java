@@ -20,6 +20,14 @@ public class Const {
 
     }
 
+    public static final class calculation {
+        public static double obliqueLine = Math.pow(16, 2) + Math.pow(9, 2);
+        public static double a = 68.5 * 16 / Math.sqrt(obliqueLine);
+        public static double b = 68.5 * 9 / Math.sqrt(obliqueLine);
+
+
+    }
+
     public static void ConstInit() {
         
     }
