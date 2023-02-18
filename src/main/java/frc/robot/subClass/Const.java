@@ -21,11 +21,12 @@ public class Const {
     }
 
     public static final class Calculation {
-        public static double obliqueLine = Math.pow(16, 2) + Math.pow(9, 2);
-        public static double a = 68.5 * 16 / Math.sqrt(obliqueLine);
-        public static double b = 68.5 * 9 / Math.sqrt(obliqueLine);
+        public static double ObliqueLine = Math.pow(16, 2) + Math.pow(9, 2);
+        public static double ThetaMaxX = 68.5 * 16 / Math.sqrt(ObliqueLine);
+        public static double ThetaMaxY = 68.5 * 9 / Math.sqrt(ObliqueLine);
 
-        public static double f = 80 / Math.tan(Math.toRadians(59.7));
+        public static double FocalLengthX = 80 / Math.tan(Math.toRadians(ThetaMaxX));
+        public static double FocalLengthY = 60 / Math.tan(Math.toRadians(ThetaMaxY));
        
     }
 
