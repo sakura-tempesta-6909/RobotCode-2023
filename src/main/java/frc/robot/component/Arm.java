@@ -42,8 +42,9 @@ public class Arm implements Component{
      * moveArmToSpecifiedPositionで実行
      * */
     private void pidControlArm() {
-        topMotor.set(ControlMode.PercentOutput, pidForTheta2.calculate(State.armActualTheta2));
-        underMotor.set(ControlMode.PercentOutput, pidForTheta1.calculate(State.armActualTheta1) + 0.2535 * Math.cos(State.armActualTheta1));
+        topMotor.set(ControlMode.PercentOutput, pidForTheta2.calculate(State.armActualTheta2) + State.armTopMotorFeedforward);
+        underMotor.set(ControlMode.PercentOutput, pidForTheta1.calculate(State.armActualTheta1) + State.armUnderMotorFeedforward);
+//        underMotor.set(ControlMode.PercentOutput, pidForTheta1.calculate(State.armActualTheta1) + 0.2535 * Math.cos(State.armActualTheta1));
     }
 
     /**
@@ -99,12 +100,20 @@ public class Arm implements Component{
 
     @Override
     public void readSensors() {
+        // motorのencodeからアームの実際のX,Z座標を計算
         State.armActualTheta1 = getE1Angle(encoder1.get());
         State.armActualTheta2 = getE2Angle(encoder2.get());
         State.armActualAxisX = Tools.calculateX(State.armActualTheta1, State.armActualTheta2);
         State.armActualAxisZ = Tools.calculateZ(State.armActualTheta1, State.armActualTheta2);
 
+        // armがターゲットの座標に到着したか
         State.isArmAtTarget = isArmAtTarget();
+
+        // フィードフォワードを計算する
+        State.armTopMotorFeedforward = Tools.calculateTopMotorFeedforward(State.armActualTheta1, State.armActualTheta2);
+        State.armUnderMotorFeedforward = Tools.calculateUnderMotorFeedforward(State.armActualTheta1, State.armActualTheta2);
+        State.armTopMotorFeedforward = Tools.changeMomentToMotorInput(State.armTopMotorFeedforward);
+        State.armUnderMotorFeedforward = Tools.changeMomentToMotorInput(State.armUnderMotorFeedforward);
     }
 
     @Override

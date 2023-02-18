@@ -45,7 +45,7 @@ public class ArmMode extends Mode {
 
         if (driveController.getXButton()) {
             // Targetの座標をコントローラーによって変える　(PIDで移動する)
-            //TODO Armがターゲットに到達したら次のターゲットを設定する方式 (必要性要検討)
+            // TODO Armがターゲットに到達したら次のターゲットを設定する方式 (必要性要検討)
 
 //             if(State.isArmAtTarget) {
 //                 State.armTargetAxisX += State.leftY * Const.Arms.TargetModifyRatio;
@@ -57,7 +57,7 @@ public class ArmMode extends Mode {
             State.armTargetAxisZ += State.rightX * Const.Arms.TargetModifyRatio;
         } else if (driveController.getAButton()) {
             // limelightの予測座標にターゲットを設定する　(PIDで移動する)
-            //TODO ここでlimelightの値を代入
+            // TODO ここでlimelightの値を代入
             State.armState = State.ArmState.s_moveArmToSpecifiedPosition;
             State.armTargetAxisX = State.limelightTargetAxisX;
             State.armTargetAxisZ = State.limelightTargetAxisZ;
@@ -73,11 +73,5 @@ public class ArmMode extends Mode {
         Map<String, Double> targetThetas = Tools.calculateThetas(State.armTargetAxisX, State.armTargetAxisZ);
         State.armTargetTheta1 = targetThetas.get("theta1");
         State.armTargetTheta2 = targetThetas.get("theta2");
-
-        // フィードフォワードを計算する
-        State.armTopMotorFeedforward = Tools.calculateTopMotorFeedforward(State.armActualTheta1, State.armActualTheta2);
-        State.armUnderMotorFeedforward = Tools.calculateUnderMotorFeedforward(State.armActualTheta1, State.armActualTheta2);
-        State.armTopMotorFeedforward = Tools.changeMomentToMotorInput(State.armTopMotorFeedforward);
-        State.armUnderMotorFeedforward = Tools.changeMomentToMotorInput(State.armUnderMotorFeedforward);
     }
 }

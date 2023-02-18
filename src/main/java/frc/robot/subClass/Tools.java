@@ -7,7 +7,8 @@ import java.util.Map;
 
 public class Tools {
     /**
-     * theta1, theta2 -> 度数法
+     * theta1, theta2 : readSensorで取得した実際の角度[deg]
+     * @return X座標[m]
      * */
     public static double calculateX(double theta1, double theta2) {
         theta1 = Math.toRadians(theta1);
@@ -20,7 +21,8 @@ public class Tools {
     }
 
     /**
-     * theta1, theta2 -> 度数法
+     * theta1, theta2 : readSensorで取得した実際の角度[deg]
+     * @return Z座標[m]
      * */
     public static double calculateZ(double theta1, double theta2) {
         theta1 = Math.toRadians(theta1);
@@ -37,6 +39,7 @@ public class Tools {
     /**
      * 不感帯処理関数
      * 絶対値がdeadZoneThreshold未満のものを淘汰
+     * @return 不感帯処理を施したinput
      * */
     public static double deadZoneProcess(double input) {
         if(Math.abs(input) < deadZoneThreshold) return 0.0;
@@ -44,7 +47,9 @@ public class Tools {
     }
 
     /**
-     * X,Zからtheta1, theta2 (度数法) を計算
+     * X,Z : ターゲットのX,Z座標[m]
+     * X,Zからtheta1, theta2 を計算
+     * @return アームのターゲットの角度[deg]
      */
     public static Map<String, Double> calculateThetas(double X, double Z) {
         double l1 = Const.Arms.FirstArmLength;
@@ -73,8 +78,10 @@ public class Tools {
     }
 
     /**
+     * theta1, theta2 : readSensorで取得した実際の角度[deg]
      * underMotorのフィードフォワードを計算
      * それぞれのアームの重心をConstから取得
+     * @return モーメント[N*m]
      * */
     public static double calculateUnderMotorFeedforward (double theta1, double theta2) {
         theta1 = Math.toRadians(theta1);
@@ -94,6 +101,12 @@ public class Tools {
         return ffMomentForFirstArm + ffMomentForSecondArm;
     }
 
+    /**
+     * theta1, theta2 : readSensorで取得した実際の角度[deg]
+     * topMotorのフィードフォワードを計算
+     * 重心などをConstから取得
+     * @return モーメント[N*m]
+     * */
     public static double calculateTopMotorFeedforward (double theta1, double theta2) {
         theta1 = Math.toRadians(theta1);
         theta2 = Math.toRadians(theta2);
@@ -104,6 +117,11 @@ public class Tools {
         return sb * m2 * Math.sin(theta3 - Math.PI);
     }
 
+    /**
+     * input : モーメント[N*m]
+     * モーターのトルクやギア比によって変換を行う
+     * @return motor.setへの入力
+     * */
     public static double changeMomentToMotorInput (double input) {
         return 0;
     }

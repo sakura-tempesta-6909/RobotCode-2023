@@ -50,6 +50,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/main/java/frc/robot/mode/ArmMode.java" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -143,7 +146,7 @@
       <option name="presentableId" value="Default" />
       <updated>1675763428057</updated>
       <workItem from="1675763429550" duration="47000" />
-      <workItem from="1675764641175" duration="13831000" />
+      <workItem from="1675764641175" duration="16025000" />
     </task>
     <servers />
   </component>
