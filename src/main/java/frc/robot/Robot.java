@@ -215,6 +215,9 @@ public class Robot extends TimedRobot {
           Imgproc.line(mat, pt1, pt2, outlineColor, 2);
           SmartDashboard.putNumber("CenterX", detection.getCenterX() - 80);
           SmartDashboard.putNumber("CenterY", detection.getCenterY() - 60);
+
+          double thetaX = Math.toRadians(Math.atan(detection.getCenterX() / Const.Calculation.f));
+          SmartDashboard.putNumber("Angle", thetaX);
         }
 
         var cx = detection.getCenterX();
