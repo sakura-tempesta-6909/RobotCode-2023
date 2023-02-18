@@ -211,7 +211,7 @@ public class Robot extends TimedRobot {
           SmartDashboard.putNumber("CenterY", detection.getCenterY() - 60);
 
           double thetaX = Math.toDegrees(Math.atan((detection.getCenterX() - 80) / Const.Calculation.FocalLengthX));
-          double thetaY = Math.toDegrees(Math.atan(detection.getCenterX() - 60) / Const.Calculation.FocalLengthY);
+          double thetaY = Math.toDegrees(Math.atan((detection.getCenterY() - 60) / Const.Calculation.FocalLengthY));
           SmartDashboard.putNumber("AngleX", thetaX);
           SmartDashboard.putNumber("AngleY", thetaY);
         }
