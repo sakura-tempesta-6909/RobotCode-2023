@@ -14,27 +14,21 @@ public class ArmMode extends Mode {
     }
 
     /**
-     * XButton -> axisControlMode(ターゲット座標をコントローラーで変える)
-     * AButton -> autoControlMode(limelightで特定された座標へ)
-     * NoButton -> rotationControlMode(各アームの角度をコントローラーで変える -> もっとも直感的)
+     * XButton -> moveArmToSpecifiedPosition(ターゲット座標をコントローラーで変える)
+     * AButton -> moveArmToSpecifiedPosition(limelightで特定された座標へ)
+     * BButton -> moveArmToSpecifiedPosition(掴んだあとアームを一定の長さ垂直にあげる)
+     * NoButton -> moveArmMotor / fixArmPosition (各アームの角度をコントローラーで変える -> もっとも直感的)
      */
     @Override
     public void changeState() {
         State.rightX = Tools.deadZoneProcess(driveController.getRightX());
         State.leftY = Tools.deadZoneProcess(driveController.getLeftY());
 
+        // Xボタンが押されたら一旦Integralをリセット Targetを現在のアームの座標にリセットする
         if (driveController.getXButtonPressed()) {
             State.armTargetAxisX = State.armActualAxisX;
             State.armTargetAxisZ = State.armActualAxisZ;
-            // Xボタンが押されたら一旦Integralをリセット
             State.resetPidController = true;
-
-            // TODO 気が向いたら削除(バッグった時の実験用コード)
-
-//            if(State.isArmAtTarget) {
-//                State.armTargetAxisX = State.armActualAxisX + 10;
-//                State.armTargetAxisZ = State.armActualAxisZ + 10;
-//            }
         }
 
         // Aボタンが押されたら一旦Integralをリセット
@@ -42,9 +36,15 @@ public class ArmMode extends Mode {
             State.resetPidController = true;
         }
 
+        // Bボタンが押されたら一旦Integralをリセット アームを持ち上げる(Z座標を変える)
+        if (driveController.getBButtonPressed()) {
+            State.armTargetAxisX = State.armActualAxisX;
+            State.armTargetAxisZ = State.armActualAxisZ - Const.Arms.TakeUpLengthAfterGrab;
+            State.resetPidController = true;
+        }
+
         if (driveController.getXButton()) {
             // Targetの座標をコントローラーによって変える　(PIDで移動する)
-            State.armState = State.ArmState.s_moveArmToSpecifiedPosition;
             //TODO Armがターゲットに到達したら次のターゲットを設定する方式 (必要性要検討)
 
 //             if(State.isArmAtTarget) {
@@ -52,16 +52,17 @@ public class ArmMode extends Mode {
 //                 State.armTargetAxisZ += State.rightX * Const.Arms.TargetModifyRatio;
 //                 State.resetPidController = true;
 //             }
-
+            State.armState = State.ArmState.s_moveArmToSpecifiedPosition;
             State.armTargetAxisX += State.leftY * Const.Arms.TargetModifyRatio;
             State.armTargetAxisZ += State.rightX * Const.Arms.TargetModifyRatio;
         } else if (driveController.getAButton()) {
             // limelightの予測座標にターゲットを設定する　(PIDで移動する)
             //TODO ここでlimelightの値を代入
-
             State.armState = State.ArmState.s_moveArmToSpecifiedPosition;
             State.armTargetAxisX = State.limelightTargetAxisX;
             State.armTargetAxisZ = State.limelightTargetAxisZ;
+        } else if (driveController.getBButton()) {
+            State.armState = State.ArmState.s_moveArmToSpecifiedPosition;
         } else if (Math.abs(State.leftY) < 0.1 && Math.abs(State.rightX) < 0.1) {
             State.armState = State.ArmState.s_fixArmPosition;
         } else {
@@ -73,7 +74,10 @@ public class ArmMode extends Mode {
         State.armTargetTheta1 = targetThetas.get("theta1");
         State.armTargetTheta2 = targetThetas.get("theta2");
 
+        // フィードフォワードを計算する
         State.armTopMotorFeedforward = Tools.calculateTopMotorFeedforward(State.armActualTheta1, State.armActualTheta2);
         State.armUnderMotorFeedforward = Tools.calculateUnderMotorFeedforward(State.armActualTheta1, State.armActualTheta2);
+        State.armTopMotorFeedforward = Tools.changeMomentToMotorInput(State.armTopMotorFeedforward);
+        State.armUnderMotorFeedforward = Tools.changeMomentToMotorInput(State.armUnderMotorFeedforward);
     }
 }

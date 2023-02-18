@@ -1,5 +1,7 @@
 package frc.robot.subClass;
 
+import org.opencv.core.Mat;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,7 +46,6 @@ public class Tools {
     /**
      * X,Zからtheta1, theta2 (度数法) を計算
      */
-
     public static Map<String, Double> calculateThetas(double X, double Z) {
         double l1 = Const.Arms.FirstArmLength;
         double l2 = Const.Arms.SecondArmLength;
@@ -71,6 +72,10 @@ public class Tools {
         return thetas;
     }
 
+    /**
+     * underMotorのフィードフォワードを計算
+     * それぞれのアームの重心をConstから取得
+     * */
     public static double calculateUnderMotorFeedforward (double theta1, double theta2) {
         theta1 = Math.toRadians(theta1);
         theta2 = Math.toRadians(theta2);
@@ -82,7 +87,7 @@ public class Tools {
         double m1 = Const.Arms.FirstArmMass;
         double m2 = Const.Arms.SecondArmMass;
 
-        double ffMomentForFirstArm = fb * m1 * Math.cos(theta1);
+        double ffMomentForFirstArm = fb * m1 * Math.sin(theta1);
         double ffMomentForSecondArm = l1 * m2 * Math.sin(theta1) - sb * m2 * Math.sin(theta3);
 
         //TODO feedforwardでmotor.setに渡す値はトルクの計算が必要
@@ -90,6 +95,16 @@ public class Tools {
     }
 
     public static double calculateTopMotorFeedforward (double theta1, double theta2) {
+        theta1 = Math.toRadians(theta1);
+        theta2 = Math.toRadians(theta2);
+        double theta3 = theta1 + theta2;
+        double sb = Const.Arms.SecondArmBarycenter; //SecondBarycenter -> sb
+        double m2 = Const.Arms.SecondArmMass;
+
+        return sb * m2 * Math.sin(theta3 - Math.PI);
+    }
+
+    public static double changeMomentToMotorInput (double input) {
         return 0;
     }
 }

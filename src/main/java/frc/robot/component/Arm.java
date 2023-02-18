@@ -37,17 +37,29 @@ public class Arm implements Component{
         pidForTheta2.setTolerance(1);
     }
 
+    /**
+     * PIDで移動する
+     * moveArmToSpecifiedPositionで実行
+     * */
     private void pidControlArm() {
         topMotor.set(ControlMode.PercentOutput, pidForTheta2.calculate(State.armActualTheta2));
         underMotor.set(ControlMode.PercentOutput, pidForTheta1.calculate(State.armActualTheta1) + 0.2535 * Math.cos(State.armActualTheta1));
     }
 
+    /**
+     * アームを静止させる
+     * feedforwardを計算してモーターに入力
+     * */
     private void stopArm() {
-        topMotor.stopMotor();
-        //feedforward only
-        underMotor.set(0.2535 * Math.cos(State.armActualTheta1));
+        topMotor.set(State.armTopMotorFeedforward);
+        underMotor.set(State.armUnderMotorFeedforward);
+//        topMotor.stopMotor();
+//        underMotor.set(0.2535 * Math.cos(State.armActualTheta1));
     }
 
+    /**
+     * コントローラーでアームを動かす
+     * */
     private void rotationControlArm (double top, double under) {
         topMotor.set(ControlMode.PercentOutput, top);
         underMotor.set(ControlMode.PercentOutput, under);
