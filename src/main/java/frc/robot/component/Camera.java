@@ -18,8 +18,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subClass.Const;
 
 public class Camera implements Component{
-        
-    
+
+    public Camera() {
+        Thread visionThread = new Thread(() -> readSensors());
+        visionThread.setDaemon(true);
+        visionThread.start();
+    }
 
     @Override
     public void autonomousInit() {
@@ -105,6 +109,11 @@ public class Camera implements Component{
                 double thetaY = Math.toDegrees(Math.atan((detection.getCenterY() - 60) / Const.Calculation.FocalLengthY));
                 SmartDashboard.putNumber("AngleX", thetaX);
                 SmartDashboard.putNumber("AngleY", thetaY);
+
+                double angleToGoalDegrees = Const.Calculation.CameraMountAngleDegrees + thetaY;
+                double angleToGoalRadians = angleToGoalDegrees * (Math.PI / 180);
+                double distanceFromCameraToGoalCentis = (Const.Calculation.GoalHightCentis - Const.Calculation.CameraLensHeightCentis / Math.tan(angleToGoalRadians));
+                SmartDashboard.putNumber("Distance", distanceFromCameraToGoalCentis);
             }
 
             var cx = detection.getCenterX();
@@ -119,9 +128,7 @@ public class Camera implements Component{
             // Give the output stream a new image to display
             outputStream.putFrame(mat);
         }
-
-        detector.close();
-        
+        detector.close();   
     }
 
     @Override
