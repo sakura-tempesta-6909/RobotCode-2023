@@ -53,7 +53,7 @@ public class ArmMode extends Mode {
 //                 State.resetPidController = true;
 //             }
             State.armState = State.ArmState.s_moveArmToSpecifiedPosition;
-            if(isNewTargetPositionInLimit(State.leftY * Const.Arms.TargetModifyRatio, State.rightX * Const.Arms.TargetModifyRatio)){
+            if(isNewTargetPositionInLimit(State.armTargetAxisX + State.leftY * Const.Arms.TargetModifyRatio, State.armTargetAxisZ + State.rightX * Const.Arms.TargetModifyRatio)){
                 State.armTargetAxisX += State.leftY * Const.Arms.TargetModifyRatio;
                 State.armTargetAxisZ += State.rightX * Const.Arms.TargetModifyRatio;
             }
@@ -61,8 +61,10 @@ public class ArmMode extends Mode {
             // limelightの予測座標にターゲットを設定する　(PIDで移動する)
             // TODO ここでlimelightの値を代入
             State.armState = State.ArmState.s_moveArmToSpecifiedPosition;
-            State.armTargetAxisX = State.limelightTargetAxisX;
-            State.armTargetAxisZ = State.limelightTargetAxisZ;
+            if(isNewTargetPositionInLimit(State.limelightTargetAxisX, State.limelightTargetAxisZ)) {
+                State.armTargetAxisX = State.limelightTargetAxisX;
+                State.armTargetAxisZ = State.limelightTargetAxisZ;
+            }
         } else if (driveController.getBButton()) {
             State.armState = State.ArmState.s_moveArmToSpecifiedPosition;
         } else if (Math.abs(State.leftY) < 0.1 && Math.abs(State.rightX) < 0.1) {
@@ -86,11 +88,14 @@ public class ArmMode extends Mode {
      * この関数に座標の値域を記述する
      * @return 入力の座標が正しいか[boolean]
      */
-    private boolean isNewTargetPositionInLimit(double addToX, double addToZ) {
-        boolean isZAxisInLimit = State.armTargetAxisZ + addToZ > 0;
-        boolean isXAxisInLimit = State.armTargetAxisX + addToX > 0;
-        boolean isInOuterBorder = Math.sqrt(Math.pow(State.armTargetAxisX + addToX, 2) + Math.pow(State.armTargetAxisZ + addToZ, 2)) < Const.Arms.TargetPositionOuterLimit;
-        boolean isOutInnerBorder = Math.sqrt(Math.pow(State.armTargetAxisX + addToX, 2) + Math.pow(State.armTargetAxisZ + addToZ, 2)) > Const.Arms.TargetPositionInnerLimit;
+    private boolean isNewTargetPositionInLimit(double X, double Z) {
+        double length = Math.sqrt(Math.pow(X, 2) + Math.pow(Z, 2));
+
+        boolean isZAxisInLimit = Z > 0;
+        boolean isXAxisInLimit = X > 0;
+        boolean isInOuterBorder = length < Const.Arms.TargetPositionOuterLimit;
+        boolean isOutInnerBorder = length > Const.Arms.TargetPositionInnerLimit;
+
         return isXAxisInLimit && isZAxisInLimit && isInOuterBorder && isOutInnerBorder;
     }
 }
