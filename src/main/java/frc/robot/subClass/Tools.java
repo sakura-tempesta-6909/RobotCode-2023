@@ -124,7 +124,7 @@ public class Tools {
     }
 
     /**
-     * NEOモーターのトルクとRPMの関係を利用 <a href="https://www.revrobotics.com/content/docs/REV-21-1650-DS.pdf">データシート</a>
+     * NEOモーターのトルクとRPMの関係を利用 <a href="https://www.revrobotics.com/content/docs/REV-21-1650-DS.pdf">NEOのデータシート</a>
      * [注意] NEOモーターに合わせて出力する
      * @param torque : トルク[N*cm] = モーメント / Const.Arms.[Under/Top]MotorGearRatio（ギア比に合わせて入力）
      * @return motor.setへの入力[-1.0, 1.0] (CANSparkMax)
