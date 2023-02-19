@@ -53,8 +53,10 @@ public class ArmMode extends Mode {
 //                 State.resetPidController = true;
 //             }
             State.armState = State.ArmState.s_moveArmToSpecifiedPosition;
-            State.armTargetAxisX += State.leftY * Const.Arms.TargetModifyRatio;
-            State.armTargetAxisZ += State.rightX * Const.Arms.TargetModifyRatio;
+            if(isNewTargetPositionInLimit(State.leftY * Const.Arms.TargetModifyRatio, State.rightX * Const.Arms.TargetModifyRatio)){
+                State.armTargetAxisX += State.leftY * Const.Arms.TargetModifyRatio;
+                State.armTargetAxisZ += State.rightX * Const.Arms.TargetModifyRatio;
+            }
         } else if (driveController.getAButton()) {
             // limelightの予測座標にターゲットを設定する　(PIDで移動する)
             // TODO ここでlimelightの値を代入
@@ -69,8 +71,6 @@ public class ArmMode extends Mode {
             State.armState = State.ArmState.s_moveArmMotor;
         }
 
-        applyTargetPositionLimit();
-
         if(driveController.getLeftBumperPressed()) {
             State.resetArmEncoder = true;
         }
@@ -84,11 +84,12 @@ public class ArmMode extends Mode {
     /**
      * StateのtargetXとtargetZがありえない座標の時に修正する
      */
-    private void applyTargetPositionLimit() {
-        double ratio = Const.Arms.TargetPositionLimit / Math.sqrt(Math.pow(State.armTargetAxisX, 2) + Math.pow(State.armTargetAxisZ, 2));
-        if (ratio < 1) {
-            State.armTargetAxisX *= ratio;
-            State.armTargetAxisZ *= ratio;
-        }
+    private boolean isNewTargetPositionInLimit(double addToX, double addToZ) {
+//        double ratio = Const.Arms.TargetPositionLimit / Math.sqrt(Math.pow(State.armTargetAxisX, 2) + Math.pow(State.armTargetAxisZ, 2));
+//        if (ratio < 1) {
+//            State.armTargetAxisX *= ratio;
+//            State.armTargetAxisZ *= ratio;
+//        }
+        return Math.sqrt(Math.pow(State.armTargetAxisX + addToX, 2) + Math.pow(State.armTargetAxisZ + addToZ, 2)) < Const.Arms.TargetPositionLimit;
     }
 }

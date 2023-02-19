@@ -120,9 +120,10 @@ public class Tools {
     /**
      * input : モーメント[N*m]
      * モーターのトルクやギア比によって変換を行う
-     * @return motor.setへの入力
+     * @return motor.setへの入力[-1.0, 1.0]
      * */
     public static double changeMomentToMotorInput (double input) {
-        return 0;
+        double requiredTorque = input / Const.Arms.GearRatio;
+        return 1 - (1 / Const.Arms.MotorMaxTorque) * requiredTorque;
     }
 }

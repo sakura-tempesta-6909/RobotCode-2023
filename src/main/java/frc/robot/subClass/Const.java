@@ -40,6 +40,8 @@ public class Const {
 
         public static double Encoder1CountPerRotation = 14.3469;
         public static double Encoder2CountPerRotation = 9.196;
+        public static double GearRatio = 140;
+        public static double MotorMaxTorque = 2.6;
     }
 
     public static void ConstInit() {
