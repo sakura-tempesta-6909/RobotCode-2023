@@ -21,16 +21,16 @@ public class Const {
     }
 
     public static final class Calculation {
-        public static double ObliqueLine = Math.pow(16, 2) + Math.pow(9, 2);
-        public static double ThetaMaxX = 68.5 * 16 / Math.sqrt(ObliqueLine);
-        public static double ThetaMaxY = 68.5 * 9 / Math.sqrt(ObliqueLine);
+        public static double ObliqueLine = Math.pow(4, 2) + Math.pow(3, 2);
+        public static double ThetaMaxX = 34.25 * 4 / Math.sqrt(ObliqueLine);
+        public static double ThetaMaxY = 34.25 * 3 / Math.sqrt(ObliqueLine);
 
         public static double FocalLengthX = 80 / Math.tan(Math.toRadians(ThetaMaxX));
         public static double FocalLengthY = 60 / Math.tan(Math.toRadians(ThetaMaxY));
 
         public static double CameraMountAngleDegrees = 0;
-        public static double CameraLensHeightCentis = 40;
-        public static double GoalHightCentis = 50;
+        public static double CameraLensHeightCentis = 42.5;
+        public static double GoalHightCentis = 76.5;
         
        
     }
