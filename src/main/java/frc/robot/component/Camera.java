@@ -102,12 +102,12 @@ public class Camera implements Component{
                     var pt2 = new Point(detection.getCornerX(j), detection.getCornerY(j));
                     //検出したApriltagを四角形で囲う
                     Imgproc.line(mat, pt1, pt2, outlineColor, 2);
-                    SmartDashboard.putNumber("CenterX", detection.getCenterX() - 80);
-                    SmartDashboard.putNumber("CenterY", detection.getCenterY() - 60);
+                    SmartDashboard.putNumber("CenterX", detection.getCenterX() - 320);
+                    SmartDashboard.putNumber("CenterY", detection.getCenterY() - 240);
 
                     //角度を求める
-                    double thetaX = Math.toDegrees(Math.atan((detection.getCenterX() - 80) / Const.Calculation.FocalLengthX));
-                    double thetaY = Math.toDegrees(Math.atan((detection.getCenterY() - 60) / Const.Calculation.FocalLengthY));
+                    double thetaX = Math.toDegrees(Math.atan((detection.getCenterX() - 320) / Const.Calculation.FocalLengthX));
+                    double thetaY = Math.toDegrees(Math.atan((detection.getCenterY() - 240) / Const.Calculation.FocalLengthY));
                     SmartDashboard.putNumber("AngleX", thetaX);
                     SmartDashboard.putNumber("AngleY", thetaY);
 

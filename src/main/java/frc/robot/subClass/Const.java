@@ -25,8 +25,8 @@ public class Const {
         public static double ThetaMaxX = 34.25 * 4 / Math.sqrt(ObliqueLine);
         public static double ThetaMaxY = 34.25 * 3 / Math.sqrt(ObliqueLine);
 
-        public static double FocalLengthX = 80 / Math.tan(Math.toRadians(ThetaMaxX));
-        public static double FocalLengthY = 60 / Math.tan(Math.toRadians(ThetaMaxY));
+        public static double FocalLengthX = 320 / Math.tan(Math.toRadians(ThetaMaxX));
+        public static double FocalLengthY = 240 / Math.tan(Math.toRadians(ThetaMaxY));
 
         public static double CameraMountAngleDegrees = 0;
         public static double CameraLensHeightCentis = 42.5;
