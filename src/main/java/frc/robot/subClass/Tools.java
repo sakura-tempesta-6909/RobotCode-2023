@@ -8,7 +8,7 @@ import java.util.Map;
 public class Tools {
     /**
      * theta1, theta2 : readSensorで取得した実際の角度[deg]
-     * @return X座標[m]
+     * @return X座標[cm]
      * */
     public static double calculateX(double theta1, double theta2) {
         theta1 = Math.toRadians(theta1);
@@ -22,7 +22,7 @@ public class Tools {
 
     /**
      * theta1, theta2 : readSensorで取得した実際の角度[deg]
-     * @return Z座標[m]
+     * @return Z座標[cm]
      * */
     public static double calculateZ(double theta1, double theta2) {
         theta1 = Math.toRadians(theta1);
@@ -47,7 +47,7 @@ public class Tools {
     }
 
     /**
-     * X,Z : ターゲットのX,Z座標[m]
+     * X,Z : ターゲットのX,Z座標[cm]
      * X,Zからtheta1, theta2 を計算
      * @return アームのターゲットの角度[deg]
      */
@@ -81,7 +81,7 @@ public class Tools {
      * theta1, theta2 : readSensorで取得した実際の角度[deg]
      * underMotorのフィードフォワードを計算
      * それぞれのアームの重心をConstから取得
-     * @return モーメント[N*m]
+     * @return モーメント[N*cm]
      * */
     public static double calculateUnderMotorFeedforward (double theta1, double theta2) {
         theta1 = Math.toRadians(theta1);
@@ -105,7 +105,7 @@ public class Tools {
      * theta1, theta2 : readSensorで取得した実際の角度[deg]
      * topMotorのフィードフォワードを計算
      * 重心などをConstから取得
-     * @return モーメント[N*m]
+     * @return モーメント[N*cm]
      * */
     public static double calculateTopMotorFeedforward (double theta1, double theta2) {
         theta1 = Math.toRadians(theta1);
@@ -118,12 +118,11 @@ public class Tools {
     }
 
     /**
-     * input : モーメント[N*m]
+     * input : トルク[N*cm] = モーメント / Const.Arms.[Under/Top]MotorGearRatio
      * モーターのトルクやギア比によって変換を行う
      * @return motor.setへの入力[-1.0, 1.0]
      * */
-    public static double changeMomentToMotorInput (double input) {
-        double requiredTorque = input / Const.Arms.GearRatio;
-        return 1 - (1 / Const.Arms.MotorMaxTorque) * requiredTorque;
+    public static double changeTorqueToMotorInput (double torque) {
+        return 1 - torque / Const.Arms.MotorMaxTorque;
     }
 }

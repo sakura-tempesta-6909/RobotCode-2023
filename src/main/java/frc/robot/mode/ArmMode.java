@@ -82,14 +82,15 @@ public class ArmMode extends Mode {
     }
 
     /**
-     * StateのtargetXとtargetZがありえない座標の時に修正する
+     * input X,Z : X,Z座標の値[cm]
+     * この関数に座標の値域を記述する
+     * @return 入力の座標が正しいか[boolean]
      */
     private boolean isNewTargetPositionInLimit(double addToX, double addToZ) {
-//        double ratio = Const.Arms.TargetPositionLimit / Math.sqrt(Math.pow(State.armTargetAxisX, 2) + Math.pow(State.armTargetAxisZ, 2));
-//        if (ratio < 1) {
-//            State.armTargetAxisX *= ratio;
-//            State.armTargetAxisZ *= ratio;
-//        }
-        return Math.sqrt(Math.pow(State.armTargetAxisX + addToX, 2) + Math.pow(State.armTargetAxisZ + addToZ, 2)) < Const.Arms.TargetPositionLimit;
+        boolean isZAxisInLimit = State.armTargetAxisZ + addToZ > 0;
+        boolean isXAxisInLimit = State.armTargetAxisX + addToX > 0;
+        boolean isInOuterBorder = Math.sqrt(Math.pow(State.armTargetAxisX + addToX, 2) + Math.pow(State.armTargetAxisZ + addToZ, 2)) < Const.Arms.TargetPositionOuterLimit;
+        boolean isOutInnerBorder = Math.sqrt(Math.pow(State.armTargetAxisX + addToX, 2) + Math.pow(State.armTargetAxisZ + addToZ, 2)) > Const.Arms.TargetPositionInnerLimit;
+        return isXAxisInLimit && isZAxisInLimit && isInOuterBorder && isOutInnerBorder;
     }
 }

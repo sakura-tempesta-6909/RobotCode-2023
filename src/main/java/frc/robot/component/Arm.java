@@ -112,8 +112,8 @@ public class Arm implements Component{
         // フィードフォワードを計算する
         State.armTopMotorFeedforward = Tools.calculateTopMotorFeedforward(State.armActualTheta1, State.armActualTheta2);
         State.armUnderMotorFeedforward = Tools.calculateUnderMotorFeedforward(State.armActualTheta1, State.armActualTheta2);
-        State.armTopMotorFeedforward = Tools.changeMomentToMotorInput(State.armTopMotorFeedforward);
-        State.armUnderMotorFeedforward = Tools.changeMomentToMotorInput(State.armUnderMotorFeedforward);
+        State.armTopMotorFeedforward = Tools.changeTorqueToMotorInput(State.armTopMotorFeedforward / Const.Arms.TopMotorGearRatio);
+        State.armUnderMotorFeedforward = Tools.changeTorqueToMotorInput(State.armUnderMotorFeedforward / Const.Arms.TopUnderGearRatio);
     }
 
     @Override
