@@ -112,7 +112,7 @@ public class Camera implements Component{
 
                 double angleToGoalDegrees = Const.Calculation.CameraMountAngleDegrees + thetaY;
                 double angleToGoalRadians = angleToGoalDegrees * (Math.PI / 180);
-                double distanceFromCameraToGoalCentis = (Const.Calculation.GoalHightCentis - Const.Calculation.CameraLensHeightCentis / Math.tan(angleToGoalRadians));
+                double distanceFromCameraToGoalCentis = (Const.Calculation.GoalHightCentis - Const.Calculation.CameraLensHeightCentis) / Math.tan(angleToGoalRadians);
                 SmartDashboard.putNumber("Distance", distanceFromCameraToGoalCentis);
             }
 
