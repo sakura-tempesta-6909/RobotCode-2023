@@ -28,9 +28,9 @@ public class Const {
         public static double FocalLengthX = 80 / Math.tan(Math.toRadians(ThetaMaxX));
         public static double FocalLengthY = 60 / Math.tan(Math.toRadians(ThetaMaxY));
 
-        public static double CameraMountAngleDegrees;
-        public static double CameraLensHeightCentis;
-        public static double GoalHightCentis;
+        public static double CameraMountAngleDegrees = 0;
+        public static double CameraLensHeightCentis = 40;
+        public static double GoalHightCentis = 50;
         
        
     }
