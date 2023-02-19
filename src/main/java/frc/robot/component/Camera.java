@@ -76,60 +76,59 @@ public class Camera implements Component{
 
     @Override
     public void readSensors() {
-        while(!Thread.interrupted()){
-            //カメラからフレームを取得する
-            if (cvSink.grabFrame(mat) == 0) {
-            outputStream.notifyError(cvSink.getError());
-            }
-            //画像をグレースケールにする
-            Imgproc.cvtColor(mat, grayMat, Imgproc.COLOR_RGB2GRAY);
-
-            //Apriltagを検出する
-            detections = detector.detect(grayMat);
-            tags.clear();
-            //Apriltagの数だけ繰り返す
-            for (AprilTagDetection detection : detections) {
-                tags.add(detection.getId());
-
-                double[] translation = detection.getHomography();
-
-                System.out.println("Translation" + Arrays.toString(translation));
-
-                for (var i = 0; i <= 3; i++) {
-                    var j = (i + 1) % 4;
-                    //i,jのXとYのコーナーの座標を取得
-                    var pt1 = new Point(detection.getCornerX(i), detection.getCornerY(i));
-                    var pt2 = new Point(detection.getCornerX(j), detection.getCornerY(j));
-                    //検出したApriltagを四角形で囲う
-                    Imgproc.line(mat, pt1, pt2, outlineColor, 2);
-                    SmartDashboard.putNumber("CenterX", detection.getCenterX() - 320);
-                    SmartDashboard.putNumber("CenterY", detection.getCenterY() - 240);
-
-                    //角度を求める
-                    double thetaX = Math.toDegrees(Math.atan((detection.getCenterX() - 320) / Const.Calculation.FocalLengthX));
-                    double thetaY = Math.toDegrees(Math.atan((detection.getCenterY() - 240) / Const.Calculation.FocalLengthY));
-                    SmartDashboard.putNumber("AngleX", thetaX);
-                    SmartDashboard.putNumber("AngleY", thetaY);
-
-                    //距離を求める
-                    double angleToGoalDegrees = Const.Calculation.CameraMountAngleDegrees + thetaY;
-                    double angleToGoalRadians = angleToGoalDegrees * (Math.PI / 180);
-                    double distanceFromCameraToGoalCentis = (Const.Calculation.GoalHightCentis - Const.Calculation.CameraLensHeightCentis) / Math.tan(angleToGoalRadians);
-                    SmartDashboard.putNumber("Distance", distanceFromCameraToGoalCentis);
-                }
-
-                //検出したApriltagの中心にクロスヘアを描画
-                var cx = detection.getCenterX();
-                var cy = detection.getCenterY();
-                var ll = 10;
-                Imgproc.line(mat, new Point(cx - ll, cy), new Point(cx + ll, cy), xColor, 2);
-                Imgproc.line(mat, new Point(cx, cy - ll), new Point(cx, cy + ll), xColor, 2);
-                Imgproc.putText(mat, Integer.toString(detection.getId()), new Point (cx + ll, cy), Imgproc.FONT_HERSHEY_SIMPLEX, 1, xColor, 3);
-            }
-
-            SmartDashboard.putString("tag", tags.toString());
-            outputStream.putFrame(mat);
+        //カメラからフレームを取得する
+        if (cvSink.grabFrame(mat) == 0) {
+        outputStream.notifyError(cvSink.getError());
+        return;
         }
+        //画像をグレースケールにする
+        Imgproc.cvtColor(mat, grayMat, Imgproc.COLOR_RGB2GRAY);
+
+        //Apriltagを検出する
+        detections = detector.detect(grayMat);
+        tags.clear();
+        //Apriltagの数だけ繰り返す
+        for (AprilTagDetection detection : detections) {
+            tags.add(detection.getId());
+
+            double[] translation = detection.getHomography();
+
+            System.out.println("Translation" + Arrays.toString(translation));
+
+            for (var i = 0; i <= 3; i++) {
+                var j = (i + 1) % 4;
+                //i,jのXとYのコーナーの座標を取得
+                var pt1 = new Point(detection.getCornerX(i), detection.getCornerY(i));
+                var pt2 = new Point(detection.getCornerX(j), detection.getCornerY(j));
+                //検出したApriltagを四角形で囲う
+                Imgproc.line(mat, pt1, pt2, outlineColor, 2);
+                SmartDashboard.putNumber("CenterX", detection.getCenterX() - 320);
+                SmartDashboard.putNumber("CenterY", detection.getCenterY() - 240);
+
+                //角度を求める
+                double thetaX = Math.toDegrees(Math.atan((detection.getCenterX() - 320) / Const.Calculation.FocalLengthX));
+                double thetaY = Math.toDegrees(Math.atan((detection.getCenterY() - 240) / Const.Calculation.FocalLengthY));
+                SmartDashboard.putNumber("AngleX", thetaX);
+                SmartDashboard.putNumber("AngleY", thetaY);
+
+                //距離を求める
+                double angleToGoalDegrees = Const.Calculation.CameraMountAngleDegrees + thetaY;
+                double angleToGoalRadians = angleToGoalDegrees * (Math.PI / 180);
+                double distanceFromCameraToGoalCentis = (Const.Calculation.GoalHightCentis - Const.Calculation.CameraLensHeightCentis) / Math.tan(angleToGoalRadians);
+                SmartDashboard.putNumber("Distance", distanceFromCameraToGoalCentis);
+            }
+
+            //検出したApriltagの中心にクロスヘアを描画
+            var cx = detection.getCenterX();
+            var cy = detection.getCenterY();
+            var ll = 10;
+            Imgproc.line(mat, new Point(cx - ll, cy), new Point(cx + ll, cy), xColor, 2);
+            Imgproc.line(mat, new Point(cx, cy - ll), new Point(cx, cy + ll), xColor, 2);
+            Imgproc.putText(mat, Integer.toString(detection.getId()), new Point (cx + ll, cy), Imgproc.FONT_HERSHEY_SIMPLEX, 1, xColor, 3);
+        }
+
+        SmartDashboard.putString("tag", tags.toString());
+        outputStream.putFrame(mat);
     }
           
 
