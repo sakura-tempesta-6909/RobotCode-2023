@@ -122,9 +122,14 @@ public class Arm implements Component{
         pidForTheta1.setSetpoint(State.armTargetTheta1);
         pidForTheta2.setSetpoint(State.armTargetTheta2);
 
-        if(State.resetPidController){
+        if(State.resetArmPidController){
             pidForTheta1.reset();
             pidForTheta2.reset();
+        }
+
+        if(State.resetArmEncoder) {
+            encoder1.reset();
+            encoder2.reset();
         }
 
         switch (State.armState) {

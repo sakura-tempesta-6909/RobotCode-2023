@@ -29,6 +29,7 @@ public class Const {
         public static double SecondArmMass = 0.0;
         public static double TargetModifyRatio = 1;
         public static double TakeUpLengthAfterGrab = 20.0;
+        public static double TargetPositionLimit = Math.sqrt(Math.pow(FirstArmLength, 2) + Math.pow(SecondArmLength, 2));
         public static double kP1 = 0.2;
         public static double kI1 = 0.2;
         public static double kD1 = 0.01;

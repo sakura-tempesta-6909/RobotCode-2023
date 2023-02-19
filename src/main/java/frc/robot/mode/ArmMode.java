@@ -28,19 +28,19 @@ public class ArmMode extends Mode {
         if (driveController.getXButtonPressed()) {
             State.armTargetAxisX = State.armActualAxisX;
             State.armTargetAxisZ = State.armActualAxisZ;
-            State.resetPidController = true;
+            State.resetArmPidController = true;
         }
 
         // Aボタンが押されたら一旦Integralをリセット
         if (driveController.getAButtonPressed()) {
-            State.resetPidController = true;
+            State.resetArmPidController = true;
         }
 
         // Bボタンが押されたら一旦Integralをリセット アームを持ち上げる(Z座標を変える)
         if (driveController.getBButtonPressed()) {
             State.armTargetAxisX = State.armActualAxisX;
             State.armTargetAxisZ = State.armActualAxisZ - Const.Arms.TakeUpLengthAfterGrab;
-            State.resetPidController = true;
+            State.resetArmPidController = true;
         }
 
         if (driveController.getXButton()) {
@@ -69,9 +69,26 @@ public class ArmMode extends Mode {
             State.armState = State.ArmState.s_moveArmMotor;
         }
 
+        applyTargetPositionLimit();
+
+        if(driveController.getLeftBumperPressed()) {
+            State.resetArmEncoder = true;
+        }
+
         // ターゲット座標からターゲットの角度を計算する
         Map<String, Double> targetThetas = Tools.calculateThetas(State.armTargetAxisX, State.armTargetAxisZ);
         State.armTargetTheta1 = targetThetas.get("theta1");
         State.armTargetTheta2 = targetThetas.get("theta2");
+    }
+
+    /**
+     * StateのtargetXとtargetZがありえない座標の時に修正する
+     */
+    private void applyTargetPositionLimit() {
+        double ratio = Const.Arms.TargetPositionLimit / Math.sqrt(Math.pow(State.armTargetAxisX, 2) + Math.pow(State.armTargetAxisZ, 2));
+        if (ratio < 1) {
+            State.armTargetAxisX *= ratio;
+            State.armTargetAxisZ *= ratio;
+        }
     }
 }

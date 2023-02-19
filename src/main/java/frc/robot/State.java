@@ -29,7 +29,8 @@ public class State {
     public static double armUnderMotorFeedforward;
     public static double armTopMotorFeedforward;
     public static boolean isArmAtTarget;
-    public static boolean resetPidController;
+    public static boolean resetArmPidController;
+    public static boolean resetArmEncoder;
 
     public static double limelightTargetAxisX, limelightTargetAxisZ;
 
@@ -75,7 +76,8 @@ public class State {
         intakeState = IntakeState.s_stopConveyor;
         armState = ArmState.s_fixArmPosition;
         isArmAtTarget = false;
-        resetPidController = false;
+        resetArmPidController = false;
+        resetArmEncoder = false;
     }
 
     public enum DriveState {
