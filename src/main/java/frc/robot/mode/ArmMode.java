@@ -84,7 +84,8 @@ public class ArmMode extends Mode {
     }
 
     /**
-     * input X,Z : X,Z座標の値[cm]
+     * @param X : ターゲットのX座標[cm]
+     * @param Z : ターゲットのZ座標[cm]
      * この関数に座標の値域を記述する
      * @return 入力の座標が正しいか[boolean]
      */

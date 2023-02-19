@@ -7,7 +7,8 @@ import java.util.Map;
 
 public class Tools {
     /**
-     * theta1, theta2 : readSensorで取得した実際の角度[deg]
+     * @param theta1 : readSensorで取得した実際の角度[deg]
+     * @param theta2 : readSensorで取得した実際の角度[deg]
      * @return X座標[cm]
      * */
     public static double calculateX(double theta1, double theta2) {
@@ -21,7 +22,8 @@ public class Tools {
     }
 
     /**
-     * theta1, theta2 : readSensorで取得した実際の角度[deg]
+     * @param theta1 : readSensorで取得した実際の角度[deg]
+     * @param theta2 : readSensorで取得した実際の角度[deg]
      * @return Z座標[cm]
      * */
     public static double calculateZ(double theta1, double theta2) {
@@ -39,6 +41,7 @@ public class Tools {
     /**
      * 不感帯処理関数
      * 絶対値がdeadZoneThreshold未満のものを淘汰
+     * @param input : コントローラーの値を入力
      * @return 不感帯処理を施したinput
      * */
     public static double deadZoneProcess(double input) {
@@ -47,7 +50,8 @@ public class Tools {
     }
 
     /**
-     * X,Z : ターゲットのX,Z座標[cm]
+     * @param X : ターゲットのX座標[cm]
+     * @param Z : ターゲットのZ座標[cm]
      * X,Zからtheta1, theta2 を計算
      * @return アームのターゲットの角度[deg]
      */
@@ -78,7 +82,8 @@ public class Tools {
     }
 
     /**
-     * theta1, theta2 : readSensorで取得した実際の角度[deg]
+     * @param theta1 : readSensorで取得した実際の角度[deg]
+     * @param theta2 : readSensorで取得した実際の角度[deg]
      * underMotorのフィードフォワードを計算
      * それぞれのアームの重心をConstから取得
      * @return モーメント[N*cm]
@@ -102,7 +107,8 @@ public class Tools {
     }
 
     /**
-     * theta1, theta2 : readSensorで取得した実際の角度[deg]
+     * @param theta1 : readSensorで取得した実際の角度[deg]
+     * @param theta2 : readSensorで取得した実際の角度[deg]
      * topMotorのフィードフォワードを計算
      * 重心などをConstから取得
      * @return モーメント[N*cm]
@@ -118,9 +124,10 @@ public class Tools {
     }
 
     /**
-     * input : トルク[N*cm] = モーメント / Const.Arms.[Under/Top]MotorGearRatio
-     * モーターのトルクやギア比によって変換を行う
-     * @return motor.setへの入力[-1.0, 1.0]
+     * NEOモーターのトルクとRPMの関係を利用 <a href="https://www.revrobotics.com/content/docs/REV-21-1650-DS.pdf">データシート</a>
+     * [注意] NEOモーターに合わせて出力する
+     * @param torque : トルク[N*cm] = モーメント / Const.Arms.[Under/Top]MotorGearRatio（ギア比に合わせて入力）
+     * @return motor.setへの入力[-1.0, 1.0] (CANSparkMax)
      * */
     public static double changeTorqueToMotorInput (double torque) {
         return 1 - torque / Const.Arms.MotorMaxTorque;
