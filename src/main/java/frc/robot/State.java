@@ -5,6 +5,8 @@ import frc.robot.mode.DriveMode;
 import frc.robot.mode.Mode;
 import frc.robot.mode.TestMode;
 import frc.robot.subClass.Const;
+import java.util.HashMap;
+import java.util.Map;
 
 public class State {
     public static Modes mode;
@@ -13,6 +15,8 @@ public class State {
     public static IntakeState intakeState;
     public static HandState handState;
     public static ArmState armState;
+    public static Map<String ,Double> voltage = new HashMap<>();
+
     /**
      * Enableされたときの状態
      */
@@ -21,6 +25,7 @@ public class State {
         XboxController operateController = new XboxController(Const.Ports.OperateController);
         Mode.addController(driveController, operateController);
         handState = HandState.s_releaseHand;
+        voltage = new HashMap<>();
         StateReset();
     }
 
