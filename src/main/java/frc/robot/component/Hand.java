@@ -44,10 +44,10 @@ public class Hand implements Component{
 
     /** 
      * つかむ離すの運動関係のモーターを動かす
-     * @param grabOrRelease trueかfalseでつかむ。まだ分からない。
+     * @param isGrabbingHand trueかfalseでつかむ。まだ分からない。
      */
-    public void grabOrReleaseControl(boolean grabOrRelease) {
-        handSolenoid.set(grabOrRelease);
+    public void grabOrReleaseControl(boolean isGrabbingHand) {
+        handSolenoid.set(isGrabbingHand);
     }
 
     /** 手首の回転関係のモーターを動かす */

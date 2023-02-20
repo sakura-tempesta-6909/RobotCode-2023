@@ -1,9 +1,16 @@
 package frc.robot.component;
 
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Solenoid;
 import frc.robot.State;
 import frc.robot.subClass.Const;
 
 public class Intake implements Component{
+    private Solenoid IntakeSolenoid;
+
+    public Intake() {
+        IntakeSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Const.Ports.IntakeSolenoid);
+    }
 
     @Override
     public void autonomousInit() {
@@ -35,37 +42,61 @@ public class Intake implements Component{
         
     }
 
-    /** conveyor関係のモーターを動かす */
-    public void conveyorControl(double rollerSpeed) {
+    /** Roller関係のモーターを動かす */
+    public void rollerControl(double rollerSpeed) {
 
+    }
+
+    /** Intake関係のsolenoidを動かす */
+    public void intakeControl(boolean isExtendingIntake) {
+        IntakeSolenoid.set(isExtendingIntake);
     }
 
     /** CONEとCUBEを出す */
-    public void outtakeConveyor() {
-        conveyorControl(Const.Speeds.IntakeSpeed);
+    public void outtakeGamePiece() {
+        rollerControl(Const.Speeds.RollerSpeed);
     }
 
     /** CONEとCUBEを回収する */
-    public void intakeConveyor() {
-        conveyorControl(Const.Speeds.OuttakeSpeed);
+    public void intakeGamePiece() {
+        rollerControl(Const.Speeds.OuttakeSpeed);
     }
 
     /** Conveyorを動かさない */
-    public void stopConveyor() {
-        conveyorControl(Const.Speeds.Neutral);
+    public void stopRoller() {
+        rollerControl(Const.Speeds.Neutral);
+    }
+
+    /** Intakeを出す */
+    public void openIntake() {
+        intakeControl(true);
+    }
+
+    /** Rollerをしまう */
+    public void closeIntake() {
+        intakeControl(false);
     }
 
     @Override
     public void applyState() {
         switch(State.intakeState){
-            case s_outtakeConveyor:
-                outtakeConveyor();
+            case s_outtakeGamePiece:
+                outtakeGamePiece();
                 break;
-            case s_intakeConveyor:
-                intakeConveyor();
+            case s_intakeGamePiece:
+                intakeGamePiece();
                 break;
-            case s_stopConveyor:
-                stopConveyor();
+            case s_stopRoller:
+                stopRoller();
+                break;
+        }
+        
+        switch(State.intakeExtensionState){
+            case s_openIntake:
+                openIntake();
+                break;
+            case s_closeIntake:
+                closeIntake();
                 break;
         }
     }

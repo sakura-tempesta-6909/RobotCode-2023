@@ -11,6 +11,8 @@ public class Const {
         public static final int DriveLeftBack = 3;
 
         public static final int HandSolenoid = 0;
+
+        public static final int IntakeSolenoid = 0;
     }
 
     public static final class Speeds {
@@ -20,7 +22,7 @@ public class Const {
         public static double MidDrive = 0.5;
         public static double SlowDrive = 0.3;
 
-        public static double IntakeSpeed = 0.5;
+        public static double RollerSpeed = 0.5;
         public static double OuttakeSpeed = 0.5;
 
         public static double HandRotationSpeed = 0.3;
