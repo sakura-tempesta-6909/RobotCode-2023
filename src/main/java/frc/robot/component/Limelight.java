@@ -1,10 +1,11 @@
-package frc.robot.Component;
+package frc.robot.component;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.State;
+import frc.robot.subClass.Const;
 
 
 public class Limelight implements Component {
@@ -43,7 +44,7 @@ public class Limelight implements Component {
         
         // calculate distance
         // ターゲットまでの距離
-        State.distanceFromLimelightToGoalCentis = (Const.Calculation.GoalHeightCentis - Const.Calculation.LImelightLensHeightCentis)/Math.tan(angleToGoalRadians);
+        State.distanceFromLimelightToGoalCentis = (Const.Calculation.GoalHeightCentis - Const.Calculation.LimelightLensHeightCentis)/Math.tan(angleToGoalRadians);
         //System.out.println(State.distanceFromLimelightToGoalCentis);
 
         tx = txEntry.getDouble(0);

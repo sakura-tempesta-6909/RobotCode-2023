@@ -1,9 +1,10 @@
-package frc.robot.Component;
+package frc.robot.component;
 
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.State;
+import frc.robot.subClass.Const;
 
 public class Drive implements Component{
 
@@ -12,10 +13,10 @@ public class Drive implements Component{
     private DifferentialDrive differentialDrive;
 
     public Drive() {
-        driveRightFront = new WPI_TalonSRX(0);
-        driveLeftFront = new WPI_TalonSRX(1);
-        driveRightBack = new VictorSPX(2);
-        driveLeftBack = new VictorSPX(3);
+        driveRightFront = new WPI_TalonSRX(Const.Ports.DriveRightFront);
+        driveLeftFront = new WPI_TalonSRX(Const.Ports.DriveLeftFront);
+        driveRightBack = new VictorSPX(Const.Ports.DriveRightBack);
+        driveLeftBack = new VictorSPX(Const.Ports.DriveLeftBack);
 
         driveRightBack.follow(driveRightFront);
         driveLeftBack.follow(driveLeftFront);
@@ -63,16 +64,16 @@ public class Drive implements Component{
     public void applyState() {
         switch(State.driveState) {
             case s_fastDrive:
-                arcadeDrive(0.8 * State.driveXSpeed, 0.8 * State.driveZRotation);
+                arcadeDrive(Const.Speeds.FastDrive * State.driveXSpeed, Const.Speeds.FastDrive * State.driveZRotation);
                 break;
             case s_midDrive:
-                arcadeDrive(0.5 * State.driveXSpeed, 0.5 * State.driveZRotation);
+                arcadeDrive(Const.Speeds.MidDrive * State.driveXSpeed, Const.Speeds.MidDrive * State.driveZRotation);
                 break;
             case s_slowDrive:
-                arcadeDrive(0.3 * State.driveXSpeed, 0.3 * State.driveZRotation); 
+                arcadeDrive(Const.Speeds.SlowDrive * State.driveXSpeed, Const.Speeds.SlowDrive * State.driveZRotation); 
                 break;
             case s_stopDrive:
-                arcadeDrive(0 * State.driveXSpeed, 0 * State.driveZRotation);
+                arcadeDrive(Const.Speeds.Neutral * State.driveXSpeed, Const.Speeds.Neutral * State.driveZRotation);
                 break;
         
         }
