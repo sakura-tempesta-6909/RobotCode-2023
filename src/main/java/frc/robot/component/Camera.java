@@ -50,7 +50,7 @@ public class Camera implements Component {
 
     }
 
-    public void cacalculation(AprilTagDetection detection) {
+    public void calculation(AprilTagDetection detection) {
         //角度を求める
         double thetaX = Math.toDegrees(Math.atan((detection.getCenterX() - 320) / Const.Calculation.FocalLengthX));
         double thetaY = Math.toDegrees(Math.atan((detection.getCenterY() - 240) / Const.Calculation.FocalLengthY));
