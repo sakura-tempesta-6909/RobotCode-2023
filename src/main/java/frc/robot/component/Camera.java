@@ -117,6 +117,13 @@ public class Camera implements Component{
             State.distanceFromCameraToTagCentis = (Const.Calculation.GoalHightCentis - Const.Calculation.CameraLensHeightCentis) / Math.tan(angleToGoalRadians);
             SmartDashboard.putNumber("Distance", State.distanceFromCameraToTagCentis);
 
+            //apriltagに近づく
+            if(detection.getCenterY() > 0) {
+                State.apriltagXSpeed = detection.getCenterY() / -240 * 0.5 + -0.2;
+            } else if(detection.getCenterY() < 0) {
+                State.apriltagXSpeed = detection.getCenterY() / 240 * 0.5 + 0.2;
+            }
+
             //検出したApriltagの中心にクロスヘアを描画
             var cx = detection.getCenterX();
             var cy = detection.getCenterY();

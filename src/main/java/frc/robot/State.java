@@ -17,6 +17,7 @@ public class State {
     public static ArmState armState;
     public static Map<String ,Double> voltage = new HashMap<>();
     public static double distanceFromCameraToTagCentis;
+    public static double apriltagXSpeed;
 
     /**
      * Enableされたときの状態
