@@ -34,7 +34,7 @@ public class Robot extends TimedRobot {
         Thread thread = new Thread(() -> {
             mqtt.connect();
         });
-       thread.start();
+        thread.start();
         components = new ArrayList<>();
         components.add(new Drive());
         components.add(new Intake());
