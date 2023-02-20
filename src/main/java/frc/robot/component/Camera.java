@@ -90,8 +90,6 @@ public class Camera implements Component{
         tags.clear();
         //Apriltagの数だけ繰り返す
         for (AprilTagDetection detection : detections) {
-            tags.add(detection.getId());
-
             double[] translation = detection.getHomography();
 
             System.out.println("Translation" + Arrays.toString(translation));
@@ -105,19 +103,19 @@ public class Camera implements Component{
                 Imgproc.line(mat, pt1, pt2, outlineColor, 2);
                 SmartDashboard.putNumber("CenterX", detection.getCenterX() - 320);
                 SmartDashboard.putNumber("CenterY", detection.getCenterY() - 240);
-
-                //角度を求める
-                double thetaX = Math.toDegrees(Math.atan((detection.getCenterX() - 320) / Const.Calculation.FocalLengthX));
-                double thetaY = Math.toDegrees(Math.atan((detection.getCenterY() - 240) / Const.Calculation.FocalLengthY));
-                SmartDashboard.putNumber("AngleX", thetaX);
-                SmartDashboard.putNumber("AngleY", thetaY);
-
-                //距離を求める
-                double angleToGoalDegrees = Const.Calculation.CameraMountAngleDegrees + thetaY;
-                double angleToGoalRadians = angleToGoalDegrees * (Math.PI / 180);
-                State.distanceFromCameraToTagCentis = (Const.Calculation.GoalHightCentis - Const.Calculation.CameraLensHeightCentis) / Math.tan(angleToGoalRadians);
-                SmartDashboard.putNumber("Distance", State.distanceFromCameraToTagCentis);
             }
+
+            //角度を求める
+            double thetaX = Math.toDegrees(Math.atan((detection.getCenterX() - 320) / Const.Calculation.FocalLengthX));
+            double thetaY = Math.toDegrees(Math.atan((detection.getCenterY() - 240) / Const.Calculation.FocalLengthY));
+            SmartDashboard.putNumber("AngleX", thetaX);
+            SmartDashboard.putNumber("AngleY", thetaY);
+
+            //距離を求める
+            double angleToGoalDegrees = Const.Calculation.CameraMountAngleDegrees + thetaY;
+            double angleToGoalRadians = angleToGoalDegrees * (Math.PI / 180);
+            State.distanceFromCameraToTagCentis = (Const.Calculation.GoalHightCentis - Const.Calculation.CameraLensHeightCentis) / Math.tan(angleToGoalRadians);
+            SmartDashboard.putNumber("Distance", State.distanceFromCameraToTagCentis);
 
             //検出したApriltagの中心にクロスヘアを描画
             var cx = detection.getCenterX();
