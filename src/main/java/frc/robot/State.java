@@ -7,9 +7,10 @@ public class State {
     public static double driveXSpeed, driveZRotation;
     public static DriveState driveState;
 
-    public static double steering_adjust;
-    public static double heading_error;
-    public static double limelightZRotation;
+    public static double limelightTrackingZRotation;
+    public static double limelightSeekingZRotation;
+    public static double distanceFromLimelightToGoalCentis;
+    public static double limelightXSpeed;
 
 
     public static void StateInit() {
@@ -27,7 +28,11 @@ public class State {
         s_midDrive,
         s_slowDrive,
         s_stopDrive,
-        s_target,
+        // targetに照準を合わせる
+        s_targetTracking,
+        s_targetApproaching,
+        s_targetSeeking,
+
         
 
     }

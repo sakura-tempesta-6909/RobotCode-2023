@@ -15,10 +15,6 @@ public class DriveMode extends Mode {
     public void changeState() {
         State.driveXSpeed = driveController.getLeftY();
         State.driveZRotation = driveController.getRightX();
-
-        if(driveController.getXButton()) {
-            State.driveState = DriveState.s_target;
-        }
         
     }
     

@@ -29,10 +29,6 @@ public class Drive implements Component{
         differentialDrive.feed();
     }
 
-    public void target() {
-        differentialDrive.arcadeDrive(0, State.limelightZRotation);
-    }
-
     @Override
     public void autonomousInit() {
         // TODO Auto-generated method stub
@@ -78,10 +74,8 @@ public class Drive implements Component{
             case s_stopDrive:
                 arcadeDrive(0 * State.driveXSpeed, 0 * State.driveZRotation);
                 break;
-            case s_target:
-                target();
-        }
         
+        }
     }
-
 }
+
