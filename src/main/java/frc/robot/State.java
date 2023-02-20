@@ -16,6 +16,7 @@ public class State {
     public static HandState handState;
     public static ArmState armState;
     public static Map<String ,Double> voltage = new HashMap<>();
+    public static double distanceFromCameraToTagCentis;
 
     /**
      * Enableされたときの状態

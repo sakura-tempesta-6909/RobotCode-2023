@@ -15,6 +15,7 @@ import edu.wpi.first.cscore.CvSink;
 import edu.wpi.first.cscore.CvSource;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.State;
 import frc.robot.subClass.Const;
 
 public class Camera implements Component{
@@ -114,8 +115,8 @@ public class Camera implements Component{
                 //距離を求める
                 double angleToGoalDegrees = Const.Calculation.CameraMountAngleDegrees + thetaY;
                 double angleToGoalRadians = angleToGoalDegrees * (Math.PI / 180);
-                double distanceFromCameraToGoalCentis = (Const.Calculation.GoalHightCentis - Const.Calculation.CameraLensHeightCentis) / Math.tan(angleToGoalRadians);
-                SmartDashboard.putNumber("Distance", distanceFromCameraToGoalCentis);
+                State.distanceFromCameraToTagCentis = (Const.Calculation.GoalHightCentis - Const.Calculation.CameraLensHeightCentis) / Math.tan(angleToGoalRadians);
+                SmartDashboard.putNumber("Distance", State.distanceFromCameraToTagCentis);
             }
 
             //検出したApriltagの中心にクロスヘアを描画
