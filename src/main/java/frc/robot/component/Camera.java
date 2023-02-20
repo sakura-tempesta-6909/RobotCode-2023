@@ -1,13 +1,5 @@
 package frc.robot.component;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import org.opencv.core.Mat;
-import org.opencv.core.Point;
-import org.opencv.core.Scalar;
-import org.opencv.imgproc.Imgproc;
-
 import edu.wpi.first.apriltag.AprilTagDetection;
 import edu.wpi.first.apriltag.AprilTagDetector;
 import edu.wpi.first.cameraserver.CameraServer;
@@ -17,8 +9,15 @@ import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.State;
 import frc.robot.subClass.Const;
+import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
 
-public class Camera implements Component{
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class Camera implements Component {
 
     AprilTagDetector detector;
     UsbCamera camera;
@@ -34,7 +33,7 @@ public class Camera implements Component{
     public Camera() {
         detector = new AprilTagDetector();
         detector.addFamily("tag16h5", 0);
-        
+
         camera = CameraServer.startAutomaticCapture();
         camera.setResolution(640, 480);
 
@@ -51,36 +50,50 @@ public class Camera implements Component{
 
     }
 
+    public void cacalculation(AprilTagDetection detection) {
+        //角度を求める
+        double thetaX = Math.toDegrees(Math.atan((detection.getCenterX() - 320) / Const.Calculation.FocalLengthX));
+        double thetaY = Math.toDegrees(Math.atan((detection.getCenterY() - 240) / Const.Calculation.FocalLengthY));
+        SmartDashboard.putNumber("AngleX", thetaX);
+        SmartDashboard.putNumber("AngleY", thetaY);
+
+        //距離を求める
+        double angleToGoalDegrees = Const.Calculation.CameraMountAngleDegrees + thetaY;
+        double angleToGoalRadians = angleToGoalDegrees * (Math.PI / 180);
+        State.distanceFromCameraToTagCentis = (Const.Calculation.GoalHightCentis - Const.Calculation.CameraLensHeightCentis) / Math.tan(angleToGoalRadians);
+        SmartDashboard.putNumber("Distance", State.distanceFromCameraToTagCentis);
+    }
+
     @Override
     public void autonomousInit() {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void teleopInit() {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void disabledInit() {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void testInit() {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void readSensors() {
         //カメラからフレームを取得する
         if (cvSink.grabFrame(mat) == 0) {
-        outputStream.notifyError(cvSink.getError());
-        return;
+            outputStream.notifyError(cvSink.getError());
+            return;
         }
         //画像をグレースケールにする
         Imgproc.cvtColor(mat, grayMat, Imgproc.COLOR_RGB2GRAY);
@@ -105,22 +118,10 @@ public class Camera implements Component{
                 SmartDashboard.putNumber("CenterY", detection.getCenterY() - 240);
             }
 
-            //角度を求める
-            double thetaX = Math.toDegrees(Math.atan((detection.getCenterX() - 320) / Const.Calculation.FocalLengthX));
-            double thetaY = Math.toDegrees(Math.atan((detection.getCenterY() - 240) / Const.Calculation.FocalLengthY));
-            SmartDashboard.putNumber("AngleX", thetaX);
-            SmartDashboard.putNumber("AngleY", thetaY);
-
-            //距離を求める
-            double angleToGoalDegrees = Const.Calculation.CameraMountAngleDegrees + thetaY;
-            double angleToGoalRadians = angleToGoalDegrees * (Math.PI / 180);
-            State.distanceFromCameraToTagCentis = (Const.Calculation.GoalHightCentis - Const.Calculation.CameraLensHeightCentis) / Math.tan(angleToGoalRadians);
-            SmartDashboard.putNumber("Distance", State.distanceFromCameraToTagCentis);
-
             //apriltagに近づく
-            if(detection.getCenterY() > 0) {
+            if (detection.getCenterY() > 0) {
                 State.apriltagXSpeed = detection.getCenterY() / -240 * 0.5 + -0.2;
-            } else if(detection.getCenterY() < 0) {
+            } else if (detection.getCenterY() < 0) {
                 State.apriltagXSpeed = detection.getCenterY() / 240 * 0.5 + 0.2;
             }
 
@@ -130,18 +131,18 @@ public class Camera implements Component{
             var ll = 10;
             Imgproc.line(mat, new Point(cx - ll, cy), new Point(cx + ll, cy), xColor, 2);
             Imgproc.line(mat, new Point(cx, cy - ll), new Point(cx, cy + ll), xColor, 2);
-            Imgproc.putText(mat, Integer.toString(detection.getId()), new Point (cx + ll, cy), Imgproc.FONT_HERSHEY_SIMPLEX, 1, xColor, 3);
+            Imgproc.putText(mat, Integer.toString(detection.getId()), new Point(cx + ll, cy), Imgproc.FONT_HERSHEY_SIMPLEX, 1, xColor, 3);
         }
 
         SmartDashboard.putString("tag", tags.toString());
         outputStream.putFrame(mat);
     }
-          
+
 
     @Override
     public void applyState() {
         // TODO Auto-generated method stub
-        
+
     }
-    
+
 }
