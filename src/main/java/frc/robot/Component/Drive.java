@@ -5,7 +5,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.State;
 
-
 public class Drive implements Component{
 
     private WPI_TalonSRX driveRightFront, driveLeftFront;
