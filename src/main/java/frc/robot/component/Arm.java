@@ -100,8 +100,8 @@ public class Arm implements Component{
         // motorのencodeからアームの実際のX,Z座標を計算
         State.Arm.actualRootAngle = getE1Angle(encoder1.get());
         State.Arm.actualJointAngle = getE2Angle(encoder2.get());
-        State.Arm.actualHeight = Tools.calculateX(State.Arm.actualRootAngle, State.Arm.actualJointAngle);
-        State.Arm.actualDepth = Tools.calculateZ(State.Arm.actualRootAngle, State.Arm.actualJointAngle);
+        State.Arm.actualHeight = Tools.calculateHeight(State.Arm.actualRootAngle, State.Arm.actualJointAngle);
+        State.Arm.actualDepth = Tools.calculateDepth(State.Arm.actualRootAngle, State.Arm.actualJointAngle);
 
         // armがターゲットの座標に到着したか
         State.Arm.isArmAtTarget = isArmAtTarget();

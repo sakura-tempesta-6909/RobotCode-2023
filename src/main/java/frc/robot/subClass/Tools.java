@@ -7,9 +7,9 @@ public class Tools {
     /**
      * @param RootAngle : readSensorで取得した実際の角度[deg]
      * @param JointAngle : readSensorで取得した実際の角度[deg]
-     * @return X座標[cm]
+     * @return Height座標[cm]
      * */
-    public static double calculateX(double RootAngle, double JointAngle) {
+    public static double calculateHeight(double RootAngle, double JointAngle) {
         RootAngle = Math.toRadians(RootAngle);
         JointAngle = Math.toRadians(JointAngle);
         double SumAngle = RootAngle + JointAngle;
@@ -22,9 +22,9 @@ public class Tools {
     /**
      * @param RootAngle : readSensorで取得した実際の角度[deg]
      * @param JointAngle : readSensorで取得した実際の角度[deg]
-     * @return Z座標[cm]
+     * @return Depth座標[cm]
      * */
-    public static double calculateZ(double RootAngle, double JointAngle) {
+    public static double calculateDepth(double RootAngle, double JointAngle) {
         RootAngle = Math.toRadians(RootAngle);
         JointAngle = Math.toRadians(JointAngle);
         double SumAngle = RootAngle + JointAngle;
@@ -69,14 +69,14 @@ public class Tools {
         double alphaCos = Math.acos(tX / r);
         double RootAngleCos = Math.acos(Depth / r) + alphaCos;
 
-        double RootAngle = Math.abs(Tools.calculateX(RootAngleSin, JointAngle) - Height) > Math.abs(Tools.calculateX(RootAngleCos, JointAngle) - Height)
+        double RootAngle = Math.abs(Tools.calculateHeight(RootAngleSin, JointAngle) - Height) > Math.abs(Tools.calculateHeight(RootAngleCos, JointAngle) - Height)
                 ? RootAngleCos : RootAngleSin;
 
-        Map<String, Double> thetas = new HashMap<String, Double>();
-        thetas.put("RootAngle", Math.toDegrees(RootAngle));
-        thetas.put("JointAngle", Math.toDegrees(JointAngle));
+        Map<String, Double> angles = new HashMap<String, Double>();
+        angles.put("RootAngle", Math.toDegrees(RootAngle));
+        angles.put("JointAngle", Math.toDegrees(JointAngle));
 
-        return thetas;
+        return angles;
     }
 
     /**

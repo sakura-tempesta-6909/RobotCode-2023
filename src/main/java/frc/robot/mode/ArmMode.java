@@ -71,9 +71,9 @@ public class ArmMode extends Mode {
         }
 
         // ターゲット座標からターゲットの角度を計算する
-        Map<String, Double> targetThetas = Tools.calculateAngles(State.Arm.targetHeight, State.Arm.targetDepth);
-        State.Arm.targetRootAngle = targetThetas.get("RootAngle");
-        State.Arm.targetJointAngle = targetThetas.get("JointAngle");
+        Map<String, Double> targetAngles = Tools.calculateAngles(State.Arm.targetHeight, State.Arm.targetDepth);
+        State.Arm.targetRootAngle = targetAngles.get("RootAngle");
+        State.Arm.targetJointAngle = targetAngles.get("JointAngle");
     }
 
     /**
