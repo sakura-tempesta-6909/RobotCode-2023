@@ -27,6 +27,7 @@
       <option name="url" value="https://frcmaven.wpi.edu/artifactory/release" />
     </remote-repository>
     <remote-repository>
+<<<<<<< HEAD
       <option name="id" value="WPILocal" />
       <option name="name" value="WPILocal" />
       <option name="url" value="file:$USER_HOME$/wpilib/2023/maven/" />
@@ -35,11 +36,29 @@
       <option name="id" value="WPI3fcf3402-e646-4fa6-971e-18afe8173b1a_0Release" />
       <option name="name" value="WPI3fcf3402-e646-4fa6-971e-18afe8173b1a_0Release" />
       <option name="url" value="https://maven.ctr-electronics.com/release/" />
+=======
+      <option name="id" value="WPIab676553-b602-441f-a38d-f1296eff6537_0Release" />
+      <option name="name" value="WPIab676553-b602-441f-a38d-f1296eff6537_0Release" />
+      <option name="url" value="https://maven.ctr-electronics.com/release/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="WPILocal" />
+      <option name="name" value="WPILocal" />
+      <option name="url" value="file:$USER_HOME$/wpilib/2022/maven" />
+>>>>>>> master
     </remote-repository>
     <remote-repository>
       <option name="id" value="WPI3f48eb8c-50fe-43a6-9cb7-44c86353c4cb_0Release" />
       <option name="name" value="WPI3f48eb8c-50fe-43a6-9cb7-44c86353c4cb_0Release" />
       <option name="url" value="https://maven.revrobotics.com/" />
     </remote-repository>
+<<<<<<< HEAD
+=======
+    <remote-repository>
+      <option name="id" value="WPILocal" />
+      <option name="name" value="WPILocal" />
+      <option name="url" value="file:$USER_HOME$/wpilib/2023/maven/" />
+    </remote-repository>
+>>>>>>> master
   </component>
 </project>
