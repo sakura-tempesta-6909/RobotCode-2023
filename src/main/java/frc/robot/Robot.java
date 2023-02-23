@@ -1,11 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import frc.robot.component.Arm;
-import frc.robot.component.Component;
-import frc.robot.component.Drive;
-import frc.robot.component.Hand;
-import frc.robot.component.Intake;
+import frc.robot.component.*;
 import frc.robot.phase.Autonomous;
 import frc.robot.subClass.Const;
 import frc.robot.subClass.ExternalSensors;
@@ -31,14 +27,15 @@ public class Robot extends TimedRobot {
         System.setOut(new PrintStream(newConsole));
         Const.ConstInit();
         Thread thread = new Thread(() -> {
-             mqtt.connect();
-         });
+            mqtt.connect();
+        });
         thread.start();
         components = new ArrayList<>();
         components.add(new Drive());
         components.add(new Intake());
         components.add(new Hand());
         components.add(new Arm());
+        components.add(new Limelight());
 
         externalSensors = new ExternalSensors();
 
