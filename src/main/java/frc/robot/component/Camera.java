@@ -60,8 +60,8 @@ public class Camera implements Component {
         //距離を求める
         double angleToGoalDegrees = Const.Calculation.Camera.CameraMountAngleDegrees + State.aprilTagAngleWidth;
         double angleToGoalRadians = angleToGoalDegrees * (Math.PI / 180);
-        State.distanceFromCameraToTagInCM = (Const.Calculation.Camera.GoalHeightInCM - Const.Calculation.Camera.CameraLensHeightInCM) / Math.tan(angleToGoalRadians);
-        State.distanceFromArmToTagInCM = State.distanceFromCameraToTagInCM - Const.Calculation.Camera.DifferenceFromCameraToArm;
+        State.distanceFromCameraToTagInCM = (Const.Calculation.Camera.GoalHeight - Const.Calculation.Camera.CameraLensHeight) / Math.tan(angleToGoalRadians);
+        State.distanceFromArmToTagInCM = State.distanceFromCameraToTagInCM - Const.Calculation.Camera.DistanceFromCameraToArm;
         SmartDashboard.putNumber("Distance", State.distanceFromCameraToTagInCM);
         
     }
