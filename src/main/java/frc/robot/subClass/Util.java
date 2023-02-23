@@ -1,15 +1,9 @@
 package frc.robot.subClass;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.State;
 
 public class Util {
-    public static void sendSystemOut(PrintStream defaultConsole, ByteArrayOutputStream newConsole) {
-        defaultConsole.print(newConsole);
-    }
 
     public static void sendConsole(String key, String text) {
         // System.out.println(key + ":" + text);

@@ -81,6 +81,13 @@ public class Const {
         public static double TopUnderGearRatio = 114;
     }
 
+    public static final class MQTT {
+        public static final String Broker = "tcp://raspberrypi.local:1883";
+        public static final String Topic = "robot/data/main";
+        public static final int MaxRetry = 100;
+        public static final String ClientId = "robot/test";
+    }
+
     public static void ConstInit() {
 
     }

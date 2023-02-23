@@ -12,11 +12,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 
+
 public class Robot extends TimedRobot {
 
     ArrayList<Component> components;
 
     ExternalSensors externalSensors;
+
     MQTT mqtt = new MQTT();
 
     PrintStream defaultConsole = System.out;
@@ -26,29 +28,27 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         System.setOut(new PrintStream(newConsole));
         Const.ConstInit();
-        Thread thread = new Thread(() -> {
-            mqtt.connect();
-        });
+
+        Thread thread = new Thread(() -> mqtt.connect());
         thread.start();
+
         components = new ArrayList<>();
         components.add(new Drive());
         components.add(new Intake());
         components.add(new Hand());
         components.add(new Arm());
-        components.add(new Limelight());
         components.add(new Camera());
 
         externalSensors = new ExternalSensors();
 
         State.StateInit();
-        Util.sendSystemOut(defaultConsole, newConsole);
+
         defaultConsole.print(newConsole);
         newConsole = new ByteArrayOutputStream();
     }
 
     @Override
     public void robotPeriodic() {
-        Util.sendSystemOut(defaultConsole, newConsole);
         defaultConsole.print(newConsole);
         newConsole = new ByteArrayOutputStream();
     }
