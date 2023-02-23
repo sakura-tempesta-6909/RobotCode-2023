@@ -1,16 +1,13 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import frc.robot.component.Arm;
-import frc.robot.component.Component;
-import frc.robot.component.Drive;
-import frc.robot.component.Hand;
-import frc.robot.component.Intake;
+import frc.robot.component.*;
 import frc.robot.phase.Autonomous;
 import frc.robot.subClass.Const;
 import frc.robot.subClass.ExternalSensors;
 import frc.robot.subClass.MQTT;
 import frc.robot.subClass.Util;
+
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -40,6 +37,7 @@ public class Robot extends TimedRobot {
         components.add(new Intake());
         components.add(new Hand());
         components.add(new Arm());
+        components.add(new Camera());
 
         externalSensors = new ExternalSensors();
 
@@ -48,7 +46,7 @@ public class Robot extends TimedRobot {
         defaultConsole.print(newConsole);
         newConsole = new ByteArrayOutputStream();
 
-        
+
     }
 
     @Override
