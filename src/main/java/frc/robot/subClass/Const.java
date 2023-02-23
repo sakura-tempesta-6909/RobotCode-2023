@@ -26,9 +26,10 @@ public class Const {
             //Limelightの角度
             public static final double LimelightMountAngleDegrees = 34.5;
             //Limelightの高さ
-            public static final double LimelightLensHeightInCM = 81.5;
+            public static final double LimelightLensHeight = 81.5; //  [cm]
             //ターゲットの高さ
-            public static final double GoalHeightInCM = 166;
+            public static final double GoalHeight = 166; // [cm]
+            public static final double DistanceFromLimelightToArm = 0; // [cm]
 
         }
 
@@ -47,8 +48,10 @@ public class Const {
             public static final double FocalLengthWeight = CameraCenterWidth / Math.tan(Math.toRadians(ThetaMaxWidth));
 
             public static final double CameraMountAngleDegrees = 0;
-            public static final double CameraLensHeightInCM = 42.5;
-            public static final double GoalHeightInCM = 76.5;
+            public static final double CameraLensHeight = 42.5; // [cm]
+            public static final double GoalHeight = 76.5; // [cm]
+            public static final double DistanceFromCameraToArm = 0; // [cm]
+
         }
 
 

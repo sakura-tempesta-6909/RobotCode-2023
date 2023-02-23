@@ -15,7 +15,7 @@ public class State {
     public static DriveState driveState;
 
     public static double limelightTrackingZRotation;
-    public static double distanceFromLimelightToGoalInCM;
+    public static double distanceFromLimelightToGoal; // [cm]
 
 
     public static IntakeState intakeState;
@@ -60,9 +60,11 @@ public class State {
     }
 
     public static Map<String, Double> voltage = new HashMap<>();
-    public static double distanceFromCameraToTagInCM;
+    public static double distanceFromCameraToTag; // [cm]
     public static double aprilTagAngleHeight;
     public static double aprilTagAngleWidth;
+    public static double distanceFromArmToTag; // [cm]
+    public static double distanceFromArmToGoal; // [cm]
 
     /**
      * Enableされたときの状態
