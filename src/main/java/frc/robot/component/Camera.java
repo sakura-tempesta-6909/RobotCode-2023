@@ -52,13 +52,13 @@ public class Camera implements Component {
 
     public void calculation(AprilTagDetection detection) {
         //角度を求める
-        State.apriltagAngleX = Math.toDegrees(Math.atan((detection.getCenterX() - Const.Calculation.Camera.CenterX) / Const.Calculation.Camera.FocalLengthX));
-        State.apriltagAngleX = Math.toDegrees(Math.atan((-detection.getCenterY() - Const.Calculation.Camera.CenterY) / Const.Calculation.Camera.FocalLengthY));
-        SmartDashboard.putNumber("AngleX", State.apriltagAngleX);
-        SmartDashboard.putNumber("AngleY", State.apriltagAngleY);
+        State.apriltagAngleHight = Math.toDegrees(Math.atan((detection.getCenterX() - Const.Calculation.Camera.CenterX) / Const.Calculation.Camera.FocalLengthX));
+        State.apriltagAngleWeight = Math.toDegrees(Math.atan((-detection.getCenterY() - Const.Calculation.Camera.CenterY) / Const.Calculation.Camera.FocalLengthY));
+        SmartDashboard.putNumber("AngleX", State.apriltagAngleHight);
+        SmartDashboard.putNumber("AngleY", State.apriltagAngleWeight);
 
         //距離を求める
-        double angleToGoalDegrees = Const.Calculation.Camera.CameraMountAngleDegrees + State.apriltagAngleY;
+        double angleToGoalDegrees = Const.Calculation.Camera.CameraMountAngleDegrees + State.apriltagAngleWeight;
         double angleToGoalRadians = angleToGoalDegrees * (Math.PI / 180);
         State.distanceFromCameraToTagCentis = (Const.Calculation.Camera.GoalHightCentis - Const.Calculation.Camera.CameraLensHeightCentis) / Math.tan(angleToGoalRadians);
         SmartDashboard.putNumber("Distance", State.distanceFromCameraToTagCentis);
