@@ -13,6 +13,11 @@ public class State {
     public static Modes mode;
     public static double driveXSpeed, driveZRotation;
     public static DriveState driveState;
+
+    public static double limelightTrackingZRotation;
+    public static double distanceFromLimelightToGoalInCM;
+
+
     public static IntakeState intakeState;
     public static HandState handState;
 
@@ -53,10 +58,11 @@ public class State {
             s_fixArmPosition,
         }
     }
+
     public static Map<String, Double> voltage = new HashMap<>();
-    public static double distanceFromCameraToTagCentis;
-    public static double apriltagAngleHight;
-    public static double apriltagAngleWeight;
+    public static double distanceFromCameraToTagInCM;
+    public static double aprilTagAngleHeight;
+    public static double aprilTagAngleWidth;
 
     /**
      * Enableされたときの状態
@@ -122,6 +128,9 @@ public class State {
          * ロボットの速度を0にする
          */
         s_stopDrive,
+        // targetに照準を合わせる
+        s_targetTracking,
+
 
     }
 

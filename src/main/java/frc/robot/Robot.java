@@ -12,13 +12,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 
-
 public class Robot extends TimedRobot {
 
     ArrayList<Component> components;
 
     ExternalSensors externalSensors;
-
     MQTT mqtt = new MQTT();
 
     PrintStream defaultConsole = System.out;
@@ -37,6 +35,7 @@ public class Robot extends TimedRobot {
         components.add(new Intake());
         components.add(new Hand());
         components.add(new Arm());
+        components.add(new Limelight());
         components.add(new Camera());
 
         externalSensors = new ExternalSensors();
@@ -45,8 +44,6 @@ public class Robot extends TimedRobot {
         Util.sendSystemOut(defaultConsole, newConsole);
         defaultConsole.print(newConsole);
         newConsole = new ByteArrayOutputStream();
-
-
     }
 
     @Override

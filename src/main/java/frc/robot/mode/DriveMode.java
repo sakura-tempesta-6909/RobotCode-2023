@@ -1,6 +1,7 @@
 package frc.robot.mode;
 
 import frc.robot.State;
+import frc.robot.State.DriveState;
 
 public class DriveMode extends Mode {
 
