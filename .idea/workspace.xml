@@ -1,20 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-<<<<<<< HEAD
   <component name="AnalysisUIOptions">
     <option name="ANALYZE_INJECTED_CODE" value="false" />
   </component>
-=======
->>>>>>> master
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-<<<<<<< HEAD
     <list default="true" id="bdb29ba3-568c-48fb-ba0c-d408aa75047d" name="変更" comment="変数名のタイポ修正" />
-=======
     <list default="true" id="8d329641-9ede-4af1-ab88-d7e51e9b981b" name="変更" comment="" />
->>>>>>> master
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -25,10 +19,9 @@
       <ProjectState />
     </projectState>
   </component>
-<<<<<<< HEAD
   <component name="Git.Settings">
     <option name="RESET_MODE" value="HARD" />
-=======
+
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
@@ -66,24 +59,19 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/src/main/java/frc/robot/mode/ArmMode.java" root0="FORCE_HIGHLIGHTING" />
->>>>>>> master
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-<<<<<<< HEAD
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectId" id="2M8GrwnehEDWmsgDlB6f0Ai9wsD" />
-=======
   <component name="ProjectId" id="2LPCej0JsuKgbsliAY2QSr9D64o" />
->>>>>>> master
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-<<<<<<< HEAD
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
@@ -97,7 +85,6 @@
     "run.code.analysis.last.selected.profile": "pProject Default",
     "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
-=======
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
@@ -196,7 +183,6 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
->>>>>>> master
   }
 }]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />

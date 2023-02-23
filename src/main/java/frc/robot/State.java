@@ -63,6 +63,8 @@ public class State {
     public static double distanceFromCameraToTagInCM;
     public static double aprilTagAngleHeight;
     public static double aprilTagAngleWidth;
+    public static double distanceFromArmToTagInCM;
+    public static double distanceFromArmToGoalInCM;
 
     /**
      * Enableされたときの状態

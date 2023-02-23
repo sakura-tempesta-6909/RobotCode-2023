@@ -46,6 +46,7 @@ public class Limelight implements Component {
         // calculate distance
         // ターゲットまでの距離
         State.distanceFromLimelightToGoalInCM = (Const.Calculation.Limelight.GoalHeightInCM - Const.Calculation.Limelight.LimelightLensHeightInCM) / Math.tan(angleToGoalRadians);
+        State.distanceFromArmToGoalInCM = State.distanceFromLimelightToGoalInCM - Const.Calculation.Limelight.DifferenceFromLimelightToArm;
 
         double tx = txEntry.getDouble(0);
 

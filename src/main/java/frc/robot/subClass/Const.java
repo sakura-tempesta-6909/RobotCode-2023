@@ -29,6 +29,7 @@ public class Const {
             public static final double LimelightLensHeightInCM = 81.5;
             //ターゲットの高さ
             public static final double GoalHeightInCM = 166;
+            public static final double DifferenceFromLimelightToArm = 0;
 
         }
 
@@ -49,6 +50,8 @@ public class Const {
             public static final double CameraMountAngleDegrees = 0;
             public static final double CameraLensHeightInCM = 42.5;
             public static final double GoalHeightInCM = 76.5;
+            public static final double DifferenceFromCameraToArm = 0;
+
         }
 
 
