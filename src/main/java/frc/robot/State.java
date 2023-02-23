@@ -15,9 +15,7 @@ public class State {
     public static DriveState driveState;
 
     public static double limelightTrackingZRotation;
-    public static double limelightSeekingZRotation;
     public static double distanceFromLimelightToGoalInCM;
-    public static double limelightXSpeed;
 
 
     public static IntakeState intakeState;
@@ -60,6 +58,7 @@ public class State {
             s_fixArmPosition,
         }
     }
+
     public static Map<String, Double> voltage = new HashMap<>();
     public static double distanceFromCameraToTagInCM;
     public static double aprilTagAngleHeight;
@@ -131,8 +130,6 @@ public class State {
         s_stopDrive,
         // targetに照準を合わせる
         s_targetTracking,
-        s_targetApproaching,
-        s_targetSeeking,
 
 
     }

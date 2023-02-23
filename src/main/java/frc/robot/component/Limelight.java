@@ -51,32 +51,19 @@ public class Limelight implements Component {
         double ty = tyEntry.getDouble(0);
         double tv = tvEntry.getDouble(0);
 
-        //ターゲットを追いかける
-        if (Math.signum(tx) > 0) {
+        //ターゲットの方を向く
+        if (tx > 0) {
             State.limelightTrackingZRotation = tx / -Const.Calculation.Limelight.LimelightMaxHeight * Const.Speeds.MidDrive + -0.2;
             if (tx < 9 && tx > 3) {
                 State.limelightTrackingZRotation = -Const.Speeds.MidDrive;
             }
-        } else if (Math.signum(tx) < 0) {
+        } else if (tx < 0) {
             State.limelightTrackingZRotation = tx / -Const.Calculation.Limelight.LimelightMaxHeight * Const.Speeds.MidDrive + 0.2;
             if (tx > -9 && tx < -3) {
                 State.limelightTrackingZRotation = Const.Speeds.MidDrive;
             }
         }
 
-        //シーク
-        if (tv == 0.0) {
-            State.limelightSeekingZRotation = 0.5;
-        } else {
-            State.limelightSeekingZRotation = 0.0;
-        }
-
-        //ターゲットに近づく
-        if (Math.signum(ty) > 0) {
-            State.limelightXSpeed = ty / -Const.Calculation.Limelight.LimelightMaxWidth * Const.Speeds.MidDrive + -0.2;
-        } else if (Math.signum(ty) < 0) {
-            State.limelightXSpeed = ty / Const.Calculation.Limelight.LimelightMaxWidth * Const.Speeds.MidDrive + 0.2;
-        }
 
         SmartDashboard.putNumber("distance", State.distanceFromLimelightToGoalInCM);
         SmartDashboard.putNumber("ty", tyEntry.getDouble(0));
