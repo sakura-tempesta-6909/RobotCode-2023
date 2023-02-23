@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="03d37860-172f-4170-9361-62bbd012d7ca" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.github/actions/frc-build-test-action/action.yml" afterDir="false" />
+    <list default="true" id="03d37860-172f-4170-9361-62bbd012d7ca" name="Changes" comment="Actions Test">
+      <change afterPath="$PROJECT_DIR$/.github/workflows/build.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/actions/frc-build-test-action/action.yml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -27,6 +28,13 @@
         <projects_view />
       </state>
     </system>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -120,6 +128,14 @@
       <updated>1677145292821</updated>
       <workItem from="1677145293920" duration="1828000" />
     </task>
+    <task id="LOCAL-00001" summary="Actions Test">
+      <created>1677149851064</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1677149851064</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -147,6 +163,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Actions Test" />
+    <option name="LAST_COMMIT_MESSAGE" value="Actions Test" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
