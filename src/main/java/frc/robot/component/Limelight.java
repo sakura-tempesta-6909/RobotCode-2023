@@ -41,12 +41,12 @@ public class Limelight implements Component {
         // limelightから見たターゲットの角度
         double targetOffsetAngle_Vertical = -tyEntry.getDouble(0.0);
 
-        double angleToGoalDegrees = Const.Calculation.LimelightMountAngleDegrees + targetOffsetAngle_Vertical;
+        double angleToGoalDegrees = Const.Calculation.Limelight.LimelightMountAngleDegrees + targetOffsetAngle_Vertical;
         double angleToGoalRadians = angleToGoalDegrees * (Math.toRadians(180.0));
 
         // calculate distance
         // ターゲットまでの距離
-        State.distanceFromLimelightToGoalInCM = (Const.Calculation.GoalHeightInCM - Const.Calculation.LimelightLensHeightInCM) / Math.tan(angleToGoalRadians);
+        State.distanceFromLimelightToGoalInCM = (Const.Calculation.Limelight.GoalHeightInCM - Const.Calculation.Limelight.LimelightLensHeightInCM) / Math.tan(angleToGoalRadians);
 
         double tx = txEntry.getDouble(0);
         double ty = tyEntry.getDouble(0);
@@ -54,14 +54,14 @@ public class Limelight implements Component {
 
         //ターゲットを追いかける
         if (Math.signum(tx) > 0) {
-            State.limelightTrackingZRotation = tx / -27 * 0.5 + -0.2;
+            State.limelightTrackingZRotation = tx / -Const.Calculation.Limelight.LimelightMaxHeight * Const.Speeds.MidDrive + -0.2;
             if (tx < 9 && tx > 3) {
-                State.limelightTrackingZRotation = -0.5;
+                State.limelightTrackingZRotation = -Const.Speeds.MidDrive;
             }
         } else if (Math.signum(tx) < 0) {
-            State.limelightTrackingZRotation = tx / -27 * 0.5 + 0.2;
+            State.limelightTrackingZRotation = tx / -Const.Calculation.Limelight.LimelightMaxHeight * Const.Speeds.MidDrive + 0.2;
             if (tx > -9 && tx < -3) {
-                State.limelightTrackingZRotation = 0.5;
+                State.limelightTrackingZRotation = Const.Speeds.MidDrive;
             }
         }
 
@@ -74,9 +74,9 @@ public class Limelight implements Component {
 
         //ターゲットに近づく
         if (Math.signum(ty) > 0) {
-            State.limelightXSpeed = ty / -20.5 * 0.5 + -0.2;
+            State.limelightXSpeed = ty / -Const.Calculation.Limelight.LimelightMaxWidth * Const.Speeds.MidDrive + -0.2;
         } else if (Math.signum(ty) < 0) {
-            State.limelightXSpeed = ty / 20.5 * 0.5 + 0.2;
+            State.limelightXSpeed = ty / Const.Calculation.Limelight.LimelightMaxWidth * Const.Speeds.MidDrive + 0.2;
         }
 
         SmartDashboard.putNumber("distance", State.distanceFromLimelightToGoalInCM);

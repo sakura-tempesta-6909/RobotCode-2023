@@ -21,12 +21,18 @@ public class Const {
     }
 
     public static final class Calculation {
-        //Limelightの角度
-        public static final double LimelightMountAngleDegrees = 34.5;
-        //Limelightの高さ
-        public static final double LimelightLensHeightInCM = 81.5;
-        //ターゲットの高さ
-        public static final double GoalHeightInCM = 166;
+        public static final class Limelight {
+            public static final double LimelightMaxHeight = 27;
+            public static final double LimelightMaxWidth = 20.5;
+            //Limelightの角度
+            public static final double LimelightMountAngleDegrees = 34.5;
+            //Limelightの高さ
+            public static final double LimelightLensHeightInCM = 81.5;
+            //ターゲットの高さ
+            public static final double GoalHeightInCM = 166;
+
+        }
+
 
         public static final class Camera {
             public static final double CameraCenterHeight = 320;
