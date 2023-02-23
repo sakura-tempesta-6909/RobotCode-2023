@@ -1,39 +1,37 @@
 package frc.robot.subClass;
 
-import org.opencv.core.Mat;
-
 import java.util.HashMap;
 import java.util.Map;
 
 public class Tools {
     /**
-     * @param theta1 : readSensorで取得した実際の角度[deg]
-     * @param theta2 : readSensorで取得した実際の角度[deg]
+     * @param RootAngle : readSensorで取得した実際の角度[deg]
+     * @param JointAngle : readSensorで取得した実際の角度[deg]
      * @return X座標[cm]
      * */
-    public static double calculateX(double theta1, double theta2) {
-        theta1 = Math.toRadians(theta1);
-        theta2 = Math.toRadians(theta2);
-        double theta3 = theta1 + theta2;
+    public static double calculateX(double RootAngle, double JointAngle) {
+        RootAngle = Math.toRadians(RootAngle);
+        JointAngle = Math.toRadians(JointAngle);
+        double SumAngle = RootAngle + JointAngle;
         double l1 = Const.Arms.FirstArmLength;
         double l2 = Const.Arms.SecondArmLength;
 
-        return l1 * Math.sin(theta1) - l2 * Math.sin(theta3);
+        return l1 * Math.sin(RootAngle) - l2 * Math.sin(SumAngle);
     }
 
     /**
-     * @param theta1 : readSensorで取得した実際の角度[deg]
-     * @param theta2 : readSensorで取得した実際の角度[deg]
+     * @param RootAngle : readSensorで取得した実際の角度[deg]
+     * @param JointAngle : readSensorで取得した実際の角度[deg]
      * @return Z座標[cm]
      * */
-    public static double calculateZ(double theta1, double theta2) {
-        theta1 = Math.toRadians(theta1);
-        theta2 = Math.toRadians(theta2);
-        double theta3 = theta1 + theta2;
+    public static double calculateZ(double RootAngle, double JointAngle) {
+        RootAngle = Math.toRadians(RootAngle);
+        JointAngle = Math.toRadians(JointAngle);
+        double SumAngle = RootAngle + JointAngle;
         double l1 = Const.Arms.FirstArmLength;
         double l2 = Const.Arms.SecondArmLength;
 
-        return l1 * Math.cos(theta1) - l2 * Math.cos(theta3);
+        return l1 * Math.cos(RootAngle) - l2 * Math.cos(SumAngle);
     }
 
     private static final double deadZoneThreshold = 0.05;
@@ -50,48 +48,48 @@ public class Tools {
     }
 
     /**
-     * @param X : ターゲットのX座標[cm]
-     * @param Z : ターゲットのZ座標[cm]
-     * X,Zからtheta1, theta2 を計算
+     * @param Height : ターゲットのX座標[cm]
+     * @param Depth : ターゲットのZ座標[cm]
+     * X,ZからRootAngle, JointAngle を計算
      * @return アームのターゲットの角度[deg]
      */
-    public static Map<String, Double> calculateThetas(double X, double Z) {
+    public static Map<String, Double> calculateAngles(double Height, double Depth) {
         double l1 = Const.Arms.FirstArmLength;
         double l2 = Const.Arms.SecondArmLength;
 
-        double theta2 = Math.acos((Math.pow(l1, 2) + Math.pow(l2, 2)
-                - Math.pow(X, 2) - Math.pow(Z, 2)) / (2 * l1 * l2));
+        double JointAngle = Math.acos((Math.pow(l1, 2) + Math.pow(l2, 2)
+                - Math.pow(Height, 2) - Math.pow(Depth, 2)) / (2 * l1 * l2));
 
-        double tX = l1 - l2 * Math.cos(theta2);
-        double tY = l2 * Math.sin(theta2);
+        double tX = l1 - l2 * Math.cos(JointAngle);
+        double tY = l2 * Math.sin(JointAngle);
         double r = Math.sqrt(Math.pow(tX, 2) + Math.pow(tY, 2));
 
         double alphaSin = Math.asin(tX / r);
-        double theta1Sin = Math.asin(Z / r) - alphaSin;
+        double RootAngleSin = Math.asin(Depth / r) - alphaSin;
         double alphaCos = Math.acos(tX / r);
-        double theta1Cos = Math.acos(Z / r) + alphaCos;
+        double RootAngleCos = Math.acos(Depth / r) + alphaCos;
 
-        double theta1 = Math.abs(Tools.calculateX(theta1Sin, theta2) - X) > Math.abs(Tools.calculateX(theta1Cos, theta2) - X)
-                ? theta1Cos : theta1Sin;
+        double RootAngle = Math.abs(Tools.calculateX(RootAngleSin, JointAngle) - Height) > Math.abs(Tools.calculateX(RootAngleCos, JointAngle) - Height)
+                ? RootAngleCos : RootAngleSin;
 
         Map<String, Double> thetas = new HashMap<String, Double>();
-        thetas.put("theta1", Math.toDegrees(theta1));
-        thetas.put("theta2", Math.toDegrees(theta2));
+        thetas.put("RootAngle", Math.toDegrees(RootAngle));
+        thetas.put("JointAngle", Math.toDegrees(JointAngle));
 
         return thetas;
     }
 
     /**
-     * @param theta1 : readSensorで取得した実際の角度[deg]
-     * @param theta2 : readSensorで取得した実際の角度[deg]
+     * @param RootAngle : readSensorで取得した実際の角度[deg]
+     * @param JointAngle : readSensorで取得した実際の角度[deg]
      * underMotorのフィードフォワードを計算
      * それぞれのアームの重心をConstから取得
      * @return モーメント[N*cm]
      * */
-    public static double calculateUnderMotorFeedforward (double theta1, double theta2) {
-        theta1 = Math.toRadians(theta1);
-        theta2 = Math.toRadians(theta2);
-        double theta3 = theta1 + theta2;
+    public static double calculateUnderMotorFeedforward (double RootAngle, double JointAngle) {
+        RootAngle = Math.toRadians(RootAngle);
+        JointAngle = Math.toRadians(JointAngle);
+        double SumAngle = RootAngle + JointAngle;
         double l1 = Const.Arms.FirstArmLength;
         double l2 = Const.Arms.SecondArmLength;
         double fb = Const.Arms.FirstArmBarycenter; //FirstBarycenter -> fb
@@ -99,28 +97,28 @@ public class Tools {
         double m1 = Const.Arms.FirstArmMass;
         double m2 = Const.Arms.SecondArmMass;
 
-        double ffMomentForFirstArm = fb * m1 * Math.sin(theta1);
-        double ffMomentForSecondArm = l1 * m2 * Math.sin(theta1) - sb * m2 * Math.sin(theta3);
+        double ffMomentForFirstArm = fb * m1 * Math.sin(RootAngle);
+        double ffMomentForSecondArm = l1 * m2 * Math.sin(RootAngle) - sb * m2 * Math.sin(SumAngle);
 
         //TODO feedforwardでmotor.setに渡す値はトルクの計算が必要
         return ffMomentForFirstArm + ffMomentForSecondArm;
     }
 
     /**
-     * @param theta1 : readSensorで取得した実際の角度[deg]
-     * @param theta2 : readSensorで取得した実際の角度[deg]
+     * @param RootAngle : readSensorで取得した実際の角度[deg]
+     * @param JointAngle : readSensorで取得した実際の角度[deg]
      * topMotorのフィードフォワードを計算
      * 重心などをConstから取得
      * @return モーメント[N*cm]
      * */
-    public static double calculateTopMotorFeedforward (double theta1, double theta2) {
-        theta1 = Math.toRadians(theta1);
-        theta2 = Math.toRadians(theta2);
-        double theta3 = theta1 + theta2;
+    public static double calculateTopMotorFeedforward (double RootAngle, double JointAngle) {
+        RootAngle = Math.toRadians(RootAngle);
+        JointAngle = Math.toRadians(JointAngle);
+        double SumAngle = RootAngle + JointAngle;
         double sb = Const.Arms.SecondArmBarycenter; //SecondBarycenter -> sb
         double m2 = Const.Arms.SecondArmMass;
 
-        return sb * m2 * Math.sin(theta3 - Math.PI);
+        return sb * m2 * Math.sin(SumAngle - Math.PI);
     }
 
     /**

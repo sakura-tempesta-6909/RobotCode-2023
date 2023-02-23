@@ -14,15 +14,15 @@ public class State {
     public static HandState handState;
     public static ArmState armState;
 
-    public static double armTargetAxisX;
-    public static double armTargetAxisZ;
+    public static double armTargetHeight;
+    public static double armTargetDepth;
 
-    public static double armActualTheta1, armActualTheta2;
+    public static double armActualRootAngle, armActualJointAngle;
 
-    public static double armTargetTheta1, armTargetTheta2;
+    public static double armTargetRootAngle, armTargetJointAngle;
 
-    public static double armActualAxisX;
-    public static double armActualAxisZ;
+    public static double armActualHeight;
+    public static double armActualDepth;
 
     public static double leftY;
     public static double rightX;
@@ -32,7 +32,7 @@ public class State {
     public static boolean resetArmPidController;
     public static boolean resetArmEncoder;
 
-    public static double limelightTargetAxisX, limelightTargetAxisZ;
+    public static double limelightTargetHeight, limelightTargetDepth;
 
     /**
      * Enableされたときの状態
@@ -44,23 +44,23 @@ public class State {
         handState = HandState.s_releaseHand;
 
         //init armMode value
-        armTargetAxisX = 0.0;
-        armTargetAxisZ = 0.0;
+        armTargetHeight = 0.0;
+        armTargetDepth = 0.0;
 
-        armActualAxisX = 0.0;
-        armActualAxisZ = 0.0;
+        armActualHeight = 0.0;
+        armActualDepth = 0.0;
 
-        armTargetTheta1 = 0.0;
-        armTargetTheta2 = 0.0;
+        armTargetRootAngle = 0.0;
+        armTargetJointAngle = 0.0;
 
-        armActualTheta1 = 0.0;
-        armActualTheta2 = 0.0;
+        armActualRootAngle = 0.0;
+        armActualJointAngle = 0.0;
 
         leftY = 0.0;
         rightX = 0.0;
 
-        limelightTargetAxisX = 10.0;
-        limelightTargetAxisZ = 80.0;
+        limelightTargetHeight = 10.0;
+        limelightTargetDepth = 80.0;
 
         armUnderMotorFeedforward = 0.0;
         armTopMotorFeedforward = 0.0;

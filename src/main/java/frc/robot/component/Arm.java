@@ -10,8 +10,8 @@ import frc.robot.subClass.Tools;
 
 
 public class Arm implements Component{
-    private final PIDController pidForTheta1;
-    private final PIDController pidForTheta2;
+    private final PIDController pidForRoot;
+    private final PIDController pidForJoint;
 
     private final WPI_TalonSRX underMotor;
     private final WPI_TalonSRX topMotor;
@@ -29,12 +29,12 @@ public class Arm implements Component{
         underMotor.setInverted(true);
         topMotor.setInverted(true);
 
-        pidForTheta1 = new PIDController(Const.Arms.kP1, Const.Arms.kI1, Const.Arms.kD1);
-        pidForTheta2 = new PIDController(Const.Arms.kP2, Const.Arms.kI2, Const.Arms.kD2);
+        pidForRoot = new PIDController(Const.Arms.kP1, Const.Arms.kI1, Const.Arms.kD1);
+        pidForJoint = new PIDController(Const.Arms.kP2, Const.Arms.kI2, Const.Arms.kD2);
 
-        pidForTheta1.setIntegratorRange( -0.04 / Const.Arms.kI1, 0.04 / Const.Arms.kI1);
-        pidForTheta1.setTolerance(2);
-        pidForTheta2.setTolerance(1);
+        pidForRoot.setIntegratorRange( -0.04 / Const.Arms.kI1, 0.04 / Const.Arms.kI1);
+        pidForRoot.setTolerance(2);
+        pidForJoint.setTolerance(1);
     }
 
     /**
@@ -42,8 +42,8 @@ public class Arm implements Component{
      * moveArmToSpecifiedPositionで実行
      * */
     private void pidControlArm() {
-        topMotor.set(ControlMode.PercentOutput, pidForTheta2.calculate(State.armActualTheta2) + State.armTopMotorFeedforward);
-        underMotor.set(ControlMode.PercentOutput, pidForTheta1.calculate(State.armActualTheta1) + State.armUnderMotorFeedforward);
+        topMotor.set(ControlMode.PercentOutput, pidForJoint.calculate(State.armActualJointAngle) + State.armTopMotorFeedforward);
+        underMotor.set(ControlMode.PercentOutput, pidForRoot.calculate(State.armActualRootAngle) + State.armUnderMotorFeedforward);
 //        underMotor.set(ControlMode.PercentOutput, pidForTheta1.calculate(State.armActualTheta1) + 0.2535 * Math.cos(State.armActualTheta1));
     }
 
@@ -67,7 +67,7 @@ public class Arm implements Component{
     }
 
     private boolean isArmAtTarget () {
-        return pidForTheta1.atSetpoint() && pidForTheta2.atSetpoint();
+        return pidForRoot.atSetpoint() && pidForJoint.atSetpoint();
     }
 
     public double getE1Angle(double x){
@@ -101,17 +101,17 @@ public class Arm implements Component{
     @Override
     public void readSensors() {
         // motorのencodeからアームの実際のX,Z座標を計算
-        State.armActualTheta1 = getE1Angle(encoder1.get());
-        State.armActualTheta2 = getE2Angle(encoder2.get());
-        State.armActualAxisX = Tools.calculateX(State.armActualTheta1, State.armActualTheta2);
-        State.armActualAxisZ = Tools.calculateZ(State.armActualTheta1, State.armActualTheta2);
+        State.armActualRootAngle = getE1Angle(encoder1.get());
+        State.armActualJointAngle = getE2Angle(encoder2.get());
+        State.armActualHeight = Tools.calculateX(State.armActualRootAngle, State.armActualJointAngle);
+        State.armActualDepth = Tools.calculateZ(State.armActualRootAngle, State.armActualJointAngle);
 
         // armがターゲットの座標に到着したか
         State.isArmAtTarget = isArmAtTarget();
 
         // フィードフォワードを計算する
-        State.armTopMotorFeedforward = Tools.calculateTopMotorFeedforward(State.armActualTheta1, State.armActualTheta2);
-        State.armUnderMotorFeedforward = Tools.calculateUnderMotorFeedforward(State.armActualTheta1, State.armActualTheta2);
+        State.armTopMotorFeedforward = Tools.calculateTopMotorFeedforward(State.armActualRootAngle, State.armActualJointAngle);
+        State.armUnderMotorFeedforward = Tools.calculateUnderMotorFeedforward(State.armActualRootAngle, State.armActualJointAngle);
         State.armTopMotorFeedforward = Tools.changeTorqueToMotorInput(State.armTopMotorFeedforward / Const.Arms.TopMotorGearRatio);
         State.armUnderMotorFeedforward = Tools.changeTorqueToMotorInput(State.armUnderMotorFeedforward / Const.Arms.TopUnderGearRatio);
     }
@@ -119,12 +119,12 @@ public class Arm implements Component{
     @Override
     public void applyState() {
 
-        pidForTheta1.setSetpoint(State.armTargetTheta1);
-        pidForTheta2.setSetpoint(State.armTargetTheta2);
+        pidForRoot.setSetpoint(State.armTargetRootAngle);
+        pidForJoint.setSetpoint(State.armTargetJointAngle);
 
         if(State.resetArmPidController){
-            pidForTheta1.reset();
-            pidForTheta2.reset();
+            pidForRoot.reset();
+            pidForJoint.reset();
         }
 
         if(State.resetArmEncoder) {

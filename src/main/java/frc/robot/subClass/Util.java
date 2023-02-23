@@ -26,14 +26,14 @@ public class Util {
     }
 
     public static void allSendConsole(){
-        sendConsole("armActualAxisX", State.armActualAxisX);
-        sendConsole("armActualAxisZ", State.armActualAxisZ);
-        sendConsole("armActualTheta1", State.armActualTheta1);
-        sendConsole("armActualTheta2", State.armActualTheta2);
-        sendConsole("armTargetAxisX", State.armTargetAxisX);
-        sendConsole("armTargetAxisZ", State.armTargetAxisZ);
-        sendConsole("armTargetTheta1", State.armTargetTheta1);
-        sendConsole("armTargetTheta2", State.armTargetTheta2);
+        sendConsole("armActualHeight", State.armActualHeight);
+        sendConsole("armActualDepth", State.armActualDepth);
+        sendConsole("armActualRootAngle", State.armActualRootAngle);
+        sendConsole("armActualJointAngle", State.armActualJointAngle);
+        sendConsole("armTargetHeight", State.armTargetHeight);
+        sendConsole("armTargetDepth", State.armTargetDepth);
+        sendConsole("armTargetRootAngle", State.armTargetRootAngle);
+        sendConsole("armTargetJointAngle", State.armTargetJointAngle);
         sendConsole("isAtSetpoint", State.isArmAtTarget);
         sendConsole("controlMode", State.armState.toString());
     }

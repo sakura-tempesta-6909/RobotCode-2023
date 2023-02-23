@@ -26,8 +26,8 @@ public class ArmMode extends Mode {
 
         // Xボタンが押されたら一旦Integralをリセット Targetを現在のアームの座標にリセットする
         if (driveController.getXButtonPressed()) {
-            State.armTargetAxisX = State.armActualAxisX;
-            State.armTargetAxisZ = State.armActualAxisZ;
+            State.armTargetHeight = State.armActualHeight;
+            State.armTargetDepth = State.armActualDepth;
             State.resetArmPidController = true;
         }
 
@@ -38,32 +38,25 @@ public class ArmMode extends Mode {
 
         // Bボタンが押されたら一旦Integralをリセット アームを持ち上げる(Z座標を変える)
         if (driveController.getBButtonPressed()) {
-            State.armTargetAxisX = State.armActualAxisX;
-            State.armTargetAxisZ = State.armActualAxisZ - Const.Arms.TakeUpLengthAfterGrab;
+            State.armTargetHeight = State.armActualHeight;
+            State.armTargetDepth = State.armActualDepth - Const.Arms.TakeUpLengthAfterGrab;
             State.resetArmPidController = true;
         }
 
         if (driveController.getXButton()) {
             // Targetの座標をコントローラーによって変える　(PIDで移動する)
-            // TODO Armがターゲットに到達したら次のターゲットを設定する方式 (必要性要検討)
-
-//             if(State.isArmAtTarget) {
-//                 State.armTargetAxisX += State.leftY * Const.Arms.TargetModifyRatio;
-//                 State.armTargetAxisZ += State.rightX * Const.Arms.TargetModifyRatio;
-//                 State.resetPidController = true;
-//             }
             State.armState = State.ArmState.s_moveArmToSpecifiedPosition;
-            if(isNewTargetPositionInLimit(State.armTargetAxisX + State.leftY * Const.Arms.TargetModifyRatio, State.armTargetAxisZ + State.rightX * Const.Arms.TargetModifyRatio)){
-                State.armTargetAxisX += State.leftY * Const.Arms.TargetModifyRatio;
-                State.armTargetAxisZ += State.rightX * Const.Arms.TargetModifyRatio;
+            if(isNewTargetPositionInLimit(State.armTargetHeight + State.leftY * Const.Arms.TargetModifyRatio, State.armTargetDepth + State.rightX * Const.Arms.TargetModifyRatio)){
+                State.armTargetHeight += State.leftY * Const.Arms.TargetModifyRatio;
+                State.armTargetDepth += State.rightX * Const.Arms.TargetModifyRatio;
             }
         } else if (driveController.getAButton()) {
             // limelightの予測座標にターゲットを設定する　(PIDで移動する)
             // TODO ここでlimelightの値を代入
             State.armState = State.ArmState.s_moveArmToSpecifiedPosition;
-            if(isNewTargetPositionInLimit(State.limelightTargetAxisX, State.limelightTargetAxisZ)) {
-                State.armTargetAxisX = State.limelightTargetAxisX;
-                State.armTargetAxisZ = State.limelightTargetAxisZ;
+            if(isNewTargetPositionInLimit(State.limelightTargetHeight, State.limelightTargetDepth)) {
+                State.armTargetHeight = State.limelightTargetHeight;
+                State.armTargetDepth = State.limelightTargetDepth;
             }
         } else if (driveController.getBButton()) {
             State.armState = State.ArmState.s_moveArmToSpecifiedPosition;
@@ -78,22 +71,22 @@ public class ArmMode extends Mode {
         }
 
         // ターゲット座標からターゲットの角度を計算する
-        Map<String, Double> targetThetas = Tools.calculateThetas(State.armTargetAxisX, State.armTargetAxisZ);
-        State.armTargetTheta1 = targetThetas.get("theta1");
-        State.armTargetTheta2 = targetThetas.get("theta2");
+        Map<String, Double> targetThetas = Tools.calculateAngles(State.armTargetHeight, State.armTargetDepth);
+        State.armTargetRootAngle = targetThetas.get("RootAngle");
+        State.armTargetJointAngle = targetThetas.get("JointAngle");
     }
 
     /**
-     * @param X : ターゲットのX座標[cm]
-     * @param Z : ターゲットのZ座標[cm]
+     * @param Height : ターゲットのX座標[cm]
+     * @param Depth : ターゲットのZ座標[cm]
      * この関数に座標の値域を記述する
      * @return 入力の座標が正しいか[boolean]
      */
-    private boolean isNewTargetPositionInLimit(double X, double Z) {
-        double length = Math.sqrt(Math.pow(X, 2) + Math.pow(Z, 2));
+    private boolean isNewTargetPositionInLimit(double Height, double Depth) {
+        double length = Math.sqrt(Math.pow(Height, 2) + Math.pow(Depth, 2));
 
-        boolean isZAxisInLimit = Z > 0;
-        boolean isXAxisInLimit = X > 0;
+        boolean isZAxisInLimit = Depth > 0;
+        boolean isXAxisInLimit = Height > 0;
         boolean isInOuterBorder = length < Const.Arms.TargetPositionOuterLimit;
         boolean isOutInnerBorder = length > Const.Arms.TargetPositionInnerLimit;
 
