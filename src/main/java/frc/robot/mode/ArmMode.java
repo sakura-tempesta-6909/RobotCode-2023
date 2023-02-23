@@ -21,59 +21,59 @@ public class ArmMode extends Mode {
      */
     @Override
     public void changeState() {
-        State.rightX = Tools.deadZoneProcess(driveController.getRightX());
-        State.leftY = Tools.deadZoneProcess(driveController.getLeftY());
+        State.Arm.rightX = Tools.deadZoneProcess(driveController.getRightX());
+        State.Arm.leftY = Tools.deadZoneProcess(driveController.getLeftY());
 
         // Xボタンが押されたら一旦Integralをリセット Targetを現在のアームの座標にリセットする
         if (driveController.getXButtonPressed()) {
-            State.armTargetHeight = State.armActualHeight;
-            State.armTargetDepth = State.armActualDepth;
-            State.resetArmPidController = true;
+            State.Arm.targetHeight = State.Arm.actualHeight;
+            State.Arm.targetDepth = State.Arm.actualDepth;
+            State.Arm.resetArmPidController = true;
         }
 
         // Aボタンが押されたら一旦Integralをリセット
         if (driveController.getAButtonPressed()) {
-            State.resetArmPidController = true;
+            State.Arm.resetArmPidController = true;
         }
 
         // Bボタンが押されたら一旦Integralをリセット アームを持ち上げる(Z座標を変える)
         if (driveController.getBButtonPressed()) {
-            State.armTargetHeight = State.armActualHeight;
-            State.armTargetDepth = State.armActualDepth - Const.Arms.TakeUpLengthAfterGrab;
-            State.resetArmPidController = true;
+            State.Arm.targetHeight = State.Arm.actualHeight;
+            State.Arm.targetDepth = State.Arm.actualDepth - Const.Arm.TakeUpLengthAfterGrab;
+            State.Arm.resetArmPidController = true;
         }
 
         if (driveController.getXButton()) {
             // Targetの座標をコントローラーによって変える　(PIDで移動する)
-            State.armState = State.ArmState.s_moveArmToSpecifiedPosition;
-            if(isNewTargetPositionInLimit(State.armTargetHeight + State.leftY * Const.Arms.TargetModifyRatio, State.armTargetDepth + State.rightX * Const.Arms.TargetModifyRatio)){
-                State.armTargetHeight += State.leftY * Const.Arms.TargetModifyRatio;
-                State.armTargetDepth += State.rightX * Const.Arms.TargetModifyRatio;
+            State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+            if(isNewTargetPositionInLimit(State.Arm.targetHeight + State.Arm.leftY * Const.Arm.TargetModifyRatio, State.Arm.targetDepth + State.Arm.rightX * Const.Arm.TargetModifyRatio)){
+                State.Arm.targetHeight += State.Arm.leftY * Const.Arm.TargetModifyRatio;
+                State.Arm.targetDepth += State.Arm.rightX * Const.Arm.TargetModifyRatio;
             }
         } else if (driveController.getAButton()) {
             // limelightの予測座標にターゲットを設定する　(PIDで移動する)
             // TODO ここでlimelightの値を代入
-            State.armState = State.ArmState.s_moveArmToSpecifiedPosition;
-            if(isNewTargetPositionInLimit(State.limelightTargetHeight, State.limelightTargetDepth)) {
-                State.armTargetHeight = State.limelightTargetHeight;
-                State.armTargetDepth = State.limelightTargetDepth;
+            State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+            if(isNewTargetPositionInLimit(State.Arm.limelightTargetHeight, State.Arm.limelightTargetDepth)) {
+                State.Arm.targetHeight = State.Arm.limelightTargetHeight;
+                State.Arm.targetDepth = State.Arm.limelightTargetDepth;
             }
         } else if (driveController.getBButton()) {
-            State.armState = State.ArmState.s_moveArmToSpecifiedPosition;
-        } else if (Math.abs(State.leftY) < 0.1 && Math.abs(State.rightX) < 0.1) {
-            State.armState = State.ArmState.s_fixArmPosition;
+            State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+        } else if (Math.abs(State.Arm.leftY) < 0.1 && Math.abs(State.Arm.rightX) < 0.1) {
+            State.Arm.state = State.Arm.States.s_fixArmPosition;
         } else {
-            State.armState = State.ArmState.s_moveArmMotor;
+            State.Arm.state = State.Arm.States.s_moveArmMotor;
         }
 
         if(driveController.getLeftBumperPressed()) {
-            State.resetArmEncoder = true;
+            State.Arm.resetArmEncoder = true;
         }
 
         // ターゲット座標からターゲットの角度を計算する
-        Map<String, Double> targetThetas = Tools.calculateAngles(State.armTargetHeight, State.armTargetDepth);
-        State.armTargetRootAngle = targetThetas.get("RootAngle");
-        State.armTargetJointAngle = targetThetas.get("JointAngle");
+        Map<String, Double> targetThetas = Tools.calculateAngles(State.Arm.targetHeight, State.Arm.targetDepth);
+        State.Arm.targetRootAngle = targetThetas.get("RootAngle");
+        State.Arm.targetJointAngle = targetThetas.get("JointAngle");
     }
 
     /**
@@ -87,8 +87,8 @@ public class ArmMode extends Mode {
 
         boolean isZAxisInLimit = Depth > 0;
         boolean isXAxisInLimit = Height > 0;
-        boolean isInOuterBorder = length < Const.Arms.TargetPositionOuterLimit;
-        boolean isOutInnerBorder = length > Const.Arms.TargetPositionInnerLimit;
+        boolean isInOuterBorder = length < Const.Arm.TargetPositionOuterLimit;
+        boolean isOutInnerBorder = length > Const.Arm.TargetPositionInnerLimit;
 
         return isXAxisInLimit && isZAxisInLimit && isInOuterBorder && isOutInnerBorder;
     }

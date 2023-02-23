@@ -20,7 +20,7 @@ public class Const {
 
     }
 
-    public static final class Arms {
+    public static final class Arm {
         public static double FirstArmLength = 90.0; // [cm]
         public static double SecondArmLength = 90.0; // [cm]
         public static double FirstArmBarycenter = 45.0; // [cm]

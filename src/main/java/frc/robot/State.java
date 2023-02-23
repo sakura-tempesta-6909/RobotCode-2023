@@ -12,27 +12,44 @@ public class State {
     public static DriveState driveState;
     public static IntakeState intakeState;
     public static HandState handState;
-    public static ArmState armState;
 
-    public static double armTargetHeight;
-    public static double armTargetDepth;
+    public static class Arm {
+        public static States state;
+        public static double targetHeight;
+        public static double targetDepth;
 
-    public static double armActualRootAngle, armActualJointAngle;
+        public static double actualRootAngle, actualJointAngle;
 
-    public static double armTargetRootAngle, armTargetJointAngle;
+        public static double targetRootAngle, targetJointAngle;
 
-    public static double armActualHeight;
-    public static double armActualDepth;
+        public static double actualHeight;
+        public static double actualDepth;
 
-    public static double leftY;
-    public static double rightX;
-    public static double armUnderMotorFeedforward;
-    public static double armTopMotorFeedforward;
-    public static boolean isArmAtTarget;
-    public static boolean resetArmPidController;
-    public static boolean resetArmEncoder;
+        public static double leftY;
+        public static double rightX;
+        public static double underMotorFeedforward;
+        public static double topMotorFeedforward;
+        public static boolean isArmAtTarget;
+        public static boolean resetArmPidController;
+        public static boolean resetArmEncoder;
 
-    public static double limelightTargetHeight, limelightTargetDepth;
+        public static double limelightTargetHeight, limelightTargetDepth;
+
+        public enum States {
+            /**
+             * アームを指定した場所に移動させる
+             */
+            s_moveArmToSpecifiedPosition,
+            /**
+             * アームの支点を動かす
+             */
+            s_moveArmMotor,
+            /**
+             * アームをその場で固定する
+             */
+            s_fixArmPosition,
+        }
+    }
 
     /**
      * Enableされたときの状態
@@ -44,26 +61,26 @@ public class State {
         handState = HandState.s_releaseHand;
 
         //init armMode value
-        armTargetHeight = 0.0;
-        armTargetDepth = 0.0;
+        Arm.targetHeight = 0.0;
+        Arm.targetDepth = 0.0;
 
-        armActualHeight = 0.0;
-        armActualDepth = 0.0;
+        Arm.actualHeight = 0.0;
+        Arm.actualDepth = 0.0;
 
-        armTargetRootAngle = 0.0;
-        armTargetJointAngle = 0.0;
+        Arm.targetRootAngle = 0.0;
+        Arm.targetJointAngle = 0.0;
 
-        armActualRootAngle = 0.0;
-        armActualJointAngle = 0.0;
+        Arm.actualRootAngle = 0.0;
+        Arm.actualJointAngle = 0.0;
 
-        leftY = 0.0;
-        rightX = 0.0;
+        Arm.leftY = 0.0;
+        Arm.rightX = 0.0;
 
-        limelightTargetHeight = 10.0;
-        limelightTargetDepth = 80.0;
+        Arm.limelightTargetHeight = 10.0;
+        Arm.limelightTargetDepth = 80.0;
 
-        armUnderMotorFeedforward = 0.0;
-        armTopMotorFeedforward = 0.0;
+        Arm.underMotorFeedforward = 0.0;
+        Arm.topMotorFeedforward = 0.0;
 
         StateReset();
     }
@@ -74,48 +91,57 @@ public class State {
     public static void StateReset() {
         driveState = DriveState.s_stopDrive;
         intakeState = IntakeState.s_stopConveyor;
-        armState = ArmState.s_fixArmPosition;
-        isArmAtTarget = false;
-        resetArmPidController = false;
-        resetArmEncoder = false;
+        Arm.state = Arm.States.s_fixArmPosition;
+        Arm.isArmAtTarget = false;
+        Arm.resetArmPidController = false;
+        Arm.resetArmEncoder = false;
     }
 
     public enum DriveState {
-        /** ロボットの速度を速くする */
+        /**
+         * ロボットの速度を速くする
+         */
         s_fastDrive,
-        /** ロボットの速度を中くらいにする */
+        /**
+         * ロボットの速度を中くらいにする
+         */
         s_midDrive,
-        /** ロボットの速度を遅くする */
+        /**
+         * ロボットの速度を遅くする
+         */
         s_slowDrive,
-        /** ロボットの速度を0にする */
+        /**
+         * ロボットの速度を0にする
+         */
         s_stopDrive,
 
     }
 
     public enum IntakeState {
-        /** インテイクを外向きに動かす */
+        /**
+         * インテイクを外向きに動かす
+         */
         s_outtakeConveyor,
-        /** インテイクを内向きに動かす */
+        /**
+         * インテイクを内向きに動かす
+         */
         s_intakeConveyor,
-        /** インテイクの動きを止める */
+        /**
+         * インテイクの動きを止める
+         */
         s_stopConveyor,
 
     }
 
     public enum HandState {
-        /** 物体をつかむ */
+        /**
+         * 物体をつかむ
+         */
         s_grabHand,
-        /** 物体を離す */
+        /**
+         * 物体を離す
+         */
         s_releaseHand,
-    }
-
-    public enum ArmState {
-        /** アームを指定した場所に移動させる */
-        s_moveArmToSpecifiedPosition,
-        /** アームの支点を動かす */
-        s_moveArmMotor,
-        /** アームをその場で固定する */
-        s_fixArmPosition,
     }
 
     public enum Modes {
@@ -123,6 +149,7 @@ public class State {
         k_test(new TestMode());
 
         private final Mode mode;
+
         Modes(Mode mode) {
             this.mode = mode;
         }

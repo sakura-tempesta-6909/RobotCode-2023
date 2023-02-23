@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.State;
 
 public class Util {
-    public static void sendSystemOut(PrintStream defaultConsole, ByteArrayOutputStream newConsole){
+    public static void sendSystemOut(PrintStream defaultConsole, ByteArrayOutputStream newConsole) {
         defaultConsole.print(newConsole);
     }
 
@@ -20,21 +20,21 @@ public class Util {
         // System.out.println(key + ":" +number);
         SmartDashboard.putNumber(key, number);
     }
-    public static void sendConsole(String key, Boolean which){
+    public static void sendConsole(String key, Boolean which) {
         // System.out.println(key + ":" +which);
         SmartDashboard.putBoolean(key, which);
     }
 
-    public static void allSendConsole(){
-        sendConsole("armActualHeight", State.armActualHeight);
-        sendConsole("armActualDepth", State.armActualDepth);
-        sendConsole("armActualRootAngle", State.armActualRootAngle);
-        sendConsole("armActualJointAngle", State.armActualJointAngle);
-        sendConsole("armTargetHeight", State.armTargetHeight);
-        sendConsole("armTargetDepth", State.armTargetDepth);
-        sendConsole("armTargetRootAngle", State.armTargetRootAngle);
-        sendConsole("armTargetJointAngle", State.armTargetJointAngle);
-        sendConsole("isAtSetpoint", State.isArmAtTarget);
-        sendConsole("controlMode", State.armState.toString());
+    public static void allSendConsole() {
+        sendConsole("armActualHeight", State.Arm.actualHeight);
+        sendConsole("armActualDepth", State.Arm.actualDepth);
+        sendConsole("armActualRootAngle", State.Arm.actualRootAngle);
+        sendConsole("armActualJointAngle", State.Arm.actualJointAngle);
+        sendConsole("armTargetHeight", State.Arm.targetHeight);
+        sendConsole("armTargetDepth", State.Arm.targetDepth);
+        sendConsole("armTargetRootAngle", State.Arm.targetRootAngle);
+        sendConsole("armTargetJointAngle", State.Arm.targetJointAngle);
+        sendConsole("isAtSetpoint", State.Arm.isArmAtTarget);
+        sendConsole("controlMode", State.Arm.state.toString());
     }
 }

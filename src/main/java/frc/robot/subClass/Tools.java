@@ -13,8 +13,8 @@ public class Tools {
         RootAngle = Math.toRadians(RootAngle);
         JointAngle = Math.toRadians(JointAngle);
         double SumAngle = RootAngle + JointAngle;
-        double l1 = Const.Arms.FirstArmLength;
-        double l2 = Const.Arms.SecondArmLength;
+        double l1 = Const.Arm.FirstArmLength;
+        double l2 = Const.Arm.SecondArmLength;
 
         return l1 * Math.sin(RootAngle) - l2 * Math.sin(SumAngle);
     }
@@ -28,8 +28,8 @@ public class Tools {
         RootAngle = Math.toRadians(RootAngle);
         JointAngle = Math.toRadians(JointAngle);
         double SumAngle = RootAngle + JointAngle;
-        double l1 = Const.Arms.FirstArmLength;
-        double l2 = Const.Arms.SecondArmLength;
+        double l1 = Const.Arm.FirstArmLength;
+        double l2 = Const.Arm.SecondArmLength;
 
         return l1 * Math.cos(RootAngle) - l2 * Math.cos(SumAngle);
     }
@@ -54,8 +54,8 @@ public class Tools {
      * @return アームのターゲットの角度[deg]
      */
     public static Map<String, Double> calculateAngles(double Height, double Depth) {
-        double l1 = Const.Arms.FirstArmLength;
-        double l2 = Const.Arms.SecondArmLength;
+        double l1 = Const.Arm.FirstArmLength;
+        double l2 = Const.Arm.SecondArmLength;
 
         double JointAngle = Math.acos((Math.pow(l1, 2) + Math.pow(l2, 2)
                 - Math.pow(Height, 2) - Math.pow(Depth, 2)) / (2 * l1 * l2));
@@ -90,12 +90,12 @@ public class Tools {
         RootAngle = Math.toRadians(RootAngle);
         JointAngle = Math.toRadians(JointAngle);
         double SumAngle = RootAngle + JointAngle;
-        double l1 = Const.Arms.FirstArmLength;
-        double l2 = Const.Arms.SecondArmLength;
-        double fb = Const.Arms.FirstArmBarycenter; //FirstBarycenter -> fb
-        double sb = Const.Arms.SecondArmBarycenter; //SecondBarycenter -> sb
-        double m1 = Const.Arms.FirstArmMass;
-        double m2 = Const.Arms.SecondArmMass;
+        double l1 = Const.Arm.FirstArmLength;
+        double l2 = Const.Arm.SecondArmLength;
+        double fb = Const.Arm.FirstArmBarycenter; //FirstBarycenter -> fb
+        double sb = Const.Arm.SecondArmBarycenter; //SecondBarycenter -> sb
+        double m1 = Const.Arm.FirstArmMass;
+        double m2 = Const.Arm.SecondArmMass;
 
         double ffMomentForFirstArm = fb * m1 * Math.sin(RootAngle);
         double ffMomentForSecondArm = l1 * m2 * Math.sin(RootAngle) - sb * m2 * Math.sin(SumAngle);
@@ -115,8 +115,8 @@ public class Tools {
         RootAngle = Math.toRadians(RootAngle);
         JointAngle = Math.toRadians(JointAngle);
         double SumAngle = RootAngle + JointAngle;
-        double sb = Const.Arms.SecondArmBarycenter; //SecondBarycenter -> sb
-        double m2 = Const.Arms.SecondArmMass;
+        double sb = Const.Arm.SecondArmBarycenter; //SecondBarycenter -> sb
+        double m2 = Const.Arm.SecondArmMass;
 
         return sb * m2 * Math.sin(SumAngle - Math.PI);
     }
@@ -128,6 +128,6 @@ public class Tools {
      * @return motor.setへの入力[-1.0, 1.0] (CANSparkMax)
      * */
     public static double changeTorqueToMotorInput (double torque) {
-        return 1 - torque / Const.Arms.MotorMaxTorque;
+        return 1 - torque / Const.Arm.MotorMaxTorque;
     }
 }

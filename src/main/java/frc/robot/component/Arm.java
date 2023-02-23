@@ -29,10 +29,10 @@ public class Arm implements Component{
         underMotor.setInverted(true);
         topMotor.setInverted(true);
 
-        pidForRoot = new PIDController(Const.Arms.kP1, Const.Arms.kI1, Const.Arms.kD1);
-        pidForJoint = new PIDController(Const.Arms.kP2, Const.Arms.kI2, Const.Arms.kD2);
+        pidForRoot = new PIDController(Const.Arm.kP1, Const.Arm.kI1, Const.Arm.kD1);
+        pidForJoint = new PIDController(Const.Arm.kP2, Const.Arm.kI2, Const.Arm.kD2);
 
-        pidForRoot.setIntegratorRange( -0.04 / Const.Arms.kI1, 0.04 / Const.Arms.kI1);
+        pidForRoot.setIntegratorRange( -0.04 / Const.Arm.kI1, 0.04 / Const.Arm.kI1);
         pidForRoot.setTolerance(2);
         pidForJoint.setTolerance(1);
     }
@@ -42,9 +42,8 @@ public class Arm implements Component{
      * moveArmToSpecifiedPositionで実行
      * */
     private void pidControlArm() {
-        topMotor.set(ControlMode.PercentOutput, pidForJoint.calculate(State.armActualJointAngle) + State.armTopMotorFeedforward);
-        underMotor.set(ControlMode.PercentOutput, pidForRoot.calculate(State.armActualRootAngle) + State.armUnderMotorFeedforward);
-//        underMotor.set(ControlMode.PercentOutput, pidForTheta1.calculate(State.armActualTheta1) + 0.2535 * Math.cos(State.armActualTheta1));
+        topMotor.set(ControlMode.PercentOutput, pidForJoint.calculate(State.Arm.actualJointAngle) + State.Arm.topMotorFeedforward);
+        underMotor.set(ControlMode.PercentOutput, pidForRoot.calculate(State.Arm.actualRootAngle) + State.Arm.underMotorFeedforward);
     }
 
     /**
@@ -52,10 +51,8 @@ public class Arm implements Component{
      * feedforwardを計算してモーターに入力
      * */
     private void stopArm() {
-        topMotor.set(State.armTopMotorFeedforward);
-        underMotor.set(State.armUnderMotorFeedforward);
-//        topMotor.stopMotor();
-//        underMotor.set(0.2535 * Math.cos(State.armActualTheta1));
+        topMotor.set(State.Arm.topMotorFeedforward);
+        underMotor.set(State.Arm.underMotorFeedforward);
     }
 
     /**
@@ -71,11 +68,11 @@ public class Arm implements Component{
     }
 
     public double getE1Angle(double x){
-        return (x) / Const.Arms.Encoder1CountPerRotation;
+        return (x) / Const.Arm.Encoder1CountPerRotation;
     }
 
     public double getE2Angle(double x){
-        return (x) / Const.Arms.Encoder2CountPerRotation;
+        return (x) / Const.Arm.Encoder2CountPerRotation;
     }
 
     @Override
@@ -101,43 +98,43 @@ public class Arm implements Component{
     @Override
     public void readSensors() {
         // motorのencodeからアームの実際のX,Z座標を計算
-        State.armActualRootAngle = getE1Angle(encoder1.get());
-        State.armActualJointAngle = getE2Angle(encoder2.get());
-        State.armActualHeight = Tools.calculateX(State.armActualRootAngle, State.armActualJointAngle);
-        State.armActualDepth = Tools.calculateZ(State.armActualRootAngle, State.armActualJointAngle);
+        State.Arm.actualRootAngle = getE1Angle(encoder1.get());
+        State.Arm.actualJointAngle = getE2Angle(encoder2.get());
+        State.Arm.actualHeight = Tools.calculateX(State.Arm.actualRootAngle, State.Arm.actualJointAngle);
+        State.Arm.actualDepth = Tools.calculateZ(State.Arm.actualRootAngle, State.Arm.actualJointAngle);
 
         // armがターゲットの座標に到着したか
-        State.isArmAtTarget = isArmAtTarget();
+        State.Arm.isArmAtTarget = isArmAtTarget();
 
         // フィードフォワードを計算する
-        State.armTopMotorFeedforward = Tools.calculateTopMotorFeedforward(State.armActualRootAngle, State.armActualJointAngle);
-        State.armUnderMotorFeedforward = Tools.calculateUnderMotorFeedforward(State.armActualRootAngle, State.armActualJointAngle);
-        State.armTopMotorFeedforward = Tools.changeTorqueToMotorInput(State.armTopMotorFeedforward / Const.Arms.TopMotorGearRatio);
-        State.armUnderMotorFeedforward = Tools.changeTorqueToMotorInput(State.armUnderMotorFeedforward / Const.Arms.TopUnderGearRatio);
+        State.Arm.topMotorFeedforward = Tools.calculateTopMotorFeedforward(State.Arm.actualRootAngle, State.Arm.actualJointAngle);
+        State.Arm.underMotorFeedforward = Tools.calculateUnderMotorFeedforward(State.Arm.actualRootAngle, State.Arm.actualJointAngle);
+        State.Arm.topMotorFeedforward = Tools.changeTorqueToMotorInput(State.Arm.topMotorFeedforward / Const.Arm.TopMotorGearRatio);
+        State.Arm.underMotorFeedforward = Tools.changeTorqueToMotorInput(State.Arm.underMotorFeedforward / Const.Arm.TopUnderGearRatio);
     }
 
     @Override
     public void applyState() {
 
-        pidForRoot.setSetpoint(State.armTargetRootAngle);
-        pidForJoint.setSetpoint(State.armTargetJointAngle);
+        pidForRoot.setSetpoint(State.Arm.targetRootAngle);
+        pidForJoint.setSetpoint(State.Arm.targetJointAngle);
 
-        if(State.resetArmPidController){
+        if(State.Arm.resetArmPidController) {
             pidForRoot.reset();
             pidForJoint.reset();
         }
 
-        if(State.resetArmEncoder) {
+        if(State.Arm.resetArmEncoder) {
             encoder1.reset();
             encoder2.reset();
         }
 
-        switch (State.armState) {
+        switch (State.Arm.state) {
             case s_moveArmToSpecifiedPosition:
                 pidControlArm();
                 break;
             case s_moveArmMotor:
-                rotationControlArm(State.rightX, State.leftY);
+                rotationControlArm(State.Arm.rightX, State.Arm.leftY);
                 break;
             case s_fixArmPosition:
                 stopArm();
