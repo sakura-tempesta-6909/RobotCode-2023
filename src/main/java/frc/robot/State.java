@@ -30,8 +30,8 @@ public class State {
 
         public static double leftY;
         public static double rightX;
-        public static double underMotorFeedforward;
-        public static double topMotorFeedforward;
+        public static double rootMotorFeedforward;
+        public static double jointMotorFeedforward;
         public static boolean isArmAtTarget;
         public static boolean resetArmPidController;
         public static boolean resetArmEncoder;
@@ -86,8 +86,8 @@ public class State {
         Arm.limelightTargetHeight = 10.0;
         Arm.limelightTargetDepth = 80.0;
 
-        Arm.underMotorFeedforward = 0.0;
-        Arm.topMotorFeedforward = 0.0;
+        Arm.rootMotorFeedforward = 0.0;
+        Arm.jointMotorFeedforward = 0.0;
 
         voltage = new HashMap<>();
         StateReset();

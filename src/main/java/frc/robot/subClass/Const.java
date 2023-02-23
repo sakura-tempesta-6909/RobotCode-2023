@@ -43,30 +43,33 @@ public class Const {
     }
 
     public static final class Arm {
-        public static double FirstArmLength = 90.0; // [cm]
-        public static double SecondArmLength = 90.0; // [cm]
-        public static double FirstArmBarycenter = 45.0; // [cm]
-        public static double SecondArmBarycenter = 45.0; // [cm]
-        public static double FirstArmMass = 0.0 * 9.8; // 注意　[N]=[kg*9.8]
-        public static double SecondArmMass = 0.0 * 9.8; // 注意　[N]=[kg*9.8]
-        public static double TargetModifyRatio = 1;
-        public static double TakeUpLengthAfterGrab = 20.0; // [cm]
-        public static double kP1 = 0.2;
-        public static double kI1 = 0.2;
-        public static double kD1 = 0.01;
+        public static final class Ports {
+            public static final int topMotor = 0;
+            public static final int underMotor = 0;
+        }
 
-        public static double kP2 = 0.1;
-        public static double kI2 = 0.000;
-        public static double kD2 = 0.000;
+        /**  */
+        public static final double RootArmLength = 90.0; // [cm]
+        public static final double HeadArmLength = 90.0; // [cm]
+        public static final double RootArmBarycenter = 45.0; // [cm]
+        public static final double HeadArmBarycenter = 45.0; // [cm]
+        public static final double RootArmMass = 0.0 * 9.8; // 注意　[N]=[kg*9.8]
+        public static final double HeadArmMass = 0.0 * 9.8; // 注意　[N]=[kg*9.8]
+        public static final double TargetModifyRatio = 1;
+        public static final double TakeUpLengthAfterGrab = 20.0; // [cm]
+        public static final double P_1 = 0.2;
+        public static final double I_1 = 0.2;
+        public static final double D_1 = 0.01;
 
-        public static double Encoder1CountPerRotation = 14.3469;
-        public static double Encoder2CountPerRotation = 9.196;
-        public static double GearRatio = 140;
-        public static double MotorMaxTorque = 2.6 * 100; // [N*cm] = [N*m] * 100
-        public static double TargetPositionOuterLimit = FirstArmLength + SecondArmLength - 2; // [cm]
-        public static double TargetPositionInnerLimit = FirstArmLength - SecondArmLength + 2; // [cm]
-        public static double TopMotorGearRatio = 100;
-        public static double TopUnderGearRatio = 114;
+        public static final double P_2 = 0.1;
+        public static final double I_2 = 0.000;
+        public static final double D_2 = 0.000;
+        public static final double MotorMaxTorque = 2.6 * 100; // [N*cm] = [N*m] * 100
+        public static final double TargetPositionOuterLimit = RootArmLength + HeadArmLength - 2; // [cm]
+        public static final double TargetPositionInnerLimit = RootArmLength - HeadArmLength + 2; // [cm]
+        public static final double TopMotorGearRatio = 100;
+        public static final double UnderMotorGearRatio = 114;
+        public static final double PIDAngleTolerance = 0.1; // [deg]
     }
 
     public static void ConstInit() {
