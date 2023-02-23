@@ -48,8 +48,6 @@ public class Limelight implements Component {
         State.distanceFromLimelightToGoalInCM = (Const.Calculation.Limelight.GoalHeightInCM - Const.Calculation.Limelight.LimelightLensHeightInCM) / Math.tan(angleToGoalRadians);
 
         double tx = txEntry.getDouble(0);
-        double ty = tyEntry.getDouble(0);
-        double tv = tvEntry.getDouble(0);
 
         //ターゲットの方を向く
         if (tx > 0) {
