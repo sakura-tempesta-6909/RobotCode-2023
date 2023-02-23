@@ -24,31 +24,31 @@ public class Const {
         //Limelightの角度
         public static final double LimelightMountAngleDegrees = 34.5;
         //Limelightの高さ
-        public static final double LimelightLensHeightCentis = 81.5;
+        public static final double LimelightLensHeightInCM = 81.5;
         //ターゲットの高さ
-        public static final double GoalHeightCentis = 166;
+        public static final double GoalHeightInCM = 166;
 
         public static final class Camera {
-            public static final double CameraCenterHight = 320;
-            public static final double CameraCenterWeight = 240;
+            public static final double CameraCenterHeight = 320;
+            public static final double CameraCenterWidth = 240;
             public static final double VerticalRatio = 4;
             public static final double HorizontalRatio = 3;
             public static final double FieldOfViewHalf = 34.25;
             public static final double ObliqueLine = Math.pow(VerticalRatio, 2) + Math.pow(HorizontalRatio, 2);
-            public static final double ThetaMaxHight = FieldOfViewHalf * VerticalRatio / Math.sqrt(ObliqueLine);
-            public static final double ThetaMaxWeigt = FieldOfViewHalf * HorizontalRatio / Math.sqrt(ObliqueLine);
+            public static final double ThetaMaxHeight = FieldOfViewHalf * VerticalRatio / Math.sqrt(ObliqueLine);
+            public static final double ThetaMaxWidth = FieldOfViewHalf * HorizontalRatio / Math.sqrt(ObliqueLine);
 
-            public static final double FocalLengthHight = CameraCenterHight / Math.tan(Math.toRadians(ThetaMaxHight));
-            public static final double FocalLengthWeight = CameraCenterWeight / Math.tan(Math.toRadians(ThetaMaxWeigt));
+            public static final double FocalLengthHeight = CameraCenterHeight / Math.tan(Math.toRadians(ThetaMaxHeight));
+            public static final double FocalLengthWeight = CameraCenterWidth / Math.tan(Math.toRadians(ThetaMaxWidth));
 
             public static final double CameraMountAngleDegrees = 0;
-            public static final double CameraLensHeightCentis = 42.5;
-            public static final double GoalHightCentis = 76.5;
+            public static final double CameraLensHeightInCM = 42.5;
+            public static final double GoalHeightInCM = 76.5;
         }
 
 
     }
-    
+
 
     public static void ConstInit() {
 

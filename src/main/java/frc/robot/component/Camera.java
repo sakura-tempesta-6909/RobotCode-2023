@@ -52,16 +52,16 @@ public class Camera implements Component {
 
     public void calculation(AprilTagDetection detection) {
         //角度を求める
-        State.apriltagAngleHight = Math.toDegrees(Math.atan((detection.getCenterX() - Const.Calculation.Camera.CameraCenterHight) / Const.Calculation.Camera.FocalLengthHight));
-        State.apriltagAngleWeight = Math.toDegrees(Math.atan((-detection.getCenterY() - Const.Calculation.Camera.CameraCenterWeight) / Const.Calculation.Camera.FocalLengthWeight));
-        SmartDashboard.putNumber("AngleX", State.apriltagAngleHight);
-        SmartDashboard.putNumber("AngleY", State.apriltagAngleWeight);
+        State.aprilTagAngleHeight = Math.toDegrees(Math.atan((detection.getCenterX() - Const.Calculation.Camera.CameraCenterHeight) / Const.Calculation.Camera.FocalLengthHeight));
+        State.aprilTagAngleWidth = Math.toDegrees(Math.atan((-detection.getCenterY() - Const.Calculation.Camera.CameraCenterWidth) / Const.Calculation.Camera.FocalLengthWeight));
+        SmartDashboard.putNumber("AngleX", State.aprilTagAngleHeight);
+        SmartDashboard.putNumber("AngleY", State.aprilTagAngleWidth);
 
         //距離を求める
-        double angleToGoalDegrees = Const.Calculation.Camera.CameraMountAngleDegrees + State.apriltagAngleWeight;
+        double angleToGoalDegrees = Const.Calculation.Camera.CameraMountAngleDegrees + State.aprilTagAngleWidth;
         double angleToGoalRadians = angleToGoalDegrees * (Math.PI / 180);
-        State.distanceFromCameraToTagCentis = (Const.Calculation.Camera.GoalHightCentis - Const.Calculation.Camera.CameraLensHeightCentis) / Math.tan(angleToGoalRadians);
-        SmartDashboard.putNumber("Distance", State.distanceFromCameraToTagCentis);
+        State.distanceFromCameraToTagInCM = (Const.Calculation.Camera.GoalHeightInCM - Const.Calculation.Camera.CameraLensHeightInCM) / Math.tan(angleToGoalRadians);
+        SmartDashboard.putNumber("Distance", State.distanceFromCameraToTagInCM);
     }
 
     @Override
@@ -98,10 +98,10 @@ public class Camera implements Component {
         //画像をグレースケールにする
         Imgproc.cvtColor(mat, grayMat, Imgproc.COLOR_RGB2GRAY);
 
-        //Apriltagを検出する
+        //AprilTagを検出する
         detections = detector.detect(grayMat);
         tags.clear();
-        //Apriltagの数だけ繰り返す
+        //AprilTagの数だけ繰り返す
         for (AprilTagDetection detection : detections) {
             double[] translation = detection.getHomography();
 
@@ -112,14 +112,14 @@ public class Camera implements Component {
                 //i,jのXとYのコーナーの座標を取得
                 var pt1 = new Point(detection.getCornerX(i), detection.getCornerY(i));
                 var pt2 = new Point(detection.getCornerX(j), detection.getCornerY(j));
-                //検出したApriltagを四角形で囲う
+                //検出したAprilTagを四角形で囲う
                 Imgproc.line(mat, pt1, pt2, outlineColor, 2);
 
             }
 
             calculation(detection);
 
-            //検出したApriltagの中心にクロスヘアを描画
+            //検出したAprilTagの中心にクロスヘアを描画
             var cx = detection.getCenterX();
             var cy = detection.getCenterY();
             var ll = 10;

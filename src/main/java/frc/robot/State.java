@@ -16,7 +16,7 @@ public class State {
 
     public static double limelightTrackingZRotation;
     public static double limelightSeekingZRotation;
-    public static double distanceFromLimelightToGoalCentis;
+    public static double distanceFromLimelightToGoalInCM;
     public static double limelightXSpeed;
 
 
@@ -24,9 +24,9 @@ public class State {
     public static HandState handState;
     public static ArmState armState;
     public static Map<String, Double> voltage = new HashMap<>();
-    public static double distanceFromCameraToTagCentis;
-    public static double apriltagAngleHight;
-    public static double apriltagAngleWeight;
+    public static double distanceFromCameraToTagInCM;
+    public static double aprilTagAngleHeight;
+    public static double aprilTagAngleWidth;
 
     /**
      * Enableされたときの状態
@@ -71,7 +71,6 @@ public class State {
         s_targetApproaching,
         s_targetSeeking,
 
-        
 
     }
 
