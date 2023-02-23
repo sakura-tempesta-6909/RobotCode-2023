@@ -6,6 +6,9 @@ import frc.robot.mode.Mode;
 import frc.robot.mode.TestMode;
 import frc.robot.subClass.Const;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class State {
     public static Modes mode;
     public static double driveXSpeed, driveZRotation;
@@ -50,6 +53,10 @@ public class State {
             s_fixArmPosition,
         }
     }
+    public static Map<String, Double> voltage = new HashMap<>();
+    public static double distanceFromCameraToTagCentis;
+    public static double apriltagAngleHight;
+    public static double apriltagAngleWeight;
 
     /**
      * Enableされたときの状態
@@ -82,6 +89,7 @@ public class State {
         Arm.underMotorFeedforward = 0.0;
         Arm.topMotorFeedforward = 0.0;
 
+        voltage = new HashMap<>();
         StateReset();
     }
 
