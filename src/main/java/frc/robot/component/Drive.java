@@ -76,7 +76,7 @@ public class Drive implements Component {
                 arcadeDrive(Const.Speeds.Neutral * State.driveXSpeed, Const.Speeds.Neutral * State.driveZRotation);
                 break;
             case s_targetTracking:
-                arcadeDrive(Const.Speeds.Neutral * State.limelightXSpeed, State.limelightTrackingZRotation);
+                arcadeDrive(Const.Speeds.Neutral * State.driveXSpeed, State.limelightTrackingZRotation);
 
         }
     }

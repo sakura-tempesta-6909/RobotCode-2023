@@ -22,8 +22,7 @@ public class Const {
 
     public static final class Calculation {
         public static final class Limelight {
-            public static final double LimelightMaxHeight = 27;
-            public static final double LimelightMaxWidth = 20.5;
+            public static final double LimelightMaxAngleHeight = 27;
             //Limelightの角度
             public static final double LimelightMountAngleDegrees = 34.5;
             //Limelightの高さ

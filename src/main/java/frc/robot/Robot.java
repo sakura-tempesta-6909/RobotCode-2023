@@ -36,6 +36,7 @@ public class Robot extends TimedRobot {
         components.add(new Hand());
         components.add(new Arm());
         components.add(new Limelight());
+        components.add(new Camera());
 
         externalSensors = new ExternalSensors();
 
