@@ -53,7 +53,7 @@ public class Camera implements Component {
     public void calculation(AprilTagDetection detection) {
         //角度を求める
         double thetaX = Math.toDegrees(Math.atan((detection.getCenterX() - 320) / Const.Calculation.FocalLengthX));
-        double thetaY = Math.toDegrees(Math.atan((detection.getCenterY() - 240) / Const.Calculation.FocalLengthY));
+        double thetaY = Math.toDegrees(Math.atan((-detection.getCenterY() - 240) / Const.Calculation.FocalLengthY));
         SmartDashboard.putNumber("AngleX", thetaX);
         SmartDashboard.putNumber("AngleY", thetaY);
 
@@ -116,14 +116,10 @@ public class Camera implements Component {
                 Imgproc.line(mat, pt1, pt2, outlineColor, 2);
                 SmartDashboard.putNumber("CenterX", detection.getCenterX() - 320);
                 SmartDashboard.putNumber("CenterY", detection.getCenterY() - 240);
+
             }
 
-            //apriltagに近づく
-            if (detection.getCenterY() > 0) {
-                State.apriltagXSpeed = detection.getCenterY() / -240 * 0.5 + -0.2;
-            } else if (detection.getCenterY() < 0) {
-                State.apriltagXSpeed = detection.getCenterY() / 240 * 0.5 + 0.2;
-            }
+            calculation(detection);
 
             //検出したApriltagの中心にクロスヘアを描画
             var cx = detection.getCenterX();
