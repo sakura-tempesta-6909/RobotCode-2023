@@ -55,19 +55,19 @@ public class Arm implements Component {
     }
 
     private double calculateRootAngleFromRotation(double rotation) {
-        return rotation / Const.Arm.UnderMotorGearRatio * 360;
+        return rotation / Const.Arm.RootMotorGearRatio * 360;
     }
 
     private double calculateJointAngleFromRotation(double rotation) {
-        return rotation / Const.Arm.TopMotorGearRatio * 360;
+        return rotation / Const.Arm.JointMotorGearRatio * 360;
     }
 
     private double calculateRootRotationFromAngle(double angle) {
-        return angle * Const.Arm.UnderMotorGearRatio / 360;
+        return angle * Const.Arm.RootMotorGearRatio / 360;
     }
 
     private double calculateJointRotationFromAngle(double angle) {
-        return angle * Const.Arm.TopMotorGearRatio / 360;
+        return angle * Const.Arm.JointMotorGearRatio / 360;
     }
 
     private void setFeedForward(double rootFF, double jointFF) {
@@ -111,17 +111,17 @@ public class Arm implements Component {
     public void applyState() {
         // フィードフォワードを計算する
         // TODO コーンを持っているかによってrequiredTorqueを変える
-        double jointRequiredTorque = Tools.calculateTopMotorFeedforward(State.Arm.actualRootAngle, State.Arm.actualJointAngle) / Const.Arm.TopMotorGearRatio;
-        double rootRequiredTorque = Tools.calculateUnderMotorFeedforward(State.Arm.actualRootAngle, State.Arm.actualJointAngle) / Const.Arm.TopMotorGearRatio;
+        double jointRequiredTorque = Tools.calculateTopMotorFeedforward(State.Arm.actualRootAngle, State.Arm.actualJointAngle) / Const.Arm.JointMotorGearRatio;
+        double rootRequiredTorque = Tools.calculateUnderMotorFeedforward(State.Arm.actualRootAngle, State.Arm.actualJointAngle) / Const.Arm.JointMotorGearRatio;
         State.Arm.jointMotorFeedforward = Tools.changeTorqueToMotorInput(jointRequiredTorque);
         State.Arm.rootMotorFeedforward = Tools.changeTorqueToMotorInput(rootRequiredTorque);
 
-        if (State.Arm.resetArmPidController) {
+        if (State.Arm.resetPidController) {
             pidForRoot.setIAccum(0);
             pidForJoint.setIAccum(0);
         }
 
-        if (State.Arm.resetArmEncoder) {
+        if (State.Arm.resetEncoder) {
             jointMotor.getEncoder().setPosition(0);
             rootMotor.getEncoder().setPosition(0);
         }

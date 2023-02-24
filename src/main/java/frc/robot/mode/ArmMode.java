@@ -28,19 +28,19 @@ public class ArmMode extends Mode {
         if (driveController.getXButtonPressed()) {
             State.Arm.targetHeight = State.Arm.actualHeight;
             State.Arm.targetDepth = State.Arm.actualDepth;
-            State.Arm.resetArmPidController = true;
+            State.Arm.resetPidController = true;
         }
 
         // Aボタンが押されたら一旦Integralをリセット
         if (driveController.getAButtonPressed()) {
-            State.Arm.resetArmPidController = true;
+            State.Arm.resetPidController = true;
         }
 
         // Bボタンが押されたら一旦Integralをリセット アームを持ち上げる(Z座標を変える)
         if (driveController.getBButtonPressed()) {
             State.Arm.targetHeight = State.Arm.actualHeight;
             State.Arm.targetDepth = State.Arm.actualDepth - Const.Arm.TakeUpLengthAfterGrab;
-            State.Arm.resetArmPidController = true;
+            State.Arm.resetPidController = true;
         }
 
         if (driveController.getXButton()) {
@@ -67,7 +67,7 @@ public class ArmMode extends Mode {
         }
 
         if(driveController.getLeftBumperPressed()) {
-            State.Arm.resetArmEncoder = true;
+            State.Arm.resetEncoder = true;
         }
 
         // ターゲット座標からターゲットの角度を計算する
