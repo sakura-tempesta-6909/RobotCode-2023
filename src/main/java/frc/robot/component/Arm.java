@@ -7,17 +7,20 @@ import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.State;
 import frc.robot.subClass.Const;
 import frc.robot.subClass.Tools;
+import com.revrobotics.CANSparkMax;
 
 
 public class Arm implements Component{
     private final PIDController pidForRoot;
-    private final PIDController pidForJoint;
+    private final PIDController pidForJoint
 
     private final WPI_TalonSRX underMotor;
     private final WPI_TalonSRX topMotor;
 
     private final Encoder encoder1;
     private final Encoder encoder2;
+
+    private final CANSparkMax moveLeftAndRightMotor;
 
     public Arm() {
         encoder1 = new Encoder(2, 3);
@@ -35,6 +38,8 @@ public class Arm implements Component{
         pidForRoot.setIntegratorRange( -0.04 / Const.Arm.kI1, 0.04 / Const.Arm.kI1);
         pidForRoot.setTolerance(2);
         pidForJoint.setTolerance(1);
+
+        moveLeftAndRightMotor = new CANSparkMax(0, null);
     }
 
     /**
