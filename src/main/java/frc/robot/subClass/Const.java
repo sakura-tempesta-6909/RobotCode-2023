@@ -67,18 +67,18 @@ public class Const {
 
         // TODO slotの導入 - コーンを持っているかどうかで値を変える
         /** 根本のNEOモーターのPIDのP */
-        public static final double P_1 = 0.2;
+        public static final double P_R = 0.2;
         /** 根本のNEOモーターのPIDのI */
-        public static final double I_1 = 0.2;
+        public static final double I_R = 0.2;
         /** 根本のNEOモーターのPIDのD */
-        public static final double D_1 = 0.01;
+        public static final double D_R = 0.01;
 
         /** 関節部分のNEOモーターのPIDのP */
-        public static final double P_2 = 0.1;
+        public static final double P_J = 0.1;
         /** 関節部分のNEOモーターのPIDのI */
-        public static final double I_2 = 0.000;
+        public static final double I_J = 0.000;
         /** 関節部分のNEOモーターのPIDのD */
-        public static final double D_2 = 0.000;
+        public static final double D_J = 0.000;
         /**
          * NEOモーターの最大トルク 注意! [N*cm] = [N*m] * 100
          * <a href="https://www.revrobotics.com/content/docs/REV-21-1650-DS.pdf">NEOのデータシートを参照</a>

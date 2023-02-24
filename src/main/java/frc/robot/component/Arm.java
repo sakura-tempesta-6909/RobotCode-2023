@@ -21,12 +21,12 @@ public class Arm implements Component {
         pidForRoot = rootMotor.getPIDController();
         pidForJoint = jointMotor.getPIDController();
 
-        pidForRoot.setP(Const.Arm.P_1);
-        pidForRoot.setI(Const.Arm.I_1);
-        pidForRoot.setD(Const.Arm.D_1);
-        pidForJoint.setP(Const.Arm.P_2);
-        pidForJoint.setI(Const.Arm.I_2);
-        pidForJoint.setD(Const.Arm.D_2);
+        pidForRoot.setP(Const.Arm.P_R);
+        pidForRoot.setI(Const.Arm.I_R);
+        pidForRoot.setD(Const.Arm.D_R);
+        pidForJoint.setP(Const.Arm.P_J);
+        pidForJoint.setI(Const.Arm.I_J);
+        pidForJoint.setD(Const.Arm.D_J);
     }
 
     /**
@@ -128,12 +128,12 @@ public class Arm implements Component {
 
         switch (State.Arm.state) {
             case s_moveArmToSpecifiedPosition:
-                pidControlArm();
                 setFeedForward(State.Arm.rootMotorFeedforward, State.Arm.jointMotorFeedforward);
+                pidControlArm();
                 break;
             case s_moveArmMotor:
+                setFeedForward(State.Arm.rootMotorFeedforward, State.Arm.jointMotorFeedforward);
                 rotationControlArm(State.Arm.rightX, State.Arm.leftY);
-                setFeedForward(0, 0);
                 break;
             case s_fixArmPosition:
                 setFeedForward(State.Arm.rootMotorFeedforward, State.Arm.jointMotorFeedforward);
