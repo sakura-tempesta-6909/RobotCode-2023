@@ -64,6 +64,8 @@ public class Const {
         public static final double TargetModifyRatio = 1;
         /** 掴んだ後に先端を持ちあげる高さ[cm] */
         public static final double TakeUpLengthAfterGrab = 20.0;
+
+        // TODO slotの導入 - コーンを持っているかどうかで値を変える
         /** 根本のNEOモーターのPIDのP */
         public static final double P_1 = 0.2;
         /** 根本のNEOモーターのPIDのI */
