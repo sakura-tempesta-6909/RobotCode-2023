@@ -12,7 +12,7 @@ import com.revrobotics.CANSparkMax;
 
 public class Arm implements Component{
     private final PIDController pidForRoot;
-    private final PIDController pidForJoint
+    private final PIDController pidForJoint;
 
     private final WPI_TalonSRX underMotor;
     private final WPI_TalonSRX topMotor;
