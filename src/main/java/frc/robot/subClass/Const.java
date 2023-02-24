@@ -9,6 +9,8 @@ public class Const {
         public static final int DriveLeftFront = 1;
         public static final int DriveRightBack = 2;
         public static final int DriveLeftBack = 3;
+
+        public static final int moveLeftAndRightMotor = 0;
     }
 
     public static final class Speeds {

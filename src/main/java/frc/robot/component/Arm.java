@@ -39,7 +39,7 @@ public class Arm implements Component{
         pidForRoot.setTolerance(2);
         pidForJoint.setTolerance(1);
 
-        moveLeftAndRightMotor = new CANSparkMax(0, null);
+        moveLeftAndRightMotor = new CANSparkMax(Const.Ports.moveLeftAndRightMotor,MotorType.kBrushless);
     }
 
     /**
