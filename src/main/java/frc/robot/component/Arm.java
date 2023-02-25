@@ -6,7 +6,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.State;
 import frc.robot.subClass.Const;
-import frc.robot.subClass.Tools;
+import frc.robot.subClass.ArmTools;
 
 
 public class Arm implements Component{
@@ -100,17 +100,17 @@ public class Arm implements Component{
         // motorのencodeからアームの実際のX,Z座標を計算
         State.Arm.actualRootAngle = getE1Angle(encoder1.get());
         State.Arm.actualJointAngle = getE2Angle(encoder2.get());
-        State.Arm.actualHeight = Tools.calculateHeight(State.Arm.actualRootAngle, State.Arm.actualJointAngle);
-        State.Arm.actualDepth = Tools.calculateDepth(State.Arm.actualRootAngle, State.Arm.actualJointAngle);
+        State.Arm.actualHeight = ArmTools.calculateHeight(State.Arm.actualRootAngle, State.Arm.actualJointAngle);
+        State.Arm.actualDepth = ArmTools.calculateDepth(State.Arm.actualRootAngle, State.Arm.actualJointAngle);
 
         // armがターゲットの座標に到着したか
         State.Arm.isArmAtTarget = isArmAtTarget();
 
         // フィードフォワードを計算する
-        State.Arm.topMotorFeedforward = Tools.calculateTopMotorFeedforward(State.Arm.actualRootAngle, State.Arm.actualJointAngle);
-        State.Arm.underMotorFeedforward = Tools.calculateUnderMotorFeedforward(State.Arm.actualRootAngle, State.Arm.actualJointAngle);
-        State.Arm.topMotorFeedforward = Tools.changeTorqueToMotorInput(State.Arm.topMotorFeedforward / Const.Arm.TopMotorGearRatio);
-        State.Arm.underMotorFeedforward = Tools.changeTorqueToMotorInput(State.Arm.underMotorFeedforward / Const.Arm.TopUnderGearRatio);
+        State.Arm.topMotorFeedforward = ArmTools.calculateJointMotorFeedforward(State.Arm.actualRootAngle, State.Arm.actualJointAngle);
+        State.Arm.underMotorFeedforward = ArmTools.calculateRootMotorFeedforward(State.Arm.actualRootAngle, State.Arm.actualJointAngle);
+        State.Arm.topMotorFeedforward = ArmTools.changeTorqueToMotorInput(State.Arm.topMotorFeedforward / Const.Arm.TopMotorGearRatio);
+        State.Arm.underMotorFeedforward = ArmTools.changeTorqueToMotorInput(State.Arm.underMotorFeedforward / Const.Arm.TopUnderGearRatio);
     }
 
     @Override

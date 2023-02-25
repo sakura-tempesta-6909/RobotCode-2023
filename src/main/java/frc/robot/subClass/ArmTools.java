@@ -3,7 +3,12 @@ package frc.robot.subClass;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Tools {
+/**
+ * <a href="https://github.com/sakura-tempesta-6909/RobotCode-2023/files/10830447/default.pdf">計算式などはこちらから</a>
+ * // TODO calculateAnglesの誤差が大きくなる範囲があるかもなので検証する
+ * // TODO 計算式の再検証 theta_dash + 90 = theta（thetaにtheta_dash + 90を代入）
+ * */
+public class ArmTools {
     /**
      * @param RootAngle : readSensorで取得した実際の角度[deg]
      * @param JointAngle : readSensorで取得した実際の角度[deg]
@@ -69,7 +74,7 @@ public class Tools {
         double alphaCos = Math.acos(tX / r);
         double RootAngleCos = Math.acos(Depth / r) + alphaCos;
 
-        double RootAngle = Math.abs(Tools.calculateHeight(RootAngleSin, JointAngle) - Height) > Math.abs(Tools.calculateHeight(RootAngleCos, JointAngle) - Height)
+        double RootAngle = Math.abs(ArmTools.calculateHeight(RootAngleSin, JointAngle) - Height) > Math.abs(ArmTools.calculateHeight(RootAngleCos, JointAngle) - Height)
                 ? RootAngleCos : RootAngleSin;
 
         Map<String, Double> angles = new HashMap<String, Double>();
@@ -86,21 +91,20 @@ public class Tools {
      * それぞれのアームの重心をConstから取得
      * @return モーメント[N*cm]
      * */
-    public static double calculateUnderMotorFeedforward (double RootAngle, double JointAngle) {
+    public static double calculateRootMotorFeedforward(double RootAngle, double JointAngle) {
         RootAngle = Math.toRadians(RootAngle);
         JointAngle = Math.toRadians(JointAngle);
         double SumAngle = RootAngle + JointAngle;
         double l1 = Const.Arm.FirstArmLength;
         double l2 = Const.Arm.SecondArmLength;
-        double fb = Const.Arm.FirstArmBarycenter; //FirstBarycenter -> fb
-        double sb = Const.Arm.SecondArmBarycenter; //SecondBarycenter -> sb
+        double b1 = Const.Arm.FirstArmBarycenter; //FirstBarycenter -> fb
+        double b2 = Const.Arm.SecondArmBarycenter; //SecondBarycenter -> sb
         double m1 = Const.Arm.FirstArmMass;
         double m2 = Const.Arm.SecondArmMass;
 
-        double ffMomentForFirstArm = fb * m1 * Math.sin(RootAngle);
-        double ffMomentForSecondArm = l1 * m2 * Math.sin(RootAngle) - sb * m2 * Math.sin(SumAngle);
+        double ffMomentForFirstArm = b1 * m1 * Math.sin(RootAngle);
+        double ffMomentForSecondArm = l1 * m2 * Math.sin(RootAngle) - b2 * m2 * Math.sin(SumAngle);
 
-        //TODO feedforwardでmotor.setに渡す値はトルクの計算が必要
         return ffMomentForFirstArm + ffMomentForSecondArm;
     }
 
@@ -111,20 +115,20 @@ public class Tools {
      * 重心などをConstから取得
      * @return モーメント[N*cm]
      * */
-    public static double calculateTopMotorFeedforward (double RootAngle, double JointAngle) {
+    public static double calculateJointMotorFeedforward(double RootAngle, double JointAngle) {
         RootAngle = Math.toRadians(RootAngle);
         JointAngle = Math.toRadians(JointAngle);
         double SumAngle = RootAngle + JointAngle;
-        double sb = Const.Arm.SecondArmBarycenter; //SecondBarycenter -> sb
+        double b2 = Const.Arm.SecondArmBarycenter;
         double m2 = Const.Arm.SecondArmMass;
 
-        return sb * m2 * Math.sin(SumAngle - Math.PI);
+        return b2 * m2 * Math.sin(SumAngle - Math.PI);
     }
 
     /**
      * NEOモーターのトルクとRPMの関係を利用 <a href="https://www.revrobotics.com/content/docs/REV-21-1650-DS.pdf">NEOのデータシート</a>
      * [注意] NEOモーターに合わせて出力する
-     * @param torque : トルク[N*cm] = モーメント / Const.Arms.[Under/Top]MotorGearRatio（ギア比に合わせて入力）
+     * @param torque : トルク[N*cm] = モーメント / Const.Arms.[Root/Joint]MotorGearRatio（ギア比に合わせて入力）
      * @return motor.setへの入力[-1.0, 1.0] (CANSparkMax)
      * */
     public static double changeTorqueToMotorInput (double torque) {

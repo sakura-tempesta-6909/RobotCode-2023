@@ -2,7 +2,7 @@ package frc.robot.mode;
 
 import frc.robot.State;
 import frc.robot.subClass.Const;
-import frc.robot.subClass.Tools;
+import frc.robot.subClass.ArmTools;
 
 import java.util.Map;
 
@@ -21,8 +21,8 @@ public class ArmMode extends Mode {
      */
     @Override
     public void changeState() {
-        State.Arm.rightX = Tools.deadZoneProcess(driveController.getRightX());
-        State.Arm.leftY = Tools.deadZoneProcess(driveController.getLeftY());
+        State.Arm.rightX = ArmTools.deadZoneProcess(driveController.getRightX());
+        State.Arm.leftY = ArmTools.deadZoneProcess(driveController.getLeftY());
 
         // Xボタンが押されたら一旦Integralをリセット Targetを現在のアームの座標にリセットする
         if (driveController.getXButtonPressed()) {
@@ -71,7 +71,7 @@ public class ArmMode extends Mode {
         }
 
         // ターゲット座標からターゲットの角度を計算する
-        Map<String, Double> targetAngles = Tools.calculateAngles(State.Arm.targetHeight, State.Arm.targetDepth);
+        Map<String, Double> targetAngles = ArmTools.calculateAngles(State.Arm.targetHeight, State.Arm.targetDepth);
         State.Arm.targetRootAngle = targetAngles.get("RootAngle");
         State.Arm.targetJointAngle = targetAngles.get("JointAngle");
     }
