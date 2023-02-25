@@ -47,8 +47,8 @@ public class Limelight implements Component {
         // ターゲットまでの距離
         State.distanceFromLimelightToGoal = (Const.Calculation.Limelight.GoalHeight - Const.Calculation.Limelight.LimelightLensHeight) / Math.tan(angleToGoalRadians);
         State.distanceFromArmToGoal = State.distanceFromLimelightToGoal - Const.Calculation.Limelight.DistanceFromLimelightToArm;
-        State.distanceFromLimelightToFrontGoal = State.distanceFromLimelightToGoal - Const.Calculation.Limelight.DistanceFromFrontGoalToBackGoal;
         State.distanceFromLimelightToBackGoal = State.distanceFromLimelightToGoal + Const.Calculation.Limelight.DistanceFromFrontGoalToBackGoal;
+
 
         double tx = txEntry.getDouble(0);
 
@@ -66,8 +66,9 @@ public class Limelight implements Component {
         }
 
 
-        SmartDashboard.putNumber("distance", State.distanceFromLimelightToGoal);
+        SmartDashboard.putNumber("FrontGoal", State.distanceFromLimelightToGoal);
         SmartDashboard.putNumber("ty", tyEntry.getDouble(0));
+        SmartDashboard.putNumber("BackGoal", State.distanceFromLimelightToBackGoal);
 
     }
 

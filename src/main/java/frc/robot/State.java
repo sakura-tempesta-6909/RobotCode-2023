@@ -66,7 +66,6 @@ public class State {
     public static double aprilTagAngleWidth;
     public static double distanceFromArmToTag; // [cm]
     public static double distanceFromArmToGoal; // [cm]
-    public static double distanceFromLimelightToFrontGoal;
     public static double distanceFromLimelightToBackGoal;
 
     /**
