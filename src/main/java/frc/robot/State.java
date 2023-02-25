@@ -14,11 +14,24 @@ public class State {
     public static double driveXSpeed, driveZRotation;
     public static DriveState driveState;
 
+
     /** ターゲットを向く時のスピード */
     public static double limelightTrackingZRotation;
-
     /** 手前のターゲットまでの距離 */
     public static double limelightToFrontGoal; // [cm]
+    /** cameraからtagまでの距離 */
+    public static double cameraToTag; // [cm]
+    /** cameraからみたapriltagの縦の角度(度数法) */
+    public static double aprilTagAngleHeight;
+    /** cameraからみたapriltagの横の角度(度数法) */
+    public static double aprilTagAngleWidth;
+    /** armからtagまでの距離 */
+    public static double armToTag; // [cm]
+    /** armからターゲットまでの距離 */
+    public static double armToGoal; // [cm]
+    /** 奥のターゲットまでの距離 */
+    public static double limelightToBackGoal; // [cm]
+
 
     public static IntakeState intakeState;
     public static HandState handState;
@@ -63,19 +76,7 @@ public class State {
     }
 
     public static Map<String, Double> voltage = new HashMap<>();
-    /** cameraからtagまでの距離 */
-    public static double cameraToTag; // [cm]
-    /** cameraからみたapriltagの縦の角度(度数法) */
-    public static double aprilTagAngleHeight;
-    /** cameraからみたapriltagの横の角度(度数法) */
-    public static double aprilTagAngleWidth;
-    /** armからtagまでの距離 */
-    public static double armToTag; // [cm]
-    /** armからターゲットまでの距離 */
-    public static double armToGoal; // [cm]
 
-    /** 奥のターゲットまでの距離 */
-    public static double limelightToBackGoal; // [cm]
 
     /**
      * Enableされたときの状態
