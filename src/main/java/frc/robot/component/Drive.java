@@ -20,6 +20,8 @@ public class Drive implements Component {
 
         driveRightBack.follow(driveRightFront);
         driveLeftBack.follow(driveLeftFront);
+        driveRightFront.setInverted(true);
+        driveRightBack.setInverted(true);
 
         differentialDrive = new DifferentialDrive(driveLeftFront, driveRightFront);
 
