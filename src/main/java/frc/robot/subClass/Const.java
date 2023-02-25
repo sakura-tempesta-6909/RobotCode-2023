@@ -22,36 +22,60 @@ public class Const {
 
     public static final class Calculation {
         public static final class Limelight {
+            /**
+             * The constant LimelightMaxAngleHeight.
+             */
             public static final double LimelightMaxAngleHeight = 27;
-            //Limelightの角度
+
+            /** Limelightの角度 */
             public static final double LimelightMountAngleDegrees = 34.5;
-            //Limelightの高さ
+
+            /** Limelightの高さ */
             public static final double LimelightLensHeight = 81.5; //  [cm]
-            //ターゲットの高さ
+
+            /** ターゲットの高さ */
             public static final double GoalHeight = 166; // [cm]
-            public static final double DistanceFromLimelightToArm = 0; // [cm]
-            public static final double DistanceFromFrontGoalToBackGoal = 43; // [cm]
+
+            /** LimelightからArmまでの距離 */
+            public static final double LimelightToArm = 0; // [cm]
+
+            /** 手前から奥のターゲットまでの距離 */
+            public static final double FrontGoalToBackGoal = 43; // [cm]
 
         }
 
 
         public static final class Camera {
+            /**　Cameraの縦の中心 */
             public static final double CameraCenterHeight = 320;
+            /** Cameraの横の中心 */
             public static final double CameraCenterWidth = 240;
+            /** Cameraの横の比 */
             public static final double VerticalRatio = 4;
+            /** Cameraの縦の比 */
             public static final double HorizontalRatio = 3;
+            /** Cameraの視野角の半分 */
             public static final double FieldOfViewHalf = 34.25;
+            /** 斜辺の長さ */
             public static final double ObliqueLine = Math.pow(VerticalRatio, 2) + Math.pow(HorizontalRatio, 2);
+            /** 縦の角度の最大 */
             public static final double ThetaMaxHeight = FieldOfViewHalf * VerticalRatio / Math.sqrt(ObliqueLine);
+            /** 横の角度の最大 */
             public static final double ThetaMaxWidth = FieldOfViewHalf * HorizontalRatio / Math.sqrt(ObliqueLine);
 
+            /** 縦の焦点距離 */
             public static final double FocalLengthHeight = CameraCenterHeight / Math.tan(Math.toRadians(ThetaMaxHeight));
+            /** 横の焦点距離 */
             public static final double FocalLengthWeight = CameraCenterWidth / Math.tan(Math.toRadians(ThetaMaxWidth));
 
+            /** Cameraの角度 */
             public static final double CameraMountAngleDegrees = 0;
+            /** Cameraの高さ */
             public static final double CameraLensHeight = 42.5; // [cm]
+            /** ターゲットの高さ */
             public static final double GoalHeight = 76.5; // [cm]
-            public static final double DistanceFromCameraToArm = 0; // [cm]
+            /** CameraからArmまでの距離 */
+            public static final double CameraToArm = 0; // [cm]
 
         }
 
