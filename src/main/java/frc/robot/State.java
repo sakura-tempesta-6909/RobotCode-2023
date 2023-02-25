@@ -146,6 +146,8 @@ public class State {
         s_stopDrive,
         // targetに照準を合わせる
         s_targetTracking,
+        s_apriltagTracking,
+
 
 
     }
