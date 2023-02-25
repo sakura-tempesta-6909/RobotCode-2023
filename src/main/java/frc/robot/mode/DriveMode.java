@@ -18,14 +18,8 @@ public class DriveMode extends Mode {
 
         if (driveController.getAButton()) {
             State.driveState = DriveState.s_apriltagTracking;
-        } else {
-            State.driveState = DriveState.s_stopDrive;
-        }
-
-        if (driveController.getBButton()) {
+        } else if (driveController.getBButton()) {
             State.driveState = DriveState.s_targetTracking;
-        } else {
-            State.driveState = DriveState.s_stopDrive;
         }
     }
     

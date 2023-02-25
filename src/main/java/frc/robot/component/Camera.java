@@ -48,6 +48,13 @@ public class Camera implements Component {
         outlineColor = new Scalar(0, 255, 0);
         xColor = new Scalar(0, 0, 255);
 
+        Thread visionThread = new Thread(() -> detection());
+        visionThread.setDaemon(true);
+        visionThread.start();
+
+    }
+
+    private void apriltagVisionThreadProc() {
     }
 
     public void calculation(AprilTagDetection detection) {
@@ -79,32 +86,7 @@ public class Camera implements Component {
         }
     }
 
-    @Override
-    public void autonomousInit() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void teleopInit() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void disabledInit() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void testInit() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void readSensors() {
+    public void detection() {
         //カメラからフレームを取得する
         if (cvSink.grabFrame(mat) == 0) {
             outputStream.notifyError(cvSink.getError());
@@ -145,6 +127,35 @@ public class Camera implements Component {
 
         SmartDashboard.putString("tag", tags.toString());
         outputStream.putFrame(mat);
+    }
+
+    @Override
+    public void autonomousInit() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void teleopInit() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void disabledInit() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void testInit() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void readSensors() {
+
     }
 
 
