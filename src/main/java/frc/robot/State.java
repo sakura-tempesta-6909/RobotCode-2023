@@ -16,9 +16,7 @@ public class State {
 
     public static double limelightTrackingZRotation;
 
-    /*
-    手前のターゲットまでの距離
-     */
+    /** 手前のターゲットまでの距離 */
     public static double distanceFromLimelightToFrontGoal; // [cm]
 
 
@@ -71,9 +69,7 @@ public class State {
     public static double distanceFromArmToTag; // [cm]
     public static double distanceFromArmToGoal; // [cm]
 
-    /*
-    奥のターゲットまでの距離
-     */
+    /** 奥のターゲットまでの距離 */
     public static double distanceFromLimelightToBackGoal; // [cm]
 
     /**
