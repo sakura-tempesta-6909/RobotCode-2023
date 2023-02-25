@@ -15,7 +15,9 @@ public class State {
     public static DriveState driveState;
 
     public static double limelightTrackingZRotation;
-    public static double distanceFromLimelightToGoal; // [cm]
+
+    // 手前のターゲットまでの距離
+    public static double distanceFromLimelightToFrontGoal; // [cm]
 
 
     public static IntakeState intakeState;
@@ -66,7 +68,9 @@ public class State {
     public static double aprilTagAngleWidth;
     public static double distanceFromArmToTag; // [cm]
     public static double distanceFromArmToGoal; // [cm]
-    public static double distanceFromLimelightToBackGoal;
+
+    // 奥のターゲットまでの距離
+    public static double distanceFromLimelightToBackGoal; // [cm]
 
     /**
      * Enableされたときの状態
