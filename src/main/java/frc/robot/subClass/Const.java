@@ -24,7 +24,7 @@ public class Const {
         public static final class Limelight {
             // limelightの情報
             /** Limelightの横の角度の最大 */
-            public static final double LimelightMaxAngleHeight = 27;
+            public static final double LimelightMaxAngleWidth = 27;
 
             /** Limelightの角度(度数法) */
             public static final double LimelightMountAngleDegrees = 34.5;

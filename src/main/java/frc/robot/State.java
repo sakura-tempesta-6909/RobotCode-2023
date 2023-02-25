@@ -17,6 +17,8 @@ public class State {
 
     /** ターゲットを向く時のスピード */
     public static double limelightTrackingZRotation;
+    /** apriltagを向くときのスピード */
+    public static double cameraTrackingZRotation;
     /** 手前のターゲットまでの距離 */
     public static double limelightToFrontGoal; // [cm]
     /** cameraからtagまでの距離 */
