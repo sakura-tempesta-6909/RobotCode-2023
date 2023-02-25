@@ -6,8 +6,8 @@ public class Const {
         public static final int OperateController = 1;
 
         public static final int DriveRightFront = 0;
-        public static final int DriveLeftFront = 1;
-        public static final int DriveRightBack = 2;
+        public static final int DriveLeftFront = 2;
+        public static final int DriveRightBack = 1;
         public static final int DriveLeftBack = 3;
     }
 

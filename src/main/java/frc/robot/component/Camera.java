@@ -48,7 +48,7 @@ public class Camera implements Component {
         outlineColor = new Scalar(0, 255, 0);
         xColor = new Scalar(0, 0, 255);
 
-        Thread visionThread = new Thread(() -> detection());
+        Thread visionThread = new Thread(this::detection);
         visionThread.setDaemon(true);
         visionThread.start();
 
