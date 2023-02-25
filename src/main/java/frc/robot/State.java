@@ -17,9 +17,7 @@ public class State {
     /** ターゲットを向く時のスピード */
     public static double limelightTrackingZRotation;
 
-    /**
-     * 手前のターゲットまでの距離
-     */
+    /** 手前のターゲットまでの距離 */
     public static double limelightToFrontGoal; // [cm]
 
     public static IntakeState intakeState;
@@ -76,9 +74,7 @@ public class State {
     /** armからターゲットまでの距離 */
     public static double armToGoal; // [cm]
 
-    /**
-     * 奥のターゲットまでの距離
-     */
+    /** 奥のターゲットまでの距離 */
     public static double limelightToBackGoal; // [cm]
 
     /**
