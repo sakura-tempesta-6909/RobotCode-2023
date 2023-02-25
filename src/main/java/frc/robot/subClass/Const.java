@@ -30,6 +30,7 @@ public class Const {
             //ターゲットの高さ
             public static final double GoalHeight = 166; // [cm]
             public static final double DistanceFromLimelightToArm = 0; // [cm]
+            public static final double DistanceFromFrontGoalToBackGoal = 43; // [cm]
 
         }
 
