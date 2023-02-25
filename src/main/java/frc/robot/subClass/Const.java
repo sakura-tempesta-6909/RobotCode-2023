@@ -25,7 +25,7 @@ public class Const {
             /** Limelightの横の角度の最大 */
             public static final double LimelightMaxAngleHeight = 27;
 
-            /** Limelightの角度 */
+            /** Limelightの角度(度数法) */
             public static final double LimelightMountAngleDegrees = 34.5;
 
             /** Limelightの高さ */
@@ -74,7 +74,7 @@ public class Const {
             /** 横の焦点距離 */
             public static final double FocalLengthWeight = CameraCenterWidth / Math.tan(Math.toRadians(ThetaMaxWidth));
 
-            /** Cameraの角度 */
+            /** Cameraの角度(度数法) */
             public static final double CameraMountAngleDegrees = 0;
             /** Cameraの高さ */
             public static final double CameraLensHeight = 42.5; // [cm]

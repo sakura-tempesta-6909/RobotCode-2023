@@ -65,9 +65,9 @@ public class State {
     public static Map<String, Double> voltage = new HashMap<>();
     /** cameraからtagまでの距離 */
     public static double cameraToTag; // [cm]
-    /** apriltagの縦の角度 */
+    /** cameraからみたapriltagの縦の角度(度数法) */
     public static double aprilTagAngleHeight;
-    /** apriltagの横の角度 */
+    /** cameraからみたapriltagの横の角度(度数法) */
     public static double aprilTagAngleWidth;
     /** armからtagまでの距離 */
     public static double armToTag; // [cm]
