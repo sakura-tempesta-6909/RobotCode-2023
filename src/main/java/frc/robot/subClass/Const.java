@@ -22,6 +22,7 @@ public class Const {
 
     public static final class Calculation {
         public static final class Limelight {
+            // limelightの情報
             /** Limelightの横の角度の最大 */
             public static final double LimelightMaxAngleHeight = 27;
 
@@ -31,11 +32,13 @@ public class Const {
             /** Limelightの高さ */
             public static final double LimelightLensHeight = 81.5; //  [cm]
 
-            /** ターゲットの高さ */
-            public static final double GoalHeight = 166; // [cm]
-
             /** LimelightからArmまでの距離 */
             public static final double LimelightToArm = 0; // [cm]
+
+
+            // ターゲットの情報
+            /** ターゲットの高さ */
+            public static final double GoalHeight = 166; // [cm]
 
             /** 手前から奥のターゲットまでの距離 */
             public static final double FrontGoalToBackGoal = 43; // [cm]
@@ -44,7 +47,7 @@ public class Const {
 
 
         public static final class Camera {
-
+            //　Cameraの情報
             /**　Cameraの縦の中心 */
             public static final double CameraCenterHeight = 320;
 
@@ -60,6 +63,22 @@ public class Const {
             /** Cameraの視野角の半分 */
             public static final double FieldOfViewHalf = 34.25;
 
+            /** Cameraの角度(度数法) */
+            public static final double CameraMountAngleDegrees = 0;
+
+            /** Cameraの高さ */
+            public static final double CameraLensHeight = 42.5; // [cm]
+
+            /** CameraからArmまでの距離 */
+            public static final double CameraToArm = 0; // [cm]
+
+
+            //ターゲットの情報
+            /** ターゲットの高さ */
+            public static final double GoalHeight = 76.5; // [cm]
+
+
+            //計算
             /** 斜辺の長さ */
             public static final double ObliqueLine = Math.pow(VerticalRatio, 2) + Math.pow(HorizontalRatio, 2);
 
@@ -74,14 +93,6 @@ public class Const {
             /** 横の焦点距離 */
             public static final double FocalLengthWeight = CameraCenterWidth / Math.tan(Math.toRadians(ThetaMaxWidth));
 
-            /** Cameraの角度(度数法) */
-            public static final double CameraMountAngleDegrees = 0;
-            /** Cameraの高さ */
-            public static final double CameraLensHeight = 42.5; // [cm]
-            /** ターゲットの高さ */
-            public static final double GoalHeight = 76.5; // [cm]
-            /** CameraからArmまでの距離 */
-            public static final double CameraToArm = 0; // [cm]
 
         }
 
