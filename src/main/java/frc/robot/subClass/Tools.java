@@ -5,8 +5,8 @@ import java.util.Map;
 
 public class Tools {
     /**
-     * @param RootAngle : readSensorで取得した実際の角度[deg]
-     * @param JointAngle : readSensorで取得した実際の角度[deg]
+     * @param RootAngle readSensorで取得した実際の角度[deg]
+     * @param JointAngle readSensorで取得した実際の角度[deg]
      * @return Height座標[cm]
      * */
     public static double calculateHeight(double RootAngle, double JointAngle) {
@@ -16,12 +16,12 @@ public class Tools {
         double l1 = Const.Arm.RootArmLength;
         double l2 = Const.Arm.HeadArmLength;
 
-        return l1 * Math.sin(RootAngle) - l2 * Math.sin(SumAngle);
+        return l1 * Math.cos(RootAngle) - l2 * Math.cos(SumAngle);
     }
 
     /**
-     * @param RootAngle : readSensorで取得した実際の角度[deg]
-     * @param JointAngle : readSensorで取得した実際の角度[deg]
+     * @param RootAngle readSensorで取得した実際の角度[deg]
+     * @param JointAngle readSensorで取得した実際の角度[deg]
      * @return Depth座標[cm]
      * */
     public static double calculateDepth(double RootAngle, double JointAngle) {
@@ -31,7 +31,7 @@ public class Tools {
         double l1 = Const.Arm.RootArmLength;
         double l2 = Const.Arm.HeadArmLength;
 
-        return l1 * Math.cos(RootAngle) - l2 * Math.cos(SumAngle);
+        return -1 * l1 * Math.sin(RootAngle) + l2 * Math.sin(SumAngle);
     }
 
     private static final double deadZoneThreshold = 0.05;
@@ -39,7 +39,7 @@ public class Tools {
     /**
      * 不感帯処理関数
      * 絶対値がdeadZoneThreshold未満のものを淘汰
-     * @param input : コントローラーの値を入力
+     * @param input コントローラーの値を入力
      * @return 不感帯処理を施したinput
      * */
     public static double deadZoneProcess(double input) {
@@ -48,8 +48,8 @@ public class Tools {
     }
 
     /**
-     * @param Height : ターゲットのX座標[cm]
-     * @param Depth : ターゲットのZ座標[cm]
+     * @param Height ターゲットのX座標[cm]
+     * @param Depth ターゲットのZ座標[cm]
      * X,ZからRootAngle, JointAngle を計算
      * @return アームのターゲットの角度[deg]
      */
@@ -65,9 +65,9 @@ public class Tools {
         double r = Math.sqrt(Math.pow(tX, 2) + Math.pow(tY, 2));
 
         double alphaSin = Math.asin(tX / r);
-        double RootAngleSin = Math.asin(Depth / r) - alphaSin;
+        double RootAngleSin = Math.asin(Depth / r) - alphaSin - 90;
         double alphaCos = Math.acos(tX / r);
-        double RootAngleCos = Math.acos(Depth / r) + alphaCos;
+        double RootAngleCos = Math.acos(Depth / r) + alphaCos - 90;
 
         double RootAngle = Math.abs(Tools.calculateHeight(RootAngleSin, JointAngle) - Height) > Math.abs(Tools.calculateHeight(RootAngleCos, JointAngle) - Height)
                 ? RootAngleCos : RootAngleSin;
@@ -80,8 +80,8 @@ public class Tools {
     }
 
     /**
-     * @param RootAngle : readSensorで取得した実際の角度[deg]
-     * @param JointAngle : readSensorで取得した実際の角度[deg]
+     * @param RootAngle readSensorで取得した実際の角度[deg]
+     * @param JointAngle readSensorで取得した実際の角度[deg]
      * underMotorのフィードフォワードを計算
      * それぞれのアームの重心をConstから取得
      * @return モーメント[N*cm]
@@ -97,7 +97,7 @@ public class Tools {
         double m1 = Const.Arm.RootArmMass;
         double m2 = Const.Arm.HeadArmMass;
 
-        double ffMomentForFirstArm = fb * m1 * Math.sin(RootAngle);
+        double ffMomentForFirstArm = fb * m1 * Math.cos(RootAngle);
         double ffMomentForSecondArm = l1 * m2 * Math.sin(RootAngle) - sb * m2 * Math.sin(SumAngle);
 
         //TODO feedforwardでmotor.setに渡す値はトルクの計算が必要
@@ -105,8 +105,8 @@ public class Tools {
     }
 
     /**
-     * @param RootAngle : readSensorで取得した実際の角度[deg]
-     * @param JointAngle : readSensorで取得した実際の角度[deg]
+     * @param RootAngle readSensorで取得した実際の角度[deg]
+     * @param JointAngle readSensorで取得した実際の角度[deg]
      * topMotorのフィードフォワードを計算
      * 重心などをConstから取得
      * @return モーメント[N*cm]
@@ -118,13 +118,13 @@ public class Tools {
         double sb = Const.Arm.HeadArmBarycenter; //SecondBarycenter -> sb
         double m2 = Const.Arm.HeadArmMass;
 
-        return sb * m2 * Math.sin(SumAngle - Math.PI);
+        return sb * m2 * -1 * Math.cos(SumAngle);
     }
 
     /**
      * NEOモーターのトルクとRPMの関係を利用 <a href="https://www.revrobotics.com/content/docs/REV-21-1650-DS.pdf">NEOのデータシート</a>
      * [注意] NEOモーターに合わせて出力する
-     * @param torque : トルク[N*cm] = モーメント / Const.Arms.[Under/Top]MotorGearRatio（ギア比に合わせて入力）
+     * @param torque トルク[N*cm] = モーメント / Const.Arms.[Under/Top]MotorGearRatio（ギア比に合わせて入力）
      * @return motor.setへの入力[-1.0, 1.0] (CANSparkMax)
      * */
     public static double changeTorqueToMotorInput (double torque) {
