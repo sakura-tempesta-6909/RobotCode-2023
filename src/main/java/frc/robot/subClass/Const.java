@@ -22,9 +22,7 @@ public class Const {
 
     public static final class Calculation {
         public static final class Limelight {
-            /**
-             * The constant LimelightMaxAngleHeight.
-             */
+            /** Limelightの横の角度の最大 */
             public static final double LimelightMaxAngleHeight = 27;
 
             /** Limelightの角度 */
@@ -46,20 +44,28 @@ public class Const {
 
 
         public static final class Camera {
+
             /**　Cameraの縦の中心 */
             public static final double CameraCenterHeight = 320;
+
             /** Cameraの横の中心 */
             public static final double CameraCenterWidth = 240;
+
             /** Cameraの横の比 */
             public static final double VerticalRatio = 4;
+
             /** Cameraの縦の比 */
             public static final double HorizontalRatio = 3;
+
             /** Cameraの視野角の半分 */
             public static final double FieldOfViewHalf = 34.25;
+
             /** 斜辺の長さ */
             public static final double ObliqueLine = Math.pow(VerticalRatio, 2) + Math.pow(HorizontalRatio, 2);
+
             /** 縦の角度の最大 */
             public static final double ThetaMaxHeight = FieldOfViewHalf * VerticalRatio / Math.sqrt(ObliqueLine);
+
             /** 横の角度の最大 */
             public static final double ThetaMaxWidth = FieldOfViewHalf * HorizontalRatio / Math.sqrt(ObliqueLine);
 
