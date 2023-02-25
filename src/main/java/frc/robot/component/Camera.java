@@ -48,13 +48,12 @@ public class Camera implements Component {
         outlineColor = new Scalar(0, 255, 0);
         xColor = new Scalar(0, 0, 255);
 
-        Thread visionThread = new Thread(this::detection);
-        visionThread.setDaemon(true);
-        visionThread.start();
+        while (true) {
+            Thread visionThread = new Thread(this::detection);
+            visionThread.setDaemon(true);
+            visionThread.start();
+        }
 
-    }
-
-    private void apriltagVisionThreadProc() {
     }
 
     public void calculation(AprilTagDetection detection) {
