@@ -48,11 +48,9 @@ public class Camera implements Component {
         outlineColor = new Scalar(0, 255, 0);
         xColor = new Scalar(0, 0, 255);
 
-        while (true) {
-            Thread visionThread = new Thread(this::detection);
-            visionThread.setDaemon(true);
-            visionThread.start();
-        }
+        Thread visionThread = new Thread(this::detection);
+        visionThread.setDaemon(true);
+        visionThread.start();
 
     }
 
@@ -86,47 +84,50 @@ public class Camera implements Component {
     }
 
     public void detection() {
-        //カメラからフレームを取得する
-        if (cvSink.grabFrame(mat) == 0) {
-            outputStream.notifyError(cvSink.getError());
-            return;
-        }
-        //画像をグレースケールにする
-        Imgproc.cvtColor(mat, grayMat, Imgproc.COLOR_RGB2GRAY);
+        while (true) {
+            //カメラからフレームを取得する
+            if (cvSink.grabFrame(mat) == 0) {
+                outputStream.notifyError(cvSink.getError());
+                return;
+            }
+            //画像をグレースケールにする
+            Imgproc.cvtColor(mat, grayMat, Imgproc.COLOR_RGB2GRAY);
 
-        //AprilTagを検出する
-        detections = detector.detect(grayMat);
-        tags.clear();
-        //AprilTagの数だけ繰り返す
-        for (AprilTagDetection detection : detections) {
-            double[] translation = detection.getHomography();
+            //AprilTagを検出する
+            detections = detector.detect(grayMat);
+            tags.clear();
+            //AprilTagの数だけ繰り返す
+            for (AprilTagDetection detection : detections) {
+                double[] translation = detection.getHomography();
 
-            System.out.println("Translation" + Arrays.toString(translation));
+                System.out.println("Translation" + Arrays.toString(translation));
 
-            for (var i = 0; i <= 3; i++) {
-                var j = (i + 1) % 4;
-                //i,jのXとYのコーナーの座標を取得
-                var pt1 = new Point(detection.getCornerX(i), detection.getCornerY(i));
-                var pt2 = new Point(detection.getCornerX(j), detection.getCornerY(j));
-                //検出したAprilTagを四角形で囲う
-                Imgproc.line(mat, pt1, pt2, outlineColor, 2);
+                for (var i = 0; i <= 3; i++) {
+                    var j = (i + 1) % 4;
+                    //i,jのXとYのコーナーの座標を取得
+                    var pt1 = new Point(detection.getCornerX(i), detection.getCornerY(i));
+                    var pt2 = new Point(detection.getCornerX(j), detection.getCornerY(j));
+                    //検出したAprilTagを四角形で囲う
+                    Imgproc.line(mat, pt1, pt2, outlineColor, 2);
 
+                }
+
+                calculation(detection);
+
+                //検出したAprilTagの中心にクロスヘアを描画
+                var cx = detection.getCenterX();
+                var cy = detection.getCenterY();
+                var ll = 10;
+                Imgproc.line(mat, new Point(cx - ll, cy), new Point(cx + ll, cy), xColor, 2);
+                Imgproc.line(mat, new Point(cx, cy - ll), new Point(cx, cy + ll), xColor, 2);
+                Imgproc.putText(mat, Integer.toString(detection.getId()), new Point(cx + ll, cy), Imgproc.FONT_HERSHEY_SIMPLEX, 1, xColor, 3);
             }
 
-            calculation(detection);
-
-            //検出したAprilTagの中心にクロスヘアを描画
-            var cx = detection.getCenterX();
-            var cy = detection.getCenterY();
-            var ll = 10;
-            Imgproc.line(mat, new Point(cx - ll, cy), new Point(cx + ll, cy), xColor, 2);
-            Imgproc.line(mat, new Point(cx, cy - ll), new Point(cx, cy + ll), xColor, 2);
-            Imgproc.putText(mat, Integer.toString(detection.getId()), new Point(cx + ll, cy), Imgproc.FONT_HERSHEY_SIMPLEX, 1, xColor, 3);
+            SmartDashboard.putString("tag", tags.toString());
+            outputStream.putFrame(mat);
         }
-
-        SmartDashboard.putString("tag", tags.toString());
-        outputStream.putFrame(mat);
     }
+
 
     @Override
     public void autonomousInit() {
