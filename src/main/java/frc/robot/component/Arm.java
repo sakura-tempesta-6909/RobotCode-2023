@@ -24,9 +24,11 @@ public class Arm implements Component {
         pidForRoot.setP(Const.Arm.P_R);
         pidForRoot.setI(Const.Arm.I_R);
         pidForRoot.setD(Const.Arm.D_R);
+        pidForRoot.setIAccum(1000);
         pidForJoint.setP(Const.Arm.P_J);
         pidForJoint.setI(Const.Arm.I_J);
         pidForJoint.setD(Const.Arm.D_J);
+        pidForJoint.setIAccum(10e5);
     }
 
     /**
@@ -34,13 +36,8 @@ public class Arm implements Component {
      * moveArmToSpecifiedPositionで実行
      */
     private void pidControlArm() {
-//        pidForJoint.setReference(calculateJointRotationFromAngle(State.Arm.targetJointAngle), CANSparkMax.ControlType.kPosition, 0, State.Arm.jointMotorFeedforward, SparkMaxPIDController.ArbFFUnits.kPercentOut);
-//        pidForRoot.setReference(calculateRootRotationFromAngle(State.Arm.targetRootAngle), CANSparkMax.ControlType.kPosition, 0, State.Arm.rootMotorFeedforward, SparkMaxPIDController.ArbFFUnits.kPercentOut);
-        if (State.Arm.actualRootAngle < State.Arm.targetRootAngle) {
-            rootMotor.set(0.5);
-        } else {
-            rootMotor.set(-0.2);
-        }
+        pidForJoint.setReference(calculateJointRotationFromAngle(State.Arm.targetJointAngle), CANSparkMax.ControlType.kPosition);
+        pidForRoot.setReference(calculateRootRotationFromAngle(State.Arm.targetRootAngle), CANSparkMax.ControlType.kPosition);
     }
 
     /**

@@ -67,16 +67,16 @@ public class Const {
 
         // TODO slotの導入 - コーンを持っているかどうかで値を変える
         /** 根本のNEOモーターのPIDのP */
-        public static final double P_R = 0.2;
+        public static final double P_R = 0.04;
         /** 根本のNEOモーターのPIDのI */
-        public static final double I_R = 0.2;
+        public static final double I_R = 10e-5;
         /** 根本のNEOモーターのPIDのD */
-        public static final double D_R = 0.01;
+        public static final double D_R = 0.00;
 
         /** 関節部分のNEOモーターのPIDのP */
-        public static final double P_J = 0.1;
+        public static final double P_J = 0.03;
         /** 関節部分のNEOモーターのPIDのI */
-        public static final double I_J = 0.000;
+        public static final double I_J = 5e-7;
         /** 関節部分のNEOモーターのPIDのD */
         public static final double D_J = 0.000;
         /**
