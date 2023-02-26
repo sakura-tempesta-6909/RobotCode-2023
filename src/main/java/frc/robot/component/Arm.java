@@ -34,8 +34,13 @@ public class Arm implements Component {
      * moveArmToSpecifiedPositionで実行
      */
     private void pidControlArm() {
-        pidForJoint.setReference(calculateJointRotationFromAngle(State.Arm.targetJointAngle), CANSparkMax.ControlType.kPosition, 0, State.Arm.jointMotorFeedforward, SparkMaxPIDController.ArbFFUnits.kPercentOut);
-        pidForRoot.setReference(calculateRootRotationFromAngle(State.Arm.targetRootAngle), CANSparkMax.ControlType.kPosition, 0, State.Arm.rootMotorFeedforward, SparkMaxPIDController.ArbFFUnits.kPercentOut);
+//        pidForJoint.setReference(calculateJointRotationFromAngle(State.Arm.targetJointAngle), CANSparkMax.ControlType.kPosition, 0, State.Arm.jointMotorFeedforward, SparkMaxPIDController.ArbFFUnits.kPercentOut);
+//        pidForRoot.setReference(calculateRootRotationFromAngle(State.Arm.targetRootAngle), CANSparkMax.ControlType.kPosition, 0, State.Arm.rootMotorFeedforward, SparkMaxPIDController.ArbFFUnits.kPercentOut);
+        if (State.Arm.actualRootAngle < State.Arm.targetRootAngle) {
+            rootMotor.set(0.5);
+        } else {
+            rootMotor.set(-0.2);
+        }
     }
 
     /**
@@ -71,8 +76,8 @@ public class Arm implements Component {
     }
 
     private void fixPositionWithFF() {
-        rootMotor.set(State.Arm.rootMotorFeedforward);
-        jointMotor.set(State.Arm.jointMotorFeedforward);
+        rootMotor.set(0);
+        jointMotor.set(0);
     }
 
     @Override
