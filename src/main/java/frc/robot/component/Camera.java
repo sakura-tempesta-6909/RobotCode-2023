@@ -56,8 +56,10 @@ public class Camera implements Component {
 
     public void calculation(AprilTagDetection detection) {
         //角度を求める
-        State.aprilTagAngleHeight = Math.toDegrees(Math.atan((detection.getCenterX() - Const.Calculation.Camera.CameraCenterHeight) / Const.Calculation.Camera.FocalLengthHeight));
-        State.aprilTagAngleWidth = Math.toDegrees(Math.atan((-detection.getCenterY() - Const.Calculation.Camera.CameraCenterWidth) / Const.Calculation.Camera.FocalLengthWeight));
+        SmartDashboard.getNumber("CenterX", State.cameraCenterWidth);
+        SmartDashboard.getNumber("CenterY", State.cameraCenterHeight);
+        State.aprilTagAngleHeight = Math.toDegrees(Math.atan((State.cameraCenterWidth - Const.Calculation.Camera.CameraCenterHeight) / Const.Calculation.Camera.FocalLengthHeight));
+        State.aprilTagAngleWidth = Math.toDegrees(Math.atan((-State.cameraCenterHeight - Const.Calculation.Camera.CameraCenterWidth) / Const.Calculation.Camera.FocalLengthWeight));
         SmartDashboard.putNumber("AngleX", State.aprilTagAngleHeight);
         SmartDashboard.putNumber("AngleY", State.aprilTagAngleWidth);
 

@@ -5,7 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f72108f7-ce51-49f9-91b3-cbf1659a19a4" name="Changes" comment="merge">
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/Robot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/Robot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/State.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/State.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/component/Camera.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/component/Camera.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -54,15 +57,16 @@
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0",
     "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "reference.settings.ide.settings.new.ui",
+    "settings.editor.selected.configurable": "preferences.language.FRC",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Gradle.Build Robot Code">
+  <component name="RunManager" selected="Gradle.Deploy Robot Code">
     <configuration name="Build Robot Code" type="GradleRunConfiguration" factoryName="Gradle">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -113,12 +117,13 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="03d37860-172f-4170-9361-62bbd012d7ca" name="Changes" comment="" />
+      <changelist id="f72108f7-ce51-49f9-91b3-cbf1659a19a4" name="Changes" comment="merge" />
       <created>1677145292821</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1677145292821</updated>
       <workItem from="1677145293920" duration="1828000" />
+      <workItem from="1677320956040" duration="10834000" />
     </task>
     <servers />
   </component>
@@ -147,5 +152,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
