@@ -34,8 +34,8 @@ public class Arm implements Component {
      * moveArmToSpecifiedPositionで実行
      */
     private void pidControlArm() {
-        pidForJoint.setReference(calculateJointRotationFromAngle(State.Arm.targetJointAngle), CANSparkMax.ControlType.kPosition);
-        pidForRoot.setReference(calculateRootRotationFromAngle(State.Arm.targetRootAngle), CANSparkMax.ControlType.kPosition);
+        pidForJoint.setReference(calculateJointRotationFromAngle(State.Arm.targetJointAngle), CANSparkMax.ControlType.kPosition, 0, State.Arm.jointMotorFeedforward, SparkMaxPIDController.ArbFFUnits.kPercentOut);
+        pidForRoot.setReference(calculateRootRotationFromAngle(State.Arm.targetRootAngle), CANSparkMax.ControlType.kPosition, 0, State.Arm.rootMotorFeedforward, SparkMaxPIDController.ArbFFUnits.kPercentOut);
     }
 
     /**
@@ -44,8 +44,8 @@ public class Arm implements Component {
      * @param root rootモーターのスピード [-1,1]
      */
     private void rotationControlArm(double joint, double root) {
-        jointMotor.set(joint);
-        rootMotor.set(root);
+        jointMotor.set(joint + State.Arm.jointMotorFeedforward);
+        rootMotor.set(root + State.Arm.rootMotorFeedforward);
     }
 
     private boolean isArmAtTarget() {
@@ -70,9 +70,9 @@ public class Arm implements Component {
         return angle * Const.Arm.JointMotorGearRatio / 360;
     }
 
-    private void setFeedForward(double rootFF, double jointFF) {
-        rootMotor.set(rootFF);
-        jointMotor.set(jointFF);
+    private void fixPositionWithFF() {
+        rootMotor.set(State.Arm.rootMotorFeedforward);
+        jointMotor.set(State.Arm.jointMotorFeedforward);
     }
 
     @Override
@@ -128,15 +128,13 @@ public class Arm implements Component {
 
         switch (State.Arm.state) {
             case s_moveArmToSpecifiedPosition:
-                setFeedForward(State.Arm.rootMotorFeedforward, State.Arm.jointMotorFeedforward);
                 pidControlArm();
                 break;
             case s_moveArmMotor:
-                setFeedForward(State.Arm.rootMotorFeedforward, State.Arm.jointMotorFeedforward);
                 rotationControlArm(State.Arm.rightX, State.Arm.leftY);
                 break;
             case s_fixArmPosition:
-                setFeedForward(State.Arm.rootMotorFeedforward, State.Arm.jointMotorFeedforward);
+                fixPositionWithFF();
                 break;
         }
     }
