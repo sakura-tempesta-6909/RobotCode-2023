@@ -35,6 +35,8 @@ public class State {
 
         public static double leftY;
         public static double rightX;
+        public static double leftX;
+
         public static double underMotorFeedforward;
         public static double topMotorFeedforward;
         public static boolean isArmAtTarget;
@@ -96,6 +98,8 @@ public class State {
 
         Arm.underMotorFeedforward = 0.0;
         Arm.topMotorFeedforward = 0.0;
+
+        Arm.leftX = 0.0;
 
         voltage = new HashMap<>();
         StateReset();

@@ -64,9 +64,10 @@ public class Arm implements Component{
     /**
      * コントローラーでアームを動かす
      * */
-    private void rotationControlArm (double top, double under) {
+    private void rotationControlArm (double top, double under, double moveLeftAndRight) {
         topMotor.set(ControlMode.PercentOutput, top);
         underMotor.set(ControlMode.PercentOutput, under);
+        moveLeftAndRightMotor.set(moveLeftAndRight);
     }
 
     private boolean isArmAtTarget () {
@@ -140,7 +141,7 @@ public class Arm implements Component{
                 pidControlArm();
                 break;
             case s_moveArmMotor:
-                rotationControlArm(State.Arm.rightX, State.Arm.leftY);
+                rotationControlArm(State.Arm.rightX, State.Arm.leftY, State.Arm.leftX);
                 break;
             case s_fixArmPosition:
                 stopArm();
