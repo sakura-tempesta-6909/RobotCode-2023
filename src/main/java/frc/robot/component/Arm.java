@@ -44,8 +44,8 @@ public class Arm implements Component {
      * @param root rootモーターのスピード [-1,1]
      */
     private void rotationControlArm(double joint, double root) {
-        jointMotor.set(joint + State.Arm.jointMotorFeedforward);
-        rootMotor.set(root + State.Arm.rootMotorFeedforward);
+        jointMotor.set(joint * Const.Arm.JointMotorMoveRatio);
+        rootMotor.set(root * Const.Arm.RootMotorMoveRatio);
     }
 
     private boolean isArmAtTarget() {

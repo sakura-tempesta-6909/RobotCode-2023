@@ -49,9 +49,9 @@ public class Const {
         }
 
         /** 根本のアームの長さ[cm] */
-        public static final double RootArmLength = 90.0;
+        public static final double RootArmLength = 45.0;
         /** 先端のアームの長さ[cm] */
-        public static final double HeadArmLength = 90.0;
+        public static final double HeadArmLength = 45.5;
         /** 根本のアームの重心の位置[cm]（根本からの距離） */
         public static final double RootArmBarycenter = 45.0;
         /** 先端のアームの重心の位置[cm]（関節部分からの距離） */
@@ -92,6 +92,8 @@ public class Const {
         public static final double JointMotorGearRatio = 100;
         /** 根本のNEOモーターのギア比 */
         public static final double RootMotorGearRatio = 114;
+        public static final double JointMotorMoveRatio = 0.09;
+        public static final double RootMotorMoveRatio = 0.5;
         /** PIDコントロールの誤差の許容量[deg] 注意! isArmAtTargetの判定に用いているだけ */
         public static final double PIDAngleTolerance = 0.1;
     }
