@@ -6,8 +6,8 @@ public class Const {
         public static final int OperateController = 1;
 
         public static final int DriveRightFront = 0;
-        public static final int DriveLeftFront = 1;
-        public static final int DriveRightBack = 2;
+        public static final int DriveLeftFront = 2;
+        public static final int DriveRightBack = 1;
         public static final int DriveLeftBack = 3;
     }
 
@@ -22,35 +22,77 @@ public class Const {
 
     public static final class Calculation {
         public static final class Limelight {
-            public static final double LimelightMaxAngleHeight = 27;
-            //Limelightの角度
+            // limelightの情報
+            /** Limelightの横の角度の最大 */
+            public static final double LimelightMaxAngleWidth = 27;
+
+            /** Limelightの角度(度数法) */
             public static final double LimelightMountAngleDegrees = 34.5;
-            //Limelightの高さ
+
+            /** Limelightの高さ */
             public static final double LimelightLensHeight = 81.5; //  [cm]
-            //ターゲットの高さ
+
+            /** LimelightからArmまでの距離 */
+            public static final double LimelightToArm = 0; // [cm]
+
+
+            // ターゲットの情報
+            /** ターゲットの高さ */
             public static final double GoalHeight = 166; // [cm]
-            public static final double DistanceFromLimelightToArm = 0; // [cm]
+
+            /** 手前から奥のターゲットまでの距離 */
+            public static final double FrontGoalToBackGoal = 43; // [cm]
 
         }
 
 
         public static final class Camera {
+            //　Cameraの情報
+            /**　Cameraの縦の中心 */
             public static final double CameraCenterHeight = 320;
+
+            /** Cameraの横の中心 */
             public static final double CameraCenterWidth = 240;
+
+            /** Cameraの横の比 */
             public static final double VerticalRatio = 4;
+
+            /** Cameraの縦の比 */
             public static final double HorizontalRatio = 3;
+
+            /** Cameraの視野角の半分 */
             public static final double FieldOfViewHalf = 34.25;
+
+            /** Cameraの角度(度数法) */
+            public static final double CameraMountAngleDegrees = 0;
+
+            /** Cameraの高さ */
+            public static final double CameraLensHeight = 42.5; // [cm]
+
+            /** CameraからArmまでの距離 */
+            public static final double CameraToArm = 0; // [cm]
+
+
+            //ターゲットの情報
+            /** ターゲットの高さ */
+            public static final double GoalHeight = 76.5; // [cm]
+
+
+            //計算
+            /** 斜辺の長さ */
             public static final double ObliqueLine = Math.pow(VerticalRatio, 2) + Math.pow(HorizontalRatio, 2);
+
+            /** 縦の角度の最大 */
             public static final double ThetaMaxHeight = FieldOfViewHalf * VerticalRatio / Math.sqrt(ObliqueLine);
+
+            /** 横の角度の最大 */
             public static final double ThetaMaxWidth = FieldOfViewHalf * HorizontalRatio / Math.sqrt(ObliqueLine);
 
+            /** 縦の焦点距離 */
             public static final double FocalLengthHeight = CameraCenterHeight / Math.tan(Math.toRadians(ThetaMaxHeight));
+            /** 横の焦点距離 */
             public static final double FocalLengthWeight = CameraCenterWidth / Math.tan(Math.toRadians(ThetaMaxWidth));
 
-            public static final double CameraMountAngleDegrees = 0;
-            public static final double CameraLensHeight = 42.5; // [cm]
-            public static final double GoalHeight = 76.5; // [cm]
-            public static final double DistanceFromCameraToArm = 0; // [cm]
 
         }
 
