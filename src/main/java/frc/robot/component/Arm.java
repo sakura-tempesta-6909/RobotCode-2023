@@ -64,10 +64,9 @@ public class Arm implements Component{
     /**
      * コントローラーでアームを動かす
      * */
-    private void rotationControlArm (double top, double under, double moveLeftAndRight) {
+    private void rotationControlArm (double top, double under) {
         topMotor.set(ControlMode.PercentOutput, top);
         underMotor.set(ControlMode.PercentOutput, under);
-        moveLeftAndRightMotor.set(moveLeftAndRight);
     }
 
     private boolean isArmAtTarget () {
@@ -80,6 +79,10 @@ public class Arm implements Component{
 
     public double getE2Angle(double x){
         return (x) / Const.Arm.Encoder2CountPerRotation;
+    }
+
+    public void moveLeftAndRightArm(double moveLeftAndRight){
+        moveLeftAndRightMotor.set(moveLeftAndRight);
     }
 
     @Override
@@ -141,7 +144,10 @@ public class Arm implements Component{
                 pidControlArm();
                 break;
             case s_moveArmMotor:
-                rotationControlArm(State.Arm.rightX, State.Arm.leftY, State.Arm.leftX);
+                rotationControlArm(State.Arm.rightX, State.Arm.leftY);
+                break;
+            case s_moveLeftAndRightMotor:
+                moveLeftAndRightArm(State.Arm.moveLeftAndRightMotor);
                 break;
             case s_fixArmPosition:
                 stopArm();

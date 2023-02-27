@@ -35,7 +35,8 @@ public class State {
 
         public static double leftY;
         public static double rightX;
-        public static double leftX;
+
+        public static double moveLeftAndRightMotor;
 
         public static double underMotorFeedforward;
         public static double topMotorFeedforward;
@@ -54,6 +55,10 @@ public class State {
              * アームの支点を動かす
              */
             s_moveArmMotor,
+            /**
+             * アームの根元の左右を動かす
+             */
+            s_moveLeftAndRightMotor,
             /**
              * アームをその場で固定する
              */
@@ -99,7 +104,7 @@ public class State {
         Arm.underMotorFeedforward = 0.0;
         Arm.topMotorFeedforward = 0.0;
 
-        Arm.leftX = 0.0;
+        Arm.moveLeftAndRightMotor = 0.0;
 
         voltage = new HashMap<>();
         StateReset();
