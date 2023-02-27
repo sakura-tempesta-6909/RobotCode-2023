@@ -148,6 +148,7 @@ public class Tools {
      * @return motor.setへの入力[-1.0, 1.0] (CANSparkMax)
      * */
     public static double changeTorqueToMotorInput (double torque) {
-        return 1 - torque / Const.Arm.MotorMaxTorque;
+        return torque / Const.Arm.MotorMaxTorque;
+        // TODO 2次関数的にトルクを求める必要があるらしい？
     }
 }

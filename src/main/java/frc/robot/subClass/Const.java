@@ -92,9 +92,9 @@ public class Const {
         public static final double JointMotorGearRatio = 4.0 * 5.0 * 40.0 / 12.0;
         /** 根本のNEOモーターのギア比 */
         public static final double RootMotorGearRatio = 3.0 * 5.0 * 5.0 * 40.0 / 12.0;
-        /** 関節部分のモーターをコントローラーで動かす時の速さ */
+        /** 関節部分のモーターをコントローラーで動かす時の最大の速さ */
         public static final double JointMotorMoveRatio = 0.09;
-        /** 根本のモーターをコントローラーで動かす時の速さ */
+        /** 根本のモーターをコントローラーで動かす時の最大の速さ */
         public static final double RootMotorMoveRatio = 0.5;
         /** PIDコントロールの誤差の許容量[deg] 注意! isArmAtTargetの判定に用いているだけ */
         public static final double PIDAngleTolerance = 0.1;
