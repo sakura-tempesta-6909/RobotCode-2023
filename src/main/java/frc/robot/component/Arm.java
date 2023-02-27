@@ -15,7 +15,7 @@ public class Arm implements Component {
     public Arm() {
         jointMotor = new CANSparkMax(Const.Arm.Ports.topMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
         rootMotor = new CANSparkMax(Const.Arm.Ports.underMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
-        jointMotor.setInverted(true);
+        jointMotor.setInverted(false);
         rootMotor.setInverted(true);
 
         pidForRoot = rootMotor.getPIDController();
@@ -24,11 +24,12 @@ public class Arm implements Component {
         pidForRoot.setP(Const.Arm.P_R);
         pidForRoot.setI(Const.Arm.I_R);
         pidForRoot.setD(Const.Arm.D_R);
-        pidForRoot.setIAccum(1000);
+        pidForRoot.setIMaxAccum(Const.Arm.IMax_R, 0);
+
         pidForJoint.setP(Const.Arm.P_J);
         pidForJoint.setI(Const.Arm.I_J);
         pidForJoint.setD(Const.Arm.D_J);
-        pidForJoint.setIAccum(10e5);
+        pidForJoint.setIMaxAccum(Const.Arm.IMax_J, 0);
     }
 
     /**

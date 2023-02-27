@@ -43,6 +43,7 @@ public class Const {
     }
 
     public static final class Arm {
+
         public static final class Ports {
             public static final int topMotor = 0;
             public static final int underMotor = 0;
@@ -72,6 +73,8 @@ public class Const {
         public static final double I_R = 10e-5;
         /** 根本のNEOモーターのPIDのD */
         public static final double D_R = 0.00;
+        /** 根本のNEOモーターの積分値の最大 */
+        public static final double IMax_R = 10e3;
 
         /** 関節部分のNEOモーターのPIDのP */
         public static final double P_J = 0.03;
@@ -79,6 +82,8 @@ public class Const {
         public static final double I_J = 5e-7;
         /** 関節部分のNEOモーターのPIDのD */
         public static final double D_J = 0.000;
+        /** 関節部分のNEOモーターの積分値の最大 */
+        public static final double IMax_J = 10e5;
         /**
          * NEOモーターの最大トルク 注意! [N*cm] = [N*m] * 100
          * <a href="https://www.revrobotics.com/content/docs/REV-21-1650-DS.pdf">NEOのデータシートを参照</a>
