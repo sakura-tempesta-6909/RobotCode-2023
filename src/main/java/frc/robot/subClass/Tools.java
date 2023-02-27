@@ -48,19 +48,19 @@ public class Tools {
     }
 
     /**
-     * @param Height ターゲットのY座標[cm]
      * @param Depth ターゲットのX座標[cm]
+     * @param Height ターゲットのY座標[cm]
      * X,YからRootAngle, JointAngle を計算
      * @return アームのターゲットの角度[deg]
      */
-    public static Map<String, Double> calculateAngles(double Height, double Depth) {
+    public static Map<String, Double> calculateAngles(double Depth, double Height) {
         double l1 = Const.Arm.RootArmLength;
         double l2 = Const.Arm.HeadArmLength;
 
-        double HeightPM = Math.signum(Height);
         double DepthPM = Math.signum(Depth);
-        Height = Math.abs(Height);
+        double HeightPM = Math.signum(Height);
         Depth = Math.abs(Depth);
+        Height = Math.abs(Height);
 
         double JointAngle = Math.acos(Math.min((Math.pow(Height, 2) + Math.pow(Depth, 2)
                 - Math.pow(l1, 2) - Math.pow(l2, 2)) / (2 * l1 * l2), 1.0));
