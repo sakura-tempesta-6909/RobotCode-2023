@@ -34,12 +34,6 @@ public class State {
     /** 奥のターゲットまでの距離 */
     public static double limelightToBackGoal; // [cm]
 
-    /** apriltagの中央の横の座標 */
-    public static double cameraCenterWidth;
-
-    /** apriltagの中央の縦の座標 */
-    public static double cameraCenterHeight;
-
     public static IntakeState intakeState;
     public static HandState handState;
 
