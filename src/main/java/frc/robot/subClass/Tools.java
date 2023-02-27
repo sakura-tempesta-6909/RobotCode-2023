@@ -58,12 +58,12 @@ public class Tools {
         double l2 = Const.Arm.HeadArmLength;
 
         double HeightPM = Math.signum(Height);
-        double DepthPM = Math.signum(Height);
+        double DepthPM = Math.signum(Depth);
         Height = Math.abs(Height);
         Depth = Math.abs(Depth);
 
-        double JointAngle = Math.acos(Math.min((Math.pow(l1, 2) + Math.pow(l2, 2)
-                - Math.pow(Height, 2) - Math.pow(Depth, 2)) / (2 * l1 * l2), 1.0));
+        double JointAngle = Math.acos(Math.min((Math.pow(Height, 2) + Math.pow(Depth, 2)
+                - Math.pow(l1, 2) - Math.pow(l2, 2)) / (2 * l1 * l2), 1.0));
 
         double tX = l1 + l2 * Math.cos(JointAngle);
         double tY = l2 * Math.sin(JointAngle);
@@ -81,15 +81,19 @@ public class Tools {
         if (HeightPM >= 0 && DepthPM >= 0) {
             angles.put("RootAngle", Math.toDegrees(RootAngleM));
             angles.put("JointAngle", Math.toDegrees(-1 * JointAngle));
+//            System.out.println("A");
         } else if (HeightPM < 0 && DepthPM >= 0) {
             angles.put("RootAngle", Math.toDegrees(-1 * RootAngleP));
             angles.put("JointAngle", Math.toDegrees(-1 * JointAngle));
+//            System.out.println("B");
         } else if (HeightPM < 0 && DepthPM < 0) {
-            angles.put("RootAngle", Math.toDegrees(RootAngleP) - 180);
-            angles.put("JointAngle", Math.toDegrees(-1 * JointAngle));
+            angles.put("RootAngle", Math.toDegrees(RootAngleM) - 180);
+            angles.put("JointAngle", -1 * Math.toDegrees(JointAngle));
+//            System.out.println("C");
         } else {
             angles.put("RootAngle", 180 - Math.toDegrees(RootAngleP));
-            angles.put("JointAngle", Math.toDegrees(JointAngle));
+            angles.put("JointAngle", -1 * Math.toDegrees(JointAngle));
+//            System.out.println("D");
         }
 
         return angles;
