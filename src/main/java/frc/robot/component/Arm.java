@@ -81,8 +81,12 @@ public class Arm implements Component{
         return (x) / Const.Arm.Encoder2CountPerRotation;
     }
 
-    public void moveLeftAndRightArm(double moveLeftAndRight){
-        moveLeftAndRightMotor.set(moveLeftAndRight);
+    public void moveLeftAndRightArm(double moveLeftAndRightSpeed){
+        moveLeftAndRightMotor.set(moveLeftAndRightSpeed);
+    }
+
+    public void stopLeftAndRightArm(double moveLeftAndRightSpeed){
+        moveLeftAndRightMotor.set(Const.Speeds.Neutral);
     }
 
     @Override
@@ -146,11 +150,17 @@ public class Arm implements Component{
             case s_moveArmMotor:
                 rotationControlArm(State.Arm.rightX, State.Arm.leftY);
                 break;
+            case s_fixArmPosition:
+                stopArm();
+                break;
+        }
+
+        switch(State.moveLeftAndRightArmState){
             case s_moveLeftAndRightMotor:
                 moveLeftAndRightArm(State.Arm.moveLeftAndRightMotor);
                 break;
-            case s_fixArmPosition:
-                stopArm();
+            case s_fixLeftAndRightMotor:
+                stopLeftAndRightArm(State.Arm.moveLeftAndRightMotor);
                 break;
         }
     }

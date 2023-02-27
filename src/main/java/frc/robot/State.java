@@ -21,6 +21,8 @@ public class State {
     public static IntakeState intakeState;
     public static HandState handState;
 
+    public static MoveLeftAndRightArmState moveLeftAndRightArmState;
+
     public static class Arm {
         public static States state;
         public static double targetHeight;
@@ -55,10 +57,6 @@ public class State {
              * アームの支点を動かす
              */
             s_moveArmMotor,
-            /**
-             * アームの根元の左右を動かす
-             */
-            s_moveLeftAndRightMotor,
             /**
              * アームをその場で固定する
              */
@@ -170,6 +168,17 @@ public class State {
          * 物体を離す
          */
         s_releaseHand,
+    }
+
+    public enum MoveLeftAndRightArmState{
+        /**
+         * アームを左右に動かす
+         */
+        s_moveLeftAndRightMotor,
+        /**
+         * アームを固定する
+         */
+        s_fixLeftAndRightMotor,
     }
 
     public enum Modes {
