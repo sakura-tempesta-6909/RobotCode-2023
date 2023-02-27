@@ -81,7 +81,32 @@ public class Camera implements Component {
         }
     }
 
-    public void detection() {
+    @Override
+    public void autonomousInit() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void teleopInit() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void disabledInit() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void testInit() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void readSensors() {
         //カメラからフレームを取得する
         if (cvSink.grabFrame(mat) == 0) {
             outputStream.notifyError(cvSink.getError());
@@ -122,36 +147,6 @@ public class Camera implements Component {
 
         SmartDashboard.putString("tag", tags.toString());
         outputStream.putFrame(mat);
-    }
-
-
-    @Override
-    public void autonomousInit() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void teleopInit() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void disabledInit() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void testInit() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void readSensors() {
-
     }
 
 
