@@ -7,6 +7,8 @@ import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.State;
 import frc.robot.subClass.Const;
 import frc.robot.subClass.Tools;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 
 public class Arm implements Component{
@@ -18,6 +20,8 @@ public class Arm implements Component{
 
     private final Encoder encoder1;
     private final Encoder encoder2;
+
+    private final CANSparkMax moveLeftAndRightMotor;
 
     public Arm() {
         encoder1 = new Encoder(2, 3);
@@ -35,6 +39,8 @@ public class Arm implements Component{
         pidForRoot.setIntegratorRange( -0.04 / Const.Arm.kI1, 0.04 / Const.Arm.kI1);
         pidForRoot.setTolerance(2);
         pidForJoint.setTolerance(1);
+
+        moveLeftAndRightMotor = new CANSparkMax(Const.Ports.moveLeftAndRightMotor,MotorType.kBrushless);
     }
 
     /**
@@ -73,6 +79,14 @@ public class Arm implements Component{
 
     public double getE2Angle(double x){
         return (x) / Const.Arm.Encoder2CountPerRotation;
+    }
+
+    public void moveLeftAndRightArm(double moveLeftAndRightSpeed){
+        moveLeftAndRightMotor.set(moveLeftAndRightSpeed);
+    }
+
+    public void stopLeftAndRightArm(double moveLeftAndRightSpeed){
+        moveLeftAndRightMotor.set(Const.Speeds.Neutral);
     }
 
     @Override
@@ -138,6 +152,15 @@ public class Arm implements Component{
                 break;
             case s_fixArmPosition:
                 stopArm();
+                break;
+        }
+
+        switch(State.moveLeftAndRightArmState){
+            case s_moveLeftAndRightMotor:
+                moveLeftAndRightArm(State.Arm.moveLeftAndRightMotor);
+                break;
+            case s_fixLeftAndRightMotor:
+                stopLeftAndRightArm(State.Arm.moveLeftAndRightMotor);
                 break;
         }
     }

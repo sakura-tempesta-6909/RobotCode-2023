@@ -37,6 +37,8 @@ public class State {
     public static IntakeState intakeState;
     public static HandState handState;
 
+    public static MoveLeftAndRightArmState moveLeftAndRightArmState;
+
     public static class Arm {
         public static States state;
         public static double targetHeight;
@@ -51,6 +53,9 @@ public class State {
 
         public static double leftY;
         public static double rightX;
+
+        public static double moveLeftAndRightMotor;
+
         public static double underMotorFeedforward;
         public static double topMotorFeedforward;
         public static boolean isArmAtTarget;
@@ -109,6 +114,8 @@ public class State {
 
         Arm.underMotorFeedforward = 0.0;
         Arm.topMotorFeedforward = 0.0;
+
+        Arm.moveLeftAndRightMotor = 0.0;
 
         voltage = new HashMap<>();
         StateReset();
@@ -176,6 +183,17 @@ public class State {
          * 物体を離す
          */
         s_releaseHand,
+    }
+
+    public enum MoveLeftAndRightArmState{
+        /**
+         * アームを左右に動かす
+         */
+        s_moveLeftAndRightMotor,
+        /**
+         * アームを固定する
+         */
+        s_fixLeftAndRightMotor,
     }
 
     public enum Modes {

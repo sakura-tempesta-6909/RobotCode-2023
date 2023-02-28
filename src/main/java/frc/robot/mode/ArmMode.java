@@ -23,6 +23,8 @@ public class ArmMode extends Mode {
     public void changeState() {
         State.Arm.rightX = Tools.deadZoneProcess(driveController.getRightX());
         State.Arm.leftY = Tools.deadZoneProcess(driveController.getLeftY());
+        
+        State.Arm.moveLeftAndRightMotor = Tools.deadZoneProcess(driveController.getLeftX());
 
         // Xボタンが押されたら一旦Integralをリセット Targetを現在のアームの座標にリセットする
         if (driveController.getXButtonPressed()) {
