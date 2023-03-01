@@ -40,44 +40,86 @@ public class State {
     public static MoveLeftAndRightArmState moveLeftAndRightArmState;
 
     public static class Arm {
+        /** アームのモード */
         public static States state;
+        /** 計測した角度(actualRootAngle, actualJointAngle)から計算した長さの値[cm] */
+        public static double actualHeight, actualDepth;
+        /** ターゲットの高さ[cm] */
         public static double targetHeight;
+        /** ターゲットの奥行き[cm] */
         public static double targetDepth;
-
+        /**
+         * 計測した角度の値[deg]
+         * root - 根本の角度
+         * joint - 関節部分の角度
+         */
         public static double actualRootAngle, actualJointAngle;
-
+        /**
+         * ターゲットの座標から計算された角度の目標値[deg]
+         * root - 根本の角度
+         * joint - 関節部分の角度
+         */
         public static double targetRootAngle, targetJointAngle;
-
-        public static double actualHeight;
-        public static double actualDepth;
-
+        /** TODO ここに作るべき変数じゃないのでControllerのStateを作るべき */
         public static double leftY;
         public static double rightX;
+        /** 根本のNEOモーターに必要になるfeedforwardのspeed[-1, 1] */
+        public static double rootMotorFeedforward;
+        /** 関節部分のNEOモーターに必要になるfeedforwardのspeed[-1, 1] */
+        public static double jointMotorFeedforward;
+        /** アームがターゲットについているか（ターゲットとの誤差がConst.Arm.PIDAngleTolerance以下か） */
+        public static boolean isArmAtTarget;
 
         public static double moveLeftAndRightMotor;
-
-        public static double underMotorFeedforward;
-        public static double topMotorFeedforward;
-        public static boolean isArmAtTarget;
-        public static boolean resetArmPidController;
-        public static boolean resetArmEncoder;
-
+        
+        /** PIDコントローラーをリセットする（Integralの値をリセットする） */
+        public static boolean resetPidController;
+        /** エンコーダーをリセット（その時点の位置を0と定める） */
+        public static boolean resetEncoder;
+        /** limelightの値を代入 TODO 一時的な変数（実際はlimelightのStateから値を取得） */
         public static double limelightTargetHeight, limelightTargetDepth;
 
 
         public enum States {
-            /**
-             * アームを指定した場所に移動させる
-             */
+            /** アームを指定した場所に移動させる */
             s_moveArmToSpecifiedPosition,
-            /**
-             * アームの支点を動かす
-             */
+            /** アームの支点を動かす */
             s_moveArmMotor,
-            /**
-             * アームをその場で固定する
-             */
+            /** アームをその場で固定する */
             s_fixArmPosition,
+        }
+
+        public static void ArmStateInit() {
+            //init armMode value
+            Arm.targetHeight = 0.0;
+            Arm.targetDepth = 0.0;
+
+            Arm.actualHeight = 0.0;
+            Arm.actualDepth = 0.0;
+
+            Arm.targetRootAngle = 0.0;
+            Arm.targetJointAngle = 0.0;
+
+            Arm.actualRootAngle = 0.0;
+            Arm.actualJointAngle = 0.0;
+
+            Arm.leftY = 0.0;
+            Arm.rightX = 0.0;
+
+            Arm.limelightTargetHeight = 10.0;
+            Arm.limelightTargetDepth = 80.0;
+
+            Arm.rootMotorFeedforward = 0.0;
+            Arm.jointMotorFeedforward = 0.0;
+            
+            Arm.moveLeftAndRightMotor = 0.0;
+        }
+
+        public static void ArmStateReset() {
+            Arm.state = Arm.States.s_fixArmPosition;
+            Arm.isArmAtTarget = false;
+            Arm.resetPidController = false;
+            Arm.resetEncoder = false;
         }
     }
 
@@ -92,31 +134,9 @@ public class State {
         XboxController operateController = new XboxController(Const.Ports.OperateController);
         Mode.addController(driveController, operateController);
         handState = HandState.s_releaseHand;
-
-        //init armMode value
-        Arm.targetHeight = 0.0;
-        Arm.targetDepth = 0.0;
-
-        Arm.actualHeight = 0.0;
-        Arm.actualDepth = 0.0;
-
-        Arm.targetRootAngle = 0.0;
-        Arm.targetJointAngle = 0.0;
-
-        Arm.actualRootAngle = 0.0;
-        Arm.actualJointAngle = 0.0;
-
-        Arm.leftY = 0.0;
-        Arm.rightX = 0.0;
-
-        Arm.limelightTargetHeight = 10.0;
-        Arm.limelightTargetDepth = 80.0;
-
-        Arm.underMotorFeedforward = 0.0;
-        Arm.topMotorFeedforward = 0.0;
-
-        Arm.moveLeftAndRightMotor = 0.0;
-
+        // initialize arm states
+        Arm.ArmStateInit();
+        
         voltage = new HashMap<>();
         StateReset();
     }
@@ -127,10 +147,8 @@ public class State {
     public static void StateReset() {
         driveState = DriveState.s_stopDrive;
         intakeState = IntakeState.s_stopConveyor;
-        Arm.state = Arm.States.s_fixArmPosition;
-        Arm.isArmAtTarget = false;
-        Arm.resetArmPidController = false;
-        Arm.resetArmEncoder = false;
+        // reset arm states
+        Arm.ArmStateReset();
     }
 
     public enum DriveState {

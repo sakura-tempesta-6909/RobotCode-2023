@@ -102,30 +102,66 @@ public class Const {
     }
 
     public static final class Arm {
-        public static double FirstArmLength = 90.0; // [cm]
-        public static double SecondArmLength = 90.0; // [cm]
-        public static double FirstArmBarycenter = 45.0; // [cm]
-        public static double SecondArmBarycenter = 45.0; // [cm]
-        public static double FirstArmMass = 0.0 * 9.8; // 注意　[N]=[kg*9.8]
-        public static double SecondArmMass = 0.0 * 9.8; // 注意　[N]=[kg*9.8]
-        public static double TargetModifyRatio = 1;
-        public static double TakeUpLengthAfterGrab = 20.0; // [cm]
-        public static double kP1 = 0.2;
-        public static double kI1 = 0.2;
-        public static double kD1 = 0.01;
 
-        public static double kP2 = 0.1;
-        public static double kI2 = 0.000;
-        public static double kD2 = 0.000;
+        public static final class Ports {
+            public static final int topMotor = 0;
+            public static final int underMotor = 0;
+        }
 
-        public static double Encoder1CountPerRotation = 14.3469;
-        public static double Encoder2CountPerRotation = 9.196;
-        public static double GearRatio = 140;
-        public static double MotorMaxTorque = 2.6 * 100; // [N*cm] = [N*m] * 100
-        public static double TargetPositionOuterLimit = FirstArmLength + SecondArmLength - 2; // [cm]
-        public static double TargetPositionInnerLimit = FirstArmLength - SecondArmLength + 2; // [cm]
-        public static double TopMotorGearRatio = 100;
-        public static double TopUnderGearRatio = 114;
+        /** 根本のアームの長さ[cm] */
+        public static final double RootArmLength = 45.0;
+        /** 先端のアームの長さ[cm] */
+        public static final double HeadArmLength = 45.5;
+        /** 根本のアームの重心の位置[cm]（根本からの距離） */
+        public static final double RootArmBarycenter = 45.0;
+        /** 先端のアームの重心の位置[cm]（関節部分からの距離） */
+        public static final double HeadArmBarycenter = 45.0;
+        /** 根本のアームの重さ[N] 注意 - [N]=[kg*9.8] */
+        public static final double RootArmMass = 0.0 * 9.8;
+        /** 先端のアームの重さ[N] 注意 - [N]=[kg*9.8] */
+        public static final double HeadArmMass = 0.0 * 9.8;
+        /** ターゲットの変更の速さ（コントローラーの値に乗算する） */
+        public static final double TargetModifyRatio = 1;
+        /** 掴んだ後に先端を持ちあげる高さ[cm] */
+        public static final double TakeUpLengthAfterGrab = 20.0;
+
+        // TODO slotの導入 - コーンを持っているかどうかで値を変える
+        /** 根本のNEOモーターのPIDのP */
+        public static final double P_R = 0.04;
+        /** 根本のNEOモーターのPIDのI */
+        public static final double I_R = 10e-5;
+        /** 根本のNEOモーターのPIDのD */
+        public static final double D_R = 0.00;
+        /** 根本のNEOモーターの積分値の最大 */
+        public static final double IMax_R = 10e3;
+
+        /** 関節部分のNEOモーターのPIDのP */
+        public static final double P_J = 0.03;
+        /** 関節部分のNEOモーターのPIDのI */
+        public static final double I_J = 5e-7;
+        /** 関節部分のNEOモーターのPIDのD */
+        public static final double D_J = 0.000;
+        /** 関節部分のNEOモーターの積分値の最大 */
+        public static final double IMax_J = 10e5;
+        /**
+         * NEOモーターの最大トルク 注意! [N*cm] = [N*m] * 100
+         * <a href="https://www.revrobotics.com/content/docs/REV-21-1650-DS.pdf">NEOのデータシートを参照</a>
+         */
+        public static final double MotorMaxTorque = 2.6 * 100;
+        /** ターゲットの座標の閾値（外側）[cm] */
+        public static final double TargetPositionOuterLimit = RootArmLength + HeadArmLength - 2;
+        /** ターゲットの座標の閾値（内側）[cm] */
+        public static final double TargetPositionInnerLimit = RootArmLength - HeadArmLength + 2;
+        /** 関節部分のNEOモーターのギア比 */
+        public static final double JointMotorGearRatio = 4.0 * 5.0 * 40.0 / 12.0;
+        /** 根本のNEOモーターのギア比 */
+        public static final double RootMotorGearRatio = 3.0 * 5.0 * 5.0 * 40.0 / 12.0;
+        /** 関節部分のモーターをコントローラーで動かす時の最大の速さ */
+        public static final double JointMotorMoveRatio = 0.09;
+        /** 根本のモーターをコントローラーで動かす時の最大の速さ */
+        public static final double RootMotorMoveRatio = 0.5;
+        /** PIDコントロールの誤差の許容量[deg] 注意! isArmAtTargetの判定に用いているだけ */
+        public static final double PIDAngleTolerance = 0.1;
     }
 
     public static final class MQTT {
