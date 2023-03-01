@@ -1,17 +1,25 @@
 package frc.robot.component;
 
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import frc.robot.State;
 import frc.robot.subClass.Const;
 
 public class Intake implements Component{
-    private Solenoid IntakeSolenoid;
+    private Solenoid intakeSolenoid;
+    private VictorSPX rightRoller;
+    private VictorSPX leftRoller;
+    private VictorSPX bottomRoller;
 
     public Intake() {
-        IntakeSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Const.Ports.IntakeSolenoid);
+        intakeSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Const.Ports.IntakeSolenoid);
+        rightRoller = new VictorSPX(Const.Ports.RightRoller);
+        leftRoller = new VictorSPX(Const.Ports.LeftRoller);
+        bottomRoller = new VictorSPX(Const.Ports.BottomRoller);
     }
-
+        
     @Override
     public void autonomousInit() {
         // TODO Auto-generated method stub
@@ -43,29 +51,32 @@ public class Intake implements Component{
     }
 
     /** Roller関係のモーターを動かす */
-    public void rollerControl(double rollerSpeed) {
+    // public void rollerControl(double sideRollerSpeed, double bottomRollerSpeed) {
+    //     rightRoller.set(1, sideRollerSpeed);
+    //     leftRoller.set(1, sideRollerSpeed);
+    //     bottomRoller.set(1, bottomRollerSpeed);
 
-    }
+    // }
 
     /** Intake関係のsolenoidを動かす */
     public void intakeControl(boolean isExtendingIntake) {
-        IntakeSolenoid.set(isExtendingIntake);
+        intakeSolenoid.set(isExtendingIntake);
     }
 
-    /** CONEとCUBEを出す */
-    public void outtakeGamePiece() {
-        rollerControl(Const.Speeds.RollerSpeed);
-    }
+    // /** CONEとCUBEを出す */
+    // public void outtakeGamePiece() {
+    //     rollerControl(Const.Speeds.SideRollerOuttakeSpeed);
+    // }
 
-    /** CONEとCUBEを回収する */
-    public void intakeGamePiece() {
-        rollerControl(Const.Speeds.OuttakeSpeed);
-    }
+    // /** CONEとCUBEを回収する */
+    // public void intakeGamePiece() {
+    //     rollerControl(Const.Speeds.SideRollerIntakeSpeed);
+    // }
 
-    /** Conveyorを動かさない */
-    public void stopRoller() {
-        rollerControl(Const.Speeds.Neutral);
-    }
+    // /** Conveyorを動かさない */
+    // public void stopRoller() {
+    //     rollerControl(Const.Speeds.Neutral);
+    // }
 
     /** Intakeを出す */
     public void openIntake() {
@@ -80,15 +91,15 @@ public class Intake implements Component{
     @Override
     public void applyState() {
         switch(State.intakeState){
-            case s_outtakeGamePiece:
-                outtakeGamePiece();
-                break;
-            case s_intakeGamePiece:
-                intakeGamePiece();
-                break;
-            case s_stopRoller:
-                stopRoller();
-                break;
+            // case s_outtakeGamePiece:
+            //     outtakeGamePiece();
+            //     break;
+            // case s_intakeGamePiece:
+            //     intakeGamePiece();
+            //     break;
+            // case s_stopRoller:
+            //     stopRoller();
+            //     break;
         }
         
         switch(State.intakeExtensionState){

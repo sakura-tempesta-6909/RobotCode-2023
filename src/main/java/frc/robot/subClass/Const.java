@@ -13,6 +13,10 @@ public class Const {
         public static final int HandSolenoid = 0;
 
         public static final int IntakeSolenoid = 0;
+
+        public static final int RightRoller = 0;
+        public static final int LeftRoller = 1;
+        public static final int BottomRoller = 2;
     }
 
     public static final class Speeds {
@@ -22,11 +26,12 @@ public class Const {
         public static double MidDrive = 0.5;
         public static double SlowDrive = 0.3;
 
-        public static double RollerSpeed = 0.5;
-        public static double OuttakeSpeed = 0.5;
+        public static double SideRollerOuttakeSpeed = 0.5;
+        public static double SideRollerIntakeSpeed = 0.5;
+        public static double BottomRollerOuttakaeSpeed = 0.5;
+        public static double BottomRollerIntakeSpeed = 0.5;
 
         public static double HandRotationSpeed = 0.3;
-
     }
 
     public static void ConstInit() {
