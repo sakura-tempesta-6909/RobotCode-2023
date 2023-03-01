@@ -79,12 +79,10 @@ public class Camera implements Component {
                 State.limelightTrackingZRotation = Const.Speeds.MidDrive;
             }
         }
-    }
 
-    public void frontDrive() {
         if (State.aprilTagAngleWidth < 5) {
-            State.cameraXSpeed  = State.aprilTagAngleHeight / -Const.Calculation.Camera.ThetaMaxHeight * Const.Speeds.MidDrive + -0.2;
-        } else if (State.aprilTagAngleWidth >5) {
+            State.cameraXSpeed  = Const.Speeds.MidDrive;
+        } else if (State.cameraToTag < 100) {
             State.cameraXSpeed = Const.Speeds.Neutral;
         }
     }
