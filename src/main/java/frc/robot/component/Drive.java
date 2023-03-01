@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.State;
 import frc.robot.subClass.Const;
 
-public class Drive implements Component{
+public class Drive implements Component {
 
     private WPI_TalonSRX driveRightFront, driveLeftFront;
     private VictorSPX driveRightBack, driveLeftBack;
@@ -20,6 +20,8 @@ public class Drive implements Component{
 
         driveRightBack.follow(driveRightFront);
         driveLeftBack.follow(driveLeftFront);
+        driveRightFront.setInverted(true);
+        driveRightBack.setInverted(true);
 
         differentialDrive = new DifferentialDrive(driveLeftFront, driveRightFront);
 
@@ -33,36 +35,36 @@ public class Drive implements Component{
     @Override
     public void autonomousInit() {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void teleopInit() {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void disabledInit() {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void testInit() {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void readSensors() {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void applyState() {
-        switch(State.driveState) {
+        switch (State.driveState) {
             case s_fastDrive:
                 arcadeDrive(Const.Speeds.FastDrive * State.driveXSpeed, Const.Speeds.FastDrive * State.driveZRotation);
                 break;
@@ -70,13 +72,19 @@ public class Drive implements Component{
                 arcadeDrive(Const.Speeds.MidDrive * State.driveXSpeed, Const.Speeds.MidDrive * State.driveZRotation);
                 break;
             case s_slowDrive:
-                arcadeDrive(Const.Speeds.SlowDrive * State.driveXSpeed, Const.Speeds.SlowDrive * State.driveZRotation); 
+                arcadeDrive(Const.Speeds.SlowDrive * State.driveXSpeed, Const.Speeds.SlowDrive * State.driveZRotation);
                 break;
             case s_stopDrive:
                 arcadeDrive(Const.Speeds.Neutral * State.driveXSpeed, Const.Speeds.Neutral * State.driveZRotation);
                 break;
-        }
-        
-    }
+            case s_targetTracking:
+                arcadeDrive(Const.Speeds.Neutral * State.driveXSpeed, State.limelightTrackingZRotation);
+                break;
+            case s_apriltagTracking:
+                arcadeDrive(Const.Speeds.Neutral * State.driveXSpeed, State.cameraTrackingZRotation);
+                break;
 
+        }
+    }
 }
+

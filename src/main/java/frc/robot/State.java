@@ -13,8 +13,31 @@ public class State {
     public static Modes mode;
     public static double driveXSpeed, driveZRotation;
     public static DriveState driveState;
+
+
+    /** ターゲットを向く時のスピード */
+    public static double limelightTrackingZRotation;
+    /** apriltagを向くときのスピード */
+    public static double cameraTrackingZRotation;
+    /** 手前のターゲットまでの距離 */
+    public static double limelightToFrontGoal; // [cm]
+    /** cameraからtagまでの距離 */
+    public static double cameraToTag; // [cm]
+    /** cameraからみたapriltagの縦の角度(度数法) */
+    public static double aprilTagAngleHeight;
+    /** cameraからみたapriltagの横の角度(度数法) */
+    public static double aprilTagAngleWidth;
+    /** armからtagまでの距離 */
+    public static double armToTag; // [cm]
+    /** armからターゲットまでの距離 */
+    public static double armToGoal; // [cm]
+    /** 奥のターゲットまでの距離 */
+    public static double limelightToBackGoal; // [cm]
+
     public static IntakeState intakeState;
     public static HandState handState;
+
+    public static MoveLeftAndRightArmState moveLeftAndRightArmState;
 
     public static class Arm {
         /** アームのモード */
@@ -46,12 +69,16 @@ public class State {
         public static double jointMotorFeedforward;
         /** アームがターゲットについているか（ターゲットとの誤差がConst.Arm.PIDAngleTolerance以下か） */
         public static boolean isArmAtTarget;
+
+        public static double moveLeftAndRightMotor;
+        
         /** PIDコントローラーをリセットする（Integralの値をリセットする） */
         public static boolean resetPidController;
         /** エンコーダーをリセット（その時点の位置を0と定める） */
         public static boolean resetEncoder;
         /** limelightの値を代入 TODO 一時的な変数（実際はlimelightのStateから値を取得） */
         public static double limelightTargetHeight, limelightTargetDepth;
+
 
         public enum States {
             /** アームを指定した場所に移動させる */
@@ -84,6 +111,8 @@ public class State {
 
             Arm.rootMotorFeedforward = 0.0;
             Arm.jointMotorFeedforward = 0.0;
+            
+            Arm.moveLeftAndRightMotor = 0.0;
         }
 
         public static void ArmStateReset() {
@@ -95,9 +124,7 @@ public class State {
     }
 
     public static Map<String, Double> voltage = new HashMap<>();
-    public static double distanceFromCameraToTagCentis;
-    public static double apriltagAngleHight;
-    public static double apriltagAngleWeight;
+
 
     /**
      * Enableされたときの状態
@@ -109,6 +136,7 @@ public class State {
         handState = HandState.s_releaseHand;
         // initialize arm states
         Arm.ArmStateInit();
+        
         voltage = new HashMap<>();
         StateReset();
     }
@@ -140,6 +168,11 @@ public class State {
          * ロボットの速度を0にする
          */
         s_stopDrive,
+        // targetに照準を合わせる
+        s_targetTracking,
+        s_apriltagTracking,
+
+
 
     }
 
@@ -168,6 +201,17 @@ public class State {
          * 物体を離す
          */
         s_releaseHand,
+    }
+
+    public enum MoveLeftAndRightArmState{
+        /**
+         * アームを左右に動かす
+         */
+        s_moveLeftAndRightMotor,
+        /**
+         * アームを固定する
+         */
+        s_fixLeftAndRightMotor,
     }
 
     public enum Modes {

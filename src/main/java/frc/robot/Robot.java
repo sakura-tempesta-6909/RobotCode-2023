@@ -1,5 +1,8 @@
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.robot.component.*;
 import frc.robot.phase.Autonomous;
@@ -23,15 +26,17 @@ public class Robot extends TimedRobot {
 
     PrintStream defaultConsole = System.out;
     ByteArrayOutputStream newConsole = new ByteArrayOutputStream();
+    private NetworkTable table;
+    NetworkTableEntry entry;
 
     @Override
     public void robotInit() {
         System.setOut(new PrintStream(newConsole));
         Const.ConstInit();
-        Thread thread = new Thread(() -> {
-            mqtt.connect();
-        });
+
+        Thread thread = new Thread(() -> mqtt.connect());
         thread.start();
+
         components = new ArrayList<>();
         components.add(new Drive());
         components.add(new Intake());
@@ -42,18 +47,21 @@ public class Robot extends TimedRobot {
         externalSensors = new ExternalSensors();
 
         State.StateInit();
-        Util.sendSystemOut(defaultConsole, newConsole);
+
         defaultConsole.print(newConsole);
         newConsole = new ByteArrayOutputStream();
-
-
+        table =  NetworkTableInstance.getDefault().getTable("SmartDashboard");
+        entry = table.getEntry("center");
     }
 
     @Override
     public void robotPeriodic() {
-        Util.sendSystemOut(defaultConsole, newConsole);
         defaultConsole.print(newConsole);
         newConsole = new ByteArrayOutputStream();
+        double[] array = entry.getDoubleArray(new double[]{0.0, 0.0});
+        System.out.println("NetworkTables");
+        System.out.println(array[0]);
+        System.out.println(array[1]);
     }
 
     @Override

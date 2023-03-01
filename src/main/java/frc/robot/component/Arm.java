@@ -6,11 +6,15 @@ import com.revrobotics.SparkMaxPIDController;
 import frc.robot.State;
 import frc.robot.subClass.Const;
 import frc.robot.subClass.Tools;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 
 public class Arm implements Component {
     private final CANSparkMax rootMotor, jointMotor;
     private final SparkMaxPIDController pidForRoot, pidForJoint;
+
+    private final CANSparkMax moveLeftAndRightMotor;
 
     public Arm() {
         jointMotor = new CANSparkMax(Const.Arm.Ports.topMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -30,6 +34,8 @@ public class Arm implements Component {
         pidForJoint.setI(Const.Arm.I_J);
         pidForJoint.setD(Const.Arm.D_J);
         pidForJoint.setIMaxAccum(Const.Arm.IMax_J, 0);
+
+        moveLeftAndRightMotor = new CANSparkMax(Const.Ports.moveLeftAndRightMotor,MotorType.kBrushless);
     }
 
     /**
@@ -76,6 +82,14 @@ public class Arm implements Component {
     private void fixPositionWithFF() {
         rootMotor.set(0);
         jointMotor.set(0);
+    }
+
+    public void moveLeftAndRightArm(double moveLeftAndRightSpeed){
+        moveLeftAndRightMotor.set(moveLeftAndRightSpeed);
+    }
+
+    public void stopLeftAndRightArm(double moveLeftAndRightSpeed){
+        moveLeftAndRightMotor.set(Const.Speeds.Neutral);
     }
 
     @Override
@@ -138,6 +152,15 @@ public class Arm implements Component {
                 break;
             case s_fixArmPosition:
                 fixPositionWithFF();
+                break;
+        }
+
+        switch(State.moveLeftAndRightArmState){
+            case s_moveLeftAndRightMotor:
+                moveLeftAndRightArm(State.Arm.moveLeftAndRightMotor);
+                break;
+            case s_fixLeftAndRightMotor:
+                stopLeftAndRightArm(State.Arm.moveLeftAndRightMotor);
                 break;
         }
     }

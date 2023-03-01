@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Robot Code" pattern="[RobotCode-2023.main]:frc.robot..*" />
+</component>

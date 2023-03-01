@@ -14,19 +14,15 @@ import java.util.Map;
 
 public class MQTT{
     private MqttClient mqttClient;
-    final String broker = "tcp://raspberrypi.local:1883";
-    final String topic = "robot/data/main";
-    final int qos = 1;
-    final String clientId = "robot/test";
-    ConnectStatus connectStatus = ConnectStatus.notYet;
-    MqttConnectOptions connOpts = new MqttConnectOptions();
+    private ConnectStatus connectStatus = ConnectStatus.notYet;
+    private MqttConnectOptions connOpts = new MqttConnectOptions();
     int retryCount = 0;
 
 
     public void connect(){
         if (connectStatus == ConnectStatus.notYet) {
             try {
-                mqttClient = new MqttClient(broker, clientId, new MemoryPersistence());
+                mqttClient = new MqttClient(Const.MQTT.Broker, Const.MQTT.ClientId, new MemoryPersistence());
             } catch (MqttException e) {
                 connectStatus = ConnectStatus.failedCreateClient;
                 return;
@@ -36,14 +32,14 @@ public class MQTT{
         if(mqttClient.isConnected()) {
             return;
         }
-        if (retryCount < 100) {
+        if (retryCount < Const.MQTT.MaxRetry) {
             try {
                 mqttClient.connect(connOpts);
                 connectStatus = ConnectStatus.connected;
             } catch (MqttException e) {
-                retryCount++;
                 connectStatus = ConnectStatus.retryConnect;
             }
+            retryCount++;
         }
     }
     public JSONObject convertStateToJson() {
@@ -53,7 +49,6 @@ public class MQTT{
             try {
                 map.put(cl.getName(), cl.get(State.class));
             } catch (IllegalAccessException e) {
-                continue;
             }
         }
         return new JSONObject(map);
@@ -61,7 +56,7 @@ public class MQTT{
     public void publish(JSONObject json){
         if (connectStatus == ConnectStatus.connected) {
             try {
-                mqttClient.publish(topic, new MqttMessage(json.toString().getBytes()));
+                mqttClient.publish(Const.MQTT.Topic, new MqttMessage(json.toString().getBytes()));
             } catch (MqttException e) {
                 System.out.println("MQTT Publish Error");
             }
