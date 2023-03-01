@@ -19,7 +19,7 @@ public class DriveMode extends Mode {
 
         if (driveController.getAButton()) {
             State.driveState = DriveState.s_apriltagTracking;
-            State.cameraXSpeed = driveController.getLeftY();
+            State.cameraXSpeed = -driveController.getLeftY();
         } else if (driveController.getBButton()) {
             State.driveState = DriveState.s_targetTracking;
         }
