@@ -33,6 +33,10 @@ public class State {
     public static double armToGoal; // [cm]
     /** 奥のターゲットまでの距離 */
     public static double limelightToBackGoal; // [cm]
+    /** カメラの横の中心座礁 */
+    public static double cameraCenterWidth;
+    /** カメラの盾の中心座礁 */
+    public static double cameraCenterHeight;
 
     public static IntakeState intakeState;
     public static HandState handState;
