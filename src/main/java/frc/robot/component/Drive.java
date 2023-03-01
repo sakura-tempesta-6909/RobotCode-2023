@@ -83,6 +83,8 @@ public class Drive implements Component {
             case s_apriltagTracking:
                 arcadeDrive(Const.Speeds.Neutral * State.driveXSpeed, State.cameraTrackingZRotation);
                 break;
+            case s_frontDrive:
+                arcadeDrive(State.cameraXSpeed, Const.Speeds.Neutral * State.driveZRotation);
 
         }
     }

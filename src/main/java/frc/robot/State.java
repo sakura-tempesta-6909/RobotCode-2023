@@ -37,6 +37,7 @@ public class State {
     public static double cameraCenterWidth;
     /** カメラの盾の中心座標 */
     public static double cameraCenterHeight;
+    public static double cameraXSpeed;
 
     public static IntakeState intakeState;
     public static HandState handState;
@@ -175,6 +176,7 @@ public class State {
         // targetに照準を合わせる
         s_targetTracking,
         s_apriltagTracking,
+        s_frontDrive,
 
 
 

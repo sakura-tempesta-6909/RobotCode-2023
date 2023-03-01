@@ -81,6 +81,14 @@ public class Camera implements Component {
         }
     }
 
+    public void frontDrive() {
+        if (State.aprilTagAngleWidth < 5) {
+            State.cameraXSpeed  = State.aprilTagAngleHeight / -Const.Calculation.Camera.ThetaMaxHeight * Const.Speeds.MidDrive + -0.2;
+        } else if (State.aprilTagAngleWidth >5) {
+            State.cameraXSpeed = Const.Speeds.Neutral;
+        }
+    }
+
     @Override
     public void autonomousInit() {
         // TODO Auto-generated method stub

@@ -22,6 +22,10 @@ public class DriveMode extends Mode {
         } else if (driveController.getBButton()) {
             State.driveState = DriveState.s_targetTracking;
         }
+
+        if (driveController.getYButton()) {
+            State.driveState = DriveState.s_frontDrive;
+        }
     }
     
 }
