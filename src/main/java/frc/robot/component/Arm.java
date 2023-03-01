@@ -88,8 +88,14 @@ public class Arm implements Component {
         moveLeftAndRightMotor.set(moveLeftAndRightSpeed);
     }
 
-    public void stopLeftAndRightArm(double moveLeftAndRightSpeed){
+    public void stopLeftAndRightArm(){
         moveLeftAndRightMotor.set(Const.Speeds.Neutral);
+    }
+
+    public void moveArmToMiddle() {
+
+        m_pidController.setReference(setPoint, CANSparkMax.ControlType.kVelocity);
+        processVariable = m_encoder.getVelocity();
     }
 
     @Override
@@ -161,6 +167,9 @@ public class Arm implements Component {
                 break;
             case s_fixLeftAndRightMotor:
                 stopLeftAndRightArm(State.Arm.moveLeftAndRightMotor);
+                break;
+            case s_movetomiddle:
+                moveArmToMiddle();
                 break;
         }
     }
