@@ -13,8 +13,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 public class Arm implements Component {
     private final CANSparkMax rootMotor, jointMotor;
     private final SparkMaxPIDController pidForRoot, pidForJoint;
-    private final SparkMaxPIDController mid_pidController;
-    private final RelativeEncoder mid_encoder;
+    private final SparkMaxPIDController midPidController;
+    private final RelativeEncoder midEncoder;
     private final CANSparkMax moveLeftAndRightMotor;
 
     public Arm() {
@@ -37,12 +37,12 @@ public class Arm implements Component {
         pidForJoint.setIMaxAccum(Const.Arm.IMax_J, 0);
 
         moveLeftAndRightMotor = new CANSparkMax(Const.Ports.moveLeftAndRightMotor,MotorType.kBrushless);
-        mid_pidController = moveLeftAndRightMotor.getPIDController();
-        mid_encoder = moveLeftAndRightMotor.getEncoder();
-        mid_pidController.setP(Const.Arm.P_MID);
-        mid_pidController.setI(Const.Arm.I_MID);
-        mid_pidController.setD(Const.Arm.D_MID);
-        mid_pidController.setIMaxAccum(Const.Arm.IMax_MID, 0);
+        midPidController = moveLeftAndRightMotor.getPIDController();
+        midEncoder = moveLeftAndRightMotor.getEncoder();
+        midPidController.setP(Const.Arm.P_MID);
+        midPidController.setI(Const.Arm.I_MID);
+        midPidController.setD(Const.Arm.D_MID);
+        midPidController.setIMaxAccum(Const.Arm.IMax_MID, 0);
 
     }
 
@@ -108,7 +108,7 @@ public class Arm implements Component {
      * 目標値（真ん中）を0とする
      */
     public void moveArmToMiddle() {
-        mid_pidController.setReference(0, CANSparkMax.ControlType.kPosition);
+        midPidController.setReference(0, CANSparkMax.ControlType.kPosition);
 
     }
 
@@ -140,7 +140,7 @@ public class Arm implements Component {
         State.Arm.actualHeight = Tools.calculateHeight(State.Arm.actualRootAngle, State.Arm.actualJointAngle);
         State.Arm.actualDepth = Tools.calculateDepth(State.Arm.actualRootAngle, State.Arm.actualJointAngle);
         //armが左右に動いてる時の位置（角度）
-        State.Arm.leftAndRightPositionAngle = calculateLeftAndRightAngleFromRotation(mid_encoder.getPosition());
+        State.Arm.leftAndRightPositionAngle = calculateLeftAndRightAngleFromRotation(midEncoder.getPosition());
         // armがターゲットの座標に到着したか
         State.Arm.isArmAtTarget = isArmAtTarget();
     }
@@ -181,7 +181,8 @@ public class Arm implements Component {
                 moveLeftAndRightArm(State.Arm.moveLeftAndRightMotor);
                 break;
             case s_fixLeftAndRightMotor:
-                stopLeftAndRightArm();
+                stopLeftAndRightArm(
+                );
                 break;
             case s_movetomiddle:
                 moveArmToMiddle();
