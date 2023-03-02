@@ -143,6 +143,15 @@ public class Const {
         public static final double D_J = 0.000;
         /** 関節部分のNEOモーターの積分値の最大 */
         public static final double IMax_J = 10e5;
+        /** アームを左右に動かすモーターのPIDのP */
+        public static final double P_MID = 0.0;
+        /** アームを左右に動かすモーターのPIDのI */
+        public static final double I_MID = 0.0;
+        /** アームを左右に動かすモーターのPIDのD */
+        public static final double D_MID = 0.0;
+        /** アームを左右に動かすモーターの積分値の最大 */
+        public static final double IMax_MID = 0.0 ;
+
         /**
          * NEOモーターの最大トルク 注意! [N*cm] = [N*m] * 100
          * <a href="https://www.revrobotics.com/content/docs/REV-21-1650-DS.pdf">NEOのデータシートを参照</a>
@@ -156,6 +165,8 @@ public class Const {
         public static final double JointMotorGearRatio = 4.0 * 5.0 * 40.0 / 12.0;
         /** 根本のNEOモーターのギア比 */
         public static final double RootMotorGearRatio = 3.0 * 5.0 * 5.0 * 40.0 / 12.0;
+        /** アームを左右に動かす時のギア比 */
+        public static final double LeftAndRightArmGearRatio = 1;
         /** 関節部分のモーターをコントローラーで動かす時の最大の速さ */
         public static final double JointMotorMoveRatio = 0.09;
         /** 根本のモーターをコントローラーで動かす時の最大の速さ */

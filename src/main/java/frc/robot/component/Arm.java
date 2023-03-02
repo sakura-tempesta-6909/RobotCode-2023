@@ -2,18 +2,19 @@ package frc.robot.component;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import frc.robot.State;
 import frc.robot.subClass.Const;
 import frc.robot.subClass.Tools;
-import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 
 public class Arm implements Component {
     private final CANSparkMax rootMotor, jointMotor;
     private final SparkMaxPIDController pidForRoot, pidForJoint;
-
+    private final SparkMaxPIDController mid_pidController;
+    private final RelativeEncoder mid_encoder;
     private final CANSparkMax moveLeftAndRightMotor;
 
     public Arm() {
@@ -36,7 +37,15 @@ public class Arm implements Component {
         pidForJoint.setIMaxAccum(Const.Arm.IMax_J, 0);
 
         moveLeftAndRightMotor = new CANSparkMax(Const.Ports.moveLeftAndRightMotor,MotorType.kBrushless);
+        mid_pidController = moveLeftAndRightMotor.getPIDController();
+        mid_encoder = moveLeftAndRightMotor.getEncoder();
+        mid_pidController.setP(Const.Arm.P_MID);
+        mid_pidController.setI(Const.Arm.I_MID);
+        mid_pidController.setD(Const.Arm.D_MID);
+        mid_pidController.setIMaxAccum(Const.Arm.IMax_MID, 0);
+
     }
+
 
     /**
      * PIDで移動する
@@ -78,7 +87,9 @@ public class Arm implements Component {
     private double calculateJointRotationFromAngle(double angle) {
         return angle * Const.Arm.JointMotorGearRatio / 360;
     }
-
+    private double calculateLeftAndRightAngleFromRotation(double rotation) {
+        return rotation / Const.Arm.LeftAndRightArmGearRatio * 360;
+    }
     private void fixPositionWithFF() {
         rootMotor.set(0);
         jointMotor.set(0);
@@ -92,10 +103,13 @@ public class Arm implements Component {
         moveLeftAndRightMotor.set(Const.Speeds.Neutral);
     }
 
+    /**
+     * アームを真ん中に動かす
+     * 目標値（真ん中）を0とする
+     */
     public void moveArmToMiddle() {
+        mid_pidController.setReference(0, CANSparkMax.ControlType.kPosition);
 
-        m_pidController.setReference(setPoint, CANSparkMax.ControlType.kVelocity);
-        processVariable = m_encoder.getVelocity();
     }
 
     @Override
@@ -125,7 +139,8 @@ public class Arm implements Component {
         State.Arm.actualJointAngle = calculateJointAngleFromRotation(jointMotor.getEncoder().getPosition());
         State.Arm.actualHeight = Tools.calculateHeight(State.Arm.actualRootAngle, State.Arm.actualJointAngle);
         State.Arm.actualDepth = Tools.calculateDepth(State.Arm.actualRootAngle, State.Arm.actualJointAngle);
-
+        //armが左右に動いてる時の位置（角度）
+        State.Arm.leftAndRightPositionAngle = calculateLeftAndRightAngleFromRotation(mid_encoder.getPosition());
         // armがターゲットの座標に到着したか
         State.Arm.isArmAtTarget = isArmAtTarget();
     }
@@ -166,7 +181,7 @@ public class Arm implements Component {
                 moveLeftAndRightArm(State.Arm.moveLeftAndRightMotor);
                 break;
             case s_fixLeftAndRightMotor:
-                stopLeftAndRightArm(State.Arm.moveLeftAndRightMotor);
+                stopLeftAndRightArm();
                 break;
             case s_movetomiddle:
                 moveArmToMiddle();
