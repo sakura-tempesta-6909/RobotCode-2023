@@ -78,6 +78,8 @@ public class State {
         public static boolean resetEncoder;
         /** limelightの値を代入 TODO 一時的な変数（実際はlimelightのStateから値を取得） */
         public static double limelightTargetHeight, limelightTargetDepth;
+        /** アームを左右に動かす時の位置*/
+        public static double leftAndRightPositionAngle;
 
 
         public enum States {
@@ -212,6 +214,10 @@ public class State {
          * アームを固定する
          */
         s_fixLeftAndRightMotor,
+        /**
+         * アームを真ん中に動かす
+         */
+        s_movetomiddle,
     }
 
     public enum Modes {
