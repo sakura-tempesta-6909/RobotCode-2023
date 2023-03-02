@@ -1,11 +1,10 @@
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
-import frc.robot.component.Arm;
-import frc.robot.component.Component;
-import frc.robot.component.Drive;
-import frc.robot.component.Hand;
-import frc.robot.component.Intake;
+import frc.robot.component.*;
 import frc.robot.phase.Autonomous;
 import frc.robot.subClass.Const;
 import frc.robot.subClass.ExternalSensors;
@@ -16,43 +15,53 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 
+
 public class Robot extends TimedRobot {
 
     ArrayList<Component> components;
 
     ExternalSensors externalSensors;
+
     MQTT mqtt = new MQTT();
 
     PrintStream defaultConsole = System.out;
     ByteArrayOutputStream newConsole = new ByteArrayOutputStream();
+    private NetworkTable table;
+    NetworkTableEntry entry;
 
     @Override
     public void robotInit() {
         System.setOut(new PrintStream(newConsole));
         Const.ConstInit();
-        Thread thread = new Thread(() -> {
-             mqtt.connect();
-         });
+
+        Thread thread = new Thread(() -> mqtt.connect());
         thread.start();
+
         components = new ArrayList<>();
         components.add(new Drive());
         components.add(new Intake());
         components.add(new Hand());
         components.add(new Arm());
+        components.add(new Camera());
 
         externalSensors = new ExternalSensors();
 
         State.StateInit();
-        Util.sendSystemOut(defaultConsole, newConsole);
+
         defaultConsole.print(newConsole);
         newConsole = new ByteArrayOutputStream();
+        table =  NetworkTableInstance.getDefault().getTable("SmartDashboard");
+        entry = table.getEntry("center");
     }
 
     @Override
     public void robotPeriodic() {
-        Util.sendSystemOut(defaultConsole, newConsole);
         defaultConsole.print(newConsole);
         newConsole = new ByteArrayOutputStream();
+        double[] array = entry.getDoubleArray(new double[]{0.0, 0.0});
+        System.out.println("NetworkTables");
+        System.out.println(array[0]);
+        System.out.println(array[1]);
     }
 
     @Override
