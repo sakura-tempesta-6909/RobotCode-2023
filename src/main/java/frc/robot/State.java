@@ -13,6 +13,10 @@ public class State {
     public static Modes mode;
     public static double driveXSpeed, driveZRotation;
     public static DriveState driveState;
+    public static RollerState intakeState;
+    public static IntakeExtensionState intakeExtensionState;
+    public static GrabHandState grabHandState;
+    public static RotateHandState rotateHandState;
 
 
     /** ターゲットを向く時のスピード */
@@ -33,9 +37,6 @@ public class State {
     public static double armToGoal; // [cm]
     /** 奥のターゲットまでの距離 */
     public static double limelightToBackGoal; // [cm]
-
-    public static IntakeState intakeState;
-    public static HandState handState;
 
     public static MoveLeftAndRightArmState moveLeftAndRightArmState;
 
@@ -135,7 +136,8 @@ public class State {
         XboxController driveController = new XboxController(Const.Ports.DriveController);
         XboxController operateController = new XboxController(Const.Ports.OperateController);
         Mode.addController(driveController, operateController);
-        handState = HandState.s_releaseHand;
+        grabHandState = GrabHandState.s_releaseHand;
+        intakeExtensionState = IntakeExtensionState.s_openIntake;
         // initialize arm states
         Arm.ArmStateInit();
         
@@ -148,7 +150,8 @@ public class State {
      */
     public static void StateReset() {
         driveState = DriveState.s_stopDrive;
-        intakeState = IntakeState.s_stopConveyor;
+        intakeState = RollerState.s_stopRoller;
+        rotateHandState = RotateHandState.s_stopHand;
         // reset arm states
         Arm.ArmStateReset();
     }
@@ -178,47 +181,46 @@ public class State {
 
     }
 
-    public enum IntakeState {
-        /**
-         * インテイクを外向きに動かす
-         */
-        s_outtakeConveyor,
-        /**
-         * インテイクを内向きに動かす
-         */
-        s_intakeConveyor,
-        /**
-         * インテイクの動きを止める
-         */
-        s_stopConveyor,
+    public enum RollerState {
+        /** Rollerを外向きに動かし、ゲームピースを出す */
+        s_outtakeGamePiece,
+        /** Rollerを内向きに動かし、ゲームピースを取り込む */
+        s_intakeGamePiece,
+        /** Rollerの動きを止める */
+        s_stopRoller,
 
     }
 
-    public enum HandState {
-        /**
-         * 物体をつかむ
-         */
+    public enum IntakeExtensionState {
+        /** Intakeを出す */
+        s_openIntake,
+        /** Intakeをしまう */
+        s_closeIntake,
+    }
+
+    public enum GrabHandState {
+        /** 物体をつかむ */
         s_grabHand,
-        /**
-         * 物体を離す
-         */
+        /** 物体を離す */
         s_releaseHand,
     }
 
+    public enum RotateHandState {
+        /** 手首を回転させる */
+        s_rotateHand,
+        /** 手首の回転を止める */
+        s_stopHand,
+    }
+
     public enum MoveLeftAndRightArmState{
-        /**
-         * アームを左右に動かす
-         */
+        /** アームを左右に動かす */
         s_moveLeftAndRightMotor,
-        /**
-         * アームを固定する
-         */
+        /** アームを固定する */
         s_fixLeftAndRightMotor,
-        /**
-         * アームを真ん中に動かす
-         */
+        /** アームを真ん中に動かす */
         s_movetomiddle,
     }
+
 
     public enum Modes {
         k_drive(new DriveMode()),
