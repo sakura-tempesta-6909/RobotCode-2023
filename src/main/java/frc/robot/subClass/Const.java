@@ -28,6 +28,7 @@ public class Const {
         public static final double MidDrive = 0.5;
         public static final double SlowDrive = 0.3;
 
+        public static final double HandRotationSpeed = 0.5;
     }
 
     public static final class Calculation {

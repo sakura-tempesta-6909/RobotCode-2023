@@ -213,17 +213,11 @@ public class State {
     }
 
     public enum MoveLeftAndRightArmState{
-        /**
-         * アームを左右に動かす
-         */
+        /** アームを左右に動かす */
         s_moveLeftAndRightMotor,
-        /**
-         * アームを固定する
-         */
+        /** アームを固定する */
         s_fixLeftAndRightMotor,
-        /**
-         * アームを真ん中に動かす
-         */
+        /** アームを真ん中に動かす */
         s_movetomiddle,
     }
 
