@@ -1,5 +1,5 @@
 package frc.robot.subClass;
-
+/** 常に決まっている数値(定数)をまとめたファイル */
 public class Const {
     public static final class Ports {
         public static final int DriveController = 0;
@@ -10,7 +10,16 @@ public class Const {
         public static final int DriveRightBack = 1;
         public static final int DriveLeftBack = 3;
 
-        public static final int moveLeftAndRightMotor = 0;
+        public static final int HandSolenoid = 0;
+
+        public static final int IntakeSolenoid = 0;
+
+        public static final int RightRoller = 0;
+        public static final int LeftRoller = 1;
+        public static final int BottomRoller = 2;
+
+        public static final int MoveLeftAndRightMotor = 0;
+        public static int HandRotationMotor = 0;
     }
 
     public static final class Speeds {
@@ -20,6 +29,7 @@ public class Const {
         public static final double MidDrive = 0.5;
         public static final double SlowDrive = 0.3;
 
+        public static final double HandRotationSpeed = 0.5;
     }
 
     public static final class Calculation {
@@ -99,6 +109,12 @@ public class Const {
         }
 
 
+        public static double SideRollerOuttakeSpeed = 0.5;
+        public static double SideRollerIntakeSpeed = 0.5;
+        public static double BottomRollerOuttakaeSpeed = 0.5;
+        public static double BottomRollerIntakeSpeed = 0.5;
+
+        public static double HandRotationSpeed = 0.3;
     }
 
     public static final class Arm {
@@ -151,6 +167,14 @@ public class Const {
         public static final double D_MID = 0.0;
         /** アームを左右に動かすモーターの積分値の最大 */
         public static final double IMax_MID = 0.0 ;
+        /** handのモーターののPIDのP */
+        public static final double P_HANDR = 0.0;
+        /** handのモーターののPIDのI */
+        public static final double I_HANDR = 0.0;
+        /** handのモーターののPIDのD */
+        public static final double D_HANDR = 0.0;
+        /** handのモーターのの積分値の最大値 */
+        public static final double IMax_HANDR = 0.0 ;
 
         /**
          * NEOモーターの最大トルク 注意! [N*cm] = [N*m] * 100
@@ -174,6 +198,12 @@ public class Const {
         /** PIDコントロールの誤差の許容量[deg] 注意! isArmAtTargetの判定に用いているだけ */
         public static final double PIDAngleTolerance = 0.1;
     }
+
+    public static final class Hand {
+        /** アームを左右に動かす時のギア比 */
+        public static final double HandGearRatio = 1;
+    }
+
 
     public static final class MQTT {
         public static final String Broker = "tcp://raspberrypi.local:1883";
