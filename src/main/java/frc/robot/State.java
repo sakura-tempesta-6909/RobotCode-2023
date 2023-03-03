@@ -16,7 +16,6 @@ public class State {
     public static RollerState intakeState;
     public static IntakeExtensionState intakeExtensionState;
     public static GrabHandState grabHandState;
-    public static RotateHandState rotateHandState;
 
 
     /** ターゲットを向く時のスピード */
@@ -40,6 +39,21 @@ public class State {
 
     public static MoveLeftAndRightArmState moveLeftAndRightArmState;
 
+    public static class Hand {
+        public static RotateState rotateState;
+        public enum RotateState {
+            /** 手首を回転させる */
+            s_rotateHand,
+            /** 手首の回転を止める */
+            s_stopHand,
+        }
+        public static double handRotationAngle = 0.0;
+        public static void StateInit() {
+        }
+        public static void StateReset() {
+            rotateState = RotateState.s_stopHand;
+        }
+    }
     public static class Arm {
         /** アームのモード */
         public static States state;
@@ -151,9 +165,9 @@ public class State {
     public static void StateReset() {
         driveState = DriveState.s_stopDrive;
         intakeState = RollerState.s_stopRoller;
-        rotateHandState = RotateHandState.s_stopHand;
         // reset arm states
         Arm.ArmStateReset();
+        Hand.StateReset();
     }
 
     public enum DriveState {
@@ -203,13 +217,6 @@ public class State {
         s_grabHand,
         /** 物体を離す */
         s_releaseHand,
-    }
-
-    public enum RotateHandState {
-        /** 手首を回転させる */
-        s_rotateHand,
-        /** 手首の回転を止める */
-        s_stopHand,
     }
 
     public enum MoveLeftAndRightArmState{

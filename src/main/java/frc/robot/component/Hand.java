@@ -1,15 +1,31 @@
 package frc.robot.component;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import frc.robot.State;
 import frc.robot.subClass.Const;
 
+
 public class Hand implements Component{
     private Solenoid handSolenoid;
-
+    private final CANSparkMax handRotationMotor;
+    private final RelativeEncoder handRotationEncoder;
+    private final SparkMaxPIDController handRotationPidController;
     public Hand() {
         handSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Const.Ports.HandSolenoid);
+
+        handRotationMotor = new CANSparkMax(Const.Ports.HandRotationMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
+
+        handRotationPidController = handRotationMotor.getPIDController();
+        handRotationEncoder = handRotationMotor.getEncoder();
+        handRotationPidController.setP(Const.Arm.P_HANDR);
+        handRotationPidController.setI(Const.Arm.I_HANDR);
+        handRotationPidController.setD(Const.Arm.D_HANDR);
+        handRotationPidController.setIMaxAccum(Const.Arm.IMax_HANDR, 0);
     }
 
     @Override
@@ -39,7 +55,12 @@ public class Hand implements Component{
     @Override
     public void readSensors() {
         // TODO Auto-generated method stub
-        
+        //手が回った角度
+        State.Hand.handRotationAngle = calculateHandAngleFromRotation(handRotationEncoder.getPosition());
+    }
+
+    private double calculateHandAngleFromRotation(double rotation) {
+        return rotation / Const.Hand.HandGearRatio * 360;
     }
 
     /** 
@@ -52,7 +73,7 @@ public class Hand implements Component{
 
     /** 手首の回転関係のモーターを動かす */
     public void controlHandRotation(double handRotationSpeed) {
-        
+        handRotationMotor.set(handRotationSpeed);
     }
 
     /** 物体をつかむ */
@@ -86,7 +107,7 @@ public class Hand implements Component{
                 break;            
         }
         
-        switch(State.rotateHandState) {
+        switch(State.Hand.rotateState) {
             case s_rotateHand:
                 rotateHand();
                 break;
