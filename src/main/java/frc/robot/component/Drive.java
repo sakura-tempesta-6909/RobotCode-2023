@@ -2,6 +2,7 @@ package frc.robot.component;
 
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.State;
 import frc.robot.subClass.Const;
@@ -11,6 +12,8 @@ public class Drive implements Component {
     private WPI_TalonSRX driveRightFront, driveLeftFront;
     private VictorSPX driveRightBack, driveLeftBack;
     private DifferentialDrive differentialDrive;
+
+    private PIDController pidCameraDrive;
 
     public Drive() {
         driveRightFront = new WPI_TalonSRX(Const.Ports.DriveRightFront);
@@ -24,6 +27,7 @@ public class Drive implements Component {
         driveRightBack.setInverted(true);
 
         differentialDrive = new DifferentialDrive(driveLeftFront, driveRightFront);
+        pidCameraDrive = new PIDController(Const.Pid.CameraDriveP, Const.Pid.CameraDriveI, Const.Pid.CameraDriveD);
 
     }
 
@@ -31,6 +35,8 @@ public class Drive implements Component {
         differentialDrive.arcadeDrive(xSpeed, zRotation);
         differentialDrive.feed();
     }
+
+
 
     @Override
     public void autonomousInit() {
@@ -78,10 +84,10 @@ public class Drive implements Component {
                 arcadeDrive(Const.Speeds.Neutral * State.driveXSpeed, Const.Speeds.Neutral * State.driveZRotation);
                 break;
             case s_targetTracking:
-                arcadeDrive(Const.Speeds.Neutral * State.driveXSpeed, State.limelightTrackingZRotation);
+                arcadeDrive(Const.Speeds.Neutral * State.driveXSpeed, pidCameraDrive.calculate(State.cameraTrackingZRotation));
                 break;
             case s_apriltagTracking:
-                arcadeDrive(Const.Speeds.MidDrive * State.cameraXSpeed, State.cameraTrackingZRotation);
+                arcadeDrive(pidCameraDrive.calculate(State.cameraXSpeed), State.cameraTrackingZRotation);
                 break;
 
         }

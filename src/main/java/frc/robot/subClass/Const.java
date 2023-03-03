@@ -171,6 +171,12 @@ public class Const {
         public static final String ClientId = "robot/test";
     }
 
+    public static final class Pid {
+        public static final double CameraDriveP = 0;
+        public static final double CameraDriveI = 0;
+        public static final double CameraDriveD = 0;
+    }
+
     public static void ConstInit() {
 
     }

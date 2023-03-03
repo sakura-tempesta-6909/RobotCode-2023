@@ -16,6 +16,7 @@ import org.opencv.imgproc.Imgproc;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import edu.wpi.first.math.controller.PIDController;
 
 public class Camera implements Component {
 
@@ -29,6 +30,7 @@ public class Camera implements Component {
     Scalar outlineColor;
     Scalar xColor;
     AprilTagDetection[] detections;
+
 
     public Camera() {
         detector = new AprilTagDetector();
