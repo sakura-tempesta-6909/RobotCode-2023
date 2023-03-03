@@ -95,6 +95,10 @@ public class Hand implements Component{
     public void stopHand() {
         controlHandRotation(Const.Speeds.Neutral);
     }
+    /** 手首を所定の位置に戻す*/
+    public void bringBackHand() {
+        handRotationPidController.setReference(0, CANSparkMax.ControlType.kPosition);
+    }
 
     @Override
     public void applyState() {
@@ -114,6 +118,10 @@ public class Hand implements Component{
             case s_stopHand:
                 stopHand();
                 break;
+            case bringBackHand:
+                bringBackHand();
+                break;
         }
+
     }
 }

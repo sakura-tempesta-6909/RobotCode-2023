@@ -46,6 +46,8 @@ public class State {
             s_rotateHand,
             /** 手首の回転を止める */
             s_stopHand,
+            /** 手首を戻す*/
+            bringBackHand,
         }
         public static double handRotationAngle = 0.0;
         public static void StateInit() {
