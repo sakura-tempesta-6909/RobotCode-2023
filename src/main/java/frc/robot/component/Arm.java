@@ -36,7 +36,7 @@ public class Arm implements Component {
         pidForJoint.setD(Const.Arm.D_J);
         pidForJoint.setIMaxAccum(Const.Arm.IMax_J, 0);
 
-        moveLeftAndRightMotor = new CANSparkMax(Const.Ports.moveLeftAndRightMotor,MotorType.kBrushless);
+        moveLeftAndRightMotor = new CANSparkMax(Const.Ports.MoveLeftAndRightMotor,MotorType.kBrushless);
         leftAndRightArmPidController = moveLeftAndRightMotor.getPIDController();
         leftAndRightArmEncoder = moveLeftAndRightMotor.getEncoder();
         leftAndRightArmPidController.setP(Const.Arm.P_MID);
@@ -109,7 +109,6 @@ public class Arm implements Component {
      */
     public void moveArmToMiddle() {
         leftAndRightArmPidController.setReference(0, CANSparkMax.ControlType.kPosition);
-
     }
 
     @Override
