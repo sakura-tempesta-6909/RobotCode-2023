@@ -70,12 +70,12 @@ public class Camera implements Component {
 
 
         //apriltagの方を向く
-        if (State.aprilTagAngleWidth > 0) {
+        if (Const.Calculation.Camera.FieldOfViewHalf > State.aprilTagAngleWidth && State.aprilTagAngleWidth > 0) {
             State.cameraTrackingZRotation = State.aprilTagAngleWidth / -Const.Calculation.Camera.ThetaMaxWidth * Const.Speeds.MidDrive + -0.2;
             if (State.aprilTagAngleWidth < 9 && State.aprilTagAngleWidth > 3) {
                 State.limelightTrackingZRotation = -Const.Speeds.MidDrive;
             }
-        } else if (State.aprilTagAngleWidth < 0) {
+        } else if (-Const.Calculation.Camera.FieldOfViewHalf < State.aprilTagAngleWidth && State.aprilTagAngleWidth < 0) {
             State.cameraTrackingZRotation = State.aprilTagAngleWidth / -Const.Calculation.Camera.ThetaMaxWidth * Const.Speeds.MidDrive + 0.2;
             if (State.aprilTagAngleWidth > -9 && State.aprilTagAngleWidth < -3) {
                 State.limelightTrackingZRotation = Const.Speeds.MidDrive;
