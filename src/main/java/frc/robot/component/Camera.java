@@ -44,12 +44,6 @@ public class Camera implements Component {
                 }
             }
         }
-
-        if (State.aprilTagAngleWidth < 5) {
-            State.cameraXSpeed  = Const.Speeds.MidDrive;
-        } else if (State.cameraToTag < 100) {
-            State.cameraXSpeed = Const.Speeds.Neutral;
-        }
     }
 
     @Override

@@ -39,8 +39,15 @@ public class Drive implements Component {
     }
 
     public void pidControlApriltagTracking() {
-        arcadeDrive(State.cameraXSpeed, pidCameraDrive.calculate(State.aprilTagAngleWidth, 0));
+        double cameraZRotation = pidCameraDrive.calculate(State.aprilTagAngleWidth, 0);
+        if (cameraZRotation > 0.5) {
+            cameraZRotation = 0.5;
+        } else if (cameraZRotation < -0.5) {
+            cameraZRotation = -0.5;
+        }
+        arcadeDrive(State.cameraXSpeed, cameraZRotation);
     }
+
     @Override
     public void autonomousInit() {
         // TODO Auto-generated method stub
