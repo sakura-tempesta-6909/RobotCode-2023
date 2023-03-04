@@ -38,7 +38,7 @@ public class Drive implements Component {
         differentialDrive.feed();
     }
 
-    public void pidDrive() {
+    public void pidControlDrive() {
         arcadeDrive(State.cameraXSpeed, pidCameraDrive.calculate(State.aprilTagAngleWidth, 0));
     }
     @Override
@@ -90,7 +90,7 @@ public class Drive implements Component {
                 arcadeDrive(Const.Speeds.Neutral * State.driveXSpeed, State.limelightTrackingZRotation);
                 break;
             case s_apriltagTracking:
-                pidDrive();
+                pidControlDrive();
                 break;
 
         }
