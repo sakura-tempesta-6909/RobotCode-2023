@@ -39,8 +39,7 @@ public class Drive implements Component {
     }
 
     public void pidDrive() {
-        State.cameraTrackingZRotation = pidCameraDrive.calculate(State.cameraCenterWidth);
-        arcadeDrive(State.cameraXSpeed, State.cameraTrackingZRotation);
+        arcadeDrive(State.cameraXSpeed, pidCameraDrive.calculate(State.aprilTagAngleWidth = 0, State.cameraTrackingZRotation));
     }
     @Override
     public void autonomousInit() {
