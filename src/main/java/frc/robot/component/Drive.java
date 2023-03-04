@@ -25,6 +25,8 @@ public class Drive implements Component {
         driveLeftBack.follow(driveLeftFront);
         driveRightFront.setInverted(true);
         driveRightBack.setInverted(true);
+        driveLeftFront.setInverted(false);
+        driveLeftBack.setInverted(false);
 
         differentialDrive = new DifferentialDrive(driveLeftFront, driveRightFront);
         pidCameraDrive = new PIDController(Const.Pid.CameraDriveP, Const.Pid.CameraDriveI, Const.Pid.CameraDriveD);
@@ -36,8 +38,10 @@ public class Drive implements Component {
         differentialDrive.feed();
     }
 
-
-
+    public void pid() {
+        State.cameraTrackingZRotation = pidCameraDrive.calculate(State.cameraCenterWidth);
+        arcadeDrive(State.cameraXSpeed, State.cameraTrackingZRotation);
+    }
     @Override
     public void autonomousInit() {
         // TODO Auto-generated method stub
@@ -84,10 +88,10 @@ public class Drive implements Component {
                 arcadeDrive(Const.Speeds.Neutral * State.driveXSpeed, Const.Speeds.Neutral * State.driveZRotation);
                 break;
             case s_targetTracking:
-                arcadeDrive(Const.Speeds.Neutral * State.driveXSpeed, pidCameraDrive.calculate(State.cameraTrackingZRotation));
+                arcadeDrive(Const.Speeds.Neutral * State.driveXSpeed, State.limelightTrackingZRotation);
                 break;
             case s_apriltagTracking:
-                arcadeDrive(pidCameraDrive.calculate(State.cameraXSpeed), State.cameraTrackingZRotation);
+                pid();
                 break;
 
         }
