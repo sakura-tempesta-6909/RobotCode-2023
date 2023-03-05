@@ -52,25 +52,6 @@ public class Limelight implements Component {
         State.armToGoal = State.limelightToFrontGoal - Const.Calculation.Limelight.LimelightToArm;
         State.limelightToBackGoal = State.limelightToFrontGoal + Const.Calculation.Limelight.FrontGoalToBackGoal;
 
-
-        //モーターを動かす
-        //ターゲットの方を向く
-//        if (State.tx > 0) {
-//            State.limelightTrackingZRotation = State.tx / -Const.Calculation.Limelight.LimelightMaxAngleWidth * Const.Speeds.MidDrive + -0.2;
-//            if (State.tx < 9 && State.tx > 3) {
-//                State.limelightTrackingZRotation = -Const.Speeds.MidDrive;
-//            }
-//        } else if (State.tx < 0) {
-//            State.limelightTrackingZRotation = State.tx / -Const.Calculation.Limelight.LimelightMaxAngleWidth * Const.Speeds.MidDrive + 0.2;
-//            if (State.tx > -9 && State.tx < -3) {
-//                State.limelightTrackingZRotation = Const.Speeds.MidDrive;
-//            }
-//        }
-
-        if (State.tx < 5) {
-            State.limelightXSpeed = Const.Speeds.MidDrive;
-        }
-
         SmartDashboard.putNumber("FrontGoal", State.limelightToFrontGoal);
         SmartDashboard.putNumber("ty", tyEntry.getDouble(0));
         SmartDashboard.putNumber("BackGoal", State.limelightToBackGoal);
