@@ -172,9 +172,9 @@ public class Const {
     }
 
     public static final class Pid {
-        public static final double CameraDriveP = 0;
-        public static final double CameraDriveI = 0;
-        public static final double CameraDriveD = 0;
+        public static final double CameraDriveP = 0.05;
+        public static final double CameraDriveI = 0.0007;
+        public static final double CameraDriveD = 0.003;
 
     }
 

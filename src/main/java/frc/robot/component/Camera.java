@@ -31,17 +31,11 @@ public class Camera implements Component {
             State.cameraTrackingZRotation = State.aprilTagAngleWidth / -Const.Calculation.Camera.ThetaMaxWidth * Const.Speeds.MidDrive + -0.2;
             if (State.aprilTagAngleWidth < 9 && State.aprilTagAngleWidth > 3) {
                 State.limelightTrackingZRotation = -Const.Speeds.MidDrive;
-                if (State.cameraTrackingZRotation > 0.5) {
-                    State.cameraTrackingZRotation = 0.5;
-                }
             }
         } else if (-Const.Calculation.Camera.FieldOfViewHalf < State.aprilTagAngleWidth && State.aprilTagAngleWidth < 0) {
             State.cameraTrackingZRotation = State.aprilTagAngleWidth / -Const.Calculation.Camera.ThetaMaxWidth * Const.Speeds.MidDrive + 0.2;
             if (State.aprilTagAngleWidth > -9 && State.aprilTagAngleWidth < -3) {
                 State.limelightTrackingZRotation = Const.Speeds.MidDrive;
-                if (State.cameraTrackingZRotation < -0.5) {
-                    State.cameraTrackingZRotation = -0.5;
-                }
             }
         }
     }
