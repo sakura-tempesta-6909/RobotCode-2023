@@ -45,7 +45,7 @@ public class Drive implements Component {
         } else if (cameraZRotation < -0.5) {
             cameraZRotation = -0.5;
         }
-        arcadeDrive(State.cameraXSpeed, cameraZRotation);
+        arcadeDrive(State.cameraXSpeed * Const.Speeds.MidDrive, cameraZRotation);
     }
 
     @Override
