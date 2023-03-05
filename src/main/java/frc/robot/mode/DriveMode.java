@@ -21,6 +21,7 @@ public class DriveMode extends Mode {
             State.driveState = DriveState.s_apriltagTracking;
         } else if (driveController.getBButton()) {
             State.driveState = DriveState.s_targetTracking;
+            State.limelightXSpeed = -driveController.getLeftY();
         }
     }
     
