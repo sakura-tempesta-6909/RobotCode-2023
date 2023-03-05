@@ -59,11 +59,20 @@ public class Hand implements Component{
         //手首が回った角度
         State.Hand.actualHandAngle = calculateHandAngleFromRotation(handRotationEncoder.getPosition());
     }
-    /** 回転数から度数への変換 */
+    /**
+     * 回転数から度数への変換
+     * @param rotation 変換する回転数
+     * @return 変換された角度の度数
+     * */
     private double calculateHandAngleFromRotation(double rotation) {
         return rotation / Const.Hand.HandGearRatio * 360;
     }
 
+    /**
+     *度数から回転数への変換
+     * @param angle 変換する角度の度数
+     * @return 変換された回転数
+     */
     public double calculateRotationFromHandAngle(double angle) {
         return angle * Const.Hand.HandGearRatio / 360;
     }
@@ -81,7 +90,10 @@ public class Hand implements Component{
     public void controlHandRotation(double handRotationSpeed) {
         handRotationMotor.set(handRotationSpeed);
     }
-    /** pidで回転*/
+    /**
+     *  pidで回転
+     * @param targetAngle 目指している角度
+     * */
     public void pidControlHand(double targetAngle) {
         handRotationPidController.setReference(calculateRotationFromHandAngle(targetAngle), CANSparkMax.ControlType.kPosition);
     }
@@ -106,16 +118,20 @@ public class Hand implements Component{
     public void stopHand() {
         controlHandRotation(Const.Speeds.Neutral);
     }
-    /** actual angleを入力してその数に一番近い360の倍数の数を見つけて返す */
-    static double basicPositionCalculation(double n) {
+    /**
+     * actual angleを入力してその数に一番近い360の倍数の数を見つけて返す
+     * @param actualAngle   今の角度
+     * @return actualAngle +- howFromFrom360 今の角度に一番近い360の倍数の数字
+     */
+    static double basicPositionCalculation(double actualAngle) {
 
-        if((n % 360) > 180) {
-            double x = 360 - (n % 360);
-            return n + x;
+        if((actualAngle % 360) > 180) {
+            double howFarFrom360 = 360 - (actualAngle % 360);
+            return actualAngle + howFarFrom360;
         }
         else {
-            double x = n % 360;
-            return n - x;
+            double howFarFrom360 = actualAngle % 360;
+            return actualAngle - howFarFrom360;
         }
     }
     /** 手首を所定の位置（元の位置）に戻す*/
