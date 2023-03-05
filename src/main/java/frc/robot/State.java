@@ -54,6 +54,8 @@ public class State {
         /** 手首の回転した度数 */
         public static double actualHandAngle = 0.0;
 
+        public static double targetAngle = 0.0;
+
         public static void StateInit() {
         }
         public static void StateReset() {

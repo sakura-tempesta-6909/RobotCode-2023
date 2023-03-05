@@ -106,7 +106,7 @@ public class Hand implements Component{
     public void stopHand() {
         controlHandRotation(Const.Speeds.Neutral);
     }
-    /** actual angleを入力してtarget angleを出力 */
+    /** actual angleを入力してその数に一番近い360の倍数の数を見つけて返す */
     static double basicPositionCalculation(double n) {
 
         if((n % 360) > 180) {
@@ -124,7 +124,7 @@ public class Hand implements Component{
     }
     /** 手首を所定の位置に動かす*/
     public void moveHandToSpecifiedAngle() {
-        pidControlHand(basicPositionCalculation(State.Hand.actualHandAngle));
+        pidControlHand(State.Hand.targetAngle);
     }
     @Override
     public void applyState() {
