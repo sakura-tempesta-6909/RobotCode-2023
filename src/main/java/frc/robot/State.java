@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.State.Hand.RotateState;
 import frc.robot.mode.DriveMode;
 import frc.robot.mode.Mode;
 import frc.robot.mode.TestMode;
@@ -149,6 +150,7 @@ public class State {
     }
 
     public static Map<String, Double> voltage = new HashMap<>();
+    public static RotateState rotateState;
 
 
     /**
