@@ -98,6 +98,10 @@ public class Drive implements Component {
                 break;
 
         }
+
+        if (State.pidLimelightReset) {
+            pidLimelightDrive.setPID(0, 0, 0);
+        }
     }
 }
 

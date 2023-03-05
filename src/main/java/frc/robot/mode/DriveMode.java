@@ -23,6 +23,10 @@ public class DriveMode extends Mode {
             State.driveState = DriveState.s_targetTracking;
             State.limelightXSpeed = -driveController.getLeftY();
         }
+
+        if (driveController.getBButtonPressed()) {
+            State.pidLimelightReset = true;
+        }
     }
     
 }

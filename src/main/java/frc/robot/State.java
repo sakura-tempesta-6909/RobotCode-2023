@@ -40,6 +40,7 @@ public class State {
     public static double limelightToBackGoal; // [cm]
     public static double tx;
     public static double limelightXSpeed;
+    public static boolean pidLimelightReset;
 
     public static MoveLeftAndRightArmState moveLeftAndRightArmState;
 
@@ -155,6 +156,7 @@ public class State {
         driveState = DriveState.s_stopDrive;
         intakeState = RollerState.s_stopRoller;
         rotateHandState = RotateHandState.s_stopHand;
+        pidLimelightReset = false;
         // reset arm states
         Arm.ArmStateReset();
     }
