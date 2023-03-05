@@ -36,13 +36,13 @@ public class Drive implements Component {
     }
 
     public void pidControlTargetTracking() {
-        State.limelightTrackingZRotation = pidLimelightDrive.calculate(State.tx, 0);
-        if (State.limelightTrackingZRotation > 0.5) {
-            State.limelightTrackingZRotation = 0.5;
-        } else if (State.limelightTrackingZRotation < -0.5) {
-            State.limelightTrackingZRotation = -0.5;
+        double limelightTrackingZRotation = pidLimelightDrive.calculate(State.tx, 0);
+        if (limelightTrackingZRotation > 0.5) {
+            limelightTrackingZRotation = 0.5;
+        } else if (limelightTrackingZRotation < -0.5) {
+            limelightTrackingZRotation = -0.5;
         }
-        arcadeDrive(0, State.limelightTrackingZRotation);
+        arcadeDrive(State.limelightXSpeed, limelightTrackingZRotation);
     }
 
     @Override

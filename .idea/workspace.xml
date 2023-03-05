@@ -7,7 +7,6 @@
     <list default="true" id="f72108f7-ce51-49f9-91b3-cbf1659a19a4" name="Changes" comment="merge">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/component/Drive.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/component/Drive.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/component/Limelight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/component/Limelight.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/subClass/Const.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/subClass/Const.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
