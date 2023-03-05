@@ -36,12 +36,13 @@ public class Drive implements Component {
     }
 
     public void pidControlTargetTracking() {
+        State.limelightTrackingZRotation = pidLimelightDrive.calculate(State.tx, 0);
         if (State.limelightTrackingZRotation > 0.5) {
             State.limelightTrackingZRotation = 0.5;
         } else if (State.limelightTrackingZRotation < -0.5) {
             State.limelightTrackingZRotation = -0.5;
         }
-        arcadeDrive(0, pidLimelightDrive.calculate(State.tx,0));
+        arcadeDrive(0, State.limelightTrackingZRotation);
     }
 
     @Override
@@ -90,7 +91,7 @@ public class Drive implements Component {
                 arcadeDrive(Const.Speeds.Neutral * State.driveXSpeed, Const.Speeds.Neutral * State.driveZRotation);
                 break;
             case s_targetTracking:
-                arcadeDrive(Const.Speeds.Neutral * State.driveXSpeed, State.limelightTrackingZRotation);
+                pidControlTargetTracking();
                 break;
             case s_apriltagTracking:
                 arcadeDrive(Const.Speeds.Neutral * State.driveXSpeed, State.cameraTrackingZRotation);

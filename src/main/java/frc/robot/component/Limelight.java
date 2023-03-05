@@ -55,17 +55,17 @@ public class Limelight implements Component {
 
         //モーターを動かす
         //ターゲットの方を向く
-        if (State.tx > 0) {
-            State.limelightTrackingZRotation = State.tx / -Const.Calculation.Limelight.LimelightMaxAngleWidth * Const.Speeds.MidDrive + -0.2;
-            if (State.tx < 9 && State.tx > 3) {
-                State.limelightTrackingZRotation = -Const.Speeds.MidDrive;
-            }
-        } else if (State.tx < 0) {
-            State.limelightTrackingZRotation = State.tx / -Const.Calculation.Limelight.LimelightMaxAngleWidth * Const.Speeds.MidDrive + 0.2;
-            if (State.tx > -9 && State.tx < -3) {
-                State.limelightTrackingZRotation = Const.Speeds.MidDrive;
-            }
-        }
+//        if (State.tx > 0) {
+//            State.limelightTrackingZRotation = State.tx / -Const.Calculation.Limelight.LimelightMaxAngleWidth * Const.Speeds.MidDrive + -0.2;
+//            if (State.tx < 9 && State.tx > 3) {
+//                State.limelightTrackingZRotation = -Const.Speeds.MidDrive;
+//            }
+//        } else if (State.tx < 0) {
+//            State.limelightTrackingZRotation = State.tx / -Const.Calculation.Limelight.LimelightMaxAngleWidth * Const.Speeds.MidDrive + 0.2;
+//            if (State.tx > -9 && State.tx < -3) {
+//                State.limelightTrackingZRotation = Const.Speeds.MidDrive;
+//            }
+//        }
 
         if (State.tx < 5) {
             State.limelightXSpeed = Const.Speeds.MidDrive;
