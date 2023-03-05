@@ -38,6 +38,10 @@ public class Camera implements Component {
                 State.limelightTrackingZRotation = Const.Speeds.MidDrive;
             }
         }
+
+        if (State.aprilTagAngleWidth < 5) {
+            State.cameraXSpeed = Const.Speeds.MidDrive;
+        }
     }
 
     @Override
