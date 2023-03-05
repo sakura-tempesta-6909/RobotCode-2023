@@ -197,6 +197,12 @@ public class Const {
         public static final String ClientId = "robot/test";
     }
 
+    public static final class Pid {
+        public static final double LimelightDriveP = 0;
+        public static final double LimelightDriveI = 0;
+        public static final double LimelightDriveD = 0;
+    }
+
     public static void ConstInit() {
 
     }

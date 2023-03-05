@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.mode.DriveMode;
 import frc.robot.mode.Mode;
@@ -37,6 +38,8 @@ public class State {
     public static double armToGoal; // [cm]
     /** 奥のターゲットまでの距離 */
     public static double limelightToBackGoal; // [cm]
+    public static double tx;
+    public static double limelightXSpeed;
 
     public static MoveLeftAndRightArmState moveLeftAndRightArmState;
 

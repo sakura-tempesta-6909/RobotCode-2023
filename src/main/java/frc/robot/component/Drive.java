@@ -2,6 +2,7 @@ package frc.robot.component;
 
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.State;
 import frc.robot.subClass.Const;
@@ -11,6 +12,7 @@ public class Drive implements Component {
     private WPI_TalonSRX driveRightFront, driveLeftFront;
     private VictorSPX driveRightBack, driveLeftBack;
     private DifferentialDrive differentialDrive;
+    private PIDController pidLimelightDrive;
 
     public Drive() {
         driveRightFront = new WPI_TalonSRX(Const.Ports.DriveRightFront);
@@ -24,12 +26,22 @@ public class Drive implements Component {
         driveRightBack.setInverted(true);
 
         differentialDrive = new DifferentialDrive(driveLeftFront, driveRightFront);
+        pidLimelightDrive = new PIDController(Const.Pid.LimelightDriveP, Const.Pid.LimelightDriveI, Const.Pid.LimelightDriveD);
 
     }
 
     public void arcadeDrive(double xSpeed, double zRotation) {
         differentialDrive.arcadeDrive(xSpeed, zRotation);
         differentialDrive.feed();
+    }
+
+    public void pidControlTargetTracking() {
+        if (State.limelightTrackingZRotation > 0.5) {
+            State.limelightTrackingZRotation = 0.5;
+        } else if (State.limelightTrackingZRotation < -0.5) {
+            State.limelightTrackingZRotation = -0.5;
+        }
+        arcadeDrive(0, pidLimelightDrive.calculate(State.tx,0));
     }
 
     @Override

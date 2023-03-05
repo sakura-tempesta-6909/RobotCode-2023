@@ -41,7 +41,7 @@ public class Limelight implements Component {
         // limelightから受け取る情報
         // limelightから見たターゲットの角度
         double targetOffsetAngle_Vertical = -tyEntry.getDouble(0.0);
-        double tx = txEntry.getDouble(0);
+        State.tx = txEntry.getDouble(0);
 
 
         //計算
@@ -55,18 +55,21 @@ public class Limelight implements Component {
 
         //モーターを動かす
         //ターゲットの方を向く
-        if (tx > 0) {
-            State.limelightTrackingZRotation = tx / -Const.Calculation.Limelight.LimelightMaxAngleWidth * Const.Speeds.MidDrive + -0.2;
-            if (tx < 9 && tx > 3) {
+        if (State.tx > 0) {
+            State.limelightTrackingZRotation = State.tx / -Const.Calculation.Limelight.LimelightMaxAngleWidth * Const.Speeds.MidDrive + -0.2;
+            if (State.tx < 9 && State.tx > 3) {
                 State.limelightTrackingZRotation = -Const.Speeds.MidDrive;
             }
-        } else if (tx < 0) {
-            State.limelightTrackingZRotation = tx / -Const.Calculation.Limelight.LimelightMaxAngleWidth * Const.Speeds.MidDrive + 0.2;
-            if (tx > -9 && tx < -3) {
+        } else if (State.tx < 0) {
+            State.limelightTrackingZRotation = State.tx / -Const.Calculation.Limelight.LimelightMaxAngleWidth * Const.Speeds.MidDrive + 0.2;
+            if (State.tx > -9 && State.tx < -3) {
                 State.limelightTrackingZRotation = Const.Speeds.MidDrive;
             }
         }
 
+        if (State.tx < 5) {
+            State.limelightXSpeed = Const.Speeds.MidDrive;
+        }
 
         SmartDashboard.putNumber("FrontGoal", State.limelightToFrontGoal);
         SmartDashboard.putNumber("ty", tyEntry.getDouble(0));
