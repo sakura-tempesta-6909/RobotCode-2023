@@ -120,7 +120,7 @@ public class Hand implements Component{
     }
     /** 手首を所定の位置（元の位置）に戻す*/
     public void bringBackHand() {
-       pidControlHand(basicPositionCalculation(0));
+       pidControlHand(basicPositionCalculation(State.Hand.actualHandAngle));
     }
     /** 手首を所定の位置に動かす*/
     public void moveHandToSpecifiedAngle() {
