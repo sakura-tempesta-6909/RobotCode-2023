@@ -198,9 +198,9 @@ public class Const {
     }
 
     public static final class Pid {
-        public static final double LimelightDriveP = 0.07;
-        public static final double LimelightDriveI = 0.0005;
-        public static final double LimelightDriveD = 0.003;
+        public static final double LimelightDriveP = 0.08;
+        public static final double LimelightDriveI = 0.0008;
+        public static final double LimelightDriveD = 0.008;
     }
 
     public static void ConstInit() {

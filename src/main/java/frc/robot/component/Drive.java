@@ -42,7 +42,7 @@ public class Drive implements Component {
         } else if (limelightTrackingZRotation < -0.5) {
             limelightTrackingZRotation = -0.5;
         }
-        arcadeDrive(State.limelightXSpeed * Const.Speeds.MidDrive, limelightTrackingZRotation);
+        arcadeDrive(State.limelightXSpeed * Const.Speeds.MidDrive, -limelightTrackingZRotation);
     }
 
     @Override
