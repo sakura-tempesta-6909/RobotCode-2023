@@ -57,7 +57,7 @@ public class Hand implements Component{
     public void readSensors() {
         // TODO Auto-generated method stub
         //手首が回った角度
-        State.Hand.handRotationAngle = calculateHandAngleFromRotation(handRotationEncoder.getPosition());
+        State.Hand.actualHandAngle = calculateHandAngleFromRotation(handRotationEncoder.getPosition());
     }
     /** 回転数から度数への変換 */
     private double calculateHandAngleFromRotation(double rotation) {
@@ -106,7 +106,9 @@ public class Hand implements Component{
     public void stopHand() {
         controlHandRotation(Const.Speeds.Neutral);
     }
+    /** actual angleを入力してtarget angleを出力 */
     static double basicPositionCalculation(double n) {
+
         if((n % 360) > 180) {
             double x = 360 - (n % 360);
             return n + x;
@@ -116,11 +118,14 @@ public class Hand implements Component{
             return n - x;
         }
     }
-    /** 手首を所定の位置に戻す*/
+    /** 手首を所定の位置（元の位置）に戻す*/
     public void bringBackHand() {
-       pidControlHand(basicPositionCalculation(State.Hand.handRotationAngle));
+       pidControlHand(basicPositionCalculation(0));
     }
-
+    /** 手首を所定の位置に動かす*/
+    public void moveHandToSpecifiedAngle() {
+        pidControlHand(basicPositionCalculation(State.Hand.actualHandAngle));
+    }
     @Override
     public void applyState() {
         switch(State.grabHandState) {
@@ -142,7 +147,9 @@ public class Hand implements Component{
             case s_turnHandBack:
                 bringBackHand();
                 break;
-
+            case s_moveHandToSpecifiedAngle:
+                moveHandToSpecifiedAngle();
+                break;
         }
 
     }
