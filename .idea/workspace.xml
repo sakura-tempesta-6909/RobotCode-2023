@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f72108f7-ce51-49f9-91b3-cbf1659a19a4" name="Changes" comment="merge">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/State.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/State.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/component/Arm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/component/Arm.java" afterDir="false" />
-    </list>
+    <list default="true" id="f72108f7-ce51-49f9-91b3-cbf1659a19a4" name="Changes" comment="merge" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -64,7 +60,6 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected="Gradle.Build Robot Code"></component>
   <component name="RunManager" selected="Gradle.Deploy Robot Code">
     <configuration name="Build Robot Code" type="GradleRunConfiguration" factoryName="Gradle">
       <ExternalSystemSettings>
