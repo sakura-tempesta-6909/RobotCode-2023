@@ -15,6 +15,7 @@ public class Hand implements Component{
     private final CANSparkMax handRotationMotor;
     private final RelativeEncoder handRotationEncoder;
     private final SparkMaxPIDController handRotationPidController;
+
     public Hand() {
         handSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Const.Ports.HandSolenoid);
 
@@ -55,13 +56,18 @@ public class Hand implements Component{
     @Override
     public void readSensors() {
         // TODO Auto-generated method stub
-        //手が回った角度
+        //手首が回った角度
         State.Hand.handRotationAngle = calculateHandAngleFromRotation(handRotationEncoder.getPosition());
     }
-
+    /** 回転数から度数への変換 */
     private double calculateHandAngleFromRotation(double rotation) {
         return rotation / Const.Hand.HandGearRatio * 360;
     }
+
+    public double calculateRotationFromHandAngle(double angle) {
+        return angle * Const.Hand.HandGearRatio / 360;
+    }
+
 
     /** 
      * つかむ離すの運動関係のモーターを動かす
@@ -75,6 +81,11 @@ public class Hand implements Component{
     public void controlHandRotation(double handRotationSpeed) {
         handRotationMotor.set(handRotationSpeed);
     }
+    /** pidで回転*/
+    public void pidControlHand(double targetAngle) {
+        handRotationPidController.setReference(calculateRotationFromHandAngle(targetAngle), CANSparkMax.ControlType.kPosition);
+    }
+
 
     /** 物体をつかむ */
     public void grabHand() {
@@ -95,9 +106,19 @@ public class Hand implements Component{
     public void stopHand() {
         controlHandRotation(Const.Speeds.Neutral);
     }
+    static double basicPositionCalculation(double n) {
+        if((n % 360) > 180) {
+            double x = 360 - (n % 360);
+            return n + x;
+        }
+        else {
+            double x = n % 360;
+            return n - x;
+        }
+    }
     /** 手首を所定の位置に戻す*/
     public void bringBackHand() {
-        handRotationPidController.setReference(0, CANSparkMax.ControlType.kPosition);
+       pidControlHand(basicPositionCalculation(State.Hand.handRotationAngle));
     }
 
     @Override
@@ -118,9 +139,10 @@ public class Hand implements Component{
             case s_stopHand:
                 stopHand();
                 break;
-            case bringBackHand:
+            case s_turnHandBack:
                 bringBackHand();
                 break;
+
         }
 
     }
