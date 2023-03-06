@@ -55,8 +55,6 @@ public class DriveMode extends Mode {
                 State.Arm.targetDepth = Const.GrabGamePiecePhase.armIntakeDepth;
                 if(State.Arm.isArmAtTarget){
                     phase = GrabGamePiecePhase.Phase3;
-                }else{
-                    phase = GrabGamePiecePhase.Phase2;
                 }
                 break;
 
