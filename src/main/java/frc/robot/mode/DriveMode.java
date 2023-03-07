@@ -82,6 +82,10 @@ public class DriveMode extends Mode {
             }
         }
 
+        if (driveController.getXButtonPressed()){
+            phase = GrabGamePiecePhase.Phase1;
+        }
+
         if (driveController.getAButton()) {
             State.driveState = DriveState.s_apriltagTracking;
         } else if (driveController.getBButton()) {
