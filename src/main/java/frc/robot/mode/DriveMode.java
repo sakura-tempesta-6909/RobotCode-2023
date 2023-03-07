@@ -36,13 +36,17 @@ public class DriveMode extends Mode {
         }
 
         //YボタンでBasicPositionに戻る, XボタンでゲームピースをつかんでbasicPositionに戻る
+
+        if (driveController.getXButtonPressed()){
+            phase = GrabGamePiecePhase.Phase1;
+        }
+
         if(driveController.getYButton()){
             State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
             State.Arm.targetHeight = Const.Arm.basicPositionHeight;
             State.Arm.targetDepth = Const.Arm.basicPositionDepth;
             State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
             State.rotateState = RotateState.s_turnHandBack;
-
         }else if(driveController.getXButton()){
             switch(phase){
                 case Phase1:
@@ -53,13 +57,11 @@ public class DriveMode extends Mode {
                 State.rotateState = RotateState.s_turnHandBack;
                 if(State.Arm.isArmAtTarget){
                     phase = GrabGamePiecePhase.Phase2;
-                }
-                
+                }             
                 case Phase2:
                 State.grabHandState = GrabHandState.s_releaseHand;
                 phase = GrabGamePiecePhase.Phase3;
-                break;
-                
+                break;            
                 case Phase3:
                 State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
                 State.Arm.targetHeight = Const.GrabGamePiecePhase.armIntakeHeight;
@@ -68,22 +70,16 @@ public class DriveMode extends Mode {
                     phase = GrabGamePiecePhase.Phase4;
                 }
                 break;
-
                 case Phase4:
                 State.grabHandState = GrabHandState.s_grabHand;
                 phase = GrabGamePiecePhase.Phase5;
                 break;
-
                 case Phase5:
                 State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
                 State.Arm.targetHeight = Const.Arm.basicPositionHeight;
                 State.Arm.targetDepth = Const.Arm.basicPositionDepth;
                 break;
             }
-        }
-
-        if (driveController.getXButtonPressed()){
-            phase = GrabGamePiecePhase.Phase1;
         }
 
         if (driveController.getAButton()) {
