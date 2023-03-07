@@ -198,7 +198,9 @@ public class Const {
         /** PIDコントロールの誤差の許容量[deg] 注意! isArmAtTargetの判定に用いているだけ */
         public static final double PIDAngleTolerance = 0.1;
 
+        /** アームの理想的な高さ */
         public static final double basicPositionHeight = 0;
+        /** アームの理想的な奥行き */
         public static final double basicPositionDepth = 0;
 
     }
@@ -217,7 +219,9 @@ public class Const {
     }
 
     public static final class GrabGamePiecePhase{
+        /** インテイクのゲームピースを掴むアームの高さ */
         public static final double armIntakeHeight = 0;
+        /** インテイクのゲームピースを掴むアームの奥行き */
         public static final double armIntakeDepth = 0;
     }
 

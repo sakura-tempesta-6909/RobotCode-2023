@@ -42,31 +42,42 @@ public class DriveMode extends Mode {
             State.Arm.targetDepth = Const.Arm.basicPositionDepth;
             State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
             State.rotateState = RotateState.s_turnHandBack;
+
         }else if(driveController.getXButton()){
             switch(phase){
                 case Phase1:
-                State.grabHandState = GrabHandState.s_releaseHand;
-                phase = GrabGamePiecePhase.Phase2;
-                break;
+                State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+                State.Arm.targetHeight = Const.Arm.basicPositionHeight;
+                State.Arm.targetDepth = Const.Arm.basicPositionDepth;
+                State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
+                State.rotateState = RotateState.s_turnHandBack;
+                if(State.Arm.isArmAtTarget){
+                    phase = GrabGamePiecePhase.Phase2;
+                }
                 
                 case Phase2:
+                State.grabHandState = GrabHandState.s_releaseHand;
+                phase = GrabGamePiecePhase.Phase3;
+                break;
+                
+                case Phase3:
                 State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
                 State.Arm.targetHeight = Const.GrabGamePiecePhase.armIntakeHeight;
                 State.Arm.targetDepth = Const.GrabGamePiecePhase.armIntakeDepth;
                 if(State.Arm.isArmAtTarget){
-                    phase = GrabGamePiecePhase.Phase3;
+                    phase = GrabGamePiecePhase.Phase4;
                 }
                 break;
 
-                case Phase3:
+                case Phase4:
                 State.grabHandState = GrabHandState.s_grabHand;
-                phase = GrabGamePiecePhase.Phase4;
+                phase = GrabGamePiecePhase.Phase5;
                 break;
 
-                case Phase4:
+                case Phase5:
                 State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                State.Arm.targetHeight = -Const.GrabGamePiecePhase.armIntakeHeight;
-                State.Arm.targetDepth = -Const.GrabGamePiecePhase.armIntakeDepth;
+                State.Arm.targetHeight = Const.Arm.basicPositionHeight;
+                State.Arm.targetDepth = Const.Arm.basicPositionDepth;
                 break;
             }
         }
@@ -79,13 +90,15 @@ public class DriveMode extends Mode {
     }
     
     enum GrabGamePiecePhase{
-        //ハンドを開ける
+        //basicPositionに移動する
         Phase1,
-        //アームを下げる
+        //ハンドを開ける
         Phase2,
-        //ハンドを閉める
+        //アームを下げる
         Phase3,
+        //ハンドを閉める
+        Phase4,
         //アームを上げる
-        Phase4
+        Phase5
     }
 }
