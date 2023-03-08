@@ -62,6 +62,7 @@ public class State {
         public static void StateInit() {
         }
         public static void StateReset() {
+            grabHandState = GrabHandState.s_releaseHand;
             rotateState = RotateState.s_stopHand;
         }
     }
@@ -162,7 +163,6 @@ public class State {
         XboxController driveController = new XboxController(Const.Ports.DriveController);
         XboxController operateController = new XboxController(Const.Ports.OperateController);
         Mode.addController(driveController, operateController);
-        grabHandState = GrabHandState.s_releaseHand;
         intakeExtensionState = IntakeExtensionState.s_openIntake;
         // initialize arm states
         Arm.ArmStateInit();

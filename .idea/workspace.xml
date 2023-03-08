@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f72108f7-ce51-49f9-91b3-cbf1659a19a4" name="Changes" comment="Handの回転ステートの修正">
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/mode/ArmMode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/mode/ArmMode.java" afterDir="false" />
-    </list>
+    <list default="true" id="f72108f7-ce51-49f9-91b3-cbf1659a19a4" name="Changes" comment="付くんが書いたところの復元" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -125,7 +123,7 @@
       <workItem from="1677145293920" duration="1828000" />
       <workItem from="1677320956040" duration="13078000" />
       <workItem from="1678263154555" duration="160000" />
-      <workItem from="1678263329726" duration="3243000" />
+      <workItem from="1678263329726" duration="3585000" />
     </task>
     <task id="LOCAL-00001" summary="Handの回転ステートの修正">
       <created>1678266386781</created>
@@ -134,7 +132,14 @@
       <option name="project" value="LOCAL" />
       <updated>1678266386781</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="付くんが書いたところの復元">
+      <created>1678266911665</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1678266911665</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -165,7 +170,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Handの回転ステートの修正" />
-    <option name="LAST_COMMIT_MESSAGE" value="Handの回転ステートの修正" />
+    <MESSAGE value="付くんが書いたところの復元" />
+    <option name="LAST_COMMIT_MESSAGE" value="付くんが書いたところの復元" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
