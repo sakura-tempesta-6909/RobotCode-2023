@@ -44,12 +44,12 @@ public class ArmMode extends Mode {
         if (driveController.getRightTriggerAxis() > 0.5 && driveController.getLeftTriggerAxis() > 0.5){
             State.rotateState = RotateState.s_turnHandBack;
         }else if (driveController.getRightTriggerAxis() > 0.5){
-            State.rotateState = RotateState.s_rotateHand;
+            State.rotateState = RotateState.s_rightRotateHand;
         }else if (driveController.getLeftTriggerAxis() > 0.5){
-            State.rotateState = RotateState.s_rotateHand;
+            State.rotateState = RotateState.s_leftRotateHand;
         }else if (driveController.getBButton()){
             State.rotateState = RotateState.s_moveHandToSpecifiedAngle;
-            //ここにConstの値を入れる
+            State.Hand.targetAngle = State.Hand.actualHandAngle + 180 ;
         }else {
             State.rotateState = RotateState.s_stopHand;
         }

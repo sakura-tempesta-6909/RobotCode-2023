@@ -44,9 +44,9 @@ public class State {
         public static RotateState rotateState;
         public enum RotateState {
             /** 手首を回転させる */
-            s_rotateHand,
+            s_rightRotateHand,
             /** 手首を逆回転させる */
-            s_invertRotateHand,
+            s_leftRotateHand,
             /** 手首の回転を止める */
             s_stopHand,
             /** 手首を元の位置に戻す*/

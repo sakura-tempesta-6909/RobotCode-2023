@@ -160,10 +160,10 @@ public class Hand implements Component{
         }
         
         switch(State.Hand.rotateState) {
-            case s_rotateHand:
+            case s_rightRotateHand:
                 rotateHand();
                 break;
-            case s_invertRotateHand:
+            case s_leftRotateHand:
                 invertRotateHand();
                 break;
             case s_stopHand:
