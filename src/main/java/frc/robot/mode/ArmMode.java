@@ -1,6 +1,9 @@
 package frc.robot.mode;
 
 import frc.robot.State;
+import frc.robot.State.GrabHandState;
+import frc.robot.State.MoveLeftAndRightArmState;
+import frc.robot.State.Hand.RotateState;
 import frc.robot.subClass.Const;
 import frc.robot.subClass.Tools;
 
@@ -21,62 +24,66 @@ public class ArmMode extends Mode {
      */
     @Override
     public void changeState() {
-        State.Arm.rightX = Tools.deadZoneProcess(driveController.getRightX());
-        State.Arm.leftY = Tools.deadZoneProcess(driveController.getLeftY());
+
+        //YボタンでBasicPositionに戻る
+        if (driveController.getYButton()){
+            State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+            State.Arm.targetHeight = Const.Arm.basicPositionHeight;
+            State.Arm.targetDepth = Const.Arm.basicPositionDepth;
+            State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
+            State.rotateState = RotateState.s_turnHandBack;
+        }
+
+        //Aボタンでアームを前に伸ばす
+        if (driveController.getAButton()){
+            State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+            //ここにConstの値を入れる
+        }
+
+        //Bボタンで手首が180°回転する, RTで手首が右回転する, LTで手首が左回転する, RTLT同時押しで手首の位置をリセット
+        if (driveController.getRightTriggerAxis() > 0.5 && driveController.getLeftTriggerAxis() > 0.5){
+            State.rotateState = RotateState.s_turnHandBack;
+        }else if (driveController.getRightTriggerAxis() > 0.5){
+            State.rotateState = RotateState.s_rotateHand;
+        }else if (driveController.getLeftTriggerAxis() > 0.5){
+            State.rotateState = RotateState.s_rotateHand;
+        }else if (driveController.getBButton()){
+            State.rotateState = RotateState.s_moveHandToSpecifiedAngle;
+            //ここにConstの値を入れる
+        }else {
+            State.rotateState = RotateState.s_stopHand;
+        }
+
+        //左スティック前後でアームを前後に動かす, 右スティック前後でアームを上下に動かす
+        final double rightY = Tools.deadZoneProcess(driveController.getRightY());;
+        final double leftY = Tools.deadZoneProcess(driveController.getLeftY());   
+        State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+            if(isNewTargetPositionInLimit(State.Arm.targetHeight + rightY * Const.Arm.TargetModifyRatio, State.Arm.targetDepth + leftY * Const.Arm.TargetModifyRatio)){
+                State.Arm.targetHeight += rightY * Const.Arm.TargetModifyRatio;
+                State.Arm.targetDepth += leftY * Const.Arm.TargetModifyRatio;
+            }
         
-        State.Arm.moveLeftAndRightMotor = Tools.deadZoneProcess(driveController.getLeftX());
 
-        // Xボタンが押されたら一旦Integralをリセット Targetを現在のアームの座標にリセットする
-        if (driveController.getXButtonPressed()) {
-            State.Arm.targetHeight = State.Arm.actualHeight;
-            State.Arm.targetDepth = State.Arm.actualDepth;
-            State.Arm.resetPidController = true;
+        //RightBumperでアームを右に動かす, LeftBumperでアームを左に動かす, 
+        //RightBumperLeftBumper同時押しでアームの位置をリセット
+        if (driveController.getRightBumper() && driveController.getLeftBumper()){
+            State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
+        }else if (driveController.getRightBumper()){
+            State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_moveRightMotor;
+        }else if (driveController.getLeftBumper()){
+            State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_moveLeftMotor;
+        }else {
+            State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_fixLeftAndRightMotor;
         }
 
-        // Aボタンが押されたら一旦Integralをリセット
-        if (driveController.getAButtonPressed()) {
-            State.Arm.resetPidController = true;
+        //Xボタンでハンドを開く
+        if (driveController.getXButton()){
+            State.grabHandState = GrabHandState.s_releaseHand;
         }
-
-        // Bボタンが押されたら一旦Integralをリセット アームを持ち上げる(Z座標を変える)
-        if (driveController.getBButtonPressed()) {
-            State.Arm.targetHeight = State.Arm.actualHeight;
-            State.Arm.targetDepth = State.Arm.actualDepth - Const.Arm.TakeUpLengthAfterGrab;
-            State.Arm.resetPidController = true;
-        }
-
-        if (driveController.getXButton()) {
-            // Targetの座標をコントローラーによって変える　(PIDで移動する)
-            State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-            if(isNewTargetPositionInLimit(State.Arm.targetHeight + State.Arm.leftY * Const.Arm.TargetModifyRatio, State.Arm.targetDepth + State.Arm.rightX * Const.Arm.TargetModifyRatio)){
-                State.Arm.targetHeight += State.Arm.leftY * Const.Arm.TargetModifyRatio;
-                State.Arm.targetDepth += State.Arm.rightX * Const.Arm.TargetModifyRatio;
-            }
-        } else if (driveController.getAButton()) {
-            // limelightの予測座標にターゲットを設定する　(PIDで移動する)
-            // TODO ここでlimelightの値を代入
-            State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-            if(isNewTargetPositionInLimit(State.Arm.limelightTargetHeight, State.Arm.limelightTargetDepth)) {
-                State.Arm.targetHeight = State.Arm.limelightTargetHeight;
-                State.Arm.targetDepth = State.Arm.limelightTargetDepth;
-            }
-        } else if (driveController.getBButton()) {
-            State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-        } else if (Math.abs(State.Arm.leftY) < 0.1 && Math.abs(State.Arm.rightX) < 0.1) {
-            State.Arm.state = State.Arm.States.s_fixArmPosition;
-        } else {
-            State.Arm.state = State.Arm.States.s_moveArmMotor;
-        }
-
-        if(driveController.getLeftBumperPressed()) {
-            State.Arm.resetEncoder = true;
-        }
-
-        // ターゲット座標からターゲットの角度を計算する
-        Map<String, Double> targetAngles = Tools.calculateAngles(State.Arm.targetDepth, State.Arm.targetHeight);
-        State.Arm.targetRootAngle = targetAngles.get("RootAngle");
-        State.Arm.targetJointAngle = targetAngles.get("JointAngle");
     }
+
+        //ここまで
+
 
     /**
      * @param Height : ターゲットのX座標[cm]

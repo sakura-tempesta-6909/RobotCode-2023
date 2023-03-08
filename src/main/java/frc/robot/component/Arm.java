@@ -95,8 +95,12 @@ public class Arm implements Component {
         jointMotor.set(0);
     }
 
-    public void moveLeftAndRightArm(double moveLeftAndRightSpeed){
+    public void moveRightArm(double moveLeftAndRightSpeed){
         moveLeftAndRightMotor.set(moveLeftAndRightSpeed);
+    }
+
+    public void moveLeftArm(double moveLeftAndRightSpeed){
+        moveLeftAndRightMotor.set(-moveLeftAndRightSpeed);
     }
 
     public void stopLeftAndRightArm(){
@@ -168,7 +172,7 @@ public class Arm implements Component {
                 pidControlArm();
                 break;
             case s_moveArmMotor:
-                rotationControlArm(State.Arm.rightX, State.Arm.leftY);
+                rotationControlArm(State.Arm.jointSpeed, State.Arm.rootSpeed);
                 break;
             case s_fixArmPosition:
                 fixPositionWithFF();
@@ -176,8 +180,11 @@ public class Arm implements Component {
         }
 
         switch(State.moveLeftAndRightArmState){
-            case s_moveLeftAndRightMotor:
-                moveLeftAndRightArm(State.Arm.moveLeftAndRightMotor);
+            case s_moveRightMotor:
+                moveRightArm(State.Arm.moveLeftAndRightMotor);
+                break;
+            case s_moveLeftMotor:
+                moveLeftArm(-State.Arm.moveLeftAndRightMotor);
                 break;
             case s_fixLeftAndRightMotor:
                 stopLeftAndRightArm(

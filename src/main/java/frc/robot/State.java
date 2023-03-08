@@ -45,6 +45,8 @@ public class State {
         public enum RotateState {
             /** 手首を回転させる */
             s_rotateHand,
+            /** 手首を逆回転させる */
+            s_invertRotateHand,
             /** 手首の回転を止める */
             s_stopHand,
             /** 手首を元の位置に戻す*/
@@ -84,9 +86,9 @@ public class State {
          * joint - 関節部分の角度
          */
         public static double targetRootAngle, targetJointAngle;
-        /** TODO ここに作るべき変数じゃないのでControllerのStateを作るべき */
-        public static double leftY;
-        public static double rightX;
+        /** モーターの速度 */
+        public static double jointSpeed;
+        public static double rootSpeed;
         /** 根本のNEOモーターに必要になるfeedforwardのspeed[-1, 1] */
         public static double rootMotorFeedforward;
         /** 関節部分のNEOモーターに必要になるfeedforwardのspeed[-1, 1] */
@@ -129,8 +131,8 @@ public class State {
             Arm.actualRootAngle = 0.0;
             Arm.actualJointAngle = 0.0;
 
-            Arm.leftY = 0.0;
-            Arm.rightX = 0.0;
+            Arm.jointSpeed = 0.0;
+            Arm.rootSpeed = 0.0;
 
             Arm.limelightTargetHeight = 10.0;
             Arm.limelightTargetDepth = 80.0;
@@ -230,8 +232,10 @@ public class State {
     }
 
     public enum MoveLeftAndRightArmState{
-        /** アームを左右に動かす */
-        s_moveLeftAndRightMotor,
+        /** アームを右に動かす */
+        s_moveRightMotor,
+        /** アームを左に動かす */
+        s_moveLeftMotor,
         /** アームを固定する */
         s_fixLeftAndRightMotor,
         /** アームを真ん中に動かす */
