@@ -79,7 +79,7 @@ public class ArmMode extends Mode {
 
         //Xボタンでハンドを開く
         if (driveController.getXButton()) {
-            State.grabHandState = GrabHandState.s_releaseHand;
+            State.Hand.grabHandState = GrabHandState.s_releaseHand;
         }
 
         // ターゲット座標からターゲットの角度を計算する

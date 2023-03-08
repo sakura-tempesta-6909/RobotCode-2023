@@ -16,7 +16,7 @@ public class State {
     public static DriveState driveState;
     public static RollerState intakeState;
     public static IntakeExtensionState intakeExtensionState;
-    public static GrabHandState grabHandState;
+
 
 
     /** ターゲットを向く時のスピード */
@@ -41,6 +41,7 @@ public class State {
     public static MoveLeftAndRightArmState moveLeftAndRightArmState;
 
     public static class Hand {
+        public static GrabHandState grabHandState;
         public static RotateState rotateState;
         public enum RotateState {
             /** 手首を回転させる */
@@ -62,7 +63,7 @@ public class State {
         public static void StateInit() {
         }
         public static void StateReset() {
-            grabHandState = GrabHandState.s_releaseHand;
+            grabHandState = GrabHandState.s_grabHand;
             rotateState = RotateState.s_stopHand;
         }
     }

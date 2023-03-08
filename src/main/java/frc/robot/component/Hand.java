@@ -150,7 +150,7 @@ public class Hand implements Component{
     }
     @Override
     public void applyState() {
-        switch(State.grabHandState) {
+        switch(State.Hand.grabHandState) {
             case s_grabHand:
                 grabHand();
                 break;

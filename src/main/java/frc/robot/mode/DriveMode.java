@@ -13,11 +13,12 @@ import frc.robot.subClass.Const;
 public class DriveMode extends Mode {
 
     private static GrabGamePiecePhase phase = GrabGamePiecePhase.Phase1;
+    private static int GrabCount = 0;
 
     @Override
     public void changeMode() {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
@@ -27,58 +28,56 @@ public class DriveMode extends Mode {
         State.driveState = DriveState.s_fastDrive;
 
         //RT: intake, LT: outtake
-        if(driveController.getRightTriggerAxis() > 0.5){
+        if (driveController.getRightTriggerAxis() > 0.5) {
             State.intakeState = RollerState.s_intakeGamePiece;
-        }else if(driveController.getLeftTriggerAxis() > 0.5){
+        } else if (driveController.getLeftTriggerAxis() > 0.5) {
             State.intakeState = RollerState.s_outtakeGamePiece;
-        }else{
+        } else {
             State.intakeState = RollerState.s_stopRoller;
         }
 
         //YボタンでBasicPositionに戻る, XボタンでゲームピースをつかんでbasicPositionに戻る
 
-        if (driveController.getXButtonPressed()){
+        if (driveController.getXButtonPressed()) {
             phase = GrabGamePiecePhase.Phase1;
         }
 
-        if(driveController.getYButton()){
+        if (driveController.getYButton()) {
             State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
             State.Arm.targetHeight = Const.Arm.basicPositionHeight;
             State.Arm.targetDepth = Const.Arm.basicPositionDepth;
             State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
             State.rotateState = RotateState.s_turnHandBack;
-        }else if(driveController.getXButton()){
-            switch(phase){
+        } else if (driveController.getXButton()) {
+            switch (phase) {
                 case Phase1:
-                State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                State.Arm.targetHeight = Const.Arm.basicPositionHeight;
-                State.Arm.targetDepth = Const.Arm.basicPositionDepth;
-                State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
-                State.rotateState = RotateState.s_turnHandBack;
-                if(State.Arm.isArmAtTarget){
-                    phase = GrabGamePiecePhase.Phase2;
-                }             
+                    State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+                    State.Arm.targetHeight = Const.Arm.basicPositionHeight;
+                    State.Arm.targetDepth = Const.Arm.basicPositionDepth;
+                    State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
+                    State.rotateState = RotateState.s_turnHandBack;
+                    if (State.Arm.isArmAtTarget) {
+                        phase = GrabGamePiecePhase.Phase2;
+                    }
                 case Phase2:
-                State.grabHandState = GrabHandState.s_releaseHand;
-                phase = GrabGamePiecePhase.Phase3;
-                break;            
+                    State.Hand.grabHandState = GrabHandState.s_releaseHand;
+                    State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+                    State.Arm.targetHeight = Const.GrabGamePiecePhase.armIntakeHeight;
+                    State.Arm.targetDepth = Const.GrabGamePiecePhase.armIntakeDepth;
+                    if (State.Arm.isArmAtTarget) {
+                        phase = GrabGamePiecePhase.Phase3;
+                    }
+                    break;
                 case Phase3:
-                State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                State.Arm.targetHeight = Const.GrabGamePiecePhase.armIntakeHeight;
-                State.Arm.targetDepth = Const.GrabGamePiecePhase.armIntakeDepth;
-                if(State.Arm.isArmAtTarget){
-                    phase = GrabGamePiecePhase.Phase4;
-                }
-                break;
+                    State.Hand.grabHandState = GrabHandState.s_grabHand;
+                    GrabCount++;
+                    if (GrabCount >= 20) phase = GrabGamePiecePhase.Phase4;
+                    break;
                 case Phase4:
-                State.grabHandState = GrabHandState.s_grabHand;
-                phase = GrabGamePiecePhase.Phase5;
-                break;
-                case Phase5:
-                State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                State.Arm.targetHeight = Const.Arm.basicPositionHeight;
-                State.Arm.targetDepth = Const.Arm.basicPositionDepth;
-                break;
+                    State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+                    State.Arm.targetHeight = Const.Arm.basicPositionHeight;
+                    State.Arm.targetDepth = Const.Arm.basicPositionDepth;
+                    break;
             }
         }
 
@@ -88,17 +87,16 @@ public class DriveMode extends Mode {
             State.driveState = DriveState.s_targetTracking;
         }
     }
-    
-    enum GrabGamePiecePhase{
+
+    enum GrabGamePiecePhase {
         //basicPositionに移動する
         Phase1,
-        //ハンドを開ける
+        //ハンドを開ける, アームを下げる
         Phase2,
-        //アームを下げる
-        Phase3,
         //ハンドを閉める
-        Phase4,
+        Phase3,
         //アームを上げる
-        Phase5
+        Phase4,
     }
+
 }
