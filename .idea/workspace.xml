@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f72108f7-ce51-49f9-91b3-cbf1659a19a4" name="Changes" comment="releaseHandをstateReset()に移動">
+    <list default="true" id="f72108f7-ce51-49f9-91b3-cbf1659a19a4" name="Changes" comment="Handを開いたまま0.4秒待機する機能の実装">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/State.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/State.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/component/Hand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/component/Hand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/mode/ArmMode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/mode/ArmMode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/mode/DriveMode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/mode/DriveMode.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -56,7 +54,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/81903/OneDrive/ドキュメント/programming/experiment",
+    "last_opened_file_path": "C:/Users/81903/OneDrive/ドキュメント/programming/RobotCode-2023",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -129,7 +127,8 @@
       <workItem from="1677145293920" duration="1828000" />
       <workItem from="1677320956040" duration="13078000" />
       <workItem from="1678263154555" duration="160000" />
-      <workItem from="1678263329726" duration="9569000" />
+      <workItem from="1678263329726" duration="10274000" />
+      <workItem from="1678322932167" duration="424000" />
     </task>
     <task id="LOCAL-00001" summary="Handの回転ステートの修正">
       <created>1678266386781</created>
@@ -152,7 +151,14 @@
       <option name="project" value="LOCAL" />
       <updated>1678267269442</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Handを開いたまま0.4秒待機する機能の実装">
+      <created>1678276774597</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1678276774597</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -185,7 +191,11 @@
     <MESSAGE value="Handの回転ステートの修正" />
     <MESSAGE value="付くんが書いたところの復元" />
     <MESSAGE value="releaseHandをstateReset()に移動" />
-    <option name="LAST_COMMIT_MESSAGE" value="releaseHandをstateReset()に移動" />
+    <MESSAGE value="Handを開いたまま0.4秒待機する機能の実装" />
+    <option name="LAST_COMMIT_MESSAGE" value="Handを開いたまま0.4秒待機する機能の実装" />
+  </component>
+  <component name="WpiLibVersionService">
+    <option name="lastChecked" value="20230309094951" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -71,7 +71,10 @@ public class DriveMode extends Mode {
                 case Phase3:
                     State.Hand.grabHandState = GrabHandState.s_grabHand;
                     GrabCount++;
-                    if (GrabCount >= 20) phase = GrabGamePiecePhase.Phase4;
+                    if (GrabCount >= 20) {
+                        phase = GrabGamePiecePhase.Phase4;
+                        GrabCount = 0;
+                    }
                     break;
                 case Phase4:
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
