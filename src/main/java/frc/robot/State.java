@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.State.Hand.RotateState;
 import frc.robot.mode.DriveMode;
 import frc.robot.mode.Mode;
 import frc.robot.mode.TestMode;
@@ -16,8 +17,7 @@ public class State {
     public static DriveState driveState;
     public static RollerState intakeState;
     public static IntakeExtensionState intakeExtensionState;
-    public static GrabHandState grabHandState;
-    public static RotateHandState rotateHandState;
+
 
 
     /** ターゲットを向く時のスピード */
@@ -44,6 +44,33 @@ public class State {
 
     public static MoveLeftAndRightArmState moveLeftAndRightArmState;
 
+    public static class Hand {
+        public static GrabHandState grabHandState;
+        public static RotateState rotateState;
+        public enum RotateState {
+            /** 手首を回転させる */
+            s_rightRotateHand,
+            /** 手首を逆回転させる */
+            s_leftRotateHand,
+            /** 手首の回転を止める */
+            s_stopHand,
+            /** 手首を元の位置に戻す*/
+            s_turnHandBack,
+            /** 手首を所定の位置に動かす*/
+            s_moveHandToSpecifiedAngle,
+        }
+        /** 手首の回転した度数 */
+        public static double actualHandAngle = 0.0;
+
+        public static double targetAngle = 0.0;
+
+        public static void StateInit() {
+        }
+        public static void StateReset() {
+            grabHandState = GrabHandState.s_grabHand;
+            rotateState = RotateState.s_stopHand;
+        }
+    }
     public static class Arm {
         /** アームのモード */
         public static States state;
@@ -65,9 +92,9 @@ public class State {
          * joint - 関節部分の角度
          */
         public static double targetRootAngle, targetJointAngle;
-        /** TODO ここに作るべき変数じゃないのでControllerのStateを作るべき */
-        public static double leftY;
-        public static double rightX;
+        /** モーターの速度 */
+        public static double jointSpeed;
+        public static double rootSpeed;
         /** 根本のNEOモーターに必要になるfeedforwardのspeed[-1, 1] */
         public static double rootMotorFeedforward;
         /** 関節部分のNEOモーターに必要になるfeedforwardのspeed[-1, 1] */
@@ -110,8 +137,8 @@ public class State {
             Arm.actualRootAngle = 0.0;
             Arm.actualJointAngle = 0.0;
 
-            Arm.leftY = 0.0;
-            Arm.rightX = 0.0;
+            Arm.jointSpeed = 0.0;
+            Arm.rootSpeed = 0.0;
 
             Arm.limelightTargetHeight = 10.0;
             Arm.limelightTargetDepth = 80.0;
@@ -131,6 +158,7 @@ public class State {
     }
 
     public static Map<String, Double> voltage = new HashMap<>();
+    public static RotateState rotateState;
 
 
     /**
@@ -140,7 +168,6 @@ public class State {
         XboxController driveController = new XboxController(Const.Ports.DriveController);
         XboxController operateController = new XboxController(Const.Ports.OperateController);
         Mode.addController(driveController, operateController);
-        grabHandState = GrabHandState.s_releaseHand;
         intakeExtensionState = IntakeExtensionState.s_openIntake;
         // initialize arm states
         Arm.ArmStateInit();
@@ -155,10 +182,11 @@ public class State {
     public static void StateReset() {
         driveState = DriveState.s_stopDrive;
         intakeState = RollerState.s_stopRoller;
-        rotateHandState = RotateHandState.s_stopHand;
+        rotateState = RotateState.s_stopHand;
         pidLimelightReset = false;
         // reset arm states
         Arm.ArmStateReset();
+        Hand.StateReset();
     }
 
     public enum DriveState {
@@ -210,16 +238,11 @@ public class State {
         s_releaseHand,
     }
 
-    public enum RotateHandState {
-        /** 手首を回転させる */
-        s_rotateHand,
-        /** 手首の回転を止める */
-        s_stopHand,
-    }
-
     public enum MoveLeftAndRightArmState{
-        /** アームを左右に動かす */
-        s_moveLeftAndRightMotor,
+        /** アームを右に動かす */
+        s_moveRightMotor,
+        /** アームを左に動かす */
+        s_moveLeftMotor,
         /** アームを固定する */
         s_fixLeftAndRightMotor,
         /** アームを真ん中に動かす */
