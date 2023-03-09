@@ -13,7 +13,12 @@ public class ArmMode extends Mode {
 
     @Override
     public void changeMode() {
-
+        if (driveController.getStartButton()){
+            State.mode = State.Modes.k_drive;
+        }
+        if (driveController.getBackButton()){
+            State.mode = State.Modes.k_arm;
+        }
     }
 
     /**

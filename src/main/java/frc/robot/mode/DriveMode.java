@@ -17,8 +17,12 @@ public class DriveMode extends Mode {
 
     @Override
     public void changeMode() {
-        // TODO Auto-generated method stub
-
+        if (driveController.getStartButton()){
+            State.mode = State.Modes.k_drive;
+        }
+        if (driveController.getBackButton()){
+            State.mode = State.Modes.k_arm;
+        }
     }
 
     @Override
