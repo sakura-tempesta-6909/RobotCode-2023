@@ -1,6 +1,9 @@
 package frc.robot.mode;
 
 import frc.robot.State;
+import frc.robot.State.GrabHandState;
+import frc.robot.State.MoveLeftAndRightArmState;
+import frc.robot.State.Hand.RotateState;
 import frc.robot.subClass.Const;
 import frc.robot.subClass.Tools;
 
@@ -21,55 +24,62 @@ public class ArmMode extends Mode {
      */
     @Override
     public void changeState() {
-        State.Arm.rightX = Tools.deadZoneProcess(driveController.getRightX());
-        State.Arm.leftY = Tools.deadZoneProcess(driveController.getLeftY());
-        
-        State.Arm.moveLeftAndRightMotor = Tools.deadZoneProcess(driveController.getLeftX());
 
-        // Xボタンが押されたら一旦Integralをリセット Targetを現在のアームの座標にリセットする
-        if (driveController.getXButtonPressed()) {
-            State.Arm.targetHeight = State.Arm.actualHeight;
-            State.Arm.targetDepth = State.Arm.actualDepth;
-            State.Arm.resetPidController = true;
-        }
-
-        // Aボタンが押されたら一旦Integralをリセット
-        if (driveController.getAButtonPressed()) {
-            State.Arm.resetPidController = true;
-        }
-
-        // Bボタンが押されたら一旦Integralをリセット アームを持ち上げる(Z座標を変える)
-        if (driveController.getBButtonPressed()) {
-            State.Arm.targetHeight = State.Arm.actualHeight;
-            State.Arm.targetDepth = State.Arm.actualDepth - Const.Arm.TakeUpLengthAfterGrab;
-            State.Arm.resetPidController = true;
-        }
-
-        if (driveController.getXButton()) {
-            // Targetの座標をコントローラーによって変える　(PIDで移動する)
+        //YボタンでBasicPositionに戻る
+        if (driveController.getYButton()) {
             State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-            if(isNewTargetPositionInLimit(State.Arm.targetHeight + State.Arm.leftY * Const.Arm.TargetModifyRatio, State.Arm.targetDepth + State.Arm.rightX * Const.Arm.TargetModifyRatio)){
-                State.Arm.targetHeight += State.Arm.leftY * Const.Arm.TargetModifyRatio;
-                State.Arm.targetDepth += State.Arm.rightX * Const.Arm.TargetModifyRatio;
-            }
-        } else if (driveController.getAButton()) {
-            // limelightの予測座標にターゲットを設定する　(PIDで移動する)
-            // TODO ここでlimelightの値を代入
+            State.Arm.targetHeight = Const.Arm.basicPositionHeight;
+            State.Arm.targetDepth = Const.Arm.basicPositionDepth;
+            State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
+            State.rotateState = RotateState.s_turnHandBack;
+        }
+
+        //Aボタンでアームを前に伸ばす
+        if (driveController.getAButton()) {
             State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-            if(isNewTargetPositionInLimit(State.Arm.limelightTargetHeight, State.Arm.limelightTargetDepth)) {
-                State.Arm.targetHeight = State.Arm.limelightTargetHeight;
-                State.Arm.targetDepth = State.Arm.limelightTargetDepth;
-            }
+            //ここにConstの値を入れる
+        }
+
+        //Bボタンで手首が180°回転する, RTで手首が右回転する, LTで手首が左回転する, RTLT同時押しで手首の位置をリセット
+        if (driveController.getRightTriggerAxis() > 0.5 && driveController.getLeftTriggerAxis() > 0.5) {
+            State.rotateState = RotateState.s_turnHandBack;
+        } else if (driveController.getRightTriggerAxis() > 0.5) {
+            State.rotateState = RotateState.s_rightRotateHand;
+        } else if (driveController.getLeftTriggerAxis() > 0.5) {
+            State.rotateState = RotateState.s_leftRotateHand;
         } else if (driveController.getBButton()) {
-            State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-        } else if (Math.abs(State.Arm.leftY) < 0.1 && Math.abs(State.Arm.rightX) < 0.1) {
-            State.Arm.state = State.Arm.States.s_fixArmPosition;
+            State.rotateState = RotateState.s_moveHandToSpecifiedAngle;
+            State.Hand.targetAngle = State.Hand.actualHandAngle + 180;
         } else {
-            State.Arm.state = State.Arm.States.s_moveArmMotor;
+            State.rotateState = RotateState.s_stopHand;
         }
 
-        if(driveController.getLeftBumperPressed()) {
-            State.Arm.resetEncoder = true;
+        //左スティック前後でアームを前後に動かす, 右スティック前後でアームを上下に動かす
+        final double rightY = Tools.deadZoneProcess(driveController.getRightY());
+        ;
+        final double leftY = Tools.deadZoneProcess(driveController.getLeftY());
+        State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+        if (isNewTargetPositionInLimit(State.Arm.targetHeight + rightY * Const.Arm.TargetModifyRatio, State.Arm.targetDepth + leftY * Const.Arm.TargetModifyRatio)) {
+            State.Arm.targetHeight += rightY * Const.Arm.TargetModifyRatio;
+            State.Arm.targetDepth += leftY * Const.Arm.TargetModifyRatio;
+        }
+
+
+        //RightBumperでアームを右に動かす, LeftBumperでアームを左に動かす, 
+        //RightBumperLeftBumper同時押しでアームの位置をリセット
+        if (driveController.getRightBumper() && driveController.getLeftBumper()) {
+            State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
+        } else if (driveController.getRightBumper()) {
+            State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_moveRightMotor;
+        } else if (driveController.getLeftBumper()) {
+            State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_moveLeftMotor;
+        } else {
+            State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_fixLeftAndRightMotor;
+        }
+
+        //Xボタンでハンドを開く
+        if (driveController.getXButton()) {
+            State.Hand.grabHandState = GrabHandState.s_releaseHand;
         }
 
         // ターゲット座標からターゲットの角度を計算する
@@ -78,22 +88,22 @@ public class ArmMode extends Mode {
         State.Arm.targetJointAngle = targetAngles.get("JointAngle");
     }
 
-    /**
-     * @param Height : ターゲットのX座標[cm]
-     * @param Depth : ターゲットのZ座標[cm]
-     * この関数に座標の値域を記述する
-     * @return 入力の座標が正しいか[boolean]
-     */
-    private boolean isNewTargetPositionInLimit(double Height, double Depth) {
-        double length = Math.sqrt(Math.pow(Height, 2) + Math.pow(Depth, 2));
+        /**
+         * @param Height : ターゲットのX座標[cm]
+         * @param Depth : ターゲットのZ座標[cm]
+         * この関数に座標の値域を記述する
+         * @return 入力の座標が正しいか[boolean]
+         */
+        private boolean isNewTargetPositionInLimit ( double Height, double Depth){
+            double length = Math.sqrt(Math.pow(Height, 2) + Math.pow(Depth, 2));
 
-        boolean isZAxisInLimit = Depth > 0;
-        boolean isXAxisInLimit = Height > 0;
-        boolean isInOuterBorder = length < Const.Arm.TargetPositionOuterLimit;
-        boolean isOutInnerBorder = length > Const.Arm.TargetPositionInnerLimit;
+            boolean isZAxisInLimit = Depth > 0;
+            boolean isXAxisInLimit = Height > 0;
+            boolean isInOuterBorder = length < Const.Arm.TargetPositionOuterLimit;
+            boolean isOutInnerBorder = length > Const.Arm.TargetPositionInnerLimit;
 
-        return true;
-        // TODO XButtonでコントロールする時のターゲット座標の制限を考える
+            return true;
+            // TODO XButtonでコントロールする時のターゲット座標の制限を考える
 //        return isXAxisInLimit && isZAxisInLimit && isInOuterBorder && isOutInnerBorder;
+        }
     }
-}

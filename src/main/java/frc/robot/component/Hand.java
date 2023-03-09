@@ -114,6 +114,12 @@ public class Hand implements Component{
         controlHandRotation(Const.Speeds.HandRotationSpeed);
     }
 
+    /** 手首を逆回転させる */
+    public void invertRotateHand() {
+        controlHandRotation(-Const.Speeds.HandRotationSpeed);
+    }
+
+
     /** 手首の回転を止める */
     public void stopHand() {
         controlHandRotation(Const.Speeds.Neutral);
@@ -144,7 +150,7 @@ public class Hand implements Component{
     }
     @Override
     public void applyState() {
-        switch(State.grabHandState) {
+        switch(State.Hand.grabHandState) {
             case s_grabHand:
                 grabHand();
                 break;
@@ -154,8 +160,11 @@ public class Hand implements Component{
         }
         
         switch(State.Hand.rotateState) {
-            case s_rotateHand:
+            case s_rightRotateHand:
                 rotateHand();
+                break;
+            case s_leftRotateHand:
+                invertRotateHand();
                 break;
             case s_stopHand:
                 stopHand();
