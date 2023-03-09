@@ -6,9 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="f72108f7-ce51-49f9-91b3-cbf1659a19a4" name="Changes" comment="ChangeModeの実装">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/State.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/State.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/mode/ArmMode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/mode/ArmMode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/mode/DriveMode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/mode/DriveMode.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -130,6 +127,7 @@
       <workItem from="1678263154555" duration="160000" />
       <workItem from="1678263329726" duration="10274000" />
       <workItem from="1678322932167" duration="424000" />
+      <workItem from="1678361102330" duration="337000" />
     </task>
     <task id="LOCAL-00001" summary="Handの回転ステートの修正">
       <created>1678266386781</created>
@@ -196,7 +194,7 @@
     <option name="LAST_COMMIT_MESSAGE" value="Handを開いたまま0.4秒待機する機能の実装" />
   </component>
   <component name="WpiLibVersionService">
-    <option name="lastChecked" value="20230309094951" />
+    <option name="lastChecked" value="20230309202505" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
