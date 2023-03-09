@@ -3,16 +3,13 @@
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
-  <component name="ChangeListManager">
-<<<<<<< HEAD
-    <list default="true" id="f72108f7-ce51-49f9-91b3-cbf1659a19a4" name="Changes" comment="merge">
+    <component name="ChangeListManager">
+    <list default="true" id="f72108f7-ce51-49f9-91b3-cbf1659a19a4" name="Changes" comment="merge"></list>
       <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/subClass/Const.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/subClass/Const.java" afterDir="false" />
-=======
     <list default="true" id="f72108f7-ce51-49f9-91b3-cbf1659a19a4" name="Changes" comment="Handを開いたまま0.4秒待機する機能の実装">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/mode/DriveMode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/mode/DriveMode.java" afterDir="false" />
->>>>>>> master
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -192,10 +189,8 @@
       </map>
     </option>
   </component>
-<<<<<<< HEAD
-  <component name="WpiLibVersionService">
+  <component name="WpiLibVersionService"></component>
     <option name="lastChecked" value="20230305203843" />
-=======
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Handの回転ステートの修正" />
     <MESSAGE value="付くんが書いたところの復元" />
@@ -205,7 +200,6 @@
   </component>
   <component name="WpiLibVersionService">
     <option name="lastChecked" value="20230309094951" />
->>>>>>> master
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
