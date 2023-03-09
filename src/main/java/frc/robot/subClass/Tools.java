@@ -151,4 +151,6 @@ public class Tools {
         return torque / Const.Arm.MotorMaxTorque;
         // TODO 2次関数的にトルクを求める必要があるらしい？
     }
+
+    //TODO 腹へったhttps://techgrowup.net/2022/04/12/cannot-lock-checksums-cache-as-it-has-already-been-locked-by-this-process%E3%81%8C%E5%87%BA%E3%81%9F%E3%81%A8%E3%81%8D%E3%81%AE%E5%AF%BE%E5%87%A6%E6%B3%95/
 }
