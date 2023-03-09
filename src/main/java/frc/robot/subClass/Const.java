@@ -18,7 +18,8 @@ public class Const {
         public static final int LeftRoller = 1;
         public static final int BottomRoller = 2;
 
-        public static final int moveLeftAndRightMotor = 0;
+        public static final int MoveLeftAndRightMotor = 0;
+        public static int HandRotationMotor = 0;
     }
 
     public static final class Speeds {
@@ -166,6 +167,14 @@ public class Const {
         public static final double D_MID = 0.0;
         /** アームを左右に動かすモーターの積分値の最大 */
         public static final double IMax_MID = 0.0 ;
+        /** handのモーターののPIDのP */
+        public static final double P_HANDR = 0.0;
+        /** handのモーターののPIDのI */
+        public static final double I_HANDR = 0.0;
+        /** handのモーターののPIDのD */
+        public static final double D_HANDR = 0.0;
+        /** handのモーターのの積分値の最大値 */
+        public static final double IMax_HANDR = 0.0 ;
 
         /**
          * NEOモーターの最大トルク 注意! [N*cm] = [N*m] * 100
@@ -188,7 +197,19 @@ public class Const {
         public static final double RootMotorMoveRatio = 0.5;
         /** PIDコントロールの誤差の許容量[deg] 注意! isArmAtTargetの判定に用いているだけ */
         public static final double PIDAngleTolerance = 0.1;
+
+        /** アームの理想的な高さ */
+        public static final double basicPositionHeight = 0;
+        /** アームの理想的な奥行き */
+        public static final double basicPositionDepth = 0;
+
     }
+
+    public static final class Hand {
+        /** アームを左右に動かす時のギア比 */
+        public static final double HandGearRatio = 1;
+    }
+
 
     public static final class MQTT {
         public static final String Broker = "tcp://raspberrypi.local:1883";
@@ -201,7 +222,13 @@ public class Const {
         public static final double CameraDriveP = 0.05;
         public static final double CameraDriveI = 0.0007;
         public static final double CameraDriveD = 0.003;
+    }
 
+    public static final class GrabGamePiecePhase{
+        /** インテイクのゲームピースを掴むアームの高さ */
+        public static final double armIntakeHeight = 0;
+        /** インテイクのゲームピースを掴むアームの奥行き */
+        public static final double armIntakeDepth = 0;
     }
 
     public static void ConstInit() {
