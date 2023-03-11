@@ -1,5 +1,6 @@
 package frc.robot.component;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -22,6 +23,11 @@ public class Drive implements Component {
         driveLeftBack.follow(driveLeftFront);
         driveRightFront.setInverted(true);
         driveRightBack.setInverted(true);
+
+        driveRightFront.setNeutralMode(NeutralMode.Brake);
+        driveLeftFront.setNeutralMode(NeutralMode.Brake);
+        driveRightBack.setNeutralMode(NeutralMode.Brake);
+        driveLeftBack.setNeutralMode(NeutralMode.Brake);
 
         differentialDrive = new DifferentialDrive(driveLeftFront, driveRightFront);
 
