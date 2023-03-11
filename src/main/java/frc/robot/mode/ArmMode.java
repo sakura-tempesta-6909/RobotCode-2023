@@ -13,7 +13,12 @@ public class ArmMode extends Mode {
 
     @Override
     public void changeMode() {
-
+        if (driveController.getStartButton()){
+            State.mode = State.Modes.k_drive;
+        }
+        if (driveController.getBackButton()){
+            State.mode = State.Modes.k_arm;
+        }
     }
 
     /**
@@ -56,7 +61,6 @@ public class ArmMode extends Mode {
 
         //左スティック前後でアームを前後に動かす, 右スティック前後でアームを上下に動かす
         final double rightY = Tools.deadZoneProcess(driveController.getRightY());
-        ;
         final double leftY = Tools.deadZoneProcess(driveController.getLeftY());
         State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
         if (isNewTargetPositionInLimit(State.Arm.targetHeight + rightY * Const.Arm.TargetModifyRatio, State.Arm.targetDepth + leftY * Const.Arm.TargetModifyRatio)) {

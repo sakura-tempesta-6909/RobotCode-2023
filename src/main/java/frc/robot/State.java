@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.State.Hand.RotateState;
+import frc.robot.mode.ArmMode;
 import frc.robot.mode.DriveMode;
 import frc.robot.mode.Mode;
 import frc.robot.mode.TestMode;
@@ -246,6 +247,7 @@ public class State {
 
     public enum Modes {
         k_drive(new DriveMode()),
+        k_arm(new ArmMode()),
         k_test(new TestMode());
 
         private final Mode mode;
