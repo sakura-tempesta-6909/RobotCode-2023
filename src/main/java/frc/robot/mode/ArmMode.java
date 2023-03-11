@@ -26,7 +26,7 @@ public class ArmMode extends Mode {
     public void changeState() {
 
         //YボタンでBasicPositionに戻る
-        if (driveController.getYButton()) {
+        if (Button2.getAsBoolean()) {
             State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
             State.Arm.targetHeight = Const.Arm.basicPositionHeight;
             State.Arm.targetDepth = Const.Arm.basicPositionDepth;
@@ -35,19 +35,31 @@ public class ArmMode extends Mode {
         }
 
         //Aボタンでアームを前に伸ばす
-        if (driveController.getAButton()) {
+        if (Mode.Button7.getAsBoolean()) {
             State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
             //ここにConstの値を入れる
+        } else if (Mode.Button9.getAsBoolean()) {
+
+        } else if (Mode.Button11.getAsBoolean()) {
+
+        } else if (Mode.Button8.getAsBoolean()) {
+
+        } else if (Mode.Button10.getAsBoolean()) {
+
+        } else if (Mode.Button12.getAsBoolean()) {
+
+        } else {
+
         }
 
         //Bボタンで手首が180°回転する, RTで手首が右回転する, LTで手首が左回転する, RTLT同時押しで手首の位置をリセット
-        if (driveController.getRightTriggerAxis() > 0.5 && driveController.getLeftTriggerAxis() > 0.5) {
+        if (Mode.Button4.getAsBoolean()) {
             State.rotateState = RotateState.s_turnHandBack;
-        } else if (driveController.getRightTriggerAxis() > 0.5) {
+        } else if (Mode.Button5.getAsBoolean()) {
             State.rotateState = RotateState.s_rightRotateHand;
-        } else if (driveController.getLeftTriggerAxis() > 0.5) {
+        } else if (Mode.Button6.getAsBoolean()) {
             State.rotateState = RotateState.s_leftRotateHand;
-        } else if (driveController.getBButton()) {
+        } else if (Mode.Button3.getAsBoolean()) {
             State.rotateState = RotateState.s_moveHandToSpecifiedAngle;
             State.Hand.targetAngle = State.Hand.actualHandAngle + 180;
         } else {
@@ -55,9 +67,9 @@ public class ArmMode extends Mode {
         }
 
         //左スティック前後でアームを前後に動かす, 右スティック前後でアームを上下に動かす
-        final double rightY = Tools.deadZoneProcess(driveController.getRightY());
-        ;
-        final double leftY = Tools.deadZoneProcess(driveController.getLeftY());
+
+        final double rightY = Tools.deadZoneProcess(joystick.getZ());
+        final double leftY = Tools.deadZoneProcess(joystick.getY());
         State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
         if (isNewTargetPositionInLimit(State.Arm.targetHeight + rightY * Const.Arm.TargetModifyRatio, State.Arm.targetDepth + leftY * Const.Arm.TargetModifyRatio)) {
             State.Arm.targetHeight += rightY * Const.Arm.TargetModifyRatio;
@@ -69,16 +81,16 @@ public class ArmMode extends Mode {
         //RightBumperLeftBumper同時押しでアームの位置をリセット
         if (driveController.getRightBumper() && driveController.getLeftBumper()) {
             State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
-        } else if (driveController.getRightBumper()) {
+        } else if (joystick.getX() > 0.5) {
             State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_moveRightMotor;
-        } else if (driveController.getLeftBumper()) {
+        } else if (joystick.getX() > -0.5) {
             State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_moveLeftMotor;
         } else {
             State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_fixLeftAndRightMotor;
         }
 
         //Xボタンでハンドを開く
-        if (driveController.getXButton()) {
+        if (Mode.Button1.getAsBoolean()) {
             State.Hand.grabHandState = GrabHandState.s_releaseHand;
         }
 
