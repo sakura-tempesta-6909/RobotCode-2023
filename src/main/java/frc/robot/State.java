@@ -31,9 +31,11 @@ public class State {
     /** cameraからみたaprilTagの横の角度(度数法) */
     public static double aprilTagAngleWidth;
     /** armからtagまでの距離 */
-    public static double armToTag; // [cm]
+    public static double armToFrontTag; // [cm]
     /** armからターゲットまでの距離 */
-    public static double armToGoal; // [cm]
+    public static double armToFrontGoal; // [cm]
+    public static double armToBackGoal;
+    public static double armToBackTag;
     /** 奥のターゲットまでの距離 */
     public static double limelightToBackGoal; // [cm]
     public static String autonomousPhaseTransition;

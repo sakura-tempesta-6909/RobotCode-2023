@@ -10,12 +10,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.State;
 import frc.robot.subClass.Const;
 import org.opencv.core.Mat;
-import org.opencv.core.Point;
 import org.opencv.core.Scalar;
-import org.opencv.imgproc.Imgproc;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Camera implements Component {
 
@@ -61,7 +58,8 @@ public class Camera implements Component {
         double angleToGoalDegrees = Const.Calculation.Camera.CameraMountAngleDegrees + State.aprilTagAngleWidth;
         double angleToGoalRadians = angleToGoalDegrees * (Math.PI / 180);
         State.cameraToTag = (Const.Calculation.Camera.GoalHeight - Const.Calculation.Camera.CameraLensHeight) / Math.tan(angleToGoalRadians);
-        State.armToTag = State.cameraToTag - Const.Calculation.Camera.CameraToArm;
+        State.armToFrontTag = State.cameraToTag - Const.Calculation.Camera.CameraToArm;
+        State.armToBackTag = State.armToFrontTag + Const.Calculation.Camera.FrontTagToBackTag;
         SmartDashboard.putNumber("Distance", State.cameraToTag);
 
 

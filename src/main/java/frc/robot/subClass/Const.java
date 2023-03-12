@@ -107,6 +107,7 @@ public class Const {
             public static final double FocalLengthHeight = CameraCenterHeight / Math.tan(Math.toRadians(ThetaMaxHeight));
             /** 横の焦点距離 */
             public static final double FocalLengthWeight = CameraCenterWidth / Math.tan(Math.toRadians(ThetaMaxWidth));
+            public static final double FrontTagToBackTag = 0;
 
 
         }
