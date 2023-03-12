@@ -119,6 +119,8 @@ public class State {
             state = States.s_stopDrive;
             resetPosition = false;
             resetPIDController = false;
+            Arm.StatesReset();
+            Hand.StateReset();
         }
     }
 
