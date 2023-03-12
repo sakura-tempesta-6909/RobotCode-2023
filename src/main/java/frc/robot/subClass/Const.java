@@ -1,4 +1,7 @@
 package frc.robot.subClass;
+
+import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
+
 /** 常に決まっている数値(定数)をまとめたファイル */
 public class Const {
     public static final class Ports {
@@ -6,21 +9,21 @@ public class Const {
         public static final int OperateController = 1;
         public static final int Joystick = 2;
 
-        public static final int DriveRightFront = 0;
-        public static final int DriveLeftFront = 2;
-        public static final int DriveRightBack = 1;
-        public static final int DriveLeftBack = 3;
+        public static final int DriveRightFront = 8;
+        public static final int DriveLeftFront = 10;
+        public static final int DriveRightBack = 7;
+        public static final int DriveLeftBack = 9;
 
         public static final int HandSolenoid = 0;
 
         public static final int IntakeSolenoid = 0;
 
-        public static final int RightRoller = 0;
-        public static final int LeftRoller = 1;
-        public static final int BottomRoller = 2;
+        public static final int RightRoller = 4;
+        public static final int LeftRoller = 3;
+        public static final int BottomRoller = 11;
 
-        public static final int MoveLeftAndRightMotor = 0;
-        public static int HandRotationMotor = 0;
+        public static final int MoveLeftAndRightMotor = 5;
+        public static int HandRotationMotor = 6;
     }
 
     public static final class Speeds {
@@ -118,11 +121,46 @@ public class Const {
         public static double HandRotationSpeed = 0.3;
     }
 
+    public static final class Drive {
+
+        public static final class PID {
+            public static final double LengthThreshold = 50;
+            public static final double LossTolerance = 0.5;
+            public static final double PointsPerLength = 20;
+            public static final int LongSlotIdx = 0;
+            public static final int ShortSlotIdx = 1;
+            public static final TalonSRXConfiguration DriveRight = new TalonSRXConfiguration();
+            public static final TalonSRXConfiguration DriveLeft= new TalonSRXConfiguration();
+
+            public static void init() {
+                DriveRight.slot0.kP = 0.051;
+                DriveRight.slot0.kI = 0.000006;
+                DriveRight.slot0.kD = 0.00054;
+                DriveRight.slot0.maxIntegralAccumulator = 1023*0.014/DriveRight.slot0.kI;
+
+                DriveLeft.slot0.kP = 0.048;
+                DriveLeft.slot0.kI = 0.000009;
+                DriveLeft.slot0.kD = 0.00054;
+                DriveLeft.slot0.maxIntegralAccumulator =  1023*0.014/DriveLeft.slot0.kI;
+
+                DriveRight.slot1.kP = 0.2;
+                DriveRight.slot1.kI = 0.004;
+                DriveRight.slot1.kD = 0.000;
+                DriveRight.slot1.maxIntegralAccumulator = 1023*0.1/DriveRight.slot1.kI;
+
+                DriveLeft.slot1.kP = 0.2;
+                DriveLeft.slot1.kI = 0.0004;
+                DriveLeft.slot1.kD = 0.000;
+                DriveLeft.slot1.maxIntegralAccumulator =  1023*0.1/DriveLeft.slot1.kI;
+            }
+        }
+    }
+
     public static final class Arm {
 
         public static final class Ports {
-            public static final int topMotor = 0;
-            public static final int underMotor = 0;
+            public static final int topMotor = 2;
+            public static final int underMotor = 1;
         }
 
         /** 根本のアームの長さ[cm] */
@@ -200,9 +238,12 @@ public class Const {
         public static final double PIDAngleTolerance = 0.1;
 
         /** アームの理想的な高さ */
-        public static final double basicPositionHeight = 0;
+        public static final double InitialHeight = 0;
         /** アームの理想的な奥行き */
-        public static final double basicPositionDepth = 0;
+        public static final double InitialDepth = 0;
+
+        /** アームの根本の高さ[cm] -> 座標の原点の高さ */
+        public static final double RootHeight = 40;
 
     }
 

@@ -7,6 +7,7 @@
     <list default="true" id="01c7fb39-e8fb-4c63-a2fb-44bc457ceef7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/mode/ArmMode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/mode/ArmMode.java" afterDir="false" />
     </list>
+    <list default="true" id="f72108f7-ce51-49f9-91b3-cbf1659a19a4" name="Changes" comment="ChangeModeの実装" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -127,6 +128,7 @@
       <workItem from="1678263154555" duration="160000" />
       <workItem from="1678263329726" duration="10274000" />
       <workItem from="1678322932167" duration="424000" />
+      <workItem from="1678361102330" duration="1946000" />
     </task>
     <task id="LOCAL-00001" summary="Handの回転ステートの修正">
       <created>1678266386781</created>
@@ -194,6 +196,7 @@
   </component>
   <component name="WpiLibVersionService">
     <option name="lastChecked" value="20230311165502" />
+    <option name="lastChecked" value="20230309202505" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

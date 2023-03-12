@@ -13,7 +13,12 @@ public class ArmMode extends Mode {
 
     @Override
     public void changeMode() {
-
+        if (driveController.getStartButton()){
+            State.mode = State.Modes.k_drive;
+        }
+        if (driveController.getBackButton()){
+            State.mode = State.Modes.k_arm;
+        }
     }
 
     /**
@@ -28,8 +33,8 @@ public class ArmMode extends Mode {
         //ボタン2でBasicPositionに戻る
         if (joystick.getRawButton(2)) {
             State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-            State.Arm.targetHeight = Const.Arm.basicPositionHeight;
-            State.Arm.targetDepth = Const.Arm.basicPositionDepth;
+            State.Arm.targetHeight = Const.Arm.InitialHeight;
+            State.Arm.targetDepth = Const.Arm.InitialDepth;
             State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
             State.rotateState = RotateState.s_turnHandBack;
         }
@@ -65,7 +70,6 @@ public class ArmMode extends Mode {
         }
 
         //Y方向にスティックを倒してアームを前後に動かす, Z方向にスティックを曲げてアームを上下に動かす
-
         final double joystickZ = Tools.deadZoneProcess(joystick.getZ());
         final double joystickY = Tools.deadZoneProcess(joystick.getY());
         State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;

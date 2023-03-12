@@ -36,7 +36,7 @@ public class Arm implements Component {
         pidForJoint.setD(Const.Arm.D_J);
         pidForJoint.setIMaxAccum(Const.Arm.IMax_J, 0);
 
-        moveLeftAndRightMotor = new CANSparkMax(Const.Ports.MoveLeftAndRightMotor,MotorType.kBrushless);
+        moveLeftAndRightMotor = new CANSparkMax(Const.Ports.MoveLeftAndRightMotor, MotorType.kBrushless);
         leftAndRightArmPidController = moveLeftAndRightMotor.getPIDController();
         leftAndRightArmEncoder = moveLeftAndRightMotor.getEncoder();
         leftAndRightArmPidController.setP(Const.Arm.P_MID);
@@ -59,14 +59,14 @@ public class Arm implements Component {
     /**
      * コントローラーでアームを動かす
      * @param joint jointモーターのスピード [-1,1]
-     * @param root rootモーターのスピード [-1,1]
+     * @param root  rootモーターのスピード [-1,1]
      */
     private void rotationControlArm(double joint, double root) {
         jointMotor.set(joint * Const.Arm.JointMotorMoveRatio);
         rootMotor.set(root * Const.Arm.RootMotorMoveRatio);
     }
 
-    private boolean isArmAtTarget() {
+    private boolean isAtTarget() {
         boolean isRootMotorAtSetpoint = Math.abs(State.Arm.targetRootAngle - State.Arm.actualRootAngle) < Const.Arm.PIDAngleTolerance;
         boolean isJointMotorAtSetpoint = Math.abs(State.Arm.targetJointAngle - State.Arm.actualJointAngle) < Const.Arm.PIDAngleTolerance;
         return isJointMotorAtSetpoint && isRootMotorAtSetpoint;
@@ -87,23 +87,25 @@ public class Arm implements Component {
     private double calculateJointRotationFromAngle(double angle) {
         return angle * Const.Arm.JointMotorGearRatio / 360;
     }
+
     private double calculateLeftAndRightAngleFromRotation(double rotation) {
         return rotation / Const.Arm.LeftAndRightArmGearRatio * 360;
     }
+
     private void fixPositionWithFF() {
         rootMotor.set(0);
         jointMotor.set(0);
     }
 
-    public void moveRightArm(double moveLeftAndRightSpeed){
+    public void moveRightArm(double moveLeftAndRightSpeed) {
         moveLeftAndRightMotor.set(moveLeftAndRightSpeed);
     }
 
-    public void moveLeftArm(double moveLeftAndRightSpeed){
+    public void moveLeftArm(double moveLeftAndRightSpeed) {
         moveLeftAndRightMotor.set(-moveLeftAndRightSpeed);
     }
 
-    public void stopLeftAndRightArm(){
+    public void stopLeftAndRightArm() {
         moveLeftAndRightMotor.set(Const.Speeds.Neutral);
     }
 
@@ -142,10 +144,12 @@ public class Arm implements Component {
         State.Arm.actualJointAngle = calculateJointAngleFromRotation(jointMotor.getEncoder().getPosition());
         State.Arm.actualHeight = Tools.calculateHeight(State.Arm.actualRootAngle, State.Arm.actualJointAngle);
         State.Arm.actualDepth = Tools.calculateDepth(State.Arm.actualRootAngle, State.Arm.actualJointAngle);
+
         //armが左右に動いてる時の位置（角度）
         State.Arm.leftAndRightPositionAngle = calculateLeftAndRightAngleFromRotation(leftAndRightArmEncoder.getPosition());
+
         // armがターゲットの座標に到着したか
-        State.Arm.isArmAtTarget = isArmAtTarget();
+        State.Arm.isAtTarget = isAtTarget();
     }
 
     @Override
@@ -179,7 +183,7 @@ public class Arm implements Component {
                 break;
         }
 
-        switch(State.moveLeftAndRightArmState){
+        switch (State.moveLeftAndRightArmState) {
             case s_moveRightMotor:
                 moveRightArm(State.Arm.moveLeftAndRightMotor);
                 break;
