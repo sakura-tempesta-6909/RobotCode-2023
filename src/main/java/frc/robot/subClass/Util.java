@@ -5,6 +5,10 @@ import frc.robot.State;
 
 public class Util {
 
+    public static String getConsole(String key) {
+        return SmartDashboard.getString(key, "None");
+    }
+
     public static void sendConsole(String key, String text) {
         // System.out.println(key + ":" + text);
         SmartDashboard.putString(key, text);

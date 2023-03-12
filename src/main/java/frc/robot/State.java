@@ -7,6 +7,7 @@ import frc.robot.mode.DriveMode;
 import frc.robot.mode.Mode;
 import frc.robot.mode.TestMode;
 import frc.robot.subClass.Const;
+import frc.robot.subClass.Util;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +18,7 @@ public class State {
     public static DriveState driveState;
     public static RollerState intakeState;
     public static IntakeExtensionState intakeExtensionState;
-
+    public static MoveLeftAndRightArmState moveLeftAndRightArmState;
 
 
     /** ターゲットを向く時のスピード */
@@ -38,8 +39,7 @@ public class State {
     public static double armToGoal; // [cm]
     /** 奥のターゲットまでの距離 */
     public static double limelightToBackGoal; // [cm]
-
-    public static MoveLeftAndRightArmState moveLeftAndRightArmState;
+    public static String autonomousPhaseTransition;
 
     public static class Hand {
         public static GrabHandState grabHandState;
@@ -151,6 +151,8 @@ public class State {
             Arm.isArmAtTarget = false;
             Arm.resetPidController = false;
             Arm.resetEncoder = false;
+
+            autonomousPhaseTransition = Util.getConsole("AutonomousPhaseTransition");
         }
     }
 

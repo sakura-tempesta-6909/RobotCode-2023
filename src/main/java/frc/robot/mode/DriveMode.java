@@ -1,7 +1,5 @@
 package frc.robot.mode;
 
-import com.fasterxml.jackson.databind.ser.std.AsArraySerializerBase;
-
 import frc.robot.State;
 import frc.robot.State.DriveState;
 import frc.robot.State.GrabHandState;
@@ -49,16 +47,16 @@ public class DriveMode extends Mode {
 
         if (driveController.getYButton()) {
             State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-            State.Arm.targetHeight = Const.Arm.basicPositionHeight;
-            State.Arm.targetDepth = Const.Arm.basicPositionDepth;
+            State.Arm.targetHeight = Const.Arm.BasicPositionHeight;
+            State.Arm.targetDepth = Const.Arm.BasicPositionDepth;
             State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
             State.rotateState = RotateState.s_turnHandBack;
         } else if (driveController.getXButton()) {
             switch (phase) {
                 case Phase1:
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.Arm.targetHeight = Const.Arm.basicPositionHeight;
-                    State.Arm.targetDepth = Const.Arm.basicPositionDepth;
+                    State.Arm.targetHeight = Const.Arm.BasicPositionHeight;
+                    State.Arm.targetDepth = Const.Arm.BasicPositionDepth;
                     State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
                     State.rotateState = RotateState.s_turnHandBack;
                     if (State.Arm.isArmAtTarget) {
@@ -83,8 +81,8 @@ public class DriveMode extends Mode {
                     break;
                 case Phase4:
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.Arm.targetHeight = Const.Arm.basicPositionHeight;
-                    State.Arm.targetDepth = Const.Arm.basicPositionDepth;
+                    State.Arm.targetHeight = Const.Arm.BasicPositionHeight;
+                    State.Arm.targetDepth = Const.Arm.BasicPositionDepth;
                     break;
             }
         }

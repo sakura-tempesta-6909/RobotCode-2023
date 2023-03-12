@@ -199,9 +199,12 @@ public class Const {
         public static final double PIDAngleTolerance = 0.1;
 
         /** アームの理想的な高さ */
-        public static final double basicPositionHeight = 0;
+        public static final double BasicPositionHeight = 0;
         /** アームの理想的な奥行き */
-        public static final double basicPositionDepth = 0;
+        public static final double BasicPositionDepth = 0;
+
+        /** アームの根本の高さ[cm] -> 座標の原点の高さ */
+        public static final double RootHeight = 40;
 
     }
 
