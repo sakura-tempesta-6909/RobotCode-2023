@@ -44,6 +44,7 @@ public class Autonomous {
                     State.Drive.resetPIDController = true;
                     State.Drive.resetPosition = true;
                     State.Drive.state = State.Drive.States.s_pidDrive;
+                    State.Drive.targetLength = targetLength;
                 },
                 (double time) -> {
                     return State.Drive.isAtTarget;
