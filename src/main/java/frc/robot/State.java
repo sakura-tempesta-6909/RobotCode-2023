@@ -14,12 +14,10 @@ import java.util.Map;
 
 public class State {
     public static Modes mode;
-    public static double driveXSpeed, driveZRotation;
     public static DriveState driveState;
     public static RollerState intakeState;
     public static IntakeExtensionState intakeExtensionState;
     public static MoveLeftAndRightArmState moveLeftAndRightArmState;
-
 
     /** ターゲットを向く時のスピード */
     public static double limelightTrackingZRotation;
@@ -68,6 +66,24 @@ public class State {
             rotateState = RotateState.s_stopHand;
         }
     }
+
+    public static class Drive {
+        public static double targetLength;
+        public static double rightLength, leftLength;
+        public static boolean isAtTarget;
+        public static double xSpeed, zRotation;
+        public static void StatesInit() {
+            targetLength = 0.0;
+            xSpeed = 0.0;
+            zRotation = 0.0;
+            rightLength = 0.0;
+            leftLength = 0.0;
+        }
+
+        public static void StatesReset() {
+        }
+    }
+
     public static class Arm {
         /** アームのモード */
         public static States state;
@@ -97,7 +113,7 @@ public class State {
         /** 関節部分のNEOモーターに必要になるfeedforwardのspeed[-1, 1] */
         public static double jointMotorFeedforward;
         /** アームがターゲットについているか（ターゲットとの誤差がConst.Arm.PIDAngleTolerance以下か） */
-        public static boolean isArmAtTarget;
+        public static boolean isAtTarget;
 
         public static double moveLeftAndRightMotor;
         
@@ -120,7 +136,7 @@ public class State {
             s_fixArmPosition,
         }
 
-        public static void ArmStateInit() {
+        public static void StatesInit() {
             //init armMode value
             Arm.targetHeight = 0.0;
             Arm.targetDepth = 0.0;
@@ -144,15 +160,14 @@ public class State {
             Arm.jointMotorFeedforward = 0.0;
             
             Arm.moveLeftAndRightMotor = 0.0;
+
+            Arm.isAtTarget = false;
         }
 
-        public static void ArmStateReset() {
+        public static void StatesReset() {
             Arm.state = Arm.States.s_fixArmPosition;
-            Arm.isArmAtTarget = false;
             Arm.resetPidController = false;
             Arm.resetEncoder = false;
-
-            autonomousPhaseTransition = Util.getConsole("AutonomousPhaseTransition");
         }
     }
 
@@ -169,7 +184,7 @@ public class State {
         Mode.addController(driveController, operateController);
         intakeExtensionState = IntakeExtensionState.s_openIntake;
         // initialize arm states
-        Arm.ArmStateInit();
+        Arm.StatesInit();
         
         voltage = new HashMap<>();
         StateReset();
@@ -181,8 +196,11 @@ public class State {
     public static void StateReset() {
         driveState = DriveState.s_stopDrive;
         intakeState = RollerState.s_stopRoller;
+
+        autonomousPhaseTransition = Util.getConsole("AutonomousPhaseTransition");
+
         // reset arm states
-        Arm.ArmStateReset();
+        Arm.StatesReset();
         Hand.StateReset();
     }
 
@@ -203,12 +221,12 @@ public class State {
          * ロボットの速度を0にする
          */
         s_stopDrive,
-        // targetに照準を合わせる
-        s_targetTracking,
+        // コーンのtargetに照準を合わせる
+        s_limelightTracking,
+        // キューブのtargetに照準を合わせる
         s_apriltagTracking,
-
-
-
+        // pidで動く
+        s_pidDrive,
     }
 
     public enum RollerState {

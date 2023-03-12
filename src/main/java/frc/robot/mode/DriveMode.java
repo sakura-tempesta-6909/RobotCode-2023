@@ -26,8 +26,8 @@ public class DriveMode extends Mode {
 
     @Override
     public void changeState() {
-        State.driveXSpeed = -driveController.getLeftY();
-        State.driveZRotation = -driveController.getRightX();
+        State.Drive.xSpeed = -driveController.getLeftY();
+        State.Drive.zRotation = -driveController.getRightX();
         State.driveState = DriveState.s_fastDrive;
 
         //RT: intake, LT: outtake
@@ -59,7 +59,7 @@ public class DriveMode extends Mode {
                     State.Arm.targetDepth = Const.Arm.BasicPositionDepth;
                     State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
                     State.rotateState = RotateState.s_turnHandBack;
-                    if (State.Arm.isArmAtTarget) {
+                    if (State.Arm.isAtTarget) {
                         phase = GrabGamePiecePhase.Phase2;
                     }
                 case Phase2:
@@ -67,7 +67,7 @@ public class DriveMode extends Mode {
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
                     State.Arm.targetHeight = Const.GrabGamePiecePhase.armIntakeHeight;
                     State.Arm.targetDepth = Const.GrabGamePiecePhase.armIntakeDepth;
-                    if (State.Arm.isArmAtTarget) {
+                    if (State.Arm.isAtTarget) {
                         phase = GrabGamePiecePhase.Phase3;
                     }
                     break;
@@ -90,7 +90,7 @@ public class DriveMode extends Mode {
         if (driveController.getAButton()) {
             State.driveState = DriveState.s_apriltagTracking;
         } else if (driveController.getBButton()) {
-            State.driveState = DriveState.s_targetTracking;
+            State.driveState = DriveState.s_limelightTracking;
         }
     }
 

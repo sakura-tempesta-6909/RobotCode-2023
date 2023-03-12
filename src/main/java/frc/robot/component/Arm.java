@@ -66,7 +66,7 @@ public class Arm implements Component {
         rootMotor.set(root * Const.Arm.RootMotorMoveRatio);
     }
 
-    private boolean isArmAtTarget() {
+    private boolean isAtTarget() {
         boolean isRootMotorAtSetpoint = Math.abs(State.Arm.targetRootAngle - State.Arm.actualRootAngle) < Const.Arm.PIDAngleTolerance;
         boolean isJointMotorAtSetpoint = Math.abs(State.Arm.targetJointAngle - State.Arm.actualJointAngle) < Const.Arm.PIDAngleTolerance;
         return isJointMotorAtSetpoint && isRootMotorAtSetpoint;
@@ -142,10 +142,12 @@ public class Arm implements Component {
         State.Arm.actualJointAngle = calculateJointAngleFromRotation(jointMotor.getEncoder().getPosition());
         State.Arm.actualHeight = Tools.calculateHeight(State.Arm.actualRootAngle, State.Arm.actualJointAngle);
         State.Arm.actualDepth = Tools.calculateDepth(State.Arm.actualRootAngle, State.Arm.actualJointAngle);
+
         //armが左右に動いてる時の位置（角度）
         State.Arm.leftAndRightPositionAngle = calculateLeftAndRightAngleFromRotation(leftAndRightArmEncoder.getPosition());
+
         // armがターゲットの座標に到着したか
-        State.Arm.isArmAtTarget = isArmAtTarget();
+        State.Arm.isAtTarget = isAtTarget();
     }
 
     @Override

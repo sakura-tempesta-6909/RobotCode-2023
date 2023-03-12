@@ -1,19 +1,15 @@
 package frc.robot.phase;
 
 import frc.robot.State;
-import frc.robot.State.DriveState;
 import frc.robot.State.GrabHandState;
-import edu.wpi.first.math.util.Units;
 import frc.robot.subClass.Const;
-
-import java.util.Objects;
 
 public class Autonomous {
     private static PhaseTransition phaseTransitionA;
     private static PhaseTransition phaseTransitionB;
     private static PhaseTransition phaseTransitionC;
 
-    private static PhaseTransition.Phase moveArmToSpecifiedPosition(double targetHeight, double targetDepth, String phaseName) {
+    private static PhaseTransition.Phase moveArmTo (double targetHeight, double targetDepth, String phaseName) {
         return new PhaseTransition.Phase(
                 () -> {
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
@@ -21,7 +17,7 @@ public class Autonomous {
                     State.Arm.targetDepth = targetDepth;
                 },
                 (double time) -> {
-                    return State.Arm.isArmAtTarget;
+                    return State.Arm.isAtTarget;
                 },
 				() -> {
 					State.Arm.resetPidController = true;
@@ -29,7 +25,7 @@ public class Autonomous {
 				phaseName
 		);
 	}
-	public static PhaseTransition.Phase releaseHand (double waiter, String phaseName){
+	public static PhaseTransition.Phase releaseHand (double waiter, String phaseName) {
 		return new PhaseTransition.Phase(
 				() -> {
 					State.Hand.grabHandState = GrabHandState.s_releaseHand;
@@ -42,6 +38,18 @@ public class Autonomous {
 		);
 	}
 
+	public static PhaseTransition.Phase driveTo (double targetLength, String phaseName) {
+		return new PhaseTransition.Phase(
+				() -> {
+					State.driveState = State.DriveState.s_pidDrive;
+				},
+				(double time) -> {
+					return State.Drive.isAtTarget;
+				},
+				phaseName
+		);
+	}
+
 	public static void autonomousInit () {
 		phaseTransitionA = new PhaseTransition();
 		phaseTransitionB = new PhaseTransition();
@@ -49,12 +57,12 @@ public class Autonomous {
 		PhaseTransition.Phase.PhaseInit();
 
 		phaseTransitionA.registerPhase(
-				moveArmToSpecifiedPosition(Const.Calculation.Camera.GoalHeight - Const.Arm.RootHeight, State.armToTag, "move arm to cube goal"),
+				moveArmTo(Const.Calculation.Camera.GoalHeight - Const.Arm.RootHeight, State.armToTag, "move arm to cube goal"),
 				releaseHand(2, "release cube")
 		);
 
 		phaseTransitionB.registerPhase(
-				moveArmToSpecifiedPosition(Const.Calculation.Limelight.GoalHeight - Const.Arm.RootHeight, State.armToGoal, "move arm to corn goal"),
+				moveArmTo(Const.Calculation.Limelight.GoalHeight - Const.Arm.RootHeight, State.armToGoal, "move arm to corn goal"),
 				releaseHand(2, "release corn")
 		);
 	}
