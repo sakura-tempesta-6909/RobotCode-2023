@@ -65,6 +65,10 @@ public class Autonomous {
                 moveArmTo(Const.Calculation.Limelight.GoalHeight - Const.Arm.RootHeight, State.armToGoal, "move arm to corn goal"),
                 releaseHand(2, "release corn")
         );
+
+        phaseTransitionC.registerPhase(
+
+        );
     }
 
     public static void run() {
