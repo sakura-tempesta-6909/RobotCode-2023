@@ -5,6 +5,10 @@ import frc.robot.State;
 
 public class Util {
 
+    public static String getConsole(String key) {
+        return SmartDashboard.getString(key, "None");
+    }
+
     public static void sendConsole(String key, String text) {
         // System.out.println(key + ":" + text);
         SmartDashboard.putString(key, text);
@@ -14,6 +18,7 @@ public class Util {
         // System.out.println(key + ":" +number);
         SmartDashboard.putNumber(key, number);
     }
+
     public static void sendConsole(String key, Boolean which) {
         // System.out.println(key + ":" +which);
         SmartDashboard.putBoolean(key, which);
@@ -28,7 +33,7 @@ public class Util {
         sendConsole("armTargetDepth", State.Arm.targetDepth);
         sendConsole("armTargetRootAngle", State.Arm.targetRootAngle);
         sendConsole("armTargetJointAngle", State.Arm.targetJointAngle);
-        sendConsole("isAtSetpoint", State.Arm.isArmAtTarget);
+        sendConsole("isAtSetpoint", State.Arm.isAtTarget);
         sendConsole("controlMode", State.Arm.state.toString());
     }
 }

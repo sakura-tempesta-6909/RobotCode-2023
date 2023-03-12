@@ -1,9 +1,6 @@
 package frc.robot.mode;
 
-import com.fasterxml.jackson.databind.ser.std.AsArraySerializerBase;
-
 import frc.robot.State;
-import frc.robot.State.DriveState;
 import frc.robot.State.GrabHandState;
 import frc.robot.State.MoveLeftAndRightArmState;
 import frc.robot.State.RollerState;
@@ -17,10 +14,10 @@ public class DriveMode extends Mode {
 
     @Override
     public void changeMode() {
-        if (driveController.getStartButton()){
+        if (driveController.getStartButton()) {
             State.mode = State.Modes.k_drive;
         }
-        if (driveController.getBackButton()){
+        if (driveController.getBackButton()) {
             State.mode = State.Modes.k_arm;
 
         }
@@ -28,9 +25,9 @@ public class DriveMode extends Mode {
 
     @Override
     public void changeState() {
-        State.driveXSpeed = -driveController.getLeftY();
-        State.driveZRotation = -driveController.getRightX();
-        State.driveState = DriveState.s_fastDrive;
+        State.Drive.xSpeed = -driveController.getLeftY();
+        State.Drive.zRotation = -driveController.getRightX();
+        State.Drive.state = State.Drive.States.s_fastDrive;
 
         //RT: intake, LT: outtake
         if (driveController.getRightTriggerAxis() > 0.5) {
@@ -49,19 +46,19 @@ public class DriveMode extends Mode {
 
         if (driveController.getYButton()) {
             State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-            State.Arm.targetHeight = Const.Arm.basicPositionHeight;
-            State.Arm.targetDepth = Const.Arm.basicPositionDepth;
+            State.Arm.targetHeight = Const.Arm.InitialHeight;
+            State.Arm.targetDepth = Const.Arm.InitialDepth;
             State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
             State.rotateState = RotateState.s_turnHandBack;
         } else if (driveController.getXButton()) {
             switch (phase) {
                 case Phase1:
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.Arm.targetHeight = Const.Arm.basicPositionHeight;
-                    State.Arm.targetDepth = Const.Arm.basicPositionDepth;
+                    State.Arm.targetHeight = Const.Arm.InitialHeight;
+                    State.Arm.targetDepth = Const.Arm.InitialDepth;
                     State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
                     State.rotateState = RotateState.s_turnHandBack;
-                    if (State.Arm.isArmAtTarget) {
+                    if (State.Arm.isAtTarget) {
                         phase = GrabGamePiecePhase.Phase2;
                     }
                 case Phase2:
@@ -69,7 +66,7 @@ public class DriveMode extends Mode {
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
                     State.Arm.targetHeight = Const.GrabGamePiecePhase.armIntakeHeight;
                     State.Arm.targetDepth = Const.GrabGamePiecePhase.armIntakeDepth;
-                    if (State.Arm.isArmAtTarget) {
+                    if (State.Arm.isAtTarget) {
                         phase = GrabGamePiecePhase.Phase3;
                     }
                     break;
@@ -83,16 +80,16 @@ public class DriveMode extends Mode {
                     break;
                 case Phase4:
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.Arm.targetHeight = Const.Arm.basicPositionHeight;
-                    State.Arm.targetDepth = Const.Arm.basicPositionDepth;
+                    State.Arm.targetHeight = Const.Arm.InitialHeight;
+                    State.Arm.targetDepth = Const.Arm.InitialDepth;
                     break;
             }
         }
 
         if (driveController.getAButton()) {
-            State.driveState = DriveState.s_apriltagTracking;
+            State.Drive.state = State.Drive.States.s_aprilTagTracking;
         } else if (driveController.getBButton()) {
-            State.driveState = DriveState.s_targetTracking;
+            State.Drive.state = State.Drive.States.s_limelightTracking;
         }
     }
 
