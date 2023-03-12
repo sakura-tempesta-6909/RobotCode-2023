@@ -66,7 +66,7 @@ public class Autonomous {
 				phaseTransitionC.run();
 				break;
 			default:
-				System.out.println("やばいよ");
+				phaseTransitionC.run();
 				break;
 		}
 	}
