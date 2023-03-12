@@ -34,12 +34,7 @@ public class ArmMode extends Mode {
             State.rotateState = RotateState.s_turnHandBack;
         }
 
-        //ボタン7でアームを前に伸ばす
-        if (driveController.getAButton()) {
-            State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-            //ここにConstの値を入れる
-
-        } else if (joystick.getRawButton(7)) {
+        if (joystick.getRawButton(7)) {
             // ボタン7で一番奥のポールまでアームを伸ばす
         } else if (joystick.getRawButton(9)) {
             // ボタン9で真ん中のポールまでアームを伸ばす
