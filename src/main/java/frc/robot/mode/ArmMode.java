@@ -38,22 +38,17 @@ public class ArmMode extends Mode {
         if (driveController.getAButton()) {
             State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
             //ここにConstの値を入れる
-            // ボタン7で一番奥のポールまでアームを伸ばす
-            // ボタン9で真ん中のポールまでアームを伸ばす
-            // ボタン11で一番手前のポールまでアームを伸ばす
-            // ボタン8で一番奥の箱までアームを伸ばす
-            // ボタン10で真ん中の箱までアームを伸ばす
-            //　ボタン12で一番手前の箱までアームを伸ばす
+        // ボタン7で一番奥のポールまでアームを伸ばす
         } else if (joystick.getRawButton(7)) {
-
+        // ボタン9で真ん中のポールまでアームを伸ばす
         } else if (joystick.getRawButton(9)) {
-
+        // ボタン11で一番手前のポールまでアームを伸ばす
         } else if (joystick.getRawButton(11)) {
-
+        // ボタン8で一番奥の箱までアームを伸ばす
         } else if (joystick.getRawButton(8)) {
-
+        // ボタン10で真ん中の箱までアームを伸ばす
         } else if (joystick.getRawButton(10)) {
-
+        //　ボタン12で一番手前の箱までアームを伸ばす
         } else if (joystick.getRawButton(12)) {
 
         } else {
