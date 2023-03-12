@@ -53,12 +53,12 @@ public class Drive implements Component {
 
     /**
      * PIDでtargetLength分前後に動かす
-     * */
+     */
     private void pidDrive() {
         if (Math.abs(State.Drive.targetLength) < Const.Drive.PID.LengthThreshold) {
             driveRightFront.selectProfileSlot(Const.Drive.PID.ShortSlotIdx, 0);
             driveLeftFront.selectProfileSlot(Const.Drive.PID.ShortSlotIdx, 0);
-        }else {
+        } else {
             driveRightFront.selectProfileSlot(Const.Drive.PID.LongSlotIdx, 0);
             driveLeftFront.selectProfileSlot(Const.Drive.PID.LongSlotIdx, 0);
         }

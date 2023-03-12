@@ -36,7 +36,7 @@ public class Arm implements Component {
         pidForJoint.setD(Const.Arm.D_J);
         pidForJoint.setIMaxAccum(Const.Arm.IMax_J, 0);
 
-        moveLeftAndRightMotor = new CANSparkMax(Const.Ports.MoveLeftAndRightMotor,MotorType.kBrushless);
+        moveLeftAndRightMotor = new CANSparkMax(Const.Ports.MoveLeftAndRightMotor, MotorType.kBrushless);
         leftAndRightArmPidController = moveLeftAndRightMotor.getPIDController();
         leftAndRightArmEncoder = moveLeftAndRightMotor.getEncoder();
         leftAndRightArmPidController.setP(Const.Arm.P_MID);
@@ -59,7 +59,7 @@ public class Arm implements Component {
     /**
      * コントローラーでアームを動かす
      * @param joint jointモーターのスピード [-1,1]
-     * @param root rootモーターのスピード [-1,1]
+     * @param root  rootモーターのスピード [-1,1]
      */
     private void rotationControlArm(double joint, double root) {
         jointMotor.set(joint * Const.Arm.JointMotorMoveRatio);
@@ -87,23 +87,25 @@ public class Arm implements Component {
     private double calculateJointRotationFromAngle(double angle) {
         return angle * Const.Arm.JointMotorGearRatio / 360;
     }
+
     private double calculateLeftAndRightAngleFromRotation(double rotation) {
         return rotation / Const.Arm.LeftAndRightArmGearRatio * 360;
     }
+
     private void fixPositionWithFF() {
         rootMotor.set(0);
         jointMotor.set(0);
     }
 
-    public void moveRightArm(double moveLeftAndRightSpeed){
+    public void moveRightArm(double moveLeftAndRightSpeed) {
         moveLeftAndRightMotor.set(moveLeftAndRightSpeed);
     }
 
-    public void moveLeftArm(double moveLeftAndRightSpeed){
+    public void moveLeftArm(double moveLeftAndRightSpeed) {
         moveLeftAndRightMotor.set(-moveLeftAndRightSpeed);
     }
 
-    public void stopLeftAndRightArm(){
+    public void stopLeftAndRightArm() {
         moveLeftAndRightMotor.set(Const.Speeds.Neutral);
     }
 
@@ -181,7 +183,7 @@ public class Arm implements Component {
                 break;
         }
 
-        switch(State.moveLeftAndRightArmState){
+        switch (State.moveLeftAndRightArmState) {
             case s_moveRightMotor:
                 moveRightArm(State.Arm.moveLeftAndRightMotor);
                 break;

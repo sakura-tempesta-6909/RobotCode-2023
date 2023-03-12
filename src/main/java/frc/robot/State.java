@@ -41,6 +41,7 @@ public class State {
     public static class Hand {
         public static GrabHandState grabHandState;
         public static RotateState rotateState;
+
         public enum RotateState {
             /** 手首を回転させる */
             s_rightRotateHand,
@@ -48,11 +49,12 @@ public class State {
             s_leftRotateHand,
             /** 手首の回転を止める */
             s_stopHand,
-            /** 手首を元の位置に戻す*/
+            /** 手首を元の位置に戻す */
             s_turnHandBack,
-            /** 手首を所定の位置に動かす*/
+            /** 手首を所定の位置に動かす */
             s_moveHandToSpecifiedAngle,
         }
+
         /** 手首の回転した度数 */
         public static double actualHandAngle = 0.0;
 
@@ -60,6 +62,7 @@ public class State {
 
         public static void StateInit() {
         }
+
         public static void StateReset() {
             grabHandState = GrabHandState.s_grabHand;
             rotateState = RotateState.s_stopHand;
@@ -81,13 +84,13 @@ public class State {
             s_midDrive,
             // ロボットの速度を遅くする
             s_slowDrive,
-            /**ロボットの速度を0にする*/
+            /** ロボットの速度を0にする */
             s_stopDrive,
-            /**コーンのtargetに照準を合わせる*/
+            /** コーンのtargetに照準を合わせる */
             s_limelightTracking,
-            /**キューブのtargetに照準を合わせる*/
+            /** キューブのtargetに照準を合わせる */
             s_aprilTagTracking,
-            /**pidで動く*/
+            /** pidで動く */
             s_pidDrive,
         }
 
@@ -136,14 +139,14 @@ public class State {
         public static boolean isAtTarget;
 
         public static double moveLeftAndRightMotor;
-        
+
         /** PIDコントローラーをリセットする（Integralの値をリセットする） */
         public static boolean resetPidController;
         /** エンコーダーをリセット（その時点の位置を0と定める） */
         public static boolean resetEncoder;
         /** limelightの値を代入 TODO 一時的な変数（実際はlimelightのStateから値を取得） */
         public static double limelightTargetHeight, limelightTargetDepth;
-        /** アームを左右に動かす時の位置*/
+        /** アームを左右に動かす時の位置 */
         public static double leftAndRightPositionAngle;
 
 
@@ -178,7 +181,7 @@ public class State {
 
             Arm.rootMotorFeedforward = 0.0;
             Arm.jointMotorFeedforward = 0.0;
-            
+
             Arm.moveLeftAndRightMotor = 0.0;
 
             Arm.isAtTarget = false;
@@ -209,7 +212,7 @@ public class State {
         Drive.StatesInit();
         Arm.StatesInit();
         Hand.StateInit();
-        
+
         voltage = new HashMap<>();
 
         StateReset();
@@ -253,7 +256,7 @@ public class State {
         s_releaseHand,
     }
 
-    public enum MoveLeftAndRightArmState{
+    public enum MoveLeftAndRightArmState {
         /** アームを右に動かす */
         s_moveRightMotor,
         /** アームを左に動かす */

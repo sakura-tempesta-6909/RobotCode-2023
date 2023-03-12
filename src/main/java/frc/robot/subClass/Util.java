@@ -18,6 +18,7 @@ public class Util {
         // System.out.println(key + ":" +number);
         SmartDashboard.putNumber(key, number);
     }
+
     public static void sendConsole(String key, Boolean which) {
         // System.out.println(key + ":" +which);
         SmartDashboard.putBoolean(key, which);
