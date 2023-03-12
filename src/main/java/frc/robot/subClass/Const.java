@@ -8,21 +8,21 @@ public class Const {
         public static final int DriveController = 0;
         public static final int OperateController = 1;
 
-        public static final int DriveRightFront = 0;
-        public static final int DriveLeftFront = 2;
-        public static final int DriveRightBack = 1;
-        public static final int DriveLeftBack = 3;
+        public static final int DriveRightFront = 8;
+        public static final int DriveLeftFront = 10;
+        public static final int DriveRightBack = 7;
+        public static final int DriveLeftBack = 9;
 
         public static final int HandSolenoid = 0;
 
         public static final int IntakeSolenoid = 0;
 
-        public static final int RightRoller = 0;
-        public static final int LeftRoller = 1;
-        public static final int BottomRoller = 2;
+        public static final int RightRoller = 4;
+        public static final int LeftRoller = 3;
+        public static final int BottomRoller = 11;
 
-        public static final int MoveLeftAndRightMotor = 0;
-        public static int HandRotationMotor = 0;
+        public static final int MoveLeftAndRightMotor = 5;
+        public static int HandRotationMotor = 6;
     }
 
     public static final class Speeds {
@@ -158,8 +158,8 @@ public class Const {
     public static final class Arm {
 
         public static final class Ports {
-            public static final int topMotor = 0;
-            public static final int underMotor = 0;
+            public static final int topMotor = 2;
+            public static final int underMotor = 1;
         }
 
         /** 根本のアームの長さ[cm] */
