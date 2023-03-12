@@ -12,15 +12,13 @@ public class Autonomous {
     private static PhaseTransition.Phase moveArmTo(double targetHeight, double targetDepth, String phaseName) {
         return new PhaseTransition.Phase(
                 () -> {
+                    State.Arm.resetPidController = true;
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
                     State.Arm.targetHeight = targetHeight;
                     State.Arm.targetDepth = targetDepth;
                 },
                 (double time) -> {
                     return State.Arm.isAtTarget;
-                },
-                () -> {
-                    State.Arm.resetPidController = true;
                 },
                 phaseName
         );
