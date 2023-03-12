@@ -44,6 +44,7 @@ public class State {
     public static class Hand {
         public static GrabHandState grabHandState;
         public static RotateState rotateState;
+        public static boolean isRelease;
         public enum RotateState {
             /** 手首を回転させる */
             s_rightRotateHand,
@@ -66,6 +67,7 @@ public class State {
         public static void StateReset() {
             grabHandState = GrabHandState.s_grabHand;
             rotateState = RotateState.s_stopHand;
+            isRelease = false;
         }
     }
     public static class Arm {
