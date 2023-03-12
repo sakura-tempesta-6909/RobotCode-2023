@@ -42,7 +42,7 @@ public class DriveMode extends Mode {
             phase = GrabGamePiecePhase.Phase1;
         }
 
-        if (Mode.Button2.getAsBoolean()) {
+        if (joystick.getRawButton(2)) {
             State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
             State.Arm.targetHeight = Const.Arm.basicPositionHeight;
             State.Arm.targetDepth = Const.Arm.basicPositionDepth;

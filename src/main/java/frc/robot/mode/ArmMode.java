@@ -26,7 +26,7 @@ public class ArmMode extends Mode {
     public void changeState() {
 
         //YボタンでBasicPositionに戻る
-        if (Button2.getAsBoolean()) {
+        if (joystick.getRawButton(2)) {
             State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
             State.Arm.targetHeight = Const.Arm.basicPositionHeight;
             State.Arm.targetDepth = Const.Arm.basicPositionDepth;
@@ -35,31 +35,31 @@ public class ArmMode extends Mode {
         }
 
         //Aボタンでアームを前に伸ばす
-        if (Mode.Button7.getAsBoolean()) {
+        if (joystick.getRawButton(7)) {
             State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
             //ここにConstの値を入れる
-        } else if (Mode.Button9.getAsBoolean()) {
+        } else if (joystick.getRawButton(9)) {
 
-        } else if (Mode.Button11.getAsBoolean()) {
+        } else if (joystick.getRawButton(11)) {
 
-        } else if (Mode.Button8.getAsBoolean()) {
+        } else if (joystick.getRawButton(8)) {
 
-        } else if (Mode.Button10.getAsBoolean()) {
+        } else if (joystick.getRawButton(10)) {
 
-        } else if (Mode.Button12.getAsBoolean()) {
+        } else if (joystick.getRawButton(12)) {
 
         } else {
 
         }
 
         //Bボタンで手首が180°回転する, RTで手首が右回転する, LTで手首が左回転する, RTLT同時押しで手首の位置をリセット
-        if (Mode.Button4.getAsBoolean()) {
+        if (joystick.getRawButton(4)) {
             State.rotateState = RotateState.s_turnHandBack;
-        } else if (Mode.Button5.getAsBoolean()) {
+        } else if (joystick.getRawButton(5)) {
             State.rotateState = RotateState.s_rightRotateHand;
-        } else if (Mode.Button6.getAsBoolean()) {
+        } else if (joystick.getRawButton(6)) {
             State.rotateState = RotateState.s_leftRotateHand;
-        } else if (Mode.Button3.getAsBoolean()) {
+        } else if (joystick.getRawButton(3)) {
             State.rotateState = RotateState.s_moveHandToSpecifiedAngle;
             State.Hand.targetAngle = State.Hand.actualHandAngle + 180;
         } else {
@@ -90,7 +90,7 @@ public class ArmMode extends Mode {
         }
 
         //Xボタンでハンドを開く
-        if (Mode.Button1.getAsBoolean()) {
+        if (joystick.getRawButton(1)) {
             State.Hand.grabHandState = GrabHandState.s_releaseHand;
         }
 
