@@ -59,6 +59,12 @@ public class Const {
             /** 手前から奥のターゲットまでの距離 */
             public static final double FrontGoalToBackGoal = 43; // [cm]
 
+            public static final class PID {
+                public static final double LimelightDriveP = 0.08;
+                public static final double LimelightDriveI = 0.02;
+                public static final double LimelightDriveD = 0;
+            }
+
         }
 
 
@@ -159,8 +165,8 @@ public class Const {
     public static final class Arm {
 
         public static final class Ports {
-            public static final int topMotor = 2;
-            public static final int underMotor = 1;
+            public static final int topMotor = 0;
+            public static final int underMotor = 0;
         }
 
         /** 根本のアームの長さ[cm] */

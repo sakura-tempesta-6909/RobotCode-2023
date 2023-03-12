@@ -4,14 +4,15 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.State;
 import frc.robot.subClass.Const;
 
 public class Drive implements Component {
-
-    private final WPI_TalonSRX driveRightFront, driveLeftFront;
-    private final DifferentialDrive differentialDrive;
+    private WPI_TalonSRX driveRightFront, driveLeftFront;
+    private DifferentialDrive differentialDrive;
+    private PIDController pidLimelightDrive;
 
     public Drive() {
         driveRightFront = new WPI_TalonSRX(Const.Ports.DriveRightFront);
@@ -31,16 +32,27 @@ public class Drive implements Component {
         driveRightFront.setInverted(true);
         driveRightBack.setInverted(true);
 
+        differentialDrive = new DifferentialDrive(driveLeftFront, driveRightFront);
+        pidLimelightDrive = new PIDController(Const.Calculation.Limelight.PID.LimelightDriveP, Const.Calculation.Limelight.PID.LimelightDriveI, Const.Calculation.Limelight.PID.LimelightDriveD);
         driveRightFront.setNeutralMode(NeutralMode.Brake);
         driveLeftFront.setNeutralMode(NeutralMode.Brake);
         driveRightBack.setNeutralMode(NeutralMode.Brake);
         driveLeftBack.setNeutralMode(NeutralMode.Brake);
-
     }
 
     public void arcadeDrive(double xSpeed, double zRotation) {
         differentialDrive.arcadeDrive(xSpeed, zRotation);
         differentialDrive.feed();
+    }
+
+    public void pidControlTargetTracking() {
+        double limelightTrackingZRotation = pidLimelightDrive.calculate(State.tx, 0);
+        if (limelightTrackingZRotation > 0.7) {
+            limelightTrackingZRotation = 0.7;
+        } else if (limelightTrackingZRotation < -0.7) {
+            limelightTrackingZRotation = -0.7;
+        }
+        arcadeDrive(State.limelightXSpeed * 0.7, -limelightTrackingZRotation);
     }
 
     public double PointsToLength(double points) {
@@ -120,6 +132,9 @@ public class Drive implements Component {
 
     @Override
     public void applyState() {
+        if (State.pidLimelightReset) {
+            pidLimelightDrive.reset();
+        }
         if (State.Drive.resetPosition) {
             driveRightFront.setSelectedSensorPosition(0.0);
             driveLeftFront.setSelectedSensorPosition(0.0);
@@ -144,15 +159,16 @@ public class Drive implements Component {
                 arcadeDrive(Const.Speeds.Neutral * State.Drive.xSpeed, Const.Speeds.Neutral * State.Drive.zRotation);
                 break;
             case s_limelightTracking:
-                arcadeDrive(Const.Speeds.Neutral * State.Drive.xSpeed, State.limelightTrackingZRotation);
+                pidControlTargetTracking();
                 break;
             case s_aprilTagTracking:
                 arcadeDrive(Const.Speeds.Neutral * State.Drive.xSpeed, State.cameraTrackingZRotation);
                 break;
             case s_pidDrive:
-                pidDrive();
+
                 break;
         }
+
     }
 }
 

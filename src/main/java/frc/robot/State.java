@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.State.Hand.RotateState;
@@ -37,6 +38,11 @@ public class State {
     public static double armToGoal; // [cm]
     /** 奥のターゲットまでの距離 */
     public static double limelightToBackGoal; // [cm]
+    public static double tx;
+    public static double limelightXSpeed;
+    public static boolean pidLimelightReset;
+
+
     public static String autonomousPhaseTransition;
 
     public static class Hand {
@@ -113,6 +119,8 @@ public class State {
             state = States.s_stopDrive;
             resetPosition = false;
             resetPIDController = false;
+            Arm.StatesReset();
+            Hand.StateReset();
         }
     }
 
@@ -232,6 +240,8 @@ public class State {
      */
     public static void StateReset() {
         intakeState = RollerState.s_stopRoller;
+        rotateState = RotateState.s_stopHand;
+        pidLimelightReset = false;
 
         autonomousPhaseTransition = Util.getConsole("AutonomousPhaseTransition");
 
