@@ -1,5 +1,7 @@
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.State.Hand.RotateState;
 import frc.robot.mode.ArmMode;
@@ -38,6 +40,17 @@ public class State {
     public static double armToBackTag;
     /** 奥のターゲットまでの距離 */
     public static double limelightToBackGoal; // [cm]
+    public static double tx;
+    public static double limelightXSpeed;
+    public static boolean pidLimelightReset;
+
+    /** カメラの横の中心座標 */
+    public static double cameraCenterWidth;
+    /** カメラの盾の中心座標 */
+    public static double cameraCenterHeight;
+    public static double cameraXSpeed;
+
+
     public static String autonomousPhaseTransition;
 
     public static class Hand {
@@ -114,6 +127,8 @@ public class State {
             state = States.s_stopDrive;
             resetPosition = false;
             resetPIDController = false;
+            Arm.StatesReset();
+            Hand.StateReset();
         }
     }
 
@@ -214,8 +229,8 @@ public class State {
     public static void StateInit() {
         XboxController driveController = new XboxController(Const.Ports.DriveController);
         XboxController operateController = new XboxController(Const.Ports.OperateController);
-        Mode.addController(driveController, operateController);
-
+        Joystick joystick = new Joystick(Const.Ports.Joystick);
+        Mode.addController(driveController, operateController, joystick);
         intakeExtensionState = IntakeExtensionState.s_openIntake;
 
         // initialize arm states
@@ -233,6 +248,8 @@ public class State {
      */
     public static void StateReset() {
         intakeState = RollerState.s_stopRoller;
+        rotateState = RotateState.s_stopHand;
+        pidLimelightReset = false;
 
         autonomousPhaseTransition = Util.getConsole("AutonomousPhaseTransition");
 

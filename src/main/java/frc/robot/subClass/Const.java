@@ -7,6 +7,7 @@ public class Const {
     public static final class Ports {
         public static final int DriveController = 0;
         public static final int OperateController = 1;
+        public static final int Joystick = 2;
 
         public static final int DriveRightFront = 8;
         public static final int DriveLeftFront = 10;
@@ -57,6 +58,12 @@ public class Const {
 
             /** 手前から奥のターゲットまでの距離 */
             public static final double FrontGoalToBackGoal = 43; // [cm]
+
+            public static final class PID {
+                public static final double LimelightDriveP = 0.08;
+                public static final double LimelightDriveI = 0.02;
+                public static final double LimelightDriveD = 0;
+            }
 
         }
 
@@ -109,6 +116,11 @@ public class Const {
             public static final double FocalLengthWeight = CameraCenterWidth / Math.tan(Math.toRadians(ThetaMaxWidth));
             public static final double FrontTagToBackTag = 0;
 
+            public static final class PID {
+                public static final double CameraDriveP = 0.05;
+                public static final double CameraDriveI = 0.0007;
+                public static final double CameraDriveD = 0.003;
+            }
 
         }
 
@@ -159,8 +171,8 @@ public class Const {
     public static final class Arm {
 
         public static final class Ports {
-            public static final int topMotor = 2;
-            public static final int underMotor = 1;
+            public static final int topMotor = 0;
+            public static final int underMotor = 0;
         }
 
         /** 根本のアームの長さ[cm] */
