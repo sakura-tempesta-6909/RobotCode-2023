@@ -38,19 +38,19 @@ public class ArmMode extends Mode {
         if (driveController.getAButton()) {
             State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
             //ここにConstの値を入れる
-        // ボタン7で一番奥のポールまでアームを伸ばす
-        } else if (joystick.getRawButton(7)) {
-        // ボタン9で真ん中のポールまでアームを伸ばす
-        } else if (joystick.getRawButton(9)) {
-        // ボタン11で一番手前のポールまでアームを伸ばす
-        } else if (joystick.getRawButton(11)) {
-        // ボタン8で一番奥の箱までアームを伸ばす
-        } else if (joystick.getRawButton(8)) {
-        // ボタン10で真ん中の箱までアームを伸ばす
-        } else if (joystick.getRawButton(10)) {
-        //　ボタン12で一番手前の箱までアームを伸ばす
-        } else if (joystick.getRawButton(12)) {
 
+        } else if (joystick.getRawButton(7)) {
+            // ボタン7で一番奥のポールまでアームを伸ばす
+        } else if (joystick.getRawButton(9)) {
+            // ボタン9で真ん中のポールまでアームを伸ばす
+        } else if (joystick.getRawButton(11)) {
+            // ボタン11で一番手前のポールまでアームを伸ばす
+        } else if (joystick.getRawButton(8)) {
+            // ボタン8で一番奥の箱までアームを伸ばす
+        } else if (joystick.getRawButton(10)) {
+            // ボタン10で真ん中の箱までアームを伸ばす
+        } else if (joystick.getRawButton(12)) {
+            // ボタン12で真ん中の箱までアームを伸ばす
         } else {
 
         }
@@ -69,7 +69,7 @@ public class ArmMode extends Mode {
             State.rotateState = RotateState.s_stopHand;
         }
 
-        //Y方向にスティックを倒してアームを前後に動かす, Z方向にスティックを倒してアームを上下に動かす
+        //Y方向にスティックを倒してアームを前後に動かす, Z方向にスティックを曲げてアームを上下に動かす
 
         final double joystickZ = Tools.deadZoneProcess(joystick.getZ());
         final double joystickY = Tools.deadZoneProcess(joystick.getY());
