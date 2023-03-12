@@ -46,16 +46,16 @@ public class DriveMode extends Mode {
 
         if (driveController.getYButton()) {
             State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-            State.Arm.targetHeight = Const.Arm.BasicPositionHeight;
-            State.Arm.targetDepth = Const.Arm.BasicPositionDepth;
+            State.Arm.targetHeight = Const.Arm.InitialHeight;
+            State.Arm.targetDepth = Const.Arm.InitialDepth;
             State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
             State.rotateState = RotateState.s_turnHandBack;
         } else if (driveController.getXButton()) {
             switch (phase) {
                 case Phase1:
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.Arm.targetHeight = Const.Arm.BasicPositionHeight;
-                    State.Arm.targetDepth = Const.Arm.BasicPositionDepth;
+                    State.Arm.targetHeight = Const.Arm.InitialHeight;
+                    State.Arm.targetDepth = Const.Arm.InitialDepth;
                     State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
                     State.rotateState = RotateState.s_turnHandBack;
                     if (State.Arm.isAtTarget) {
@@ -80,8 +80,8 @@ public class DriveMode extends Mode {
                     break;
                 case Phase4:
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.Arm.targetHeight = Const.Arm.BasicPositionHeight;
-                    State.Arm.targetDepth = Const.Arm.BasicPositionDepth;
+                    State.Arm.targetHeight = Const.Arm.InitialHeight;
+                    State.Arm.targetDepth = Const.Arm.InitialDepth;
                     break;
             }
         }

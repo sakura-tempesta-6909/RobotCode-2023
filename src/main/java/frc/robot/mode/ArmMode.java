@@ -33,8 +33,8 @@ public class ArmMode extends Mode {
         //YボタンでBasicPositionに戻る
         if (driveController.getYButton()) {
             State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-            State.Arm.targetHeight = Const.Arm.BasicPositionHeight;
-            State.Arm.targetDepth = Const.Arm.BasicPositionDepth;
+            State.Arm.targetHeight = Const.Arm.InitialHeight;
+            State.Arm.targetDepth = Const.Arm.InitialDepth;
             State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
             State.rotateState = RotateState.s_turnHandBack;
         }

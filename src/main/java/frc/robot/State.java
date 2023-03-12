@@ -72,17 +72,23 @@ public class State {
     public static class Drive {
 
         public static States state;
+        /** PID時のターゲット[cm] 正が前向き */
         public static double targetLength;
+        /** 左右のモーターの位置[cm] 正が前向き */
         public static double rightLength, leftLength;
+        /** ロボットが目標の位置にいるか */
         public static boolean isAtTarget;
+        /** arcadeDrive用の引数 */
         public static double xSpeed, zRotation;
 
+        public static boolean resetPIDController, resetPosition;
+
         public enum States {
-            // ロボットの速度を速くする
+            /** ロボットの速度を速くする */
             s_fastDrive,
-            // ロボットの速度を中くらいにする
+            /** ロボットの速度を中くらいにする */
             s_midDrive,
-            // ロボットの速度を遅くする
+            /** ロボットの速度を遅くする */
             s_slowDrive,
             /** ロボットの速度を0にする */
             s_stopDrive,
@@ -104,6 +110,8 @@ public class State {
 
         public static void StatesReset() {
             state = States.s_stopDrive;
+            resetPosition = false;
+            resetPIDController = false;
         }
     }
 

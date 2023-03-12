@@ -1,7 +1,6 @@
 package frc.robot.subClass;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
-import edu.wpi.first.math.controller.PIDController;
 
 /** 常に決まっている数値(定数)をまとめたファイル */
 public class Const {
@@ -238,9 +237,9 @@ public class Const {
         public static final double PIDAngleTolerance = 0.1;
 
         /** アームの理想的な高さ */
-        public static final double BasicPositionHeight = 0;
+        public static final double InitialHeight = 0;
         /** アームの理想的な奥行き */
-        public static final double BasicPositionDepth = 0;
+        public static final double InitialDepth = 0;
 
         /** アームの根本の高さ[cm] -> 座標の原点の高さ */
         public static final double RootHeight = 40;
