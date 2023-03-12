@@ -35,7 +35,7 @@ public class ArmMode extends Mode {
             State.Arm.targetDepth = State.Arm.actualDepth;
         }
 
-        if (joystick.getRawButton(5)) {
+        if (driveController.getRightBumper() && driveController.getLeftBumper()) {
             State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
         } else if (joystickZ > 0.5) {
             State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_moveRightMotor;
