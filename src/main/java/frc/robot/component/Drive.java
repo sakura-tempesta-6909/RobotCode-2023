@@ -2,6 +2,7 @@ package frc.robot.component;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.BasePIDSetConfiguration;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.math.controller.PIDController;
@@ -13,6 +14,8 @@ public class Drive implements Component {
     private WPI_TalonSRX driveRightFront, driveLeftFront;
     private DifferentialDrive differentialDrive;
     private PIDController pidLimelightDrive;
+    private PIDController pidCameraDrive;
+
 
     public Drive() {
         driveRightFront = new WPI_TalonSRX(Const.Ports.DriveRightFront);
@@ -31,13 +34,18 @@ public class Drive implements Component {
 
         driveRightFront.setInverted(true);
         driveRightBack.setInverted(true);
+        driveLeftFront.setInverted(false);
+        driveLeftBack.setInverted(false);
 
         differentialDrive = new DifferentialDrive(driveLeftFront, driveRightFront);
         pidLimelightDrive = new PIDController(Const.Calculation.Limelight.PID.LimelightDriveP, Const.Calculation.Limelight.PID.LimelightDriveI, Const.Calculation.Limelight.PID.LimelightDriveD);
+        pidCameraDrive = new PIDController(Const.Calculation.Camera.PID.CameraDriveP, Const.Calculation.Camera.PID.CameraDriveI, Const.Calculation.Camera.PID.CameraDriveD);
         driveRightFront.setNeutralMode(NeutralMode.Brake);
         driveLeftFront.setNeutralMode(NeutralMode.Brake);
         driveRightBack.setNeutralMode(NeutralMode.Brake);
         driveLeftBack.setNeutralMode(NeutralMode.Brake);
+
+
     }
 
     public void arcadeDrive(double xSpeed, double zRotation) {
@@ -53,6 +61,16 @@ public class Drive implements Component {
             limelightTrackingZRotation = -0.7;
         }
         arcadeDrive(State.limelightXSpeed * 0.7, -limelightTrackingZRotation);
+    }
+
+    public void pidControlApriltagTracking() {
+        double cameraZRotation = pidCameraDrive.calculate(State.aprilTagAngleWidth, 0);
+        if (cameraZRotation > 0.5) {
+            cameraZRotation = 0.5;
+        } else if (cameraZRotation < -0.5) {
+            cameraZRotation = -0.5;
+        }
+        arcadeDrive(State.cameraXSpeed * Const.Speeds.MidDrive, cameraZRotation);
     }
 
     public double PointsToLength(double points) {
@@ -162,10 +180,10 @@ public class Drive implements Component {
                 pidControlTargetTracking();
                 break;
             case s_aprilTagTracking:
-                arcadeDrive(Const.Speeds.Neutral * State.Drive.xSpeed, State.cameraTrackingZRotation);
+                pidControlApriltagTracking();
                 break;
             case s_pidDrive:
-
+                pidDrive();
                 break;
         }
 

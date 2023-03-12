@@ -115,6 +115,11 @@ public class Const {
             /** 横の焦点距離 */
             public static final double FocalLengthWeight = CameraCenterWidth / Math.tan(Math.toRadians(ThetaMaxWidth));
 
+            public static final class PID {
+                public static final double CameraDriveP = 0.05;
+                public static final double CameraDriveI = 0.0007;
+                public static final double CameraDriveD = 0.003;
+            }
 
         }
 
