@@ -42,6 +42,12 @@ public class State {
     public static double limelightXSpeed;
     public static boolean pidLimelightReset;
 
+    /** カメラの横の中心座標 */
+    public static double cameraCenterWidth;
+    /** カメラの盾の中心座標 */
+    public static double cameraCenterHeight;
+    public static double cameraXSpeed;
+
 
     public static String autonomousPhaseTransition;
 
