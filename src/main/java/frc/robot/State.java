@@ -162,15 +162,23 @@ public class State {
         public static boolean isAtTarget;
 
         public static double moveLeftAndRightMotor;
+        /** アームを左右に動かす時の位置 */
+        public static double leftAndRightPositionAngle;
 
         /** PIDコントローラーをリセットする（Integralの値をリセットする） */
         public static boolean resetPidController;
         /** エンコーダーをリセット（その時点の位置を0と定める） */
         public static boolean resetEncoder;
-        /** limelightの値を代入 TODO 一時的な変数（実際はlimelightのStateから値を取得） */
-        public static double limelightTargetHeight, limelightTargetDepth;
-        /** アームを左右に動かす時の位置 */
-        public static double leftAndRightPositionAngle;
+
+        public static class TargetDepth {
+            public static double LimelightFront;
+            public static double LimelightMiddle;
+            public static double LimelightBack;
+
+            public static double CameraFront;
+            public static double CameraMiddle;
+            public static double CameraBack;
+        }
 
 
         public enum States {
@@ -199,9 +207,6 @@ public class State {
             Arm.jointSpeed = 0.0;
             Arm.rootSpeed = 0.0;
 
-            Arm.limelightTargetHeight = 10.0;
-            Arm.limelightTargetDepth = 80.0;
-
             Arm.rootMotorFeedforward = 0.0;
             Arm.jointMotorFeedforward = 0.0;
 
@@ -214,6 +219,13 @@ public class State {
             Arm.state = Arm.States.s_fixArmPosition;
             Arm.resetPidController = false;
             Arm.resetEncoder = false;
+
+            TargetDepth.LimelightFront = 0.0;
+            TargetDepth.LimelightMiddle = 0.0;
+            TargetDepth.LimelightBack = 0.0;
+            TargetDepth.CameraFront = 0.0;
+            TargetDepth.CameraMiddle = 0.0;
+            TargetDepth.CameraBack = 0.0;
         }
     }
 

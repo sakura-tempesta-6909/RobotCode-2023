@@ -56,6 +56,14 @@ public class Const {
             /** ターゲットの高さ */
             public static final double GoalHeight = 166; // [cm]
 
+
+            /** 奥のコーンのゴールの高さ[cm] */
+            public static final double BackGoalHeight = 180;
+            /** 真ん中のコーンのゴールの高さ[cm] */
+            public static final double MiddleGoalHeight = 100;
+            /** 前のコーンのゴールの高さ[cm] */
+            public static final double FrontGoalHeight = 0;
+
             /** 手前から奥のターゲットまでの距離 */
             public static final double FrontGoalToBackGoal = 43; // [cm]
 
@@ -70,7 +78,7 @@ public class Const {
 
         public static final class Camera {
             //　Cameraの情報
-            /**　Cameraの縦の中心 */
+            /** 　Cameraの縦の中心 */
             public static final double CameraCenterHeight = 320;
 
             /** Cameraの横の中心 */
@@ -98,6 +106,14 @@ public class Const {
             //ターゲットの情報
             /** ターゲットの高さ */
             public static final double GoalHeight = 76.5; // [cm]
+
+
+            /** 奥のキューブのゴールの高さ[cm] */
+            public static final double BackGoalHeight = 180;
+            /** 真ん中のキューブのゴールの高さ[cm] */
+            public static final double MiddleGoalHeight = 100;
+            /** 前のキューブのゴールの高さ[cm] */
+            public static final double FrontGoalHeight = 0;
 
 
             //計算
@@ -141,28 +157,28 @@ public class Const {
             public static final int LongSlotIdx = 0;
             public static final int ShortSlotIdx = 1;
             public static final TalonSRXConfiguration DriveRight = new TalonSRXConfiguration();
-            public static final TalonSRXConfiguration DriveLeft= new TalonSRXConfiguration();
+            public static final TalonSRXConfiguration DriveLeft = new TalonSRXConfiguration();
 
             public static void init() {
                 DriveRight.slot0.kP = 0.051;
                 DriveRight.slot0.kI = 0.000006;
                 DriveRight.slot0.kD = 0.00054;
-                DriveRight.slot0.maxIntegralAccumulator = 1023*0.014/DriveRight.slot0.kI;
+                DriveRight.slot0.maxIntegralAccumulator = 1023 * 0.014 / DriveRight.slot0.kI;
 
                 DriveLeft.slot0.kP = 0.048;
                 DriveLeft.slot0.kI = 0.000009;
                 DriveLeft.slot0.kD = 0.00054;
-                DriveLeft.slot0.maxIntegralAccumulator =  1023*0.014/DriveLeft.slot0.kI;
+                DriveLeft.slot0.maxIntegralAccumulator = 1023 * 0.014 / DriveLeft.slot0.kI;
 
                 DriveRight.slot1.kP = 0.2;
                 DriveRight.slot1.kI = 0.004;
                 DriveRight.slot1.kD = 0.000;
-                DriveRight.slot1.maxIntegralAccumulator = 1023*0.1/DriveRight.slot1.kI;
+                DriveRight.slot1.maxIntegralAccumulator = 1023 * 0.1 / DriveRight.slot1.kI;
 
                 DriveLeft.slot1.kP = 0.2;
                 DriveLeft.slot1.kI = 0.0004;
                 DriveLeft.slot1.kD = 0.000;
-                DriveLeft.slot1.maxIntegralAccumulator =  1023*0.1/DriveLeft.slot1.kI;
+                DriveLeft.slot1.maxIntegralAccumulator = 1023 * 0.1 / DriveLeft.slot1.kI;
             }
         }
     }
@@ -216,7 +232,7 @@ public class Const {
         /** アームを左右に動かすモーターのPIDのD */
         public static final double D_MID = 0.0;
         /** アームを左右に動かすモーターの積分値の最大 */
-        public static final double IMax_MID = 0.0 ;
+        public static final double IMax_MID = 0.0;
         /** handのモーターののPIDのP */
         public static final double P_HANDR = 0.0;
         /** handのモーターののPIDのI */
@@ -224,7 +240,7 @@ public class Const {
         /** handのモーターののPIDのD */
         public static final double D_HANDR = 0.0;
         /** handのモーターのの積分値の最大値 */
-        public static final double IMax_HANDR = 0.0 ;
+        public static final double IMax_HANDR = 0.0;
 
         /**
          * NEOモーターの最大トルク 注意! [N*cm] = [N*m] * 100
@@ -271,7 +287,7 @@ public class Const {
         public static final String ClientId = "robot/test";
     }
 
-    public static final class GrabGamePiecePhase{
+    public static final class GrabGamePiecePhase {
         /** インテイクのゲームピースを掴むアームの高さ */
         public static final double armIntakeHeight = 0;
         /** インテイクのゲームピースを掴むアームの奥行き */

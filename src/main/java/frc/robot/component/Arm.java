@@ -191,8 +191,7 @@ public class Arm implements Component {
                 moveLeftArm(-State.Arm.moveLeftAndRightMotor);
                 break;
             case s_fixLeftAndRightMotor:
-                stopLeftAndRightArm(
-                );
+                stopLeftAndRightArm();
                 break;
             case s_movetomiddle:
                 moveArmToMiddle();
