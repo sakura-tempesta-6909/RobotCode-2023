@@ -4,6 +4,7 @@ public class Const {
     public static final class Ports {
         public static final int DriveController = 0;
         public static final int OperateController = 1;
+        public static final int Joystick = 2;
 
         public static final int DriveRightFront = 0;
         public static final int DriveLeftFront = 2;

@@ -25,7 +25,7 @@ public class ArmMode extends Mode {
     @Override
     public void changeState() {
 
-        //YボタンでBasicPositionに戻る
+        //ボタン2でBasicPositionに戻る
         if (joystick.getRawButton(2)) {
             State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
             State.Arm.targetHeight = Const.Arm.basicPositionHeight;
@@ -34,10 +34,18 @@ public class ArmMode extends Mode {
             State.rotateState = RotateState.s_turnHandBack;
         }
 
-        //Aボタンでアームを前に伸ばす
-        if (joystick.getRawButton(7)) {
+        //ボタン7でアームを前に伸ばす
+        if (driveController.getAButton()) {
             State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
             //ここにConstの値を入れる
+            // ボタン7で一番奥のポールまでアームを伸ばす
+            // ボタン9で真ん中のポールまでアームを伸ばす
+            // ボタン11で一番手前のポールまでアームを伸ばす
+            // ボタン8で一番奥の箱までアームを伸ばす
+            // ボタン10で真ん中の箱までアームを伸ばす
+            //　ボタン12で一番手前の箱までアームを伸ばす
+        } else if (joystick.getRawButton(7)) {
+
         } else if (joystick.getRawButton(9)) {
 
         } else if (joystick.getRawButton(11)) {
@@ -52,7 +60,7 @@ public class ArmMode extends Mode {
 
         }
 
-        //Bボタンで手首が180°回転する, RTで手首が右回転する, LTで手首が左回転する, RTLT同時押しで手首の位置をリセット
+        //ボタン4で手首が180°回転する, ボタン5で手首が右回転する, ボタン6で手首が左回転する, ボタン3で手首の位置をリセット
         if (joystick.getRawButton(4)) {
             State.rotateState = RotateState.s_turnHandBack;
         } else if (joystick.getRawButton(5)) {
@@ -66,18 +74,18 @@ public class ArmMode extends Mode {
             State.rotateState = RotateState.s_stopHand;
         }
 
-        //左スティック前後でアームを前後に動かす, 右スティック前後でアームを上下に動かす
+        //Y方向にスティックを倒してアームを前後に動かす, Z方向にスティックを倒してアームを上下に動かす
 
-        final double rightY = Tools.deadZoneProcess(joystick.getZ());
-        final double leftY = Tools.deadZoneProcess(joystick.getY());
+        final double joystickZ = Tools.deadZoneProcess(joystick.getZ());
+        final double joystickY = Tools.deadZoneProcess(joystick.getY());
         State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-        if (isNewTargetPositionInLimit(State.Arm.targetHeight + rightY * Const.Arm.TargetModifyRatio, State.Arm.targetDepth + leftY * Const.Arm.TargetModifyRatio)) {
-            State.Arm.targetHeight += rightY * Const.Arm.TargetModifyRatio;
-            State.Arm.targetDepth += leftY * Const.Arm.TargetModifyRatio;
+        if (isNewTargetPositionInLimit(State.Arm.targetHeight + joystickZ * Const.Arm.TargetModifyRatio, State.Arm.targetDepth + joystickY * Const.Arm.TargetModifyRatio)) {
+            State.Arm.targetHeight += joystickZ * Const.Arm.TargetModifyRatio;
+            State.Arm.targetDepth += joystickY * Const.Arm.TargetModifyRatio;
         }
 
 
-        //RightBumperでアームを右に動かす, LeftBumperでアームを左に動かす, 
+        //Xの正の方向にスティックを倒してアームを右に動かす, Xの負の方向にスティックを倒してアームを左に動かす,
         //RightBumperLeftBumper同時押しでアームの位置をリセット
         if (driveController.getRightBumper() && driveController.getLeftBumper()) {
             State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
@@ -89,7 +97,7 @@ public class ArmMode extends Mode {
             State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_fixLeftAndRightMotor;
         }
 
-        //Xボタンでハンドを開く
+        //ボタン1でハンドを開く
         if (joystick.getRawButton(1)) {
             State.Hand.grabHandState = GrabHandState.s_releaseHand;
         }

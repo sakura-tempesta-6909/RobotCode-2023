@@ -164,7 +164,7 @@ public class State {
     public static void StateInit() {
         XboxController driveController = new XboxController(Const.Ports.DriveController);
         XboxController operateController = new XboxController(Const.Ports.OperateController);
-        Joystick joystick = new Joystick(2);
+        Joystick joystick = new Joystick(Const.Ports.Joystick);
         Mode.addController(driveController, operateController, joystick);
         intakeExtensionState = IntakeExtensionState.s_openIntake;
         // initialize arm states
