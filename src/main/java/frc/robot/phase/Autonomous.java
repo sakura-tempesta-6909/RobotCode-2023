@@ -29,43 +29,45 @@ public class Autonomous {
 				phaseName
 		);
 	}
-        public static PhaseTransition.Phase releaseHand (String phaseName){
-            return new PhaseTransition.Phase(
-                    () -> {
-                        State.Hand.grabHandState = GrabHandState.s_releaseHand;
-                        return;
-                    },
-                    (double time) -> {
-                        return State.Hand.isRelease;
-                    },
-                    phaseName
-            );
-        }
+	public static PhaseTransition.Phase releaseHand (String phaseName){
+		return new PhaseTransition.Phase(
+				() -> {
+					State.Hand.grabHandState = GrabHandState.s_releaseHand;
+					return;
+				},
+				(double time) -> {
+					return State.Hand.isRelease;
+				},
+				phaseName
+		);
+	}
 
-        public static void autonomousInit () {
-            phaseTransitionA.registerPhase(
-                    moveArmToSpecifiedPosition(Const.Calculation.Camera.GoalHeight - Const.Arm.RootHeight, "move arm to cube goal")
-            );
+	public static void autonomousInit () {
+		phaseTransitionA.registerPhase(
+				moveArmToSpecifiedPosition(Const.Calculation.Camera.GoalHeight - Const.Arm.RootHeight, "move arm to cube goal"),
+				releaseHand("release cube")
+		);
 
-            phaseTransitionB.registerPhase(
-                    moveArmToSpecifiedPosition(Const.Calculation.Limelight.GoalHeight - Const.Arm.RootHeight, "move arm to corn goal")
-            );
-        }
+		phaseTransitionB.registerPhase(
+				moveArmToSpecifiedPosition(Const.Calculation.Limelight.GoalHeight - Const.Arm.RootHeight, "move arm to corn goal"),
+				releaseHand("release corn")
+		);
+	}
 
-        public static void run () {
-            switch (State.autonomousPhaseTransition) {
-                case "A":
-                    phaseTransitionA.run();
-                    break;
-                case "B":
-                    phaseTransitionB.run();
-                    break;
-                case "C":
-                    phaseTransitionC.run();
-                    break;
-                default:
-                    System.out.println("やばいよ");
-                    break;
-            }
-        }
-    }
+	public static void run () {
+		switch (State.autonomousPhaseTransition) {
+			case "A":
+				phaseTransitionA.run();
+				break;
+			case "B":
+				phaseTransitionB.run();
+				break;
+			case "C":
+				phaseTransitionC.run();
+				break;
+			default:
+				System.out.println("やばいよ");
+				break;
+		}
+	}
+}
