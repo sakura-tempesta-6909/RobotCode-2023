@@ -13,12 +13,12 @@ public class Autonomous {
     private static PhaseTransition phaseTransitionB;
     private static PhaseTransition phaseTransitionC;
 
-    private static PhaseTransition.Phase moveArmToSpecifiedPosition(double targetHeight, String phaseName) {
+    private static PhaseTransition.Phase moveArmToSpecifiedPosition(double targetHeight, double targetDepth, String phaseName) {
         return new PhaseTransition.Phase(
                 () -> {
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
                     State.Arm.targetHeight = targetHeight;
-                    State.Arm.targetDepth = State.armToTag;
+                    State.Arm.targetDepth = targetDepth;
                 },
                 (double time) -> {
                     return State.Arm.isArmAtTarget;
@@ -43,13 +43,18 @@ public class Autonomous {
 	}
 
 	public static void autonomousInit () {
+		phaseTransitionA = new PhaseTransition();
+		phaseTransitionB = new PhaseTransition();
+		phaseTransitionC = new PhaseTransition();
+		PhaseTransition.Phase.PhaseInit();
+
 		phaseTransitionA.registerPhase(
-				moveArmToSpecifiedPosition(Const.Calculation.Camera.GoalHeight - Const.Arm.RootHeight, "move arm to cube goal"),
+				moveArmToSpecifiedPosition(Const.Calculation.Camera.GoalHeight - Const.Arm.RootHeight, State.armToTag, "move arm to cube goal"),
 				releaseHand(2, "release cube")
 		);
 
 		phaseTransitionB.registerPhase(
-				moveArmToSpecifiedPosition(Const.Calculation.Limelight.GoalHeight - Const.Arm.RootHeight, "move arm to corn goal"),
+				moveArmToSpecifiedPosition(Const.Calculation.Limelight.GoalHeight - Const.Arm.RootHeight, State.armToGoal, "move arm to corn goal"),
 				releaseHand(2, "release corn")
 		);
 	}
