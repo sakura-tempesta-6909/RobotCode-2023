@@ -29,14 +29,14 @@ public class Autonomous {
 				phaseName
 		);
 	}
-	public static PhaseTransition.Phase releaseHand (String phaseName){
+	public static PhaseTransition.Phase releaseHand (double waiter, String phaseName){
 		return new PhaseTransition.Phase(
 				() -> {
 					State.Hand.grabHandState = GrabHandState.s_releaseHand;
 					return;
 				},
 				(double time) -> {
-					return State.Hand.isRelease;
+					return time > waiter;
 				},
 				phaseName
 		);
@@ -45,12 +45,12 @@ public class Autonomous {
 	public static void autonomousInit () {
 		phaseTransitionA.registerPhase(
 				moveArmToSpecifiedPosition(Const.Calculation.Camera.GoalHeight - Const.Arm.RootHeight, "move arm to cube goal"),
-				releaseHand("release cube")
+				releaseHand(2, "release cube")
 		);
 
 		phaseTransitionB.registerPhase(
 				moveArmToSpecifiedPosition(Const.Calculation.Limelight.GoalHeight - Const.Arm.RootHeight, "move arm to corn goal"),
-				releaseHand("release corn")
+				releaseHand(2, "release corn")
 		);
 	}
 
