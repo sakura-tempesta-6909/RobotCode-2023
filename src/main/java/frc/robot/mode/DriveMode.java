@@ -1,7 +1,6 @@
 package frc.robot.mode;
 
 import frc.robot.State;
-import frc.robot.State.DriveState;
 import frc.robot.State.GrabHandState;
 import frc.robot.State.MoveLeftAndRightArmState;
 import frc.robot.State.RollerState;
@@ -28,7 +27,7 @@ public class DriveMode extends Mode {
     public void changeState() {
         State.Drive.xSpeed = -driveController.getLeftY();
         State.Drive.zRotation = -driveController.getRightX();
-        State.driveState = DriveState.s_fastDrive;
+        State.Drive.state = State.Drive.States.s_fastDrive;
 
         //RT: intake, LT: outtake
         if (driveController.getRightTriggerAxis() > 0.5) {
@@ -88,9 +87,9 @@ public class DriveMode extends Mode {
         }
 
         if (driveController.getAButton()) {
-            State.driveState = DriveState.s_apriltagTracking;
+            State.Drive.state = State.Drive.States.s_aprilTagTracking;
         } else if (driveController.getBButton()) {
-            State.driveState = DriveState.s_limelightTracking;
+            State.Drive.state = State.Drive.States.s_limelightTracking;
         }
     }
 

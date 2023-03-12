@@ -14,22 +14,21 @@ import java.util.Map;
 
 public class State {
     public static Modes mode;
-    public static DriveState driveState;
     public static RollerState intakeState;
     public static IntakeExtensionState intakeExtensionState;
     public static MoveLeftAndRightArmState moveLeftAndRightArmState;
 
     /** ターゲットを向く時のスピード */
     public static double limelightTrackingZRotation;
-    /** apriltagを向くときのスピード */
+    /** aprilTagを向くときのスピード */
     public static double cameraTrackingZRotation;
     /** 手前のターゲットまでの距離 */
     public static double limelightToFrontGoal; // [cm]
     /** cameraからtagまでの距離 */
     public static double cameraToTag; // [cm]
-    /** cameraからみたapriltagの縦の角度(度数法) */
+    /** cameraからみたaprilTagの縦の角度(度数法) */
     public static double aprilTagAngleHeight;
-    /** cameraからみたapriltagの横の角度(度数法) */
+    /** cameraからみたaprilTagの横の角度(度数法) */
     public static double aprilTagAngleWidth;
     /** armからtagまでの距離 */
     public static double armToTag; // [cm]
@@ -68,10 +67,30 @@ public class State {
     }
 
     public static class Drive {
+
+        public static States state;
         public static double targetLength;
         public static double rightLength, leftLength;
         public static boolean isAtTarget;
         public static double xSpeed, zRotation;
+
+        public enum States {
+            // ロボットの速度を速くする
+            s_fastDrive,
+            // ロボットの速度を中くらいにする
+            s_midDrive,
+            // ロボットの速度を遅くする
+            s_slowDrive,
+            /**ロボットの速度を0にする*/
+            s_stopDrive,
+            /**コーンのtargetに照準を合わせる*/
+            s_limelightTracking,
+            /**キューブのtargetに照準を合わせる*/
+            s_aprilTagTracking,
+            /**pidで動く*/
+            s_pidDrive,
+        }
+
         public static void StatesInit() {
             targetLength = 0.0;
             xSpeed = 0.0;
@@ -81,6 +100,7 @@ public class State {
         }
 
         public static void StatesReset() {
+            state = States.s_stopDrive;
         }
     }
 
@@ -182,11 +202,16 @@ public class State {
         XboxController driveController = new XboxController(Const.Ports.DriveController);
         XboxController operateController = new XboxController(Const.Ports.OperateController);
         Mode.addController(driveController, operateController);
+
         intakeExtensionState = IntakeExtensionState.s_openIntake;
+
         // initialize arm states
+        Drive.StatesInit();
         Arm.StatesInit();
+        Hand.StateInit();
         
         voltage = new HashMap<>();
+
         StateReset();
     }
 
@@ -194,39 +219,14 @@ public class State {
      * コントローラーから手を離している間の状態
      */
     public static void StateReset() {
-        driveState = DriveState.s_stopDrive;
         intakeState = RollerState.s_stopRoller;
 
         autonomousPhaseTransition = Util.getConsole("AutonomousPhaseTransition");
 
         // reset arm states
+        Drive.StatesReset();
         Arm.StatesReset();
         Hand.StateReset();
-    }
-
-    public enum DriveState {
-        /**
-         * ロボットの速度を速くする
-         */
-        s_fastDrive,
-        /**
-         * ロボットの速度を中くらいにする
-         */
-        s_midDrive,
-        /**
-         * ロボットの速度を遅くする
-         */
-        s_slowDrive,
-        /**
-         * ロボットの速度を0にする
-         */
-        s_stopDrive,
-        // コーンのtargetに照準を合わせる
-        s_limelightTracking,
-        // キューブのtargetに照準を合わせる
-        s_apriltagTracking,
-        // pidで動く
-        s_pidDrive,
     }
 
     public enum RollerState {

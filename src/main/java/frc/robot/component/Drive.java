@@ -11,14 +11,13 @@ import frc.robot.subClass.Const;
 public class Drive implements Component {
 
     private final WPI_TalonSRX driveRightFront, driveLeftFront;
-    private final VictorSPX driveRightBack, driveLeftBack;
     private final DifferentialDrive differentialDrive;
 
     public Drive() {
         driveRightFront = new WPI_TalonSRX(Const.Ports.DriveRightFront);
         driveLeftFront = new WPI_TalonSRX(Const.Ports.DriveLeftFront);
-        driveRightBack = new VictorSPX(Const.Ports.DriveRightBack);
-        driveLeftBack = new VictorSPX(Const.Ports.DriveLeftBack);
+        VictorSPX driveRightBack = new VictorSPX(Const.Ports.DriveRightBack);
+        VictorSPX driveLeftBack = new VictorSPX(Const.Ports.DriveLeftBack);
 
         driveRightBack.follow(driveRightFront);
         driveLeftBack.follow(driveLeftFront);
@@ -121,7 +120,7 @@ public class Drive implements Component {
 
     @Override
     public void applyState() {
-        switch (State.driveState) {
+        switch (State.Drive.state) {
             case s_fastDrive:
                 arcadeDrive(Const.Speeds.FastDrive * State.Drive.xSpeed, Const.Speeds.FastDrive * State.Drive.zRotation);
                 break;
@@ -137,7 +136,7 @@ public class Drive implements Component {
             case s_limelightTracking:
                 arcadeDrive(Const.Speeds.Neutral * State.Drive.xSpeed, State.limelightTrackingZRotation);
                 break;
-            case s_apriltagTracking:
+            case s_aprilTagTracking:
                 arcadeDrive(Const.Speeds.Neutral * State.Drive.xSpeed, State.cameraTrackingZRotation);
                 break;
             case s_pidDrive:

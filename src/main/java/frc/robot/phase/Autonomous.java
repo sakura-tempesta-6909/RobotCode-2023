@@ -29,7 +29,6 @@ public class Autonomous {
 		return new PhaseTransition.Phase(
 				() -> {
 					State.Hand.grabHandState = GrabHandState.s_releaseHand;
-					return;
 				},
 				(double time) -> {
 					return time > waiter;
@@ -41,7 +40,7 @@ public class Autonomous {
 	public static PhaseTransition.Phase driveTo (double targetLength, String phaseName) {
 		return new PhaseTransition.Phase(
 				() -> {
-					State.driveState = State.DriveState.s_pidDrive;
+					State.Drive.state = State.Drive.States.s_pidDrive;
 				},
 				(double time) -> {
 					return State.Drive.isAtTarget;
