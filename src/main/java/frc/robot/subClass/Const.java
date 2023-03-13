@@ -186,47 +186,58 @@ public class Const {
     public static final class Arm {
 
         public static final class Ports {
-            public static final int topMotor = 2;
-            public static final int underMotor = 1;
+            public static final int jointMotor = 2;
+            public static final int rootMotor = 1;
         }
 
-        /** 根本のアームの長さ[cm] */
+        /** 根本アームの長さ[cm] */
         public static final double RootArmLength = 45.0;
-        /** 先端のアームの長さ[cm] */
+        /** 先端アームの長さ[cm] */
         public static final double HeadArmLength = 45.5;
-        /** 根本のアームの重心の位置[cm]（根本からの距離） */
+        /** 根本アームの重心の位置[cm]（根本からの距離） */
         public static final double RootArmBarycenter = 12.52;
-        /** 先端のアームの重心の位置[cm]（関節部分からの距離） */
+        /** 先端アームの重心の位置[cm]（関節部分からの距離） */
         public static final double HeadArmBarycenter = 45.43;
-        /** 根本のアームの重さ[N] 注意 - [N]=[kg*9.8] */
+        /** 根本アームの重さ[N] 注意 - [N]=[kg*9.8] */
         public static final double RootArmMass = 3.302 * 9.8;
-        /** 先端のアームの重さ[N] 注意 - [N]=[kg*9.8] */
+        /** 先端アームの重さ[N] 注意 - [N]=[kg*9.8] */
         public static final double HeadArmMass = 5.961 * 9.8;
         /** ターゲットの変更の速さ（コントローラーの値に乗算する） */
         public static final double TargetModifyRatio = 0.2;
         /** 掴んだ後に先端を持ちあげる高さ[cm] */
         public static final double TakeUpLengthAfterGrab = 20.0;
 
+
         // TODO slotの導入 - コーンを持っているかどうかで値を変える
-        /** 根本のNEOモーターのPIDのP */
+        /** 根本NEOモーターのPIDのP */
         public static final double P_R = 0.04;
-        /** 根本のNEOモーターのPIDのI */
+        /** 根本NEOモーターのPIDのI */
         public static final double I_R = 10e-5 / 10;
-        /** 根本のNEOモーターのPIDのD */
+        /** 根本NEOモーターのPIDのD */
         public static final double D_R = 0.00;
-        /** 根本のNEOモーターの積分値の最大 */
+        /** 根本NEOモーターの積分値の最大 */
         public static final double IMax_R = 10e3;
 
-        /** 関節部分のNEOモーターのPIDのP */
+        /** 関節部分NEOモーターのPIDのP */
         public static final double P_J = 0.03 + 0.03;
-        /** 関節部分のNEOモーターのPIDのI */
+        /** 関節部分NEOモーターのPIDのI */
         public static final double I_J = 5e-7 * 3;
-        /** 関節部分のNEOモーターのPIDのD */
+        /** 関節部分NEOモーターのPIDのD */
         public static final double D_J = 0.000;
-        /** 関節部分のNEOモーターの積分値の最大 */
+        /** 関節部分NEOモーターの積分値の最大 */
         public static final double IMax_J = 10e5 * 20 / 3;
-        /** 根本のNEOモーターのフィードフォワードの値（定数） -> 固いため計算不要の際に */
-        public static final double RootMotorFF = 0.03;
+
+        /** 根本NEOモーターのフィードフォワードの値（定数） -> 固いため計算不要の際に */
+        public static final double ConstantRootMotorFF = 0.03;
+        /** 根本NEOモーターにおける先端アームのモーメントの影響力（Weight） */
+        public static final double HeadArmFFWeightForRM = 1.0 / 4.0;
+        /** 根本NEOモーターにおける根本アームのモーメントの影響力（Weight） */
+        public static final double RootArmFFWeightForRM = 1.0;
+        /** 根本NEOモーターのfeedforwardの強さ（Weight） */
+        public static final double RootMotorFFWeight = 1.0 / 4.0;
+        /** 先端NEOモーターのfeedforwardの強さ（Weight） */
+        public static final double JointMotorFFWeight = 1.0 / 2.0;
+
 
         /** アームを左右に動かすモーターのPIDのP */
         public static final double P_MID = 0.0;
@@ -245,6 +256,7 @@ public class Const {
         /** handのモーターのの積分値の最大値 */
         public static final double IMax_HANDR = 0.0;
 
+
         /**
          * NEOモーターの最大トルク 注意! [N*cm] = [N*m] * 100
          * <a href="https://www.revrobotics.com/content/docs/REV-21-1650-DS.pdf">NEOのデータシートを参照</a>
@@ -254,15 +266,17 @@ public class Const {
         public static final double TargetPositionOuterLimit = RootArmLength + HeadArmLength - 2;
         /** ターゲットの座標の閾値（内側）[cm] */
         public static final double TargetPositionInnerLimit = RootArmLength - HeadArmLength + 2;
-        /** 関節部分のNEOモーターのギア比 */
+        /** 関節部分NEOモーターのギア比 */
         public static final double JointMotorGearRatio = 4.0 * 5.0 * 40.0 / 12.0;
-        /** 根本のNEOモーターのギア比 */
+        /** 根本NEOモーターのギア比 */
         public static final double RootMotorGearRatio = 3.0 * 5.0 * 5.0 * 40.0 / 12.0;
+
+
         /** アームを左右に動かす時のギア比 */
         public static final double LeftAndRightArmGearRatio = 1;
-        /** 関節部分のモーターをコントローラーで動かす時の最大の速さ */
+        /** 関節部分NEOモーターをコントローラーで動かす時の最大の速さ */
         public static final double JointMotorMoveRatio = 0.09;
-        /** 根本のモーターをコントローラーで動かす時の最大の速さ */
+        /** 根本NEOモーターをコントローラーで動かす時の最大の速さ */
         public static final double RootMotorMoveRatio = 0.5;
         /** PIDコントロールの誤差の許容量[deg] 注意! isArmAtTargetの判定に用いているだけ */
         public static final double PIDAngleTolerance = 0.1;
@@ -272,8 +286,9 @@ public class Const {
         /** アームの理想的な奥行き */
         public static final double InitialDepth = 0;
 
-        /** アームの根本の高さ[cm] -> 座標の原点の高さ */
-        public static final double RootHeight = 127;
+
+        /** アームの根本の高さ[cm]（地面から） -> 座標の原点の高さ */
+        public static final double RootHeightFromGr = 127;
 
     }
 

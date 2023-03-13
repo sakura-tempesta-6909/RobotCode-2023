@@ -1,7 +1,6 @@
 package frc.robot.mode;
 
 import frc.robot.State;
-import frc.robot.State.Arm;
 import frc.robot.State.GrabHandState;
 import frc.robot.State.MoveLeftAndRightArmState;
 import frc.robot.State.Hand.RotateState;
@@ -14,9 +13,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ArmMode extends Mode {
 
+    /**
+     * StartButton - DriveModeに
+     * */
     @Override
     public void changeMode() {
-        if (driveController.getStartButton()) {
+        if (driveController.getStartButtonPressed()) {
             State.mode = State.Modes.k_drive;
         }
     }
@@ -38,7 +40,7 @@ public class ArmMode extends Mode {
      * Axis1 - joystickX -> 上下移動（右に傾けると上行き）[8]<br>
      * Axis2 - joystickY -> 前後移動（前に傾けると奥行き）[8]<br>
      * Axis3 - joystickZ -> 左右移動（時計回りだと右行き）[8]<br>
-     * Axis4 - 負の時MoveArmMotorに切り替え[1]の時は<br>joystickXで根本の回転 joystickYで関節部分の回転<br><br>
+     * Axis4 - 負（< -0.8）の時、MoveArmMotorに切り替え[1]<br>その時、joystickXで根本の回転 joystickYで関節部分の回転<br><br>
      * No Button - すべて停止[100]<br>
      */
     @Override
@@ -48,13 +50,13 @@ public class ArmMode extends Mode {
             State.Arm.resetEncoder = true;
         }
 
-        final double joystickX = Tools.deadZoneProcess(joystick.getRawAxis(0));
-        final double joystickY = Tools.deadZoneProcess(joystick.getRawAxis(1));
-        final double joystickZ = Tools.deadZoneProcess(joystick.getRawAxis(2));
+        final double joystickX = 1 * Tools.deadZoneProcess(joystick.getRawAxis(0));
+        final double joystickY = -1 * Tools.deadZoneProcess(joystick.getRawAxis(1));
+        final double joystickZ = 1 * Tools.deadZoneProcess(joystick.getRawAxis(2));
         SmartDashboard.putNumber("Axis1", joystickX);
         SmartDashboard.putNumber("Axis2", joystickY);
         SmartDashboard.putNumber("Axis3", joystickZ);
-        SmartDashboard.putBoolean("Button7", joystick.getRawButton(7));
+        SmartDashboard.putNumber("Axis4", joystick.getRawAxis(3));
 
         if (driveController.getRightBumper() && driveController.getLeftBumper()) {
             // アームの位置をリセット
@@ -104,27 +106,27 @@ public class ArmMode extends Mode {
             State.Arm.jointSpeed = joystickY;
         } else if (joystick.getRawButton(7)) {
             // 奥のコーンのゴールまでアームを伸ばす
-            State.Arm.targetHeight = Const.Calculation.Limelight.BackGoalHeight - Const.Arm.RootHeight;
+            State.Arm.targetHeight = Const.Calculation.Limelight.BackGoalHeight - Const.Arm.RootHeightFromGr;
             State.Arm.targetDepth = State.Arm.TargetDepth.LimelightBack;
         } else if (joystick.getRawButton(9)) {
             // 真ん中のコーンのゴールまでアームを伸ばす
-            State.Arm.targetHeight = Const.Calculation.Limelight.MiddleGoalHeight - Const.Arm.RootHeight;
+            State.Arm.targetHeight = Const.Calculation.Limelight.MiddleGoalHeight - Const.Arm.RootHeightFromGr;
             State.Arm.targetDepth = State.Arm.TargetDepth.LimelightMiddle;
         } else if (joystick.getRawButton(11)) {
             // 前のコーンのゴールまでアームを伸ばす
-            State.Arm.targetHeight = Const.Calculation.Limelight.FrontGoalHeight - Const.Arm.RootHeight;
+            State.Arm.targetHeight = Const.Calculation.Limelight.FrontGoalHeight - Const.Arm.RootHeightFromGr;
             State.Arm.targetDepth = State.Arm.TargetDepth.LimelightFront;
         } else if (joystick.getRawButton(8)) {
             // 奥のキューブのゴールまでアームを伸ばす
-            State.Arm.targetHeight = Const.Calculation.Camera.BackGoalHeight - Const.Arm.RootHeight;
+            State.Arm.targetHeight = Const.Calculation.Camera.BackGoalHeight - Const.Arm.RootHeightFromGr;
             State.Arm.targetDepth = State.Arm.TargetDepth.CameraBack;
         } else if (joystick.getRawButton(10)) {
             // 真ん中のキューブのゴールまでアームを伸ばす
-            State.Arm.targetHeight = Const.Calculation.Camera.MiddleGoalHeight - Const.Arm.RootHeight;
+            State.Arm.targetHeight = Const.Calculation.Camera.MiddleGoalHeight - Const.Arm.RootHeightFromGr;
             State.Arm.targetDepth = State.Arm.TargetDepth.CameraMiddle;
         } else if (joystick.getRawButton(12)) {
             // 前のキューブのゴールまでアームを伸ばす
-            State.Arm.targetHeight = Const.Calculation.Camera.FrontGoalHeight - Const.Arm.RootHeight;
+            State.Arm.targetHeight = Const.Calculation.Camera.FrontGoalHeight - Const.Arm.RootHeightFromGr;
             State.Arm.targetDepth = State.Arm.TargetDepth.CameraFront;
         } else if ((joystickX != 0 || joystickY != 0)) {
             // X方向にスティックを曲げてアームを上下に動かす, Y方向にスティックを倒してアームを前後に動かす
@@ -159,16 +161,18 @@ public class ArmMode extends Mode {
     private boolean isNewTargetPositionInLimit(double Height, double Depth) {
         double length = Math.sqrt(Math.pow(Height, 2) + Math.pow(Depth, 2));
 
-        // boolean isZAxisInLimit = Depth > 0;
-        // boolean isXAxisInLimit = Height > 0;
         boolean isInOuterBorder = length < Const.Arm.TargetPositionOuterLimit;
         boolean isOutInnerBorder = length > Const.Arm.TargetPositionInnerLimit;
 
-        // return true;
         // TODO XButtonでコントロールする時のターゲット座標の制限を考える
         return isInOuterBorder && isOutInnerBorder;
     }
 
+    /**
+     * 複数のボタンのうちどれかが押されているか判定する
+     * 複数のボタンのgetButtonをORで
+     * @param buttonIds ボタンの番号の配列
+     * */
     private boolean getSeveralRawButton(int[] buttonIds) {
         boolean flag = false;
         for (int buttonIdx : buttonIds) {
@@ -177,6 +181,11 @@ public class ArmMode extends Mode {
         return flag;
     }
 
+    /**
+     * 複数のボタンのうちどれかが押されたか判定する
+     * 複数のボタンのgetButtonPressedをORで
+     * @param buttonIds ボタンの番号の配列
+     * */
     private boolean getSeveralRawButtonPressed(int[] buttonIds) {
         boolean flag = false;
         for (int buttonIdx : buttonIds) {
@@ -185,6 +194,11 @@ public class ArmMode extends Mode {
         return flag;
     }
 
+    /**
+     * 複数のボタンのうちどれかが離されたか判定する
+     * 複数のボタンのgetButtonReleasedをORで
+     * @param buttonIds ボタンの番号の配列
+     * */
     private boolean getSeveralRawButtonReleased(int[] buttonIds) {
         boolean flag = false;
         for (int buttonIdx : buttonIds) {

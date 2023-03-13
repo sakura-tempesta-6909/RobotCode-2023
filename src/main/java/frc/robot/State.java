@@ -1,6 +1,5 @@
 package frc.robot;
 
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.State.Hand.RotateState;
@@ -48,8 +47,8 @@ public class State {
     public static double cameraCenterHeight;
     public static double cameraXSpeed;
 
-
-    public static String autonomousPhaseTransition;
+    /** Autonomousの遷移の種類　[ A, B, C ] のいずれか*/
+    public static String autonomousPhaseTransType;
 
     public static class Hand {
         public static GrabHandState grabHandState;
@@ -241,8 +240,10 @@ public class State {
         XboxController operateController = new XboxController(Const.Ports.OperateController);
         Joystick joystick = new Joystick(Const.Ports.Joystick);
 
-        mode = Modes.k_arm;
+        State.mode = State.Modes.k_drive;
+
         Mode.addController(driveController, operateController, joystick);
+
         intakeExtensionState = IntakeExtensionState.s_openIntake;
 
         // initialize arm states
@@ -264,7 +265,7 @@ public class State {
         moveLeftAndRightArmState = MoveLeftAndRightArmState.s_fixLeftAndRightMotor;
         pidLimelightReset = false;
 
-        autonomousPhaseTransition = Util.getConsole("AutonomousPhaseTransition");
+        autonomousPhaseTransType = Util.getConsole("AutonomousPhaseTransition");
 
         // reset arm states
         Drive.StatesReset();

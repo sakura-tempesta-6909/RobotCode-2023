@@ -81,19 +81,15 @@ public class Tools {
         if (HeightPM >= 0 && DepthPM >= 0) {
             angles.put("RootAngle", Math.toDegrees(RootAngleM));
             angles.put("JointAngle", Math.toDegrees(-1 * JointAngle));
-//            System.out.println("A");
         } else if (HeightPM < 0 && DepthPM >= 0) {
             angles.put("RootAngle", Math.toDegrees(-1 * RootAngleP));
             angles.put("JointAngle", Math.toDegrees(-1 * JointAngle));
-//            System.out.println("B");
         } else if (HeightPM < 0 && DepthPM < 0) {
             angles.put("RootAngle", Math.toDegrees(RootAngleM) - 180);
             angles.put("JointAngle", -1 * Math.toDegrees(JointAngle));
-//            System.out.println("C");
         } else {
             angles.put("RootAngle", 180 - Math.toDegrees(RootAngleP));
             angles.put("JointAngle", -1 * Math.toDegrees(JointAngle));
-//            System.out.println("D");
         }
 
         return angles;
@@ -106,7 +102,7 @@ public class Tools {
      * それぞれのアームの重心をConstから取得
      * @return モーメント[N*cm]
      * */
-    public static double calculateUnderMotorFeedforward (double RootAngle, double JointAngle) {
+    public static double calculateRootMotorFeedforward(double RootAngle, double JointAngle) {
         RootAngle = Math.toRadians(RootAngle);
         JointAngle = Math.toRadians(JointAngle);
         double SumAngle = RootAngle + JointAngle;
@@ -117,11 +113,13 @@ public class Tools {
         double m1 = Const.Arm.RootArmMass;
         double m2 = Const.Arm.HeadArmMass;
 
-        double ffMomentForFirstArm = b1 * m1 * Math.cos(RootAngle);
-        double ffMomentForSecondArm = l1 * m2 * Math.cos(RootAngle) + b2 * m2 * Math.cos(SumAngle);
+        double ffMomentForRootArm = b1 * m1 * Math.cos(RootAngle);
+        double ffMomentForHeadArm = l1 * m2 * Math.cos(RootAngle) + b2 * m2 * Math.cos(SumAngle);
 
         //TODO feedforwardでmotor.setに渡す値はトルクの計算が必要
-        return ffMomentForFirstArm + ffMomentForSecondArm / 4;
+        return (ffMomentForRootArm * Const.Arm.RootArmFFWeightForRM
+                + ffMomentForHeadArm * Const.Arm.HeadArmFFWeightForRM)
+                * Const.Arm.RootMotorFFWeight;
     }
 
     /**
@@ -131,14 +129,14 @@ public class Tools {
      * 重心などをConstから取得
      * @return モーメント[N*cm]
      * */
-    public static double calculateTopMotorFeedforward (double RootAngle, double JointAngle) {
+    public static double calculateJointMotorFeedforward(double RootAngle, double JointAngle) {
         RootAngle = Math.toRadians(RootAngle);
         JointAngle = Math.toRadians(JointAngle);
         double SumAngle = RootAngle + JointAngle;
         double b2 = Const.Arm.HeadArmBarycenter; //SecondBarycenter -> sb
         double m2 = Const.Arm.HeadArmMass;
 
-        return b2 * m2 * Math.cos(SumAngle);
+        return (b2 * m2 * Math.cos(SumAngle)) * Const.Arm.JointMotorFFWeight;
     }
 
     /**
