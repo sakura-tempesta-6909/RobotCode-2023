@@ -52,8 +52,9 @@ public class Arm implements Component {
      * moveArmToSpecifiedPositionで実行
      */
     private void pidControlArm() {
-        pidForJoint.setReference(calculateJointRotationFromAngle(State.Arm.targetJointAngle), CANSparkMax.ControlType.kPosition);
-        pidForRoot.setReference(calculateRootRotationFromAngle(State.Arm.targetRootAngle), CANSparkMax.ControlType.kPosition);
+        // TODO feedforwardが必要か微妙
+        pidForJoint.setReference(calculateJointRotationFromAngle(State.Arm.targetJointAngle), CANSparkMax.ControlType.kPosition, 0, State.Arm.jointMotorFeedforward);
+        pidForRoot.setReference(calculateRootRotationFromAngle(State.Arm.targetRootAngle), CANSparkMax.ControlType.kPosition, 0, State.Arm.rootMotorFeedforward);
     }
 
     /**
@@ -62,8 +63,9 @@ public class Arm implements Component {
      * @param root  rootモーターのスピード [-1,1]
      */
     private void rotationControlArm(double joint, double root) {
-        jointMotor.set(joint * Const.Arm.JointMotorMoveRatio);
-        rootMotor.set(root * Const.Arm.RootMotorMoveRatio);
+        // TODO feedforwardが必要か微妙
+        jointMotor.set(joint * Const.Arm.JointMotorMoveRatio + State.Arm.jointMotorFeedforward);
+        rootMotor.set(root * Const.Arm.RootMotorMoveRatio + State.Arm.rootMotorFeedforward);
     }
 
     private boolean isAtTarget() {
@@ -93,8 +95,9 @@ public class Arm implements Component {
     }
 
     private void fixPositionWithFF() {
-        rootMotor.set(0);
-        jointMotor.set(0);
+        // TODO feedforwardが必要か微妙
+        rootMotor.set(0 + State.Arm.jointMotorFeedforward);
+        jointMotor.set(0 + State.Arm.jointMotorFeedforward);
     }
 
     public void moveRightArm(double moveLeftAndRightSpeed) {
