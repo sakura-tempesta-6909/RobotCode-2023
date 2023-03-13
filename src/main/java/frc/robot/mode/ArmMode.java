@@ -115,7 +115,7 @@ public class ArmMode extends Mode {
             // 前のキューブのゴールまでアームを伸ばす
             State.Arm.targetHeight = Const.Calculation.Camera.FrontGoalHeight - Const.Arm.RootHeight;
             State.Arm.targetDepth = State.Arm.TargetDepth.CameraFront;
-        } else if ((joystickX > 0 || joystickY > 0)) {
+        } else if ((joystickX != 0 || joystickY != 0)) {
             // X方向にスティックを曲げてアームを上下に動かす, Y方向にスティックを倒してアームを前後に動かす
             State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
             State.Arm.targetHeight += joystickX * Const.Arm.TargetModifyRatio;

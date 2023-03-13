@@ -25,6 +25,8 @@ public class Util {
     }
 
     public static void allSendConsole() {
+        sendConsole("MODE", State.mode.toString());
+        sendConsole("ArmMode", State.Arm.state.toString());
         sendConsole("armActualHeight", State.Arm.actualHeight);
         sendConsole("armActualDepth", State.Arm.actualDepth);
         sendConsole("armActualRootAngle", State.Arm.actualRootAngle);
