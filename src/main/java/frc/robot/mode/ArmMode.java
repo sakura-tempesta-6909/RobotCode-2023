@@ -40,17 +40,17 @@ public class ArmMode extends Mode {
         }
 
         if (joystick.getRawButton(7)) {
-            // ボタン7で一番奥のポールまでアームを伸ばす
+            // ボタン7でTOP ROW CONE NODESまでアームを伸ばす
         } else if (joystick.getRawButton(9)) {
-            // ボタン9で真ん中のポールまでアームを伸ばす
+            // ボタン9でMiddle ROW CONE NODESまでアームを伸ばす
         } else if (joystick.getRawButton(11)) {
-            // ボタン11で一番手前のポールまでアームを伸ばす
+            // ボタン11でBottom ROW CONE NODESまでアームを伸ばす
         } else if (joystick.getRawButton(8)) {
-            // ボタン8で一番奥の箱までアームを伸ばす
+            // ボタン8でTOP ROW CUBE NODESまでアームを伸ばす
         } else if (joystick.getRawButton(10)) {
-            // ボタン10で真ん中の箱までアームを伸ばす
+            // ボタン10でMiddle ROW CUBE NODESまでアームを伸ばす
         } else if (joystick.getRawButton(12)) {
-            // ボタン12で真ん中の箱までアームを伸ばす
+            // ボタン12でBottom ROW CUBE NODESまでアームを伸ばす
         } else {
 
         }
