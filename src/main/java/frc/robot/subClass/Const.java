@@ -58,6 +58,9 @@ public class Const {
             /** 手前から奥のターゲットまでの距離 */
             public static final double TopRowToMiddleRowCornNodes = 43; // [cm]
             public static final double MiddleRowToBottomRowCornNodes = 58; // [cm]
+            public static final double TopRowCornNodes = 117;
+            public static final double MiddleRowCornNodes = 87;
+            public static final double BottomRowCornNodes = 13;
 
             public static final class PID {
                 public static final double LimelightDriveP = 0.08;
@@ -116,6 +119,9 @@ public class Const {
             public static final double FocalLengthWeight = CameraCenterWidth / Math.tan(Math.toRadians(ThetaMaxWidth));
             public static final double TopRowToMiddleRowCubeNodes = 43;
             public static final double MiddleRowToBottomRowCubeNodes = 58;
+            public static final double TopRowCubeNodesHeight = 90;
+            public static final double MiddleRowCubeNodesHeight = 60;
+            public static final double BottomRowCubeNodes = 13;
 
             public static final class PID {
                 public static final double CameraDriveP = 0.05;

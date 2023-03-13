@@ -41,18 +41,46 @@ public class ArmMode extends Mode {
 
         if (joystick.getRawButton(7)) {
             // ボタン7でTOP ROW CONE NODESまでアームを伸ばす
+            State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+            State.Arm.targetHeight = Const.Calculation.Limelight.TopRowCornNodes;
+            State.Arm.targetDepth = State.armToTopRowCornNodes;
+            State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
+            State.rotateState = RotateState.s_turnHandBack;
         } else if (joystick.getRawButton(9)) {
             // ボタン9でMiddle ROW CONE NODESまでアームを伸ばす
+            State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+            State.Arm.targetDepth = State.armToMiddleRowCornNodes;
+            State.Arm.targetHeight = Const.Calculation.Limelight.MiddleRowCornNodes;
+            State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
+            State.rotateState = RotateState.s_turnHandBack;
         } else if (joystick.getRawButton(11)) {
             // ボタン11でBottom ROW CONE NODESまでアームを伸ばす
+            State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+            State.Arm.targetDepth = State.armToBottomRowCornNodes;
+            State.Arm.targetHeight = Const.Calculation.Limelight.BottomRowCornNodes;
+            State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
+            State.rotateState = RotateState.s_turnHandBack;
         } else if (joystick.getRawButton(8)) {
             // ボタン8でTOP ROW CUBE NODESまでアームを伸ばす
+            State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+            State.Arm.targetDepth = State.armToTopRowCubeNodes;
+            State.Arm.targetHeight = Const.Calculation.Camera.TopRowCubeNodesHeight;
+            State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
+            State.rotateState = RotateState.s_turnHandBack;
         } else if (joystick.getRawButton(10)) {
             // ボタン10でMiddle ROW CUBE NODESまでアームを伸ばす
+            State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+            State.Arm.targetDepth = State.armToMiddleCubeNodes;
+            State.Arm.targetHeight = Const.Calculation.Camera.MiddleRowCubeNodesHeight;
+            State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
+            State.rotateState = RotateState.s_turnHandBack;
         } else if (joystick.getRawButton(12)) {
             // ボタン12でBottom ROW CUBE NODESまでアームを伸ばす
-        } else {
-
+            State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+            State.Arm.targetDepth = State.armToBottomRowCubeNodes;
+            State.Arm.targetHeight = Const.Calculation.Camera.BottomRowCubeNodes;
+            State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
+            State.rotateState = RotateState.s_turnHandBack;
         }
 
         //ボタン4で手首が180°回転する, ボタン5で手首が右回転する, ボタン6で手首が左回転する, ボタン3で手首の位置をリセット
