@@ -57,12 +57,12 @@ public class Const {
             public static final double GoalHeight = 166; // [cm]
 
 
-            /** 奥のコーンのゴールの高さ[cm] */
-            public static final double BackGoalHeight = 180;
-            /** 真ん中のコーンのゴールの高さ[cm] */
+            /** 奥のコーンのゴールの高さ[cm] -> ポールの先端の高さは117[cm]*/
+            public static final double BackGoalHeight = 130;
+            /** 真ん中のコーンのゴールの高さ[cm] -> ポールの先端の高さは87[cm]*/
             public static final double MiddleGoalHeight = 100;
-            /** 前のコーンのゴールの高さ[cm] */
-            public static final double FrontGoalHeight = 0;
+            /** 前のコーンのゴールの高さ[cm] -> ポールの先端（床の面）の高さは13[cm]*/
+            public static final double FrontGoalHeight = 25;
 
             /** 手前から奥のターゲットまでの距離 */
             public static final double FrontGoalToBackGoal = 43; // [cm]
@@ -108,12 +108,12 @@ public class Const {
             public static final double GoalHeight = 76.5; // [cm]
 
 
-            /** 奥のキューブのゴールの高さ[cm] */
-            public static final double BackGoalHeight = 180;
-            /** 真ん中のキューブのゴールの高さ[cm] */
-            public static final double MiddleGoalHeight = 100;
-            /** 前のキューブのゴールの高さ[cm] */
-            public static final double FrontGoalHeight = 0;
+            /** 奥のキューブのゴールの高さ[cm] -> ゴールの面の高さは90[cm]*/
+            public static final double BackGoalHeight = 105;
+            /** 真ん中のキューブのゴールの高さ[cm] -> ゴールの面の高さは60[cm]*/
+            public static final double MiddleGoalHeight = 75;
+            /** 前のキューブのゴールの高さ[cm] -> ゴールの面の高さは13[cm]*/
+            public static final double FrontGoalHeight = 25;
 
 
             //計算
@@ -273,7 +273,7 @@ public class Const {
         public static final double InitialDepth = 0;
 
         /** アームの根本の高さ[cm] -> 座標の原点の高さ */
-        public static final double RootHeight = 40;
+        public static final double RootHeight = 127;
 
     }
 
