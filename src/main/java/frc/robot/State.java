@@ -220,12 +220,12 @@ public class State {
             Arm.resetPidController = false;
             Arm.resetEncoder = false;
 
-            TargetDepth.LimelightFront = 0.0;
-            TargetDepth.LimelightMiddle = 0.0;
-            TargetDepth.LimelightBack = 0.0;
-            TargetDepth.CameraFront = 0.0;
-            TargetDepth.CameraMiddle = 0.0;
-            TargetDepth.CameraBack = 0.0;
+            TargetDepth.LimelightFront = 80.0;
+            TargetDepth.LimelightMiddle = 80.0;
+            TargetDepth.LimelightBack = 80.0;
+            TargetDepth.CameraFront = 80.0;
+            TargetDepth.CameraMiddle = 80.0;
+            TargetDepth.CameraBack = 80.0;
         }
     }
 
