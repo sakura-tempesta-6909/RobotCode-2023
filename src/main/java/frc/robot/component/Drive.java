@@ -11,10 +11,10 @@ import frc.robot.State;
 import frc.robot.subClass.Const;
 
 public class Drive implements Component {
-    private WPI_TalonSRX driveRightFront, driveLeftFront;
+    private final WPI_TalonSRX driveRightFront, driveLeftFront;
     private DifferentialDrive differentialDrive;
-    private PIDController pidLimelightDrive;
-    private PIDController pidCameraDrive;
+    private final PIDController pidLimelightDrive;
+    private final PIDController pidCameraDrive;
 
 
     public Drive() {
