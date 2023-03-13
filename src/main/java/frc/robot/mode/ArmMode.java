@@ -106,7 +106,7 @@ public class ArmMode extends Mode {
             State.Arm.jointSpeed = joystickY;
         } else if (joystick.getRawButton(7)) {
             // 奥のコーンのゴールまでアームを伸ばす
-            State.Arm.targetHeight = Const.Calculation.Limelight.BackGoalHeight - Const.Arm.RootHeightFromGr;
+            State.Arm.targetHeight = Const.Calculation.Limelight.TopGoalHeight - Const.Arm.RootHeightFromGr;
             State.Arm.targetDepth = State.Arm.TargetDepth.TopCorn;
         } else if (joystick.getRawButton(9)) {
             // 真ん中のコーンのゴールまでアームを伸ばす
@@ -114,11 +114,11 @@ public class ArmMode extends Mode {
             State.Arm.targetDepth = State.Arm.TargetDepth.MiddleCorn;
         } else if (joystick.getRawButton(11)) {
             // 前のコーンのゴールまでアームを伸ばす
-            State.Arm.targetHeight = Const.Calculation.Limelight.FrontGoalHeight - Const.Arm.RootHeightFromGr;
+            State.Arm.targetHeight = Const.Calculation.Limelight.BottomGoalHeight - Const.Arm.RootHeightFromGr;
             State.Arm.targetDepth = State.Arm.TargetDepth.BottomCorn;
         } else if (joystick.getRawButton(8)) {
             // 奥のキューブのゴールまでアームを伸ばす
-            State.Arm.targetHeight = Const.Calculation.Camera.BackGoalHeight - Const.Arm.RootHeightFromGr;
+            State.Arm.targetHeight = Const.Calculation.Camera.TopGoalHeight - Const.Arm.RootHeightFromGr;
             State.Arm.targetDepth = State.Arm.TargetDepth.TopCube;
         } else if (joystick.getRawButton(10)) {
             // 真ん中のキューブのゴールまでアームを伸ばす
@@ -126,7 +126,7 @@ public class ArmMode extends Mode {
             State.Arm.targetDepth = State.Arm.TargetDepth.MiddleCube;
         } else if (joystick.getRawButton(12)) {
             // 前のキューブのゴールまでアームを伸ばす
-            State.Arm.targetHeight = Const.Calculation.Camera.FrontGoalHeight - Const.Arm.RootHeightFromGr;
+            State.Arm.targetHeight = Const.Calculation.Camera.BottomGoalHeight - Const.Arm.RootHeightFromGr;
             State.Arm.targetDepth = State.Arm.TargetDepth.BottomCube;
         } else if ((joystickX != 0 || joystickY != 0)) {
             // X方向にスティックを曲げてアームを上下に動かす, Y方向にスティックを倒してアームを前後に動かす
