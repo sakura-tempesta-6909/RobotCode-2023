@@ -62,7 +62,7 @@ public class Const {
             /** 真ん中のコーンのゴールの高さ[cm] -> ポールの先端の高さは87[cm]*/
             public static final double MiddleGoalHeight = 100;
             /** 前のコーンのゴールの高さ[cm] -> ポールの先端（床の面）の高さは13[cm]*/
-            public static final double FrontGoalHeight = 25;
+            public static final double FrontGoalHeight = 40;
 
             /** 手前から奥のターゲットまでの距離 */
             public static final double FrontGoalToBackGoal = 43; // [cm]
@@ -113,7 +113,7 @@ public class Const {
             /** 真ん中のキューブのゴールの高さ[cm] -> ゴールの面の高さは60[cm]*/
             public static final double MiddleGoalHeight = 75;
             /** 前のキューブのゴールの高さ[cm] -> ゴールの面の高さは13[cm]*/
-            public static final double FrontGoalHeight = 25;
+            public static final double FrontGoalHeight = 40;
 
 
             //計算
@@ -195,15 +195,15 @@ public class Const {
         /** 先端のアームの長さ[cm] */
         public static final double HeadArmLength = 45.5;
         /** 根本のアームの重心の位置[cm]（根本からの距離） */
-        public static final double RootArmBarycenter = 45.0;
+        public static final double RootArmBarycenter = 12.52;
         /** 先端のアームの重心の位置[cm]（関節部分からの距離） */
-        public static final double HeadArmBarycenter = 45.0;
+        public static final double HeadArmBarycenter = 45.43;
         /** 根本のアームの重さ[N] 注意 - [N]=[kg*9.8] */
-        public static final double RootArmMass = 0.0 * 9.8;
+        public static final double RootArmMass = 3.302 * 9.8;
         /** 先端のアームの重さ[N] 注意 - [N]=[kg*9.8] */
-        public static final double HeadArmMass = 0.0 * 9.8;
+        public static final double HeadArmMass = 5.961 * 9.8;
         /** ターゲットの変更の速さ（コントローラーの値に乗算する） */
-        public static final double TargetModifyRatio = 1;
+        public static final double TargetModifyRatio = 0.2;
         /** 掴んだ後に先端を持ちあげる高さ[cm] */
         public static final double TakeUpLengthAfterGrab = 20.0;
 
@@ -211,20 +211,20 @@ public class Const {
         /** 根本のNEOモーターのPIDのP */
         public static final double P_R = 0.04;
         /** 根本のNEOモーターのPIDのI */
-        public static final double I_R = 10e-5;
+        public static final double I_R = 10e-5 / 10;
         /** 根本のNEOモーターのPIDのD */
         public static final double D_R = 0.00;
         /** 根本のNEOモーターの積分値の最大 */
         public static final double IMax_R = 10e3;
 
         /** 関節部分のNEOモーターのPIDのP */
-        public static final double P_J = 0.03;
+        public static final double P_J = 0.03 + 0.03;
         /** 関節部分のNEOモーターのPIDのI */
-        public static final double I_J = 5e-7;
+        public static final double I_J = 5e-7 * 3;
         /** 関節部分のNEOモーターのPIDのD */
         public static final double D_J = 0.000;
         /** 関節部分のNEOモーターの積分値の最大 */
-        public static final double IMax_J = 10e5;
+        public static final double IMax_J = 10e5 * 20 / 3;
         /** 根本のNEOモーターのフィードフォワードの値（定数） -> 固いため計算不要の際に */
         public static final double RootMotorFF = 0.03;
 

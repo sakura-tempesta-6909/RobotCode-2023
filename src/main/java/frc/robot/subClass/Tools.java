@@ -34,7 +34,7 @@ public class Tools {
         return l1 * Math.cos(RootAngle) + l2 * Math.cos(SumAngle);
     }
 
-    private static final double deadZoneThreshold = 0.05;
+    private static final double deadZoneThreshold = 0.1;
 
     /**
      * 不感帯処理関数
@@ -121,7 +121,7 @@ public class Tools {
         double ffMomentForSecondArm = l1 * m2 * Math.cos(RootAngle) + b2 * m2 * Math.cos(SumAngle);
 
         //TODO feedforwardでmotor.setに渡す値はトルクの計算が必要
-        return ffMomentForFirstArm + ffMomentForSecondArm;
+        return ffMomentForFirstArm + ffMomentForSecondArm / 4;
     }
 
     /**

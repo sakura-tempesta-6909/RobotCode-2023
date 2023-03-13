@@ -8,6 +8,9 @@ import frc.robot.State;
 import frc.robot.subClass.Const;
 import frc.robot.subClass.Tools;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 public class Arm implements Component {
@@ -53,8 +56,10 @@ public class Arm implements Component {
      */
     private void pidControlArm() {
         // TODO feedforwardが必要か微妙
-        pidForRoot.setReference(calculateRootRotationFromAngle(State.Arm.targetRootAngle), CANSparkMax.ControlType.kPosition, 0, Const.Arm.RootMotorFF);
-        pidForJoint.setReference(calculateJointRotationFromAngle(State.Arm.targetJointAngle), CANSparkMax.ControlType.kPosition, 0, State.Arm.jointMotorFeedforward);
+        pidForRoot.setReference(calculateRootRotationFromAngle(State.Arm.targetRootAngle), CANSparkMax.ControlType.kPosition);
+        // pidForJoint.setReference(calculateJointRotationFromAngle(State.Arm.targetJointAngle), CANSparkMax.ControlType.kPosition);
+        // pidForRoot.setReference(calculateRootRotationFromAngle(State.Arm.targetRootAngle), CANSparkMax.ControlType.kPosition, 0, State.Arm.rootMotorFeedforward, ArbFFUnits.kPercentOut);
+        pidForJoint.setReference(calculateJointRotationFromAngle(State.Arm.targetJointAngle), CANSparkMax.ControlType.kPosition, 0, State.Arm.jointMotorFeedforward, ArbFFUnits.kPercentOut);
     }
 
     /**
@@ -64,7 +69,7 @@ public class Arm implements Component {
      */
     private void rotationControlArm(double joint, double root) {
         // TODO feedforwardが必要か微妙
-        rootMotor.set(root * Const.Arm.RootMotorMoveRatio + Const.Arm.RootMotorFF);
+        rootMotor.set(root * Const.Arm.RootMotorMoveRatio + State.Arm.rootMotorFeedforward);
         jointMotor.set(joint * Const.Arm.JointMotorMoveRatio + State.Arm.jointMotorFeedforward);
     }
 
@@ -96,7 +101,7 @@ public class Arm implements Component {
 
     private void fixPositionWithFF() {
         // TODO feedforwardが必要か微妙
-        rootMotor.set(0 + Const.Arm.RootMotorFF);
+        rootMotor.set(0 + State.Arm.rootMotorFeedforward);
         jointMotor.set(0 + State.Arm.jointMotorFeedforward);
     }
 
@@ -153,16 +158,19 @@ public class Arm implements Component {
 
         // armがターゲットの座標に到着したか
         State.Arm.isAtTarget = isAtTarget();
+
+        double jointRequiredTorque = Tools.calculateTopMotorFeedforward(State.Arm.actualRootAngle, State.Arm.actualJointAngle) / Const.Arm.JointMotorGearRatio;
+        double rootRequiredTorque = Tools.calculateUnderMotorFeedforward(State.Arm.actualRootAngle, State.Arm.actualJointAngle) / Const.Arm.JointMotorGearRatio;
+        SmartDashboard.putNumber("roottorque", rootRequiredTorque);
+        SmartDashboard.putNumber("jointtorque", jointRequiredTorque);
+        State.Arm.jointMotorFeedforward = Tools.changeTorqueToMotorInput(jointRequiredTorque / 2);
+        State.Arm.rootMotorFeedforward = Tools.changeTorqueToMotorInput(rootRequiredTorque / 4);
     }
 
     @Override
     public void applyState() {
         // フィードフォワードを計算する
         // TODO コーンを持っているかによってrequiredTorqueを変える
-        double jointRequiredTorque = Tools.calculateTopMotorFeedforward(State.Arm.actualRootAngle, State.Arm.actualJointAngle) / Const.Arm.JointMotorGearRatio;
-        double rootRequiredTorque = Tools.calculateUnderMotorFeedforward(State.Arm.actualRootAngle, State.Arm.actualJointAngle) / Const.Arm.JointMotorGearRatio;
-        State.Arm.jointMotorFeedforward = Tools.changeTorqueToMotorInput(jointRequiredTorque);
-        State.Arm.rootMotorFeedforward = Tools.changeTorqueToMotorInput(rootRequiredTorque);
 
         if (State.Arm.resetPidController) {
             pidForRoot.setIAccum(0);

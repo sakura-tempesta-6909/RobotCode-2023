@@ -220,12 +220,12 @@ public class State {
             Arm.resetPidController = false;
             Arm.resetEncoder = false;
 
-            TargetDepth.LimelightFront = 80.0;
-            TargetDepth.LimelightMiddle = 80.0;
-            TargetDepth.LimelightBack = 80.0;
-            TargetDepth.CameraFront = 80.0;
-            TargetDepth.CameraMiddle = 80.0;
-            TargetDepth.CameraBack = 80.0;
+            TargetDepth.LimelightFront = 30.0;
+            TargetDepth.LimelightMiddle = 58.0 - 20.0;
+            TargetDepth.LimelightBack = 101.0 - 40.0;
+            TargetDepth.CameraFront = 30.0;
+            TargetDepth.CameraMiddle = 58.0 - 20.0;
+            TargetDepth.CameraBack = 101.0 - 40.0;
         }
     }
 
@@ -240,6 +240,8 @@ public class State {
         XboxController driveController = new XboxController(Const.Ports.DriveController);
         XboxController operateController = new XboxController(Const.Ports.OperateController);
         Joystick joystick = new Joystick(Const.Ports.Joystick);
+
+        mode = Modes.k_arm;
         Mode.addController(driveController, operateController, joystick);
         intakeExtensionState = IntakeExtensionState.s_openIntake;
 

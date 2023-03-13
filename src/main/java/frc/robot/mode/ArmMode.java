@@ -1,6 +1,7 @@
 package frc.robot.mode;
 
 import frc.robot.State;
+import frc.robot.State.Arm;
 import frc.robot.State.GrabHandState;
 import frc.robot.State.MoveLeftAndRightArmState;
 import frc.robot.State.Hand.RotateState;
@@ -8,6 +9,8 @@ import frc.robot.subClass.Const;
 import frc.robot.subClass.Tools;
 
 import java.util.Map;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ArmMode extends Mode {
 
@@ -41,9 +44,17 @@ public class ArmMode extends Mode {
     @Override
     public void changeState() {
 
-        final double joystickX = Tools.deadZoneProcess(joystick.getRawAxis(1));
-        final double joystickY = Tools.deadZoneProcess(joystick.getRawAxis(2));
-        final double joystickZ = Tools.deadZoneProcess(joystick.getRawAxis(3));
+        if (driveController.getXButton()) {
+            State.Arm.resetEncoder = true;
+        }
+
+        final double joystickX = Tools.deadZoneProcess(joystick.getRawAxis(0));
+        final double joystickY = Tools.deadZoneProcess(joystick.getRawAxis(1));
+        final double joystickZ = Tools.deadZoneProcess(joystick.getRawAxis(2));
+        SmartDashboard.putNumber("Axis1", joystickX);
+        SmartDashboard.putNumber("Axis2", joystickY);
+        SmartDashboard.putNumber("Axis3", joystickZ);
+        SmartDashboard.putBoolean("Button7", joystick.getRawButton(7));
 
         if (driveController.getRightBumper() && driveController.getLeftBumper()) {
             // アームの位置をリセット
@@ -61,7 +72,7 @@ public class ArmMode extends Mode {
             State.Hand.grabHandState = GrabHandState.s_releaseHand;
         }
 
-        if (joystick.getRawButton(4)) {
+        if (joystick.getRawButton(3)) {
             // 手首が180°回転する
             State.rotateState = RotateState.s_turnHandBack;
         } else if (joystick.getRawButton(5)) {
@@ -118,8 +129,10 @@ public class ArmMode extends Mode {
         } else if ((joystickX != 0 || joystickY != 0)) {
             // X方向にスティックを曲げてアームを上下に動かす, Y方向にスティックを倒してアームを前後に動かす
             State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-            State.Arm.targetHeight += joystickX * Const.Arm.TargetModifyRatio;
-            State.Arm.targetDepth += joystickY * Const.Arm.TargetModifyRatio;
+            if (isNewTargetPositionInLimit(State.Arm.targetHeight + joystickX * Const.Arm.TargetModifyRatio, State.Arm.targetDepth + joystickY * Const.Arm.TargetModifyRatio)) {
+                State.Arm.targetHeight += joystickX * Const.Arm.TargetModifyRatio;
+                State.Arm.targetDepth += joystickY * Const.Arm.TargetModifyRatio;
+            }
         }
 
         if (joystick.getRawButton(2)) {
@@ -146,14 +159,14 @@ public class ArmMode extends Mode {
     private boolean isNewTargetPositionInLimit(double Height, double Depth) {
         double length = Math.sqrt(Math.pow(Height, 2) + Math.pow(Depth, 2));
 
-        boolean isZAxisInLimit = Depth > 0;
-        boolean isXAxisInLimit = Height > 0;
+        // boolean isZAxisInLimit = Depth > 0;
+        // boolean isXAxisInLimit = Height > 0;
         boolean isInOuterBorder = length < Const.Arm.TargetPositionOuterLimit;
         boolean isOutInnerBorder = length > Const.Arm.TargetPositionInnerLimit;
 
-        return true;
+        // return true;
         // TODO XButtonでコントロールする時のターゲット座標の制限を考える
-        // return isXAxisInLimit && isZAxisInLimit && isInOuterBorder && isOutInnerBorder;
+        return isInOuterBorder && isOutInnerBorder;
     }
 
     private boolean getSeveralRawButton(int[] buttonIds) {
