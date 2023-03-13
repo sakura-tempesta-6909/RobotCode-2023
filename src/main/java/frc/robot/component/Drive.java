@@ -49,7 +49,7 @@ public class Drive implements Component {
     }
 
     public void arcadeDrive(double xSpeed, double zRotation) {
-        // differentialDrive.arcadeDrive(xSpeed, zRotation);
+         differentialDrive.arcadeDrive(xSpeed, zRotation);
         differentialDrive.feed();
     }
 

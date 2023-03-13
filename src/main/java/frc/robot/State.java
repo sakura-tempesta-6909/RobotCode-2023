@@ -170,13 +170,13 @@ public class State {
         public static boolean resetEncoder;
 
         public static class TargetDepth {
-            public static double LimelightFront;
-            public static double LimelightMiddle;
-            public static double LimelightBack;
+            public static double TopCorn;
+            public static double MiddleCorn;
+            public static double BottomCorn;
 
-            public static double CameraFront;
-            public static double CameraMiddle;
-            public static double CameraBack;
+            public static double TopCube;
+            public static double MiddleCube;
+            public static double BottomCube;
         }
 
 
@@ -219,12 +219,14 @@ public class State {
             Arm.resetPidController = false;
             Arm.resetEncoder = false;
 
-            TargetDepth.LimelightFront = 30.0;
-            TargetDepth.LimelightMiddle = 58.0 - 20.0;
-            TargetDepth.LimelightBack = 101.0 - 40.0;
-            TargetDepth.CameraFront = 30.0;
-            TargetDepth.CameraMiddle = 58.0 - 20.0;
-            TargetDepth.CameraBack = 101.0 - 40.0;
+            // TODO どれくらい引くかを計測する
+            TargetDepth.TopCorn = 101.0 - 40.0;
+            TargetDepth.MiddleCorn = 58.0 - 20.0;
+            TargetDepth.BottomCorn = 30.0;
+
+            TargetDepth.TopCube = 101.0 - 40.0;
+            TargetDepth.MiddleCube = 58.0 - 20.0;
+            TargetDepth.BottomCube = 30.0;
         }
     }
 
