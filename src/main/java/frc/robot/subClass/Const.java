@@ -225,6 +225,9 @@ public class Const {
         public static final double D_J = 0.000;
         /** 関節部分のNEOモーターの積分値の最大 */
         public static final double IMax_J = 10e5;
+        /** 根本のNEOモーターのフィードフォワードの値（定数） -> 固いため計算不要の際に */
+        public static final double RootMotorFF = 0.1;
+
         /** アームを左右に動かすモーターのPIDのP */
         public static final double P_MID = 0.0;
         /** アームを左右に動かすモーターのPIDのI */

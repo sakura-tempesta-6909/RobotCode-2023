@@ -53,8 +53,8 @@ public class Arm implements Component {
      */
     private void pidControlArm() {
         // TODO feedforwardが必要か微妙
+        pidForRoot.setReference(calculateRootRotationFromAngle(State.Arm.targetRootAngle), CANSparkMax.ControlType.kPosition, 0, Const.Arm.RootMotorFF);
         pidForJoint.setReference(calculateJointRotationFromAngle(State.Arm.targetJointAngle), CANSparkMax.ControlType.kPosition, 0, State.Arm.jointMotorFeedforward);
-        pidForRoot.setReference(calculateRootRotationFromAngle(State.Arm.targetRootAngle), CANSparkMax.ControlType.kPosition, 0, State.Arm.rootMotorFeedforward);
     }
 
     /**
@@ -64,8 +64,8 @@ public class Arm implements Component {
      */
     private void rotationControlArm(double joint, double root) {
         // TODO feedforwardが必要か微妙
+        rootMotor.set(root * Const.Arm.RootMotorMoveRatio + Const.Arm.RootMotorFF);
         jointMotor.set(joint * Const.Arm.JointMotorMoveRatio + State.Arm.jointMotorFeedforward);
-        rootMotor.set(root * Const.Arm.RootMotorMoveRatio + State.Arm.rootMotorFeedforward);
     }
 
     private boolean isAtTarget() {
@@ -96,7 +96,7 @@ public class Arm implements Component {
 
     private void fixPositionWithFF() {
         // TODO feedforwardが必要か微妙
-        rootMotor.set(0 + State.Arm.jointMotorFeedforward);
+        rootMotor.set(0 + Const.Arm.RootMotorFF);
         jointMotor.set(0 + State.Arm.jointMotorFeedforward);
     }
 
