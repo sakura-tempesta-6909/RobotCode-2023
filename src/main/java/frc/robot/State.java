@@ -259,6 +259,7 @@ public class State {
     public static void StateReset() {
         intakeState = RollerState.s_stopRoller;
         rotateState = RotateState.s_stopHand;
+        moveLeftAndRightArmState = MoveLeftAndRightArmState.s_fixLeftAndRightMotor;
         pidLimelightReset = false;
 
         autonomousPhaseTransition = Util.getConsole("AutonomousPhaseTransition");

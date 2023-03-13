@@ -16,7 +16,7 @@ public class Const {
 
         public static final int HandSolenoid = 0;
 
-        public static final int IntakeSolenoid = 0;
+        public static final int IntakeSolenoid = 1;
 
         public static final int RightRoller = 4;
         public static final int LeftRoller = 3;
@@ -186,8 +186,8 @@ public class Const {
     public static final class Arm {
 
         public static final class Ports {
-            public static final int topMotor = 0;
-            public static final int underMotor = 0;
+            public static final int topMotor = 2;
+            public static final int underMotor = 1;
         }
 
         /** 根本のアームの長さ[cm] */
