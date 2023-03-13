@@ -1,6 +1,5 @@
 package frc.robot;
 
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.State.Hand.RotateState;
@@ -25,21 +24,35 @@ public class State {
     /** aprilTagを向くときのスピード */
     public static double cameraTrackingZRotation;
     /** 手前のターゲットまでの距離 */
-    public static double limelightToFrontGoal; // [cm]
+    public static double limelightToMiddleRowCornNodes; // [cm]
+    public static double limelightToTopRowCornNodes; // [cm]
+    public static double limelightToBottomRowCornNodes;
+
+
     /** cameraからtagまでの距離 */
-    public static double cameraToTag; // [cm]
+    public static double cameraToMiddleRowCubeNodes; // [cm]
+    public static double cameraToTopRowCubeNodes;
+    public static double cameraToBottomRowCubeNodes;
     /** cameraからみたaprilTagの縦の角度(度数法) */
     public static double aprilTagAngleHeight;
     /** cameraからみたaprilTagの横の角度(度数法) */
     public static double aprilTagAngleWidth;
+
+
     /** armからtagまでの距離 */
-    public static double armToFrontTag; // [cm]
+    public static double armToMiddleCubeNodes; // [cm]
+    public static double armToTopRowCubeNodes;
+    public static double armToBottomRowCubeNodes;
+
+
     /** armからターゲットまでの距離 */
-    public static double armToFrontGoal; // [cm]
-    public static double armToBackGoal;
-    public static double armToBackTag;
+    public static double armToMiddleRowCornNodes; // [cm]
+    public static double armToTopRowCornNodes;
+    public static double armToBottomRowCornNodes;
+
     /** 奥のターゲットまでの距離 */
-    public static double limelightToBackGoal; // [cm]
+
+
     public static double tx;
     public static double limelightXSpeed;
     public static boolean pidLimelightReset;

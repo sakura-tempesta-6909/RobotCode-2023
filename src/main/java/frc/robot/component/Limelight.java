@@ -48,14 +48,17 @@ public class Limelight implements Component {
         double angleToGoalDegrees = Const.Calculation.Limelight.LimelightMountAngleDegrees + targetOffsetAngle_Vertical;
         double angleToGoalRadians = angleToGoalDegrees * (Math.toRadians(180.0));
         // ターゲットまでの距離
-        State.limelightToFrontGoal = (Const.Calculation.Limelight.GoalHeight - Const.Calculation.Limelight.LimelightLensHeight) / Math.tan(angleToGoalRadians);
-        State.armToFrontGoal = State.limelightToFrontGoal - Const.Calculation.Limelight.LimelightToArm;
-        State.armToBackGoal = State.limelightToBackGoal - Const.Calculation.Limelight.LimelightToArm;
-        State.limelightToBackGoal = State.limelightToFrontGoal + Const.Calculation.Limelight.FrontGoalToBackGoal;
+        State.limelightToMiddleRowCornNodes = (Const.Calculation.Limelight.GoalHeight - Const.Calculation.Limelight.LimelightLensHeight) / Math.tan(angleToGoalRadians);
+        State.limelightToTopRowCornNodes = State.limelightToMiddleRowCornNodes + Const.Calculation.Limelight.TopRowToMiddleRowCornNodes;
+        State.limelightToBottomRowCornNodes = State.limelightToMiddleRowCornNodes - Const.Calculation.Limelight.MiddleRowToBottomRowCornNodes;
+        State.armToMiddleRowCornNodes = State.limelightToMiddleRowCornNodes - Const.Calculation.Limelight.LimelightToArm;
+        State.armToTopRowCornNodes = State.limelightToTopRowCornNodes - Const.Calculation.Limelight.LimelightToArm;
+        State.armToBottomRowCornNodes = State.limelightToBottomRowCornNodes - Const.Calculation.Limelight.LimelightToArm;
 
-        SmartDashboard.putNumber("FrontGoal", State.limelightToFrontGoal);
+
+        SmartDashboard.putNumber("FrontGoal", State.limelightToMiddleRowCornNodes);
         SmartDashboard.putNumber("ty", tyEntry.getDouble(0));
-        SmartDashboard.putNumber("BackGoal", State.limelightToBackGoal);
+        SmartDashboard.putNumber("BackGoal", State.limelightToTopRowCornNodes);
 
     }
 

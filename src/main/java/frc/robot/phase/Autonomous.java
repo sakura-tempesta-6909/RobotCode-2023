@@ -58,12 +58,12 @@ public class Autonomous {
         PhaseTransition.Phase.PhaseInit();
 
         phaseTransitionA.registerPhase(
-                moveArmTo(Const.Calculation.Camera.GoalHeight - Const.Arm.RootHeight, State.armToFrontTag, "move arm to cube goal"),
+                moveArmTo(Const.Calculation.Camera.GoalHeight - Const.Arm.RootHeight, State.armToMiddleCubeNodes, "move arm to cube goal"),
                 releaseHand(2, "release cube")
         );
 
         phaseTransitionB.registerPhase(
-                moveArmTo(Const.Calculation.Limelight.GoalHeight - Const.Arm.RootHeight, State.armToFrontGoal, "move arm to corn goal"),
+                moveArmTo(Const.Calculation.Limelight.GoalHeight - Const.Arm.RootHeight, State.armToMiddleRowCornNodes, "move arm to corn goal"),
                 releaseHand(2, "release corn")
         );
 

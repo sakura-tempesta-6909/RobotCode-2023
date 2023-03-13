@@ -21,10 +21,13 @@ public class Camera implements Component {
         //距離を求める
         double angleToGoalDegrees = Const.Calculation.Camera.CameraMountAngleDegrees + State.aprilTagAngleHeight;
         double angleToGoalRadians = angleToGoalDegrees * (Math.PI / 180);
-        State.cameraToTag = (Const.Calculation.Camera.GoalHeight - Const.Calculation.Camera.CameraLensHeight) / Math.tan(angleToGoalRadians);
-        State.armToFrontTag = State.cameraToTag - Const.Calculation.Camera.CameraToArm;
-        State.armToBackTag = State.armToFrontTag + Const.Calculation.Camera.FrontTagToBackTag;
-        SmartDashboard.putNumber("Distance", State.cameraToTag);
+        State.cameraToMiddleRowCubeNodes = (Const.Calculation.Camera.GoalHeight - Const.Calculation.Camera.CameraLensHeight) / Math.tan(angleToGoalRadians);
+        State.cameraToTopRowCubeNodes = State.cameraToMiddleRowCubeNodes + Const.Calculation.Camera.TopRowToMiddleRowCubeNodes;
+        State.cameraToBottomRowCubeNodes = State.cameraToMiddleRowCubeNodes - Const.Calculation.Camera.MiddleRowToBottomRowCubeNodes;
+        State.armToMiddleCubeNodes = State.cameraToMiddleRowCubeNodes - Const.Calculation.Camera.CameraToArm;
+        State.armToTopRowCubeNodes = State.cameraToTopRowCubeNodes - Const.Calculation.Camera.CameraToArm;
+        State.armToBottomRowCornNodes = State.cameraToBottomRowCubeNodes - Const.Calculation.Camera.CameraToArm;
+        SmartDashboard.putNumber("Distance", State.cameraToMiddleRowCubeNodes);
 
 
     }

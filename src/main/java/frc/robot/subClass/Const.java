@@ -51,13 +51,13 @@ public class Const {
             /** LimelightからArmまでの距離 */
             public static final double LimelightToArm = 0; // [cm]
 
-
             // ターゲットの情報
             /** ターゲットの高さ */
             public static final double GoalHeight = 166; // [cm]
 
             /** 手前から奥のターゲットまでの距離 */
-            public static final double FrontGoalToBackGoal = 43; // [cm]
+            public static final double TopRowToMiddleRowCornNodes = 43; // [cm]
+            public static final double MiddleRowToBottomRowCornNodes = 58; // [cm]
 
             public static final class PID {
                 public static final double LimelightDriveP = 0.08;
@@ -114,7 +114,8 @@ public class Const {
             public static final double FocalLengthHeight = CameraCenterHeight / Math.tan(Math.toRadians(ThetaMaxHeight));
             /** 横の焦点距離 */
             public static final double FocalLengthWeight = CameraCenterWidth / Math.tan(Math.toRadians(ThetaMaxWidth));
-            public static final double FrontTagToBackTag = 0;
+            public static final double TopRowToMiddleRowCubeNodes = 43;
+            public static final double MiddleRowToBottomRowCubeNodes = 58;
 
             public static final class PID {
                 public static final double CameraDriveP = 0.05;
