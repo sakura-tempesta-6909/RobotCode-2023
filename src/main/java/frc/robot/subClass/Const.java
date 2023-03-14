@@ -279,7 +279,7 @@ public class Const {
         /** 根本NEOモーターをコントローラーで動かす時の最大の速さ */
         public static final double RootMotorMoveRatio = 0.5;
         /** PIDコントロールの誤差の許容量[deg] 注意! isArmAtTargetの判定に用いているだけ */
-        public static final double PIDAngleTolerance = 0.1;
+        public static final double PIDAngleTolerance = 0.7;
 
         /** アームの理想的な高さ */
         public static final double InitialHeight = 0;

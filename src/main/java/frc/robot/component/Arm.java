@@ -50,7 +50,8 @@ public class Arm implements Component {
 
     /**
      * PIDで移動する
-     * moveArmToSpecifiedPositionで実行
+     * feedforwardが必要かに応じてコメントアウトを外す
+     * s_moveArmToSpecifiedPositionで実行
      */
     private void pidControlArm() {
         // feedforwardなし
@@ -64,33 +65,82 @@ public class Arm implements Component {
 
     /**
      * コントローラーでアームを動かす
+     * feedforwardが必要かに応じてコメントアウトを外す
      * @param joint jointモーターのスピード [-1,1]
      * @param root  rootモーターのスピード [-1,1]
+     * s_moveArmMotorで実行
      */
     private void rotationControlArm(double joint, double root) {
-        // TODO feedforwardが必要か微妙
+        // feedforwardなし
+        // rootMotor.set(root * Const.Arm.RootMotorMoveRatio);
+        // jointMotor.set(joint * Const.Arm.JointMotorMoveRatio);
+
+        // feedforwardあり
         rootMotor.set(root * Const.Arm.RootMotorMoveRatio + State.Arm.rootMotorFeedforward);
         jointMotor.set(joint * Const.Arm.JointMotorMoveRatio + State.Arm.jointMotorFeedforward);
     }
 
+    /**
+     * アームをその位置で止める
+     * feedforwardが必要かに応じてコメントアウトを外す
+     * s_fixArmPositionで実行
+     * */
+    private void fixPositionWithFF() {
+        // feedforwardなし
+        // rootMotor.set(0.0);
+        // jointMotor.set(0.0);
+
+        // 常に一定の数値をfeedforwardとして入れる
+        rootMotor.set(Const.Arm.ConstantRootMotorFF);
+
+        // feedforwardあり
+        // rootMotor.set(State.Arm.rootMotorFeedforward);
+        jointMotor.set(State.Arm.jointMotorFeedforward);
+    }
+
+    /**
+     * アームがターゲット位置にいるかを判定
+     * targetAngleとactualAngleの差がPIDAngleTolerance未満でtrue
+     * @return jointMotorとrootMotorの両方がatSetpointかどうか
+     * */
     private boolean isAtTarget() {
         boolean isRootMotorAtSetpoint = Math.abs(State.Arm.targetRootAngle - State.Arm.actualRootAngle) < Const.Arm.PIDAngleTolerance;
         boolean isJointMotorAtSetpoint = Math.abs(State.Arm.targetJointAngle - State.Arm.actualJointAngle) < Const.Arm.PIDAngleTolerance;
         return isJointMotorAtSetpoint && isRootMotorAtSetpoint;
     }
 
+    /**
+     * 根本NEOモーターの回転数から根本アームの角度を計算（根本の回転数 * 360）
+     * @param rotation encoderから取得したPosition（モーターの回転数）
+     * @return 根本アームの角度[deg]
+     * */
     private double calculateRootAngleFromRotation(double rotation) {
         return rotation / Const.Arm.RootMotorGearRatio * 360;
     }
 
+    /**
+     * 関節部分NEOモーターの回転数から先端アームの角度を計算（根本の回転数 * 360）
+     * @param rotation encoderから取得したPosition（関節部分NEOモーターの回転数）
+     * @return 先端アームの角度[deg]
+     * */
     private double calculateJointAngleFromRotation(double rotation) {
         return rotation / Const.Arm.JointMotorGearRatio * 360;
     }
 
+    /**
+     * 根本アームの角度から根本NEOモーターの回転数を計算（根本NEOモーターの必要な角度 / 360 = 必要な回転数）
+     * @param angle 根本アームの角度[deg]
+     * @return 根本NEOモーターの回転数
+     * */
     private double calculateRootRotationFromAngle(double angle) {
         return angle * Const.Arm.RootMotorGearRatio / 360;
     }
 
+    /**
+     * 先端アームの角度から関節部分NEOモーターの回転数を計算（関節部分NEOモーターの必要な角度 / 360 = 必要な回転数）
+     * @param angle 先端アームの角度[deg]
+     * @return 関節部分NEOモーターの回転数
+     * */
     private double calculateJointRotationFromAngle(double angle) {
         return angle * Const.Arm.JointMotorGearRatio / 360;
     }
@@ -99,11 +149,6 @@ public class Arm implements Component {
         return rotation / Const.Arm.LeftAndRightArmGearRatio * 360;
     }
 
-    private void fixPositionWithFF() {
-        // TODO feedforwardが必要か微妙
-        rootMotor.set(0 + State.Arm.rootMotorFeedforward);
-        jointMotor.set(0 + State.Arm.jointMotorFeedforward);
-    }
 
     public void moveRightArm(double moveLeftAndRightSpeed) {
         moveLeftAndRightMotor.set(moveLeftAndRightSpeed);
@@ -153,12 +198,14 @@ public class Arm implements Component {
         State.Arm.actualHeight = Tools.calculateHeight(State.Arm.actualRootAngle, State.Arm.actualJointAngle);
         State.Arm.actualDepth = Tools.calculateDepth(State.Arm.actualRootAngle, State.Arm.actualJointAngle);
 
-        //armが左右に動いてる時の位置（角度）
+        // armが左右に動いてる時の位置（角度）
         State.Arm.leftAndRightPositionAngle = calculateLeftAndRightAngleFromRotation(leftAndRightArmEncoder.getPosition());
 
         // armがターゲットの座標に到着したか
         State.Arm.isAtTarget = isAtTarget();
 
+        // feedforwardを計算する
+        // TODO コーンを持っているかによってrequiredTorqueを変える
         double jointRequiredTorque = Tools.calculateJointMotorFeedforward(State.Arm.actualRootAngle, State.Arm.actualJointAngle) / Const.Arm.JointMotorGearRatio;
         double rootRequiredTorque = Tools.calculateRootMotorFeedforward(State.Arm.actualRootAngle, State.Arm.actualJointAngle) / Const.Arm.JointMotorGearRatio;
         State.Arm.jointMotorFeedforward = Tools.changeTorqueToMotorInput(jointRequiredTorque);
@@ -167,8 +214,6 @@ public class Arm implements Component {
 
     @Override
     public void applyState() {
-        // フィードフォワードを計算する
-        // TODO コーンを持っているかによってrequiredTorqueを変える
 
         if (State.Arm.resetPidController) {
             pidForRoot.setIAccum(0.0);

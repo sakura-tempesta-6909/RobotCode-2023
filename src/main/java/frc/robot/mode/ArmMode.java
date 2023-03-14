@@ -172,6 +172,7 @@ public class ArmMode extends Mode {
      * 複数のボタンのうちどれかが押されているか判定する
      * 複数のボタンのgetButtonをORで
      * @param buttonIds ボタンの番号の配列
+     * @return 複数のボタンのうちどれか一つがgetButtonでtrueかどうか
      * */
     private boolean getSeveralRawButton(int[] buttonIds) {
         boolean flag = false;
@@ -185,6 +186,7 @@ public class ArmMode extends Mode {
      * 複数のボタンのうちどれかが押されたか判定する
      * 複数のボタンのgetButtonPressedをORで
      * @param buttonIds ボタンの番号の配列
+     * @return 複数のボタンのうちどれか一つがgetButtonPressedでtrueかどうか
      * */
     private boolean getSeveralRawButtonPressed(int[] buttonIds) {
         boolean flag = false;
@@ -198,6 +200,7 @@ public class ArmMode extends Mode {
      * 複数のボタンのうちどれかが離されたか判定する
      * 複数のボタンのgetButtonReleasedをORで
      * @param buttonIds ボタンの番号の配列
+     * @return 複数のボタンのうちどれか一つがgetButtonReleasedでtrueかどうか
      * */
     private boolean getSeveralRawButtonReleased(int[] buttonIds) {
         boolean flag = false;
