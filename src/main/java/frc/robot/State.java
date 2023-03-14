@@ -157,8 +157,17 @@ public class State {
         public static double rootMotorFeedforward;
         /** 関節部分のNEOモーターに必要になるfeedforwardのspeed[-1, 1] */
         public static double jointMotorFeedforward;
-        /** アームがターゲットについているか（ターゲットとの誤差がConst.Arm.PIDAngleTolerance以下か） */
-        public static boolean isAtTarget;
+
+        /**
+         * アームがターゲット位置にいるかを判定
+         * targetAngleとactualAngleの差がPIDAngleTolerance未満でtrue
+         * @return jointMotorとrootMotorの両方がatSetpointかどうか
+         * */
+        public static boolean isAtTarget() {
+            boolean isRootMotorAtSetpoint = Math.abs(State.Arm.targetRootAngle - State.Arm.actualRootAngle) < Const.Arm.PIDAngleTolerance;
+            boolean isJointMotorAtSetpoint = Math.abs(State.Arm.targetJointAngle - State.Arm.actualJointAngle) < Const.Arm.PIDAngleTolerance;
+            return isJointMotorAtSetpoint && isRootMotorAtSetpoint;
+        }
 
         public static double moveLeftAndRightMotor;
         /** アームを左右に動かす時の位置 */
@@ -210,8 +219,6 @@ public class State {
             jointMotorFeedforward = 0.0;
 
             moveLeftAndRightMotor = 0.0;
-
-            isAtTarget = false;
         }
 
         public static void StatesReset() {

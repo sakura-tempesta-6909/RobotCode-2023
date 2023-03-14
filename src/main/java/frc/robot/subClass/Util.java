@@ -35,7 +35,7 @@ public class Util {
         sendConsole("armTargetDepth", State.Arm.targetDepth);
         sendConsole("armTargetRootAngle", State.Arm.targetRootAngle);
         sendConsole("armTargetJointAngle", State.Arm.targetJointAngle);
-        sendConsole("isAtSetpoint", State.Arm.isAtTarget);
+        sendConsole("isAtSetpoint", State.Arm.isAtTarget());
         sendConsole("controlMode", State.Arm.state.toString());
         sendConsole("rootff", State.Arm.rootMotorFeedforward);
         sendConsole("jointff", State.Arm.jointMotorFeedforward);

@@ -18,7 +18,7 @@ public class Autonomous {
                     State.Arm.targetDepth = targetDepth;
                 },
                 (double time) -> {
-                    return State.Arm.isAtTarget;
+                    return State.Arm.isAtTarget();
                 },
                 phaseName
         );

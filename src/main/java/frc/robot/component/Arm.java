@@ -99,17 +99,6 @@ public class Arm implements Component {
     }
 
     /**
-     * アームがターゲット位置にいるかを判定
-     * targetAngleとactualAngleの差がPIDAngleTolerance未満でtrue
-     * @return jointMotorとrootMotorの両方がatSetpointかどうか
-     * */
-    private boolean isAtTarget() {
-        boolean isRootMotorAtSetpoint = Math.abs(State.Arm.targetRootAngle - State.Arm.actualRootAngle) < Const.Arm.PIDAngleTolerance;
-        boolean isJointMotorAtSetpoint = Math.abs(State.Arm.targetJointAngle - State.Arm.actualJointAngle) < Const.Arm.PIDAngleTolerance;
-        return isJointMotorAtSetpoint && isRootMotorAtSetpoint;
-    }
-
-    /**
      * 根本NEOモーターの回転数から根本アームの角度を計算（根本の回転数 * 360）
      * @param rotation encoderから取得したPosition（モーターの回転数）
      * @return 根本アームの角度[deg]
@@ -200,9 +189,6 @@ public class Arm implements Component {
 
         // armが左右に動いてる時の位置（角度）
         State.Arm.leftAndRightPositionAngle = calculateLeftAndRightAngleFromRotation(leftAndRightArmEncoder.getPosition());
-
-        // armがターゲットの座標に到着したか
-        State.Arm.isAtTarget = isAtTarget();
 
         // feedforwardを計算する
         // TODO コーンを持っているかによってrequiredTorqueを変える
