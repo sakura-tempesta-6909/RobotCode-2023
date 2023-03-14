@@ -34,6 +34,12 @@ public class Const {
         public static final double SlowDrive = 0.3;
 
         public static final double HandRotationSpeed = 0.5;
+
+        public static double SideRollerOuttakeSpeed = 0.5;
+        public static double SideRollerIntakeSpeed = 0.5;
+        public static double BottomRollerOuttakeSpeed = 0.5;
+        public static double BottomRollerIntakeSpeed = 0.5;
+
     }
 
     public static final class Calculation {
@@ -140,12 +146,7 @@ public class Const {
         }
 
 
-        public static double SideRollerOuttakeSpeed = 0.5;
-        public static double SideRollerIntakeSpeed = 0.5;
-        public static double BottomRollerOuttakaeSpeed = 0.5;
-        public static double BottomRollerIntakeSpeed = 0.5;
 
-        public static double HandRotationSpeed = 0.3;
     }
 
     public static final class Drive {

@@ -1,5 +1,6 @@
 package frc.robot.component;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -51,12 +52,12 @@ public class Intake implements Component{
     }
 
     /** Roller関係のモーターを動かす */
-    // public void rollerControl(double sideRollerSpeed, double bottomRollerSpeed) {
-    //     rightRoller.set(1, sideRollerSpeed);
-    //     leftRoller.set(1, sideRollerSpeed);
-    //     bottomRoller.set(1, bottomRollerSpeed);
+    public void rollerControl(double sideRollerSpeed, double bottomRollerSpeed) {
+       rightRoller.set(ControlMode.PercentOutput, sideRollerSpeed);
+       leftRoller.set(ControlMode.PercentOutput, sideRollerSpeed);
+       bottomRoller.set(ControlMode.PercentOutput, bottomRollerSpeed);
 
-    // }
+   }
 
     /** Intake関係のsolenoidを動かす */
     public void intakeControl(boolean isExtendingIntake) {
@@ -64,19 +65,19 @@ public class Intake implements Component{
     }
 
     // /** CONEとCUBEを出す */
-    // public void outtakeGamePiece() {
-    //     rollerControl(Const.Speeds.SideRollerOuttakeSpeed);
-    // }
+    public void outtakeGamePiece() {
+         rollerControl(Const.Speeds.SideRollerOuttakeSpeed, Const.Speeds.BottomRollerOuttakeSpeed);
+    }
 
-    // /** CONEとCUBEを回収する */
-    // public void intakeGamePiece() {
-    //     rollerControl(Const.Speeds.SideRollerIntakeSpeed);
-    // }
+     /** CONEとCUBEを回収する */
+     public void intakeGamePiece() {
+         rollerControl(Const.Speeds.SideRollerIntakeSpeed, Const.Speeds.BottomRollerIntakeSpeed);
+     }
 
-    // /** Conveyorを動かさない */
-    // public void stopRoller() {
-    //     rollerControl(Const.Speeds.Neutral);
-    // }
+     /** Conveyorを動かさない */
+     public void stopRoller() {
+         rollerControl(Const.Speeds.Neutral, Const.Speeds.Neutral);
+     }
 
     /** Intakeを出す */
     public void openIntake() {
@@ -91,15 +92,15 @@ public class Intake implements Component{
     @Override
     public void applyState() {
         switch(State.intakeState){
-            // case s_outtakeGamePiece:
-            //     outtakeGamePiece();
-            //     break;
-            // case s_intakeGamePiece:
-            //     intakeGamePiece();
-            //     break;
-            // case s_stopRoller:
-            //     stopRoller();
-            //     break;
+            case s_outtakeGamePiece:
+                 outtakeGamePiece();
+                 break;
+            case s_intakeGamePiece:
+                 intakeGamePiece();
+                 break;
+            case s_stopRoller:
+                 stopRoller();
+                 break;
         }
         
         switch(State.intakeExtensionState){
