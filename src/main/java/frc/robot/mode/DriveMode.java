@@ -98,6 +98,10 @@ public class DriveMode extends Mode {
             State.pidLimelightReset = true;
             State.Drive.state = State.Drive.States.s_limelightTracking;
         }
+
+        if (driveController.getLeftBumper() && driveController.getRightBumper()) {
+            State.intakeExtensionState = State.IntakeExtensionState.s_closeIntake;
+        }
     }
 
     enum GrabGamePiecePhase {
