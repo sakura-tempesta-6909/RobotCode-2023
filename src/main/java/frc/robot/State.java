@@ -47,7 +47,7 @@ public class State {
     public static double cameraCenterHeight;
     public static double cameraXSpeed;
 
-    /** Autonomousの遷移の種類　[ A, B, C ] のいずれか*/
+    /** Autonomousの遷移の種類　[ A, B, C ] のいずれか */
     public static String autonomousPhaseTransType;
 
     public static class Hand {
@@ -191,33 +191,33 @@ public class State {
 
         public static void StatesInit() {
             //init armMode value
-            Arm.targetHeight = 0.0;
-            Arm.targetDepth = 0.0;
+            targetHeight = 0.0;
+            targetDepth = 0.0;
 
-            Arm.actualHeight = 0.0;
-            Arm.actualDepth = 0.0;
+            actualHeight = 0.0;
+            actualDepth = 0.0;
 
-            Arm.targetRootAngle = 0.0;
-            Arm.targetJointAngle = 0.0;
+            targetRootAngle = 0.0;
+            targetJointAngle = 0.0;
 
-            Arm.actualRootAngle = 0.0;
-            Arm.actualJointAngle = 0.0;
+            actualRootAngle = 0.0;
+            actualJointAngle = 0.0;
 
-            Arm.jointSpeed = 0.0;
-            Arm.rootSpeed = 0.0;
+            jointSpeed = 0.0;
+            rootSpeed = 0.0;
 
-            Arm.rootMotorFeedforward = 0.0;
-            Arm.jointMotorFeedforward = 0.0;
+            rootMotorFeedforward = 0.0;
+            jointMotorFeedforward = 0.0;
 
-            Arm.moveLeftAndRightMotor = 0.0;
+            moveLeftAndRightMotor = 0.0;
 
-            Arm.isAtTarget = false;
+            isAtTarget = false;
         }
 
         public static void StatesReset() {
-            Arm.state = Arm.States.s_fixArmPosition;
-            Arm.resetPidController = false;
-            Arm.resetEncoder = false;
+            state = Arm.States.s_fixArmPosition;
+            resetPidController = false;
+            resetEncoder = false;
 
             // TODO どれくらい引くかを計測する
             TargetDepth.TopCorn = 101.0 - 40.0;
