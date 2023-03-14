@@ -14,12 +14,10 @@ public class DriveMode extends Mode {
 
     @Override
     public void changeMode() {
-        if (driveController.getStartButton()) {
-            State.mode = State.Modes.k_drive;
-        }
-        if (driveController.getBackButton()) {
+        if (driveController.getBackButtonPressed()) {
             State.mode = State.Modes.k_arm;
-
+        } else if (driveController.getLeftBumperPressed()) {
+            State.mode = State.Modes.k_config;
         }
     }
 
