@@ -34,6 +34,7 @@ public class Tools {
         return l1 * Math.cos(RootAngle) + l2 * Math.cos(SumAngle);
     }
 
+    /** コントローラーの不感帯の大きさ（絶対値）[0.0) */
     private static final double deadZoneThreshold = 0.1;
 
     /**
