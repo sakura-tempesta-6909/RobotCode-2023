@@ -15,8 +15,16 @@ public class ConfigMode extends Mode{
 
     @Override
     public void changeState() {
-        if (driveController.getXButton()) {
+        if (driveController.getXButtonPressed()) {
             State.Arm.resetEncoder = true;
+        }
+
+        if (driveController.getAButton()) {
+            State.enableCompressor = true;
+        }
+
+        if (driveController.getYButton()) {
+            State.disableCompressor = true;
         }
     }
 }

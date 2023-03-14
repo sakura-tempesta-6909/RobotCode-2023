@@ -11,7 +11,7 @@ import frc.robot.subClass.Const;
 
 
 public class Hand implements Component{
-    private Solenoid handSolenoid;
+    private final Solenoid handSolenoid;
     private final CANSparkMax handRotationMotor;
     private final RelativeEncoder handRotationEncoder;
     private final SparkMaxPIDController handRotationPidController;
@@ -80,10 +80,10 @@ public class Hand implements Component{
 
     /** 
      * つかむ離すの運動関係のモーターを動かす
-     * @param isGrabbingHand trueかfalseでつかむ。まだ分からない。
+     * @param isGrabbingHand trueでつかむ。
      */
     public void grabOrReleaseControl(boolean isGrabbingHand) {
-        handSolenoid.set(isGrabbingHand);
+        handSolenoid.set(!isGrabbingHand);
     }
 
     /** 手首の回転関係のモーターを動かす */

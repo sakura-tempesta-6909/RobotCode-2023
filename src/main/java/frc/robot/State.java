@@ -1,6 +1,5 @@
 package frc.robot;
 
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.State.Hand.RotateState;
@@ -47,6 +46,8 @@ public class State {
 
 
     public static String autonomousPhaseTransition;
+    public static boolean enableCompressor;
+    public static boolean disableCompressor;
 
     public static class Hand {
         public static GrabHandState grabHandState;
@@ -247,6 +248,9 @@ public class State {
         pidLimelightReset = false;
 
         autonomousPhaseTransition = Util.getConsole("AutonomousPhaseTransition");
+
+        enableCompressor = false;
+        disableCompressor = false;
 
         // reset arm states
         Drive.StatesReset();
