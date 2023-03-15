@@ -95,6 +95,8 @@ public class State {
 
         public static boolean resetPIDController, resetPosition;
 
+        public static boolean isMotorBrake;
+
         public enum States {
             /** ロボットの速度を速くする */
             s_fastDrive,
@@ -124,6 +126,7 @@ public class State {
             state = States.s_stopDrive;
             resetPosition = false;
             resetPIDController = false;
+            isMotorBrake = false;
             Arm.StatesReset();
             Hand.StateReset();
         }
