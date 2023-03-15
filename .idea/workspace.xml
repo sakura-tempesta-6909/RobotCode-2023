@@ -201,7 +201,11 @@
     <option name="LAST_COMMIT_MESSAGE" value="Handを開いたまま0.4秒待機する機能の実装" />
   </component>
   <component name="WpiLibVersionService">
+<<<<<<< HEAD
+    <option name="lastChecked" value="20230314175443" />
+=======
     <option name="lastChecked" value="20230313212545" />
+>>>>>>> master
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

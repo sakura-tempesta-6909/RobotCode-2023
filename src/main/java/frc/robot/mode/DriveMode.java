@@ -14,12 +14,10 @@ public class DriveMode extends Mode {
 
     @Override
     public void changeMode() {
-        if (driveController.getStartButton()) {
-            State.mode = State.Modes.k_drive;
-        }
-        if (driveController.getBackButton()) {
+        if (driveController.getBackButtonPressed()) {
             State.mode = State.Modes.k_arm;
-
+        } else if (driveController.getLeftBumperPressed() && driveController.getPOV() == 225) {
+            State.mode = State.Modes.k_config;
         }
     }
 
@@ -96,6 +94,10 @@ public class DriveMode extends Mode {
         if (driveController.getBButtonPressed()) {
             State.pidLimelightReset = true;
             State.Drive.state = State.Drive.States.s_limelightTracking;
+        }
+
+        if (driveController.getLeftBumper() && driveController.getRightBumper()) {
+            State.intakeExtensionState = State.IntakeExtensionState.s_closeIntake;
         }
     }
 
