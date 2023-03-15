@@ -248,6 +248,7 @@ public class State {
         intakeState = RollerState.s_stopRoller;
         rotateState = RotateState.s_stopHand;
         pidLimelightReset = false;
+        intakeExtensionState = IntakeExtensionState.s_openIntake;
 
         autonomousPhaseTransition = Util.getConsole("AutonomousPhaseTransition");
 
