@@ -98,10 +98,10 @@ public class Intake implements Component{
 
     @Override
     public void applyState() {
-        if (State.disableCompressor) {
-            compressor.disable();
-        } else if (State.enableCompressor) {
+        if (State.isCompressorEnable) {
             compressor.enableDigital();
+        } else {
+            compressor.disable();
         }
 
         switch(State.intakeState){

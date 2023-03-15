@@ -19,12 +19,8 @@ public class ConfigMode extends Mode{
             State.Arm.resetEncoder = true;
         }
 
-        if (driveController.getAButton()) {
-            State.enableCompressor = true;
-        }
-
         if (driveController.getYButton()) {
-            State.disableCompressor = true;
+            State.isCompressorEnable = false;
         }
     }
 }

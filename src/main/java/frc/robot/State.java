@@ -46,8 +46,7 @@ public class State {
 
 
     public static String autonomousPhaseTransition;
-    public static boolean enableCompressor;
-    public static boolean disableCompressor;
+    public static boolean isCompressorEnable;
 
     public static class Hand {
         public static GrabHandState grabHandState;
@@ -249,8 +248,7 @@ public class State {
 
         autonomousPhaseTransition = Util.getConsole("AutonomousPhaseTransition");
 
-        enableCompressor = false;
-        disableCompressor = false;
+        isCompressorEnable = true;
 
         // reset arm states
         Drive.StatesReset();
