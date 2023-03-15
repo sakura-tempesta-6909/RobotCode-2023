@@ -1,6 +1,7 @@
 package frc.robot.component;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -10,14 +11,14 @@ import frc.robot.subClass.Const;
 
 public class Intake implements Component{
     private final Solenoid intakeSolenoid;
-    private final VictorSPX rightRoller;
-    private final VictorSPX leftRoller;
+    private final TalonSRX rightRoller;
+    private final TalonSRX leftRoller;
     private final VictorSPX bottomRoller;
 
     public Intake() {
         intakeSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Const.Ports.IntakeSolenoid);
-        rightRoller = new VictorSPX(Const.Ports.RightRoller);
-        leftRoller = new VictorSPX(Const.Ports.LeftRoller);
+        rightRoller = new TalonSRX(Const.Ports.RightRoller);
+        leftRoller = new TalonSRX(Const.Ports.LeftRoller);
         bottomRoller = new VictorSPX(Const.Ports.BottomRoller);
     }
         
