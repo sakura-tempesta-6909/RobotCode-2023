@@ -35,10 +35,10 @@ public class Const {
 
         public static final double HandRotationSpeed = 0.5;
 
-        public static double SideRollerOuttakeSpeed = 0.5;
-        public static double SideRollerIntakeSpeed = 0.5;
-        public static double BottomRollerOuttakeSpeed = 0.5;
-        public static double BottomRollerIntakeSpeed = 0.5;
+        public static double SideRollerOuttakeSpeed = -1.0;
+        public static double SideRollerIntakeSpeed = 0.6;
+        public static double BottomRollerOuttakeSpeed = -1.0;
+        public static double BottomRollerIntakeSpeed = 1.0;
 
     }
 
