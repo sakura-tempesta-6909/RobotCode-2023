@@ -106,7 +106,7 @@ public class Const {
             public static final double CameraLensHeight = 42.5; // [cm]
 
             /** CameraからArmまでの距離 */
-            public static final double CameraToArm = 0; // [cm]
+            public static final double CameraToArmRootDepth = 0; // [cm]
 
 
             //ターゲットの情報
@@ -194,7 +194,7 @@ public class Const {
         /** 根本アームの長さ[cm] */
         public static final double RootArmLength = 45.0;
         /** 先端アームの長さ[cm] */
-        public static final double HeadArmLength = 45.5;
+        public static final double HeadArmLength = 69.744; // 45.5
         /** 根本アームの重心の位置[cm]（根本からの距離） */
         public static final double RootArmBarycenter = 12.52;
         /** 先端アームの重心の位置[cm]（関節部分からの距離） */

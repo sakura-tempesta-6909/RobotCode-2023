@@ -23,27 +23,27 @@ public class State {
     public static double limelightTrackingZRotation;
     /** aprilTagを向くときのスピード */
     public static double cameraTrackingZRotation;
-    /** 手前のターゲットまでの距離 */
-    public static double limelightToFrontGoal; // [cm]
-    /** cameraからtagまでの距離 */
-    public static double cameraToTag; // [cm]
-    /** cameraからみたaprilTagの縦の角度(度数法) */
+    /** 手前のターゲットまでの距離[cm] */
+    public static double limelightToFrontGoal;
+    /** cameraからtagまでの距離[cm] */
+    public static double cameraToTagCenterDepth;
+    /** cameraからみたaprilTagの縦の角度[deg] */
     public static double aprilTagAngleHeight;
-    /** cameraからみたaprilTagの横の角度(度数法) */
+    /** cameraからみたaprilTagの横の角度[deg] */
     public static double aprilTagAngleWidth;
-    /** armからtagまでの距離 */
-    public static double armToTag; // [cm]
-    /** armからターゲットまでの距離 */
-    public static double armToGoal; // [cm]
-    /** 奥のターゲットまでの距離 */
-    public static double limelightToBackGoal; // [cm]
+    /** armからtagまでの距離[cm] */
+    public static double armRootToTagCenterDepth;
+    /** armからターゲットまでの距離[cm] */
+    public static double armToGoal;
+    /** 奥のターゲットまでの距離[cm] */
+    public static double limelightToBackGoal;
     public static double tx;
     public static double limelightXSpeed;
     public static boolean pidLimelightReset;
 
     /** カメラの横の中心座標 */
     public static double cameraCenterWidth;
-    /** カメラの盾の中心座標 */
+    /** カメラの縦の中心座標 */
     public static double cameraCenterHeight;
     public static double cameraXSpeed;
 
@@ -178,7 +178,7 @@ public class State {
         /** エンコーダーをリセット（その時点の位置を0と定める） */
         public static boolean resetEncoder;
 
-        public static class TargetDepth {
+        public static class SpecificTargetDepths {
             public static double TopCorn;
             public static double MiddleCorn;
             public static double BottomCorn;
@@ -227,13 +227,13 @@ public class State {
             resetEncoder = false;
 
             // TODO どれくらい引くかを計測する
-            TargetDepth.TopCorn = 101.0 - 40.0;
-            TargetDepth.MiddleCorn = 58.0 - 20.0;
-            TargetDepth.BottomCorn = 30.0;
+            SpecificTargetDepths.TopCorn = 101.0 - 40.0;
+            SpecificTargetDepths.MiddleCorn = 58.0 - 20.0;
+            SpecificTargetDepths.BottomCorn = 30.0;
 
-            TargetDepth.TopCube = 101.0 - 40.0;
-            TargetDepth.MiddleCube = 58.0 - 20.0;
-            TargetDepth.BottomCube = 30.0;
+            SpecificTargetDepths.TopCube = 101.0 - 40.0;
+            SpecificTargetDepths.MiddleCube = 58.0 - 20.0;
+            SpecificTargetDepths.BottomCube = 30.0;
         }
     }
 
@@ -274,7 +274,7 @@ public class State {
         moveLeftAndRightArmState = MoveLeftAndRightArmState.s_fixLeftAndRightMotor;
         pidLimelightReset = false;
 
-        autonomousPhaseTransType = Util.getConsole("AutonomousPhaseTransition");
+        autonomousPhaseTransType = Util.getConsole("AutonomousPhaseTransition", "None");
 
         // reset arm states
         Drive.StatesReset();

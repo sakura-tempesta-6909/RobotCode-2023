@@ -58,7 +58,7 @@ public class Autonomous {
         PhaseTransition.Phase.PhaseInit();
 
         phaseTransitionA.registerPhase(
-                moveArmTo(Const.Calculation.Camera.GoalHeight - Const.Arm.RootHeightFromGr, State.armToTag, "move arm to cube goal"),
+                moveArmTo(Const.Calculation.Camera.GoalHeight - Const.Arm.RootHeightFromGr, State.armRootToTagCenterDepth, "move arm to cube goal"),
                 releaseHand(2, "release cube")
         );
 

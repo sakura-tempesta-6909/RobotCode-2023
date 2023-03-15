@@ -5,8 +5,12 @@ import frc.robot.State;
 
 public class Util {
 
-    public static String getConsole(String key) {
-        return SmartDashboard.getString(key, "None");
+    public static String getConsole(String key, String defaultText) {
+        return SmartDashboard.getString(key, defaultText);
+    }
+
+    public static double getConsole(String key, double defaultDouble) {
+        return SmartDashboard.getNumber(key, defaultDouble);
     }
 
     public static void sendConsole(String key, String text) {
@@ -26,6 +30,8 @@ public class Util {
 
     public static void allSendConsole() {
         sendConsole("MODE", State.mode.toString());
+
+
         sendConsole("ArmMode", State.Arm.state.toString());
         sendConsole("armActualHeight", State.Arm.actualHeight);
         sendConsole("armActualDepth", State.Arm.actualDepth);
@@ -39,5 +45,9 @@ public class Util {
         sendConsole("controlMode", State.Arm.state.toString());
         sendConsole("rootff", State.Arm.rootMotorFeedforward);
         sendConsole("jointff", State.Arm.jointMotorFeedforward);
+
+
+        sendConsole("AngleX", State.aprilTagAngleWidth);
+        sendConsole("AngleY", State.aprilTagAngleHeight);
     }
 }
