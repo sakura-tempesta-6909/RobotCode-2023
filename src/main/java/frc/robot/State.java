@@ -3,10 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.State.Hand.RotateState;
-import frc.robot.mode.ArmMode;
-import frc.robot.mode.DriveMode;
-import frc.robot.mode.Mode;
-import frc.robot.mode.TestMode;
+import frc.robot.mode.*;
 import frc.robot.subClass.Const;
 import frc.robot.subClass.Util;
 
@@ -47,6 +44,7 @@ public class State {
     public static double cameraCenterHeight;
     public static double cameraXSpeed;
 
+    public static boolean isCompressorEnable;
     /** Autonomousの遷移の種類　[ A, B, C ] のいずれか */
     public static String autonomousPhaseTransType;
 
@@ -277,6 +275,8 @@ public class State {
 
         autonomousPhaseTransType = Util.getConsole("AutonomousPhaseTransition");
 
+        isCompressorEnable = true;
+
         // reset arm states
         Drive.StatesReset();
         Arm.StatesReset();
@@ -322,7 +322,8 @@ public class State {
     public enum Modes {
         k_drive(new DriveMode()),
         k_arm(new ArmMode()),
-        k_test(new TestMode());
+        k_test(new TestMode()),
+        k_config(new ConfigMode());
 
         private final Mode mode;
 
