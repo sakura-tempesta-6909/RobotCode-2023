@@ -3,6 +3,7 @@ package frc.robot.component;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import frc.robot.State;
@@ -13,12 +14,14 @@ public class Intake implements Component{
     private final VictorSPX rightRoller;
     private final VictorSPX leftRoller;
     private final VictorSPX bottomRoller;
+    private final Compressor compressor;
 
     public Intake() {
         intakeSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Const.Ports.IntakeSolenoid);
         rightRoller = new VictorSPX(Const.Ports.RightRoller);
         leftRoller = new VictorSPX(Const.Ports.LeftRoller);
         bottomRoller = new VictorSPX(Const.Ports.BottomRoller);
+        compressor = new Compressor(PneumaticsModuleType.CTREPCM);
     }
         
     @Override
@@ -89,6 +92,14 @@ public class Intake implements Component{
         intakeControl(false);
     }
 
+    public void compressorDisable() {
+        compressor.disable();
+    }
+
+    public void compressorEnable() {
+        compressor.enableDigital();
+    }
+
     @Override
     public void applyState() {
         switch(State.intakeState){
@@ -110,6 +121,12 @@ public class Intake implements Component{
             case s_closeIntake:
                 closeIntake();
                 break;
+        }
+
+        if (State.isCompressorEnable) {
+            compressorEnable();
+        } else {
+            compressorEnable();
         }
     }
 }

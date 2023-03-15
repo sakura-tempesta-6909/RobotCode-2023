@@ -46,6 +46,7 @@ public class State {
     /** カメラの盾の中心座標 */
     public static double cameraCenterHeight;
     public static double cameraXSpeed;
+    public static boolean isCompressorEnable;
 
     /** Autonomousの遷移の種類　[ A, B, C ] のいずれか */
     public static String autonomousPhaseTransType;
@@ -124,6 +125,7 @@ public class State {
             state = States.s_stopDrive;
             resetPosition = false;
             resetPIDController = false;
+            isCompressorEnable = true;
             Arm.StatesReset();
             Hand.StateReset();
         }
