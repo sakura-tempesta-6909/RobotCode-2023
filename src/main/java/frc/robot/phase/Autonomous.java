@@ -18,7 +18,7 @@ public class Autonomous {
                     State.Arm.targetDepth = targetDepth;
                 },
                 (double time) -> {
-                    return State.Arm.isAtTarget;
+                    return State.Arm.isAtTarget();
                 },
                 phaseName
         );
@@ -58,12 +58,12 @@ public class Autonomous {
         PhaseTransition.Phase.PhaseInit();
 
         phaseTransitionA.registerPhase(
-                moveArmTo(Const.Calculation.Camera.GoalHeight - Const.Arm.RootHeight, State.armToTag, "move arm to cube goal"),
+                moveArmTo(Const.Calculation.Camera.GoalHeight - Const.Arm.RootHeightFromGr, State.armToTag, "move arm to cube goal"),
                 releaseHand(2, "release cube")
         );
 
         phaseTransitionB.registerPhase(
-                moveArmTo(Const.Calculation.Limelight.GoalHeight - Const.Arm.RootHeight, State.armToGoal, "move arm to corn goal"),
+                moveArmTo(Const.Calculation.Limelight.GoalHeight - Const.Arm.RootHeightFromGr, State.armToGoal, "move arm to corn goal"),
                 releaseHand(2, "release corn")
         );
 
@@ -73,7 +73,7 @@ public class Autonomous {
     }
 
     public static void run() {
-        switch (State.autonomousPhaseTransition) {
+        switch (State.autonomousPhaseTransType) {
             case "A":
                 phaseTransitionA.run();
                 break;
@@ -85,6 +85,7 @@ public class Autonomous {
                 break;
             default:
                 phaseTransitionC.run();
+                System.out.println("Please Enter Autonomous Phase Transition Type");
                 break;
         }
     }

@@ -25,6 +25,8 @@ public class Util {
     }
 
     public static void allSendConsole() {
+        sendConsole("MODE", State.mode.toString());
+        sendConsole("ArmMode", State.Arm.state.toString());
         sendConsole("armActualHeight", State.Arm.actualHeight);
         sendConsole("armActualDepth", State.Arm.actualDepth);
         sendConsole("armActualRootAngle", State.Arm.actualRootAngle);
@@ -33,7 +35,9 @@ public class Util {
         sendConsole("armTargetDepth", State.Arm.targetDepth);
         sendConsole("armTargetRootAngle", State.Arm.targetRootAngle);
         sendConsole("armTargetJointAngle", State.Arm.targetJointAngle);
-        sendConsole("isAtSetpoint", State.Arm.isAtTarget);
+        sendConsole("isAtSetpoint", State.Arm.isAtTarget());
         sendConsole("controlMode", State.Arm.state.toString());
+        sendConsole("rootff", State.Arm.rootMotorFeedforward);
+        sendConsole("jointff", State.Arm.jointMotorFeedforward);
     }
 }
