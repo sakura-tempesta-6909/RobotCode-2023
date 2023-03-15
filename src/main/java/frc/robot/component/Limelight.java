@@ -10,8 +10,8 @@ import frc.robot.subClass.Const;
 
 public class Limelight implements Component {
 
-    private NetworkTable table;
-    private NetworkTableEntry txEntry, tyEntry, tvEntry;
+    private final NetworkTable table;
+    private final NetworkTableEntry txEntry, tyEntry, tvEntry;
 
     public Limelight() {
         table = NetworkTableInstance.getDefault().getTable("limelight");

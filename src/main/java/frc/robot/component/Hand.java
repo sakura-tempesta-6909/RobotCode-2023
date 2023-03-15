@@ -11,7 +11,7 @@ import frc.robot.subClass.Const;
 
 
 public class Hand implements Component{
-    private Solenoid handSolenoid;
+    private final Solenoid handSolenoid;
     private final CANSparkMax handRotationMotor;
     private final RelativeEncoder handRotationEncoder;
     private final SparkMaxPIDController handRotationPidController;

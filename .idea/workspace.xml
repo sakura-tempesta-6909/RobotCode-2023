@@ -4,9 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f72108f7-ce51-49f9-91b3-cbf1659a19a4" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/component/Intake.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/component/Intake.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/subClass/Const.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/subClass/Const.java" afterDir="false" />
+    <list default="true" id="f72108f7-ce51-49f9-91b3-cbf1659a19a4" name="Changes" comment="ChangeModeの実装">
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/State.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/State.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/component/Arm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/component/Arm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/mode/DriveMode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/mode/DriveMode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/phase/Autonomous.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/phase/Autonomous.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/subClass/Util.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/subClass/Util.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -197,7 +200,7 @@
     <option name="LAST_COMMIT_MESSAGE" value="Handを開いたまま0.4秒待機する機能の実装" />
   </component>
   <component name="WpiLibVersionService">
-    <option name="lastChecked" value="20230309094951" />
+    <option name="lastChecked" value="20230313212545" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

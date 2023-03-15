@@ -2,7 +2,6 @@ package frc.robot.component;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.BasePIDSetConfiguration;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.math.controller.PIDController;
@@ -11,10 +10,10 @@ import frc.robot.State;
 import frc.robot.subClass.Const;
 
 public class Drive implements Component {
-    private WPI_TalonSRX driveRightFront, driveLeftFront;
+    private final WPI_TalonSRX driveRightFront, driveLeftFront;
     private DifferentialDrive differentialDrive;
-    private PIDController pidLimelightDrive;
-    private PIDController pidCameraDrive;
+    private final PIDController pidLimelightDrive;
+    private final PIDController pidCameraDrive;
 
 
     public Drive() {
@@ -49,7 +48,7 @@ public class Drive implements Component {
     }
 
     public void arcadeDrive(double xSpeed, double zRotation) {
-        differentialDrive.arcadeDrive(xSpeed, zRotation);
+         differentialDrive.arcadeDrive(xSpeed, zRotation);
         differentialDrive.feed();
     }
 

@@ -9,10 +9,10 @@ import frc.robot.State;
 import frc.robot.subClass.Const;
 
 public class Intake implements Component{
-    private Solenoid intakeSolenoid;
-    private VictorSPX rightRoller;
-    private VictorSPX leftRoller;
-    private VictorSPX bottomRoller;
+    private final Solenoid intakeSolenoid;
+    private final VictorSPX rightRoller;
+    private final VictorSPX leftRoller;
+    private final VictorSPX bottomRoller;
 
     public Intake() {
         intakeSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Const.Ports.IntakeSolenoid);
