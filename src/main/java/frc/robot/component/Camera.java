@@ -1,6 +1,5 @@
 package frc.robot.component;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.State;
 import frc.robot.subClass.Const;
 import frc.robot.subClass.Util;
@@ -52,9 +51,9 @@ public class Camera implements Component {
     @Override
     public void readSensors() {
         calculation();
-        State.Arm.SpecificTargetDepths.TopCube = State.armRootToTagCenterDepth + (58 - 41) + 43;
-        State.Arm.SpecificTargetDepths.MiddleCube = State.armRootToTagCenterDepth + (58 - 41);
-        State.Arm.SpecificTargetDepths.BottomCube = State.armRootToTagCenterDepth + (58 - 41) - 10;
+        State.Arm.topCubeGoalDepth = State.armRootToTagCenterDepth + Const.Calculation.Camera.TagCenterToTopGoalDepth;
+        State.Arm.middleCubeGoalDepth = State.armRootToTagCenterDepth + Const.Calculation.Camera.TagCenterToMiddleGoalDepth;
+        State.Arm.bottomCubeGoalDepth = State.armRootToTagCenterDepth + Const.Calculation.Camera.TagCenterToBottomGoalDepth;
     }
 
 

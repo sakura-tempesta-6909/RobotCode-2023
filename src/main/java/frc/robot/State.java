@@ -178,15 +178,14 @@ public class State {
         /** エンコーダーをリセット（その時点の位置を0と定める） */
         public static boolean resetEncoder;
 
-        public static class SpecificTargetDepths {
-            public static double TopCorn;
-            public static double MiddleCorn;
-            public static double BottomCorn;
 
-            public static double TopCube;
-            public static double MiddleCube;
-            public static double BottomCube;
-        }
+        public static double topCornGoalDepth;
+        public static double middleCornGoalDepth;
+        public static double bottomCornGoalDepth;
+
+        public static double topCubeGoalDepth;
+        public static double middleCubeGoalDepth;
+        public static double bottomCubeGoalDepth;
 
 
         public enum States {
@@ -227,13 +226,13 @@ public class State {
             resetEncoder = false;
 
             // TODO どれくらい引くかを計測する
-            SpecificTargetDepths.TopCorn = 101.0 - 40.0;
-            SpecificTargetDepths.MiddleCorn = 58.0 - 20.0;
-            SpecificTargetDepths.BottomCorn = 30.0;
+            topCornGoalDepth = 101.0 - 40.0;
+            middleCornGoalDepth = 58.0 - 20.0;
+            bottomCornGoalDepth = 30.0;
 
-            SpecificTargetDepths.TopCube = 101.0 - 40.0;
-            SpecificTargetDepths.MiddleCube = 58.0 - 20.0;
-            SpecificTargetDepths.BottomCube = 30.0;
+            topCubeGoalDepth = 101.0 - 40.0;
+            middleCubeGoalDepth = 58.0 - 20.0;
+            bottomCubeGoalDepth = 30.0;
         }
     }
 

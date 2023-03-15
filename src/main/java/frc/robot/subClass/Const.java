@@ -121,6 +121,10 @@ public class Const {
             /** 前のキューブのゴールの高さ[cm] -> ゴールの面の高さは13[cm]*/
             public static final double BottomGoalHeight = 40;
 
+            public static final double TagCenterToTopGoalDepth = (58 - 41) + 43;
+            public static final double TagCenterToMiddleGoalDepth = (58 - 41);
+            public static final double TagCenterToBottomGoalDepth = (58 - 41) - 10;
+
 
             //計算
             /** 斜辺の長さ */

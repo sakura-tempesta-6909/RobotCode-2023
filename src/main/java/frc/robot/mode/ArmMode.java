@@ -107,27 +107,27 @@ public class ArmMode extends Mode {
         } else if (joystick.getRawButton(7)) {
             // 奥のコーンのゴールまでアームを伸ばす
             State.Arm.targetHeight = Const.Calculation.Limelight.TopGoalHeight - Const.Arm.RootHeightFromGr;
-            State.Arm.targetDepth = State.Arm.SpecificTargetDepths.TopCorn;
+            State.Arm.targetDepth = State.Arm.topCornGoalDepth;
         } else if (joystick.getRawButton(9)) {
             // 真ん中のコーンのゴールまでアームを伸ばす
             State.Arm.targetHeight = Const.Calculation.Limelight.MiddleGoalHeight - Const.Arm.RootHeightFromGr;
-            State.Arm.targetDepth = State.Arm.SpecificTargetDepths.MiddleCorn;
+            State.Arm.targetDepth = State.Arm.middleCornGoalDepth;
         } else if (joystick.getRawButton(11)) {
             // 前のコーンのゴールまでアームを伸ばす
             State.Arm.targetHeight = Const.Calculation.Limelight.BottomGoalHeight - Const.Arm.RootHeightFromGr;
-            State.Arm.targetDepth = State.Arm.SpecificTargetDepths.BottomCorn;
+            State.Arm.targetDepth = State.Arm.bottomCornGoalDepth;
         } else if (joystick.getRawButton(8)) {
             // 奥のキューブのゴールまでアームを伸ばす
             State.Arm.targetHeight = Const.Calculation.Camera.TopGoalHeight - Const.Arm.RootHeightFromGr;
-            State.Arm.targetDepth = State.Arm.SpecificTargetDepths.TopCube;
+            State.Arm.targetDepth = State.Arm.topCubeGoalDepth;
         } else if (joystick.getRawButton(10)) {
             // 真ん中のキューブのゴールまでアームを伸ばす
             State.Arm.targetHeight = Const.Calculation.Camera.MiddleGoalHeight - Const.Arm.RootHeightFromGr;
-            State.Arm.targetDepth = State.Arm.SpecificTargetDepths.MiddleCube;
+            State.Arm.targetDepth = State.Arm.middleCubeGoalDepth;
         } else if (joystick.getRawButton(12)) {
             // 前のキューブのゴールまでアームを伸ばす
             State.Arm.targetHeight = Const.Calculation.Camera.BottomGoalHeight - Const.Arm.RootHeightFromGr;
-            State.Arm.targetDepth = State.Arm.SpecificTargetDepths.BottomCube;
+            State.Arm.targetDepth = State.Arm.bottomCubeGoalDepth;
         } else if ((joystickX != 0 || joystickY != 0)) {
             // X方向にスティックを曲げてアームを上下に動かす, Y方向にスティックを倒してアームを前後に動かす
             State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
