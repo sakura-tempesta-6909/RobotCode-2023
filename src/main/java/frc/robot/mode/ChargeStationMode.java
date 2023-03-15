@@ -12,5 +12,9 @@ public class ChargeStationMode extends Mode{
     @Override
     public void changeState() {
         State.Drive.isMotorBrake = true;
+        State.Drive.xSpeed = -1 * driveController.getLeftY();
+        State.Drive.zRotation = -1 * driveController.getRightX();
+
+        State.Drive.state = State.Drive.States.s_midDrive;
     }
 }

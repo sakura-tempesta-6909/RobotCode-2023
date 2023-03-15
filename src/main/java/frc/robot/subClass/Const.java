@@ -35,10 +35,10 @@ public class Const {
 
         public static final double HandRotationSpeed = 0.5;
 
-        public static double SideRollerOuttakeSpeed = 0.5;
-        public static double SideRollerIntakeSpeed = 0.5;
-        public static double BottomRollerOuttakeSpeed = 0.5;
-        public static double BottomRollerIntakeSpeed = 0.5;
+        public static double SideRollerOuttakeSpeed = -1.0;
+        public static double SideRollerIntakeSpeed = 0.6;
+        public static double BottomRollerOuttakeSpeed = -1.0;
+        public static double BottomRollerIntakeSpeed = 1.0;
 
     }
 
@@ -194,7 +194,7 @@ public class Const {
         /** 根本アームの長さ[cm] */
         public static final double RootArmLength = 45.0;
         /** 先端アームの長さ[cm] */
-        public static final double HeadArmLength = 45.5;
+        public static final double HeadArmLength = 69.744; // 45.5はハンドの付け根までの長さ
         /** 根本アームの重心の位置[cm]（根本からの距離） */
         public static final double RootArmBarycenter = 12.52;
         /** 先端アームの重心の位置[cm]（関節部分からの距離） */

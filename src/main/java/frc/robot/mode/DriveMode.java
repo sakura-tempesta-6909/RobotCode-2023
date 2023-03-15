@@ -25,8 +25,8 @@ public class DriveMode extends Mode {
 
     @Override
     public void changeState() {
-        State.Drive.xSpeed = -driveController.getLeftY();
-        State.Drive.zRotation = -driveController.getRightX();
+        State.Drive.xSpeed = -1 * driveController.getLeftY();
+        State.Drive.zRotation = -1 * driveController.getRightX();
         State.Drive.state = State.Drive.States.s_fastDrive;
 
         //RT: intake, LT: outtake
@@ -38,8 +38,7 @@ public class DriveMode extends Mode {
             State.intakeState = RollerState.s_stopRoller;
         }
 
-        //YボタンでBasicPositionに戻る, XボタンでゲームピースをつかんでbasicPositionに戻る
-
+        //joystickのButton2でBasicPositionに戻る, XボタンでゲームピースをつかんでBasicPositionに戻る（Phaseを実行）
         if (driveController.getXButtonPressed()) {
             phase = GrabGamePiecePhase.Phase1;
         }
