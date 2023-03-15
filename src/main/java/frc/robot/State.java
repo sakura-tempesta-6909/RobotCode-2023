@@ -44,9 +44,9 @@ public class State {
     public static double cameraCenterHeight;
     public static double cameraXSpeed;
 
-
-    public static String autonomousPhaseTransition;
     public static boolean isCompressorEnable;
+    /** Autonomousの遷移の種類　[ A, B, C ] のいずれか */
+    public static String autonomousPhaseTransType;
 
     public static class Hand {
         public static GrabHandState grabHandState;
@@ -155,19 +155,36 @@ public class State {
         public static double rootMotorFeedforward;
         /** 関節部分のNEOモーターに必要になるfeedforwardのspeed[-1, 1] */
         public static double jointMotorFeedforward;
-        /** アームがターゲットについているか（ターゲットとの誤差がConst.Arm.PIDAngleTolerance以下か） */
-        public static boolean isAtTarget;
+
+        /**
+         * アームがターゲット位置にいるかを判定
+         * targetAngleとactualAngleの差がPIDAngleTolerance未満でtrue
+         * @return jointMotorとrootMotorの両方がatSetpointかどうか
+         * */
+        public static boolean isAtTarget() {
+            boolean isRootMotorAtSetpoint = Math.abs(State.Arm.targetRootAngle - State.Arm.actualRootAngle) < Const.Arm.PIDAngleTolerance;
+            boolean isJointMotorAtSetpoint = Math.abs(State.Arm.targetJointAngle - State.Arm.actualJointAngle) < Const.Arm.PIDAngleTolerance;
+            return isJointMotorAtSetpoint && isRootMotorAtSetpoint;
+        }
 
         public static double moveLeftAndRightMotor;
+        /** アームを左右に動かす時の位置 */
+        public static double leftAndRightPositionAngle;
 
         /** PIDコントローラーをリセットする（Integralの値をリセットする） */
         public static boolean resetPidController;
         /** エンコーダーをリセット（その時点の位置を0と定める） */
         public static boolean resetEncoder;
-        /** limelightの値を代入 TODO 一時的な変数（実際はlimelightのStateから値を取得） */
-        public static double limelightTargetHeight, limelightTargetDepth;
-        /** アームを左右に動かす時の位置 */
-        public static double leftAndRightPositionAngle;
+
+        public static class TargetDepth {
+            public static double TopCorn;
+            public static double MiddleCorn;
+            public static double BottomCorn;
+
+            public static double TopCube;
+            public static double MiddleCube;
+            public static double BottomCube;
+        }
 
 
         public enum States {
@@ -181,36 +198,40 @@ public class State {
 
         public static void StatesInit() {
             //init armMode value
-            Arm.targetHeight = 0.0;
-            Arm.targetDepth = 0.0;
+            targetHeight = 0.0;
+            targetDepth = 0.0;
 
-            Arm.actualHeight = 0.0;
-            Arm.actualDepth = 0.0;
+            actualHeight = 0.0;
+            actualDepth = 0.0;
 
-            Arm.targetRootAngle = 0.0;
-            Arm.targetJointAngle = 0.0;
+            targetRootAngle = 0.0;
+            targetJointAngle = 0.0;
 
-            Arm.actualRootAngle = 0.0;
-            Arm.actualJointAngle = 0.0;
+            actualRootAngle = 0.0;
+            actualJointAngle = 0.0;
 
-            Arm.jointSpeed = 0.0;
-            Arm.rootSpeed = 0.0;
+            jointSpeed = 0.0;
+            rootSpeed = 0.0;
 
-            Arm.limelightTargetHeight = 10.0;
-            Arm.limelightTargetDepth = 80.0;
+            rootMotorFeedforward = 0.0;
+            jointMotorFeedforward = 0.0;
 
-            Arm.rootMotorFeedforward = 0.0;
-            Arm.jointMotorFeedforward = 0.0;
-
-            Arm.moveLeftAndRightMotor = 0.0;
-
-            Arm.isAtTarget = false;
+            moveLeftAndRightMotor = 0.0;
         }
 
         public static void StatesReset() {
-            Arm.state = Arm.States.s_fixArmPosition;
-            Arm.resetPidController = false;
-            Arm.resetEncoder = false;
+            state = Arm.States.s_fixArmPosition;
+            resetPidController = false;
+            resetEncoder = false;
+
+            // TODO どれくらい引くかを計測する
+            TargetDepth.TopCorn = 101.0 - 40.0;
+            TargetDepth.MiddleCorn = 58.0 - 20.0;
+            TargetDepth.BottomCorn = 30.0;
+
+            TargetDepth.TopCube = 101.0 - 40.0;
+            TargetDepth.MiddleCube = 58.0 - 20.0;
+            TargetDepth.BottomCube = 30.0;
         }
     }
 
@@ -225,7 +246,11 @@ public class State {
         XboxController driveController = new XboxController(Const.Ports.DriveController);
         XboxController operateController = new XboxController(Const.Ports.OperateController);
         Joystick joystick = new Joystick(Const.Ports.Joystick);
+
+        State.mode = State.Modes.k_drive;
+
         Mode.addController(driveController, operateController, joystick);
+
         intakeExtensionState = IntakeExtensionState.s_openIntake;
 
         // initialize arm states
@@ -244,9 +269,10 @@ public class State {
     public static void StateReset() {
         intakeState = RollerState.s_stopRoller;
         rotateState = RotateState.s_stopHand;
+        moveLeftAndRightArmState = MoveLeftAndRightArmState.s_fixLeftAndRightMotor;
         pidLimelightReset = false;
 
-        autonomousPhaseTransition = Util.getConsole("AutonomousPhaseTransition");
+        autonomousPhaseTransType = Util.getConsole("AutonomousPhaseTransition");
 
         isCompressorEnable = true;
 

@@ -56,7 +56,7 @@ public class DriveMode extends Mode {
                     State.Arm.targetDepth = Const.Arm.InitialDepth;
                     State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
                     State.rotateState = RotateState.s_turnHandBack;
-                    if (State.Arm.isAtTarget) {
+                    if (State.Arm.isAtTarget()) {
                         phase = GrabGamePiecePhase.Phase2;
                     }
                 case Phase2:
@@ -64,7 +64,7 @@ public class DriveMode extends Mode {
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
                     State.Arm.targetHeight = Const.GrabGamePiecePhase.armIntakeHeight;
                     State.Arm.targetDepth = Const.GrabGamePiecePhase.armIntakeDepth;
-                    if (State.Arm.isAtTarget) {
+                    if (State.Arm.isAtTarget()) {
                         phase = GrabGamePiecePhase.Phase3;
                     }
                     break;
