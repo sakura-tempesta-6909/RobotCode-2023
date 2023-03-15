@@ -273,6 +273,7 @@ public class State {
         rotateState = RotateState.s_stopHand;
         moveLeftAndRightArmState = MoveLeftAndRightArmState.s_fixLeftAndRightMotor;
         pidLimelightReset = false;
+        intakeExtensionState = IntakeExtensionState.s_openIntake;
 
         autonomousPhaseTransType = Util.getConsole("AutonomousPhaseTransition");
 
