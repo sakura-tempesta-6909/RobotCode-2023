@@ -14,6 +14,8 @@ public class Drive implements Component {
     private DifferentialDrive differentialDrive;
     private final PIDController pidLimelightDrive;
     private final PIDController pidCameraDrive;
+    private final PIDController pidDriveXspeed;
+    private final PIDController pidDriveZRotation;
 
 
     public Drive() {
@@ -44,11 +46,15 @@ public class Drive implements Component {
         driveRightBack.setNeutralMode(NeutralMode.Brake);
         driveLeftBack.setNeutralMode(NeutralMode.Brake);
 
+        pidDriveXspeed = new PIDController(Const.Drive.PID.XSpeedP, Const.Drive.PID.XSpeedI, Const.Drive.PID.XSpeedD);
+        pidDriveZRotation = new PIDController(Const.Drive.PID.ZRotationP, Const.Drive.PID.ZRotationI, Const.Drive.PID.ZRotationD);
 
     }
 
     public void arcadeDrive(double xSpeed, double zRotation) {
-         differentialDrive.arcadeDrive(xSpeed, zRotation);
+        double pidXSpeed = pidDriveXspeed.calculate(xSpeed, 0);
+        double pidZRotation = pidDriveZRotation.calculate(zRotation, 0);
+        differentialDrive.arcadeDrive(pidXSpeed, pidZRotation);
         differentialDrive.feed();
     }
 
@@ -114,6 +120,7 @@ public class Drive implements Component {
         boolean isRightMotorAtTarget = Math.abs(State.Drive.rightLength - State.Drive.targetLength) < Const.Drive.PID.LossTolerance;
         return isRightMotorAtTarget && isLeftMotorAtTarget;
     }
+
 
     @Override
     public void autonomousInit() {

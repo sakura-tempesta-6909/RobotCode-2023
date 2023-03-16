@@ -160,6 +160,13 @@ public class Const {
             public static final TalonSRXConfiguration DriveRight = new TalonSRXConfiguration();
             public static final TalonSRXConfiguration DriveLeft = new TalonSRXConfiguration();
 
+            public static final double XSpeedP = 0;
+            public static final double XSpeedI = 0;
+            public static final double XSpeedD = 0;
+            public static final double ZRotationP = 0;
+            public static final double ZRotationI = 0;
+            public static final double ZRotationD = 0;
+
             public static void init() {
                 DriveRight.slot0.kP = 0.051;
                 DriveRight.slot0.kI = 0.000006;
