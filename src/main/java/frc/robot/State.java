@@ -24,7 +24,7 @@ public class State {
     /** aprilTagを向くときのスピード */
     public static double cameraTrackingZRotation;
     /** 手前のターゲットまでの距離[cm] */
-    public static double limelightToFrontGoal;
+    public static double limelightToMiddleGoalDepth;
     /** cameraからtagまでの距離[cm] */
     public static double cameraToTagCenterDepth;
     /** cameraからみたaprilTagの縦の角度[deg] */
@@ -34,9 +34,9 @@ public class State {
     /** armからtagまでの距離[cm] */
     public static double armRootToTagCenterDepth;
     /** armからターゲットまでの距離[cm] */
-    public static double armToGoal;
+    public static double armRootToMiddleGoalTapeDepth;
     /** 奥のターゲットまでの距離[cm] */
-    public static double limelightToBackGoal;
+    public static double limelightToTopGoalDepth;
     public static double tx;
     public static double limelightXSpeed;
     public static boolean pidLimelightReset;

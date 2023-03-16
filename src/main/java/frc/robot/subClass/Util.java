@@ -49,5 +49,8 @@ public class Util {
 
         sendConsole("AngleX", State.aprilTagAngleWidth);
         sendConsole("AngleY", State.aprilTagAngleHeight);
+
+        sendConsole("LimeToMidCornDep", State.limelightToMiddleGoalDepth);
+        sendConsole("LimeToTopCornDep", State.limelightToTopGoalDepth);
     }
 }

@@ -44,17 +44,21 @@ public class Limelight implements Component {
         State.tx = txEntry.getDouble(0);
 
 
-        //計算
+        // 計算
         double angleToGoalDegrees = Const.Calculation.Limelight.LimelightMountAngleDegrees + targetOffsetAngle_Vertical;
-        double angleToGoalRadians = angleToGoalDegrees * (Math.toRadians(180.0));
-        // ターゲットまでの距離
-        State.limelightToFrontGoal = (Const.Calculation.Limelight.GoalHeight - Const.Calculation.Limelight.LimelightLensHeight) / Math.tan(angleToGoalRadians);
-        State.armToGoal = State.limelightToFrontGoal - Const.Calculation.Limelight.LimelightToArm;
-        State.limelightToBackGoal = State.limelightToFrontGoal + Const.Calculation.Limelight.FrontGoalToBackGoal;
+        double angleToGoalRadians = Math.toRadians(angleToGoalDegrees);
+        // double angleToGoalRadians = angleToGoalDegrees * (Math.toRadians(180.0));
 
-        SmartDashboard.putNumber("FrontGoal", State.limelightToFrontGoal);
+        // ターゲットまでの距離
+        State.limelightToMiddleGoalDepth = (Const.Calculation.Limelight.MiddleGoalHeight - Const.Calculation.Limelight.LimelightLensHeight) / Math.tan(angleToGoalRadians);
+        State.limelightToTopGoalDepth = State.limelightToMiddleGoalDepth + Const.Calculation.Limelight.MiddleGoalToTopGoalDepth;
+        State.armRootToMiddleGoalTapeDepth = State.limelightToMiddleGoalDepth - Const.Calculation.Limelight.LimelightToArmRootDepth;
+
+        State.Arm.topCornGoalDepth = State.armRootToMiddleGoalTapeDepth + Const.Calculation.Limelight.MiddleGoalTapeToTopGoalDepth;
+        State.Arm.middleCornGoalDepth = State.armRootToMiddleGoalTapeDepth + Const.Calculation.Limelight.MiddleGoalTapeToMiddleGoalDepth;
+        State.Arm.bottomCornGoalDepth = State.armRootToMiddleGoalTapeDepth + Const.Calculation.Limelight.MiddleGoalTapeToBottomGoalDepth;
+
         SmartDashboard.putNumber("ty", tyEntry.getDouble(0));
-        SmartDashboard.putNumber("BackGoal", State.limelightToBackGoal);
 
     }
 

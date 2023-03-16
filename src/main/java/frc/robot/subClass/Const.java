@@ -23,7 +23,7 @@ public class Const {
         public static final int BottomRoller = 11;
 
         public static final int MoveLeftAndRightMotor = 5;
-        public static int HandRotationMotor = 6;
+        public static final int HandRotationMotor = 6;
     }
 
     public static final class Speeds {
@@ -55,7 +55,7 @@ public class Const {
             public static final double LimelightLensHeight = 81.5; //  [cm]
 
             /** LimelightからArmまでの距離 */
-            public static final double LimelightToArm = 0; // [cm]
+            public static final double LimelightToArmRootDepth = 0; // [cm]
 
 
             // ターゲットの情報
@@ -63,15 +63,18 @@ public class Const {
             public static final double GoalHeight = 166; // [cm]
 
 
-            /** 前のコーンのゴールの高さ[cm] -> ポールの先端（床の面）の高さは13[cm]*/
+            /** 前のコーンのゴールの高さ[cm] -> ポールの先端（床の面）の高さは13[cm] */
             public static final double BottomGoalHeight = 40;
-            /** 真ん中のコーンのゴールの高さ[cm] -> ポールの先端の高さは87[cm]*/
+            /** 真ん中のコーンのゴールの高さ[cm] -> ポールの先端の高さは87[cm] */
             public static final double MiddleGoalHeight = 100;
-            /** 奥のコーンのゴールの高さ[cm] -> ポールの先端の高さは117[cm]*/
+            /** 奥のコーンのゴールの高さ[cm] -> ポールの先端の高さは117[cm] */
             public static final double TopGoalHeight = 130;
+            public static final double MiddleGoalTapeToTopGoalDepth = 43;
+            public static final double MiddleGoalTapeToMiddleGoalDepth = 0;
+            public static final double MiddleGoalTapeToBottomGoalDepth = -25;
 
             /** 手前から奥のターゲットまでの距離 */
-            public static final double FrontGoalToBackGoal = 43; // [cm]
+            public static final double MiddleGoalToTopGoalDepth = 43; // [cm]
 
             public static final class PID {
                 public static final double LimelightDriveP = 0.08;
@@ -114,11 +117,11 @@ public class Const {
             public static final double GoalHeight = 76.5; // [cm]
 
 
-            /** 奥のキューブのゴールの高さ[cm] -> ゴールの面の高さは90[cm]*/
+            /** 奥のキューブのゴールの高さ[cm] -> ゴールの面の高さは90[cm] */
             public static final double TopGoalHeight = 105;
-            /** 真ん中のキューブのゴールの高さ[cm] -> ゴールの面の高さは60[cm]*/
+            /** 真ん中のキューブのゴールの高さ[cm] -> ゴールの面の高さは60[cm] */
             public static final double MiddleGoalHeight = 75;
-            /** 前のキューブのゴールの高さ[cm] -> ゴールの面の高さは13[cm]*/
+            /** 前のキューブのゴールの高さ[cm] -> ゴールの面の高さは13[cm] */
             public static final double BottomGoalHeight = 40;
 
             public static final double TagCenterToTopGoalDepth = (58 - 41) + 43;
@@ -148,7 +151,6 @@ public class Const {
             }
 
         }
-
 
 
     }
