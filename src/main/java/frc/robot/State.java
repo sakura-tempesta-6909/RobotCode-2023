@@ -225,13 +225,13 @@ public class State {
             resetEncoder = false;
 
             // TODO どれくらい引くかを計測する
-            TargetDepth.TopCorn = 101.0 - 40.0;
-            TargetDepth.MiddleCorn = 58.0 - 20.0;
-            TargetDepth.BottomCorn = 30.0;
+            TargetDepth.TopCorn = 101.0 + 20;
+            TargetDepth.MiddleCorn = 58.0 + 20;
+            TargetDepth.BottomCorn = 30.0 + 20;
 
-            TargetDepth.TopCube = 101.0 - 40.0;
-            TargetDepth.MiddleCube = 58.0 - 20.0;
-            TargetDepth.BottomCube = 30.0;
+            TargetDepth.TopCube = 101.0 + 20;
+            TargetDepth.MiddleCube = 58.0 + 20;
+            TargetDepth.BottomCube = 30.0 + 20;
         }
     }
 

@@ -1,5 +1,7 @@
 package frc.robot.subClass;
 
+import frc.robot.State;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,8 +62,6 @@ public class Tools {
 
         double DepthPM = Math.signum(Depth);
         double HeightPM = Math.signum(Height);
-        Depth = Math.abs(Depth);
-        Height = Math.abs(Height);
 
         double JointAngle = Math.acos(Math.min((Math.pow(Height, 2) + Math.pow(Depth, 2)
                 - Math.pow(l1, 2) - Math.pow(l2, 2)) / (2 * l1 * l2), 1.0));
@@ -75,9 +75,9 @@ public class Tools {
         Map<String, Double> angles = new HashMap<String, Double>();
 
         // theta2 < 0の時
-        double RootAngleM = Math.acos(Depth / r) + alpha;
+        double RootAngleM = Math.acos(Math.max(Math.min(Depth / r, 1.0), -1.0)) + alpha;
         // theta2 > 0の時
-        double RootAngleP = Math.acos(Depth / r) - alpha;
+        double RootAngleP = Math.acos(Math.max(Math.min(Depth / r, 1.0), -1.0)) - alpha;
 
         if (HeightPM >= 0 && DepthPM >= 0) {
             angles.put("RootAngle", Math.toDegrees(RootAngleM));
@@ -149,5 +149,30 @@ public class Tools {
     public static double changeTorqueToMotorInput (double torque) {
         return torque / Const.Arm.MotorMaxTorque;
         // TODO 2次関数的にトルクを求める必要があるらしい？
+    }
+
+    public static void main(String[] args) {
+        State.StateReset();
+        double targetDepth = 0;//State.Arm.TargetDepth.TopCorn;
+        double targetHeight = -100;//Const.Calculation.Limelight.TopGoalHeight - Const.Arm.RootHeightFromGr;
+        System.out.println(targetDepth);
+        System.out.println(targetHeight);
+        System.out.println(isNewTargetPositionInLimit(targetHeight, targetDepth));
+        Map<String, Double> map = calculateAngles(targetDepth, targetHeight);
+        System.out.println(map);
+        double joint = map.get("JointAngle");
+        double root = map.get("RootAngle");
+        System.out.println(calculateDepth(root, joint));
+        System.out.println(calculateHeight(root, joint));
+    }
+
+    private static boolean isNewTargetPositionInLimit(double Height, double Depth) {
+        double length = Math.sqrt(Math.pow(Height, 2) + Math.pow(Depth, 2));
+
+        boolean isInOuterBorder = length < Const.Arm.TargetPositionOuterLimit;
+        boolean isOutInnerBorder = length > Const.Arm.TargetPositionInnerLimit;
+
+        // TODO XButtonでコントロールする時のターゲット座標の制限を考える
+        return isInOuterBorder && isOutInnerBorder;
     }
 }

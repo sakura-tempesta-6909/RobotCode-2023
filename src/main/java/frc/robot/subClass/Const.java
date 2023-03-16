@@ -264,9 +264,9 @@ public class Const {
          */
         public static final double MotorMaxTorque = 2.6 * 100;
         /** ターゲットの座標の閾値（外側）[cm] */
-        public static final double TargetPositionOuterLimit = RootArmLength + HeadArmLength - 2;
+        public static final double TargetPositionOuterLimit = RootArmLength + HeadArmLength - 1;
         /** ターゲットの座標の閾値（内側）[cm] */
-        public static final double TargetPositionInnerLimit = RootArmLength - HeadArmLength + 2;
+        public static final double TargetPositionInnerLimit = RootArmLength - HeadArmLength + 1;
         /** 関節部分NEOモーターのギア比 */
         public static final double JointMotorGearRatio = 4.0 * 5.0 * 40.0 / 12.0;
         /** 根本NEOモーターのギア比 */
