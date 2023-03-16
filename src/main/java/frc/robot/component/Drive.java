@@ -54,7 +54,9 @@ public class Drive implements Component {
     public void arcadeDrive(double xSpeed, double zRotation) {
         double pidXSpeed = pidDriveXspeed.calculate(xSpeed, 0);
         double pidZRotation = pidDriveZRotation.calculate(zRotation, 0);
-        differentialDrive.arcadeDrive(pidXSpeed, pidZRotation);
+        driveRightFront.set(pidXSpeed);
+        driveLeftFront.set(pidZRotation);
+        differentialDrive.arcadeDrive(State.Drive.xSpeed, State.Drive.zRotation);
         differentialDrive.feed();
     }
 
