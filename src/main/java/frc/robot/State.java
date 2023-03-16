@@ -34,7 +34,7 @@ public class State {
     /** armからtagまでの距離[cm] */
     public static double armRootToTagCenterDepth;
     /** armからターゲットまでの距離[cm] */
-    public static double armRootToMiddleGoalTapeDepth;
+    public static double armRootToMiddleGoalDepth;
     /** 奥のターゲットまでの距離[cm] */
     public static double limelightToTopGoalDepth;
     public static double tx;

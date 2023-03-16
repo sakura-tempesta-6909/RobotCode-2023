@@ -42,6 +42,14 @@ public class Const {
 
     }
 
+    /**
+     * キューブのゴールの奥行き(deep)は43[cm]<br>
+     * BottomGoalの奥行き(deep)は41[cm]<br>
+     * ゴールの先頭(FrontLine)から<br>MiddleCornNodeまでは58[cm]<br>
+     * TopCornNodeまでは101[cm](58+43)
+     * <br><br>
+     * 詳しくは<a href="https://firstfrc.blob.core.windows.net/frc2023/Manual/2023FRCGameManual.pdf#page=27">ゲームルール</a>を参照
+     * */
     public static final class Calculation {
         public static final class Limelight {
             // limelightの情報
@@ -69,12 +77,12 @@ public class Const {
             public static final double MiddleGoalHeight = 100;
             /** 奥のコーンのゴールの高さ[cm] -> ポールの先端の高さは117[cm] */
             public static final double TopGoalHeight = 130;
-            public static final double MiddleGoalTapeToTopGoalDepth = 43;
-            public static final double MiddleGoalTapeToMiddleGoalDepth = 0;
-            public static final double MiddleGoalTapeToBottomGoalDepth = -25;
 
-            /** 手前から奥のターゲットまでの距離 */
-            public static final double MiddleGoalToTopGoalDepth = 43; // [cm]
+            /** （真ん中のコーンのゴールにある）<br>反射テープから一番奥のコーンのゴールまでの距離[cm] */
+            public static final double MiddleGoalToTopGoalDepth = 43;
+            /** （真ん中のコーンのゴールにある）<br>反射テープから一番手前のコーンのゴールまでの距離[cm] */
+            public static final double MiddleGoalToBottomGoalDepth = -25;
+
 
             public static final class PID {
                 public static final double LimelightDriveP = 0.08;
@@ -124,8 +132,11 @@ public class Const {
             /** 前のキューブのゴールの高さ[cm] -> ゴールの面の高さは13[cm] */
             public static final double BottomGoalHeight = 40;
 
+            /** AprilTagから一番奥のキューブのゴールまでの距離[cm]（ゴールの四角の中心まで） */
             public static final double TagCenterToTopGoalDepth = (58 - 41) + 43;
-            public static final double TagCenterToMiddleGoalDepth = (58 - 41);
+            /** AprilTagから真ん中のキューブのゴールまでの距離[cm]（ゴールの四角の中心まで） */
+            public static final double TagCenterToMiddleGoalDepth = (58 - 41) + 3;
+            /** AprilTagから一番手前のキューブのゴールまでの距離[cm]（ゴールの四角の中心まで） */
             public static final double TagCenterToBottomGoalDepth = (58 - 41) - 10;
 
 

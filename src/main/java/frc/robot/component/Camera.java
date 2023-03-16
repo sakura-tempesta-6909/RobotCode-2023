@@ -21,7 +21,6 @@ public class Camera implements Component {
         double angleToGoalRadians = Math.toRadians(angleToGoalDegrees);
         State.cameraToTagCenterDepth = (Const.Calculation.Camera.GoalHeight - Const.Calculation.Camera.CameraLensHeight) / Math.tan(angleToGoalRadians);
         State.armRootToTagCenterDepth = State.cameraToTagCenterDepth - Const.Calculation.Camera.CameraToArmRootDepth;
-//        SmartDashboard.putNumber("Distance", State.cameraToTagCenterDepth);
 
     }
     @Override
@@ -51,6 +50,8 @@ public class Camera implements Component {
     @Override
     public void readSensors() {
         calculation();
+
+        // ArmStateの中に代入
         State.Arm.topCubeGoalDepth = State.armRootToTagCenterDepth + Const.Calculation.Camera.TagCenterToTopGoalDepth;
         State.Arm.middleCubeGoalDepth = State.armRootToTagCenterDepth + Const.Calculation.Camera.TagCenterToMiddleGoalDepth;
         State.Arm.bottomCubeGoalDepth = State.armRootToTagCenterDepth + Const.Calculation.Camera.TagCenterToBottomGoalDepth;

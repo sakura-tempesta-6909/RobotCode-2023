@@ -6,9 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="8beddb76-d512-4844-ac98-c05e68c48f48" name="変更" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/State.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/State.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/component/Limelight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/component/Limelight.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/phase/Autonomous.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/phase/Autonomous.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/component/Camera.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/component/Camera.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/subClass/Const.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/subClass/Const.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
