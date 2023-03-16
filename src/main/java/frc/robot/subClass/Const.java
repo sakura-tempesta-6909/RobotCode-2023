@@ -14,9 +14,9 @@ public class Const {
         public static final int DriveRightBack = 7;
         public static final int DriveLeftBack = 9;
 
-        public static final int HandSolenoid = 0;
+        public static final int HandSolenoid = 2;
 
-        public static final int IntakeSolenoid = 1;
+        public static final int IntakeSolenoid = 3;
 
         public static final int RightRoller = 4;
         public static final int LeftRoller = 3;
@@ -35,10 +35,10 @@ public class Const {
 
         public static final double HandRotationSpeed = 0.5;
 
-        public static double SideRollerOuttakeSpeed = 0.5;
-        public static double SideRollerIntakeSpeed = 0.5;
-        public static double BottomRollerOuttakeSpeed = 0.5;
-        public static double BottomRollerIntakeSpeed = 0.5;
+        public static double SideRollerOuttakeSpeed = -1.0;
+        public static double SideRollerIntakeSpeed = 0.6;
+        public static double BottomRollerOuttakeSpeed = -1.0;
+        public static double BottomRollerIntakeSpeed = 1.0;
 
     }
 
@@ -211,7 +211,7 @@ public class Const {
         /** 根本アームの長さ[cm] */
         public static final double RootArmLength = 45.0;
         /** 先端アームの長さ[cm] */
-        public static final double HeadArmLength = 69.744; // 45.5
+        public static final double HeadArmLength = 69.744; // 45.5はハンドの付け根までの長さ
         /** 根本アームの重心の位置[cm]（根本からの距離） */
         public static final double RootArmBarycenter = 12.52;
         /** 先端アームの重心の位置[cm]（関節部分からの距離） */
@@ -281,9 +281,9 @@ public class Const {
          */
         public static final double MotorMaxTorque = 2.6 * 100;
         /** ターゲットの座標の閾値（外側）[cm] */
-        public static final double TargetPositionOuterLimit = RootArmLength + HeadArmLength - 2;
+        public static final double TargetPositionOuterLimit = RootArmLength + HeadArmLength - 1;
         /** ターゲットの座標の閾値（内側）[cm] */
-        public static final double TargetPositionInnerLimit = RootArmLength - HeadArmLength + 2;
+        public static final double TargetPositionInnerLimit = RootArmLength - HeadArmLength + 1;
         /** 関節部分NEOモーターのギア比 */
         public static final double JointMotorGearRatio = 4.0 * 5.0 * 40.0 / 12.0;
         /** 根本NEOモーターのギア比 */
