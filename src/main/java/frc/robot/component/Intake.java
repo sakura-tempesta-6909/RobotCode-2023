@@ -1,6 +1,7 @@
 package frc.robot.component;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.Compressor;
@@ -11,15 +12,15 @@ import frc.robot.subClass.Const;
 
 public class Intake implements Component{
     private final Solenoid intakeSolenoid;
-    private final VictorSPX rightRoller;
-    private final VictorSPX leftRoller;
+    private final TalonSRX rightRoller;
+    private final TalonSRX leftRoller;
     private final VictorSPX bottomRoller;
     private final Compressor compressor;
 
     public Intake() {
         intakeSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Const.Ports.IntakeSolenoid);
-        rightRoller = new VictorSPX(Const.Ports.RightRoller);
-        leftRoller = new VictorSPX(Const.Ports.LeftRoller);
+        rightRoller = new TalonSRX(Const.Ports.RightRoller);
+        leftRoller = new TalonSRX(Const.Ports.LeftRoller);
         bottomRoller = new VictorSPX(Const.Ports.BottomRoller);
         compressor = new Compressor(PneumaticsModuleType.CTREPCM);
     }
@@ -67,6 +68,8 @@ public class Intake implements Component{
         intakeSolenoid.set(isExtendingIntake);
     }
 
+
+
     // /** CONEとCUBEを出す */
     public void outtakeGamePiece() {
          rollerControl(Const.Speeds.SideRollerOuttakeSpeed, Const.Speeds.BottomRollerOuttakeSpeed);
@@ -82,6 +85,7 @@ public class Intake implements Component{
          rollerControl(Const.Speeds.Neutral, Const.Speeds.Neutral);
      }
 
+
     /** Intakeを出す */
     public void openIntake() {
         intakeControl(true);
@@ -92,16 +96,14 @@ public class Intake implements Component{
         intakeControl(false);
     }
 
-    public void compressorDisable() {
-        compressor.disable();
-    }
-
-    public void compressorEnable() {
-        compressor.enableDigital();
-    }
-
     @Override
     public void applyState() {
+        if (State.isCompressorEnable) {
+            compressor.enableDigital();
+        } else {
+            compressor.disable();
+        }
+
         switch(State.intakeState){
             case s_outtakeGamePiece:
                  outtakeGamePiece();
@@ -121,12 +123,6 @@ public class Intake implements Component{
             case s_closeIntake:
                 closeIntake();
                 break;
-        }
-
-        if (State.isCompressorEnable) {
-            compressorEnable();
-        } else {
-            compressorEnable();
         }
     }
 }

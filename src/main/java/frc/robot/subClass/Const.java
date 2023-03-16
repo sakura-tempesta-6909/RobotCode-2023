@@ -14,9 +14,9 @@ public class Const {
         public static final int DriveRightBack = 7;
         public static final int DriveLeftBack = 9;
 
-        public static final int HandSolenoid = 0;
+        public static final int HandSolenoid = 2;
 
-        public static final int IntakeSolenoid = 1;
+        public static final int IntakeSolenoid = 3;
 
         public static final int RightRoller = 4;
         public static final int LeftRoller = 3;
@@ -35,10 +35,10 @@ public class Const {
 
         public static final double HandRotationSpeed = 0.5;
 
-        public static double SideRollerOuttakeSpeed = 0.5;
-        public static double SideRollerIntakeSpeed = 0.5;
-        public static double BottomRollerOuttakeSpeed = 0.5;
-        public static double BottomRollerIntakeSpeed = 0.5;
+        public static double SideRollerOuttakeSpeed = -1.0;
+        public static double SideRollerIntakeSpeed = 0.6;
+        public static double BottomRollerOuttakeSpeed = -1.0;
+        public static double BottomRollerIntakeSpeed = 1.0;
 
     }
 
