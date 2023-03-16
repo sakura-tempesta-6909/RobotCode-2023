@@ -273,7 +273,7 @@ public class State {
         pidLimelightReset = false;
         intakeExtensionState = IntakeExtensionState.s_openIntake;
 
-//        autonomousPhaseTransType = Util.getConsole("AutonomousPhaseTransition");
+        autonomousPhaseTransType = Util.getConsole("AutonomousPhaseTransition");
 
         isCompressorEnable = true;
 
