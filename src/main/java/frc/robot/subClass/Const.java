@@ -14,9 +14,9 @@ public class Const {
         public static final int DriveRightBack = 7;
         public static final int DriveLeftBack = 9;
 
-        public static final int HandSolenoid = 0;
+        public static final int HandSolenoid = 2;
 
-        public static final int IntakeSolenoid = 1;
+        public static final int IntakeSolenoid = 3;
 
         public static final int RightRoller = 4;
         public static final int LeftRoller = 3;
