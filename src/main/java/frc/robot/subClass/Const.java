@@ -222,11 +222,11 @@ public class Const {
         /** 関節部分NEOモーターのPIDのP */
         public static final double P_J = 0.03 + 0.03;
         /** 関節部分NEOモーターのPIDのI */
-        public static final double I_J = 5e-7 *3;
+        public static final double I_J = 5e-7 *30;
         /** 関節部分NEOモーターのPIDのD */
         public static final double D_J = 10;
         /** 関節部分NEOモーターの積分値の最大 */
-        public static final double IMax_J = 10e5 * 20 / 3;
+        public static final double IMax_J = 10e5 * 8000 / 3;
 
         /** 根本NEOモーターのPIDのP */
         public static final double P_R_1 = 0.04;
@@ -253,9 +253,9 @@ public class Const {
         /** 根本NEOモーターにおける根本アームのモーメントの影響力（Weight） */
         public static final double RootArmFFWeightForRM = 1.0;
         /** 根本NEOモーターのfeedforwardの強さ（Weight） */
-        public static final double RootMotorFFWeight = 1.0 / 4.0;
+        public static final double RootMotorFFWeight = 1.0 / 3.0;
         /** 先端NEOモーターのfeedforwardの強さ（Weight） */
-        public static final double JointMotorFFWeight = 1.0 / 3.0;
+        public static final double JointMotorFFWeight = 1.0 / 4;
 
 
         /** アームを左右に動かすモーターのPIDのP */
@@ -297,13 +297,13 @@ public class Const {
         public static final double JointMotorMoveRatio = 0.09;
         /** 根本NEOモーターをコントローラーで動かす時の最大の速さ */
         public static final double RootMotorMoveRatio = 0.5;
-        /** PIDコントロールの誤差の許容量[deg] 注意! isArmAtTargetの判定に用いているだけ */
-        public static final double PIDAngleTolerance = 0.7;
+        /** PIDコントロールの誤差の許容量[cn] 注意! isArmAtTargetの判定に用いているだけ */
+        public static final double PIDAngleTolerance = 3;
 
         /** アームの理想的な高さ */
-        public static final double InitialHeight = -50;
+        public static final double InitialHeight = -65;
         /** アームの理想的な奥行き */
-        public static final double InitialDepth = 50;
+        public static final double InitialDepth = 27;
 
         /** アームの根本の高さ[cm]（地面から） -> 座標の原点の高さ */
         public static final double RootHeightFromGr = 127;
@@ -325,9 +325,9 @@ public class Const {
 
     public static final class GrabGamePiecePhase {
         /** インテイクのゲームピースを掴むアームの高さ */
-        public static final double armIntakeHeight = 0;
+        public static final double armIntakeHeight = -103;
         /** インテイクのゲームピースを掴むアームの奥行き */
-        public static final double armIntakeDepth = 0;
+        public static final double armIntakeDepth = -6;
     }
 
     public static void ConstInit() {

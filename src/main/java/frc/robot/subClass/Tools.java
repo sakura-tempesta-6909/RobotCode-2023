@@ -175,8 +175,9 @@ public class Tools {
 
         boolean isInOuterBorder = length < Const.Arm.TargetPositionOuterLimit;
         boolean isOutInnerBorder = length > Const.Arm.TargetPositionInnerLimit;
+        boolean isInDepthLimit = Depth > -23;
 
         // TODO XButtonでコントロールする時のターゲット座標の制限を考える
-        return isInOuterBorder && isOutInnerBorder;
+        return isInOuterBorder && isOutInnerBorder && isInDepthLimit;
     }
 }

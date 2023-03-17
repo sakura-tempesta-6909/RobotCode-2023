@@ -164,9 +164,9 @@ public class State {
          * @return jointMotorとrootMotorの両方がatSetpointかどうか
          * */
         public static boolean isAtTarget() {
-            boolean isRootMotorAtSetpoint = Math.abs(State.Arm.targetRootAngle - State.Arm.actualRootAngle) < Const.Arm.PIDAngleTolerance;
-            boolean isJointMotorAtSetpoint = Math.abs(State.Arm.targetJointAngle - State.Arm.actualJointAngle) < Const.Arm.PIDAngleTolerance;
-            return isJointMotorAtSetpoint && isRootMotorAtSetpoint;
+            boolean isDepthAtSetpoint = Math.abs(State.Arm.targetDepth - State.Arm.actualDepth) < Const.Arm.PIDAngleTolerance;
+            boolean isHeightMotorAtSetpoint = Math.abs(State.Arm.targetHeight - State.Arm.actualHeight) < Const.Arm.PIDAngleTolerance;
+            return isHeightMotorAtSetpoint && isDepthAtSetpoint;
         }
 
         public static double moveLeftAndRightMotor;

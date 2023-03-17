@@ -69,14 +69,14 @@ public class Arm implements Component {
      * feedforwardが必要かに応じてコメントアウトを外す
      * s_moveArmToSpecifiedPositionで実行
      */
-    private void pidControlArm() {
+    private void pidControlArm(double targetRootAngle, double targetJointAngle) {
         // feedforwardなし
-        pidForRoot.setReference(calculateRootRotationFromAngle(State.Arm.targetRootAngle), CANSparkMax.ControlType.kPosition);
-        // pidForJoint.setReference(calculateJointRotationFromAngle(State.Arm.targetJointAngle), CANSparkMax.ControlType.kPosition);
+        pidForRoot.setReference(calculateRootRotationFromAngle(targetRootAngle), CANSparkMax.ControlType.kPosition);
+        // pidForJoint.setReference(calculateJointRotationFromAngle(targetJointAngle), CANSparkMax.ControlType.kPosition);
 
         // feedforwardあり
-        // pidForRoot.setReference(calculateRootRotationFromAngle(State.Arm.targetRootAngle), CANSparkMax.ControlType.kPosition, 0, State.Arm.rootMotorFeedforward, ArbFFUnits.kPercentOut);
-        pidForJoint.setReference(calculateJointRotationFromAngle(State.Arm.targetJointAngle), CANSparkMax.ControlType.kPosition, 0, State.Arm.jointMotorFeedforward, ArbFFUnits.kPercentOut);
+        // pidForRoot.setReference(calculateRootRotationFromAngle(targetRootAngle), CANSparkMax.ControlType.kPosition, 0, State.Arm.rootMotorFeedforward, ArbFFUnits.kPercentOut);
+        pidForJoint.setReference(calculateJointRotationFromAngle(targetJointAngle), CANSparkMax.ControlType.kPosition, 0, State.Arm.jointMotorFeedforward, ArbFFUnits.kPercentOut);
     }
 
     /**
@@ -84,14 +84,14 @@ public class Arm implements Component {
      * feedforwardが必要かに応じてコメントアウトを外す
      * s_moveArmToSpecifiedPositionで実行
      */
-    private void adjustArmPosition() {
+    private void adjustArmPosition(double targetRootAngle, double targetJointAngle) {
         // feedforwardなし
-        pidForRoot.setReference(calculateRootRotationFromAngle(State.Arm.targetRootAngle), CANSparkMax.ControlType.kPosition, 1);
-        // pidForJoint.setReference(calculateJointRotationFromAngle(State.Arm.targetJointAngle), CANSparkMax.ControlType.kPosition, 1);
+        pidForRoot.setReference(calculateRootRotationFromAngle(targetRootAngle), CANSparkMax.ControlType.kPosition, 1);
+        // pidForJoint.setReference(calculateJointRotationFromAngle(targetJointAngle), CANSparkMax.ControlType.kPosition, 1);
 
         // feedforwardあり
-        // pidForRoot.setReference(calculateRootRotationFromAngle(State.Arm.targetRootAngle), CANSparkMax.ControlType.kPosition, 0, State.Arm.rootMotorFeedforward, ArbFFUnits.kPercentOut, 1);
-        pidForJoint.setReference(calculateJointRotationFromAngle(State.Arm.targetJointAngle), CANSparkMax.ControlType.kPosition, 1, State.Arm.jointMotorFeedforward, ArbFFUnits.kPercentOut);
+        // pidForRoot.setReference(calculateRootRotationFromAngle(targetRootAngle), CANSparkMax.ControlType.kPosition, 0, State.Arm.rootMotorFeedforward, ArbFFUnits.kPercentOut, 1);
+        pidForJoint.setReference(calculateJointRotationFromAngle(targetJointAngle), CANSparkMax.ControlType.kPosition, 1, State.Arm.jointMotorFeedforward, ArbFFUnits.kPercentOut);
     }
 
     /**
@@ -117,6 +117,7 @@ public class Arm implements Component {
      * s_fixArmPositionで実行
      * */
     private void fixPositionWithFF() {
+        // adjustArmPosition(State.Arm.actualRootAngle, State.Arm.actualJointAngle);
         // feedforwardなし
         // rootMotor.set(0.0);
         // jointMotor.set(0.0);
@@ -244,10 +245,10 @@ public class Arm implements Component {
 
         switch (State.Arm.state) {
             case s_moveArmToSpecifiedPosition:
-                pidControlArm();
+                pidControlArm(State.Arm.targetRootAngle, State.Arm.targetJointAngle);
                 break;
             case s_adjustArmPosition:
-                adjustArmPosition();
+                adjustArmPosition(State.Arm.targetRootAngle, State.Arm.targetJointAngle);
                 break;
             case s_moveArmMotor:
                 rotationControlArm(State.Arm.jointSpeed, State.Arm.rootSpeed);
