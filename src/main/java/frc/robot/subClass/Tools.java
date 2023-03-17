@@ -154,7 +154,7 @@ public class Tools {
     public static void main(String[] args) {
         State.StateReset();
         double targetDepth = 0;//State.Arm.TargetDepth.TopCorn;
-        double targetHeight = -100;//Const.Calculation.Limelight.TopGoalHeight - Const.Arm.RootHeightFromGr;
+        double targetHeight = 0;//Const.Calculation.Limelight.TopGoalHeight - Const.Arm.RootHeightFromGr;
         System.out.println(targetDepth);
         System.out.println(targetHeight);
         System.out.println(isNewTargetPositionInLimit(targetHeight, targetDepth));

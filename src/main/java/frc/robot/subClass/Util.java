@@ -39,5 +39,6 @@ public class Util {
         sendConsole("controlMode", State.Arm.state.toString());
         sendConsole("rootff", State.Arm.rootMotorFeedforward);
         sendConsole("jointff", State.Arm.jointMotorFeedforward);
+        sendConsole("handAngle", State.Hand.actualHandAngle % 360);
     }
 }
