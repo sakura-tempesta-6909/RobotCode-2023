@@ -31,11 +31,27 @@ public class Arm implements Component {
         pidForRoot.setI(Const.Arm.I_R);
         pidForRoot.setD(Const.Arm.D_R);
         pidForRoot.setIMaxAccum(Const.Arm.IMax_R, 0);
+        pidForRoot.setOutputRange(-.3, .3, 0);
+
+        
+        pidForRoot.setP(Const.Arm.P_R_1, 1);
+        pidForRoot.setI(Const.Arm.I_R_1, 1);
+        pidForRoot.setD(Const.Arm.D_R_1, 1);
+        pidForRoot.setIMaxAccum(Const.Arm.IMax_R_1, 1);
+        pidForRoot.setOutputRange(-.3, .3, 1);
 
         pidForJoint.setP(Const.Arm.P_J);
         pidForJoint.setI(Const.Arm.I_J);
         pidForJoint.setD(Const.Arm.D_J);
         pidForJoint.setIMaxAccum(Const.Arm.IMax_J, 0);
+        pidForJoint.setOutputRange(-.5, .5);
+
+        
+        pidForJoint.setP(Const.Arm.P_J_1, 1);
+        pidForJoint.setI(Const.Arm.I_J_1, 1);
+        pidForJoint.setD(Const.Arm.D_J_1, 1);
+        pidForJoint.setIMaxAccum(Const.Arm.IMax_J_1, 1);
+        pidForJoint.setOutputRange(-.5, .5, 1);
 
         moveLeftAndRightMotor = new CANSparkMax(Const.Ports.MoveLeftAndRightMotor, MotorType.kBrushless);
         leftAndRightArmPidController = moveLeftAndRightMotor.getPIDController();
@@ -61,6 +77,21 @@ public class Arm implements Component {
         // feedforwardあり
         // pidForRoot.setReference(calculateRootRotationFromAngle(State.Arm.targetRootAngle), CANSparkMax.ControlType.kPosition, 0, State.Arm.rootMotorFeedforward, ArbFFUnits.kPercentOut);
         pidForJoint.setReference(calculateJointRotationFromAngle(State.Arm.targetJointAngle), CANSparkMax.ControlType.kPosition, 0, State.Arm.jointMotorFeedforward, ArbFFUnits.kPercentOut);
+    }
+
+    /**
+     * PIDで移動する
+     * feedforwardが必要かに応じてコメントアウトを外す
+     * s_moveArmToSpecifiedPositionで実行
+     */
+    private void adjustArmPosition() {
+        // feedforwardなし
+        pidForRoot.setReference(calculateRootRotationFromAngle(State.Arm.targetRootAngle), CANSparkMax.ControlType.kPosition, 1);
+        // pidForJoint.setReference(calculateJointRotationFromAngle(State.Arm.targetJointAngle), CANSparkMax.ControlType.kPosition, 1);
+
+        // feedforwardあり
+        // pidForRoot.setReference(calculateRootRotationFromAngle(State.Arm.targetRootAngle), CANSparkMax.ControlType.kPosition, 0, State.Arm.rootMotorFeedforward, ArbFFUnits.kPercentOut, 1);
+        pidForJoint.setReference(calculateJointRotationFromAngle(State.Arm.targetJointAngle), CANSparkMax.ControlType.kPosition, 1, State.Arm.jointMotorFeedforward, ArbFFUnits.kPercentOut);
     }
 
     /**
@@ -214,6 +245,9 @@ public class Arm implements Component {
         switch (State.Arm.state) {
             case s_moveArmToSpecifiedPosition:
                 pidControlArm();
+                break;
+            case s_adjustArmPosition:
+                adjustArmPosition();
                 break;
             case s_moveArmMotor:
                 rotationControlArm(State.Arm.jointSpeed, State.Arm.rootSpeed);

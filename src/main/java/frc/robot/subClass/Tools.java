@@ -63,6 +63,9 @@ public class Tools {
         double DepthPM = Math.signum(Depth);
         double HeightPM = Math.signum(Height);
 
+        Depth = Math.abs(Depth);
+        Height = Math.abs(Height);
+
         double JointAngle = Math.acos(Math.min((Math.pow(Height, 2) + Math.pow(Depth, 2)
                 - Math.pow(l1, 2) - Math.pow(l2, 2)) / (2 * l1 * l2), 1.0));
 
@@ -86,6 +89,7 @@ public class Tools {
             angles.put("RootAngle", Math.toDegrees(-1 * RootAngleP));
             angles.put("JointAngle", Math.toDegrees(-1 * JointAngle));
         } else if (HeightPM < 0 && DepthPM < 0) {
+            System.out.println(Math.toDegrees(RootAngleM));
             angles.put("RootAngle", Math.toDegrees(RootAngleM) - 180);
             angles.put("JointAngle", -1 * Math.toDegrees(JointAngle));
         } else {
@@ -153,8 +157,8 @@ public class Tools {
 
     public static void main(String[] args) {
         State.StateReset();
-        double targetDepth = 0;//State.Arm.TargetDepth.TopCorn;
-        double targetHeight = -100;//Const.Calculation.Limelight.TopGoalHeight - Const.Arm.RootHeightFromGr;
+        double targetDepth = -10;//State.Arm.TargetDepth.TopCorn;
+        double targetHeight = -60;//Const.Calculation.Limelight.TopGoalHeight - Const.Arm.RootHeightFromGr;
         System.out.println(targetDepth);
         System.out.println(targetHeight);
         System.out.println(isNewTargetPositionInLimit(targetHeight, targetDepth));

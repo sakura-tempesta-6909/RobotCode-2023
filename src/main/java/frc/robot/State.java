@@ -69,6 +69,7 @@ public class State {
         public static double actualHandAngle = 0.0;
 
         public static double targetAngle = 0.0;
+        public static boolean isResetHandPID = false;
 
         public static void StateInit() {
         }
@@ -76,6 +77,7 @@ public class State {
         public static void StateReset() {
             grabHandState = GrabHandState.s_grabHand;
             rotateState = RotateState.s_stopHand;
+            isResetHandPID = false;
         }
     }
 
@@ -190,6 +192,8 @@ public class State {
         public enum States {
             /** アームを指定した場所に移動させる */
             s_moveArmToSpecifiedPosition,
+            /** アームを微調整する */
+            s_adjustArmPosition,
             /** アームの支点を動かす */
             s_moveArmMotor,
             /** アームをその場で固定する */
@@ -198,8 +202,8 @@ public class State {
 
         public static void StatesInit() {
             //init armMode value
-            targetHeight = 0.0;
-            targetDepth = 0.0;
+            targetHeight = 10000.0;
+            targetDepth = 10000.0;
 
             actualHeight = 0.0;
             actualDepth = 0.0;
@@ -236,8 +240,6 @@ public class State {
     }
 
     public static Map<String, Double> voltage = new HashMap<>();
-    public static RotateState rotateState;
-
 
     /**
      * Enableされたときの状態
@@ -268,12 +270,11 @@ public class State {
      */
     public static void StateReset() {
         intakeState = RollerState.s_stopRoller;
-        rotateState = RotateState.s_stopHand;
         moveLeftAndRightArmState = MoveLeftAndRightArmState.s_fixLeftAndRightMotor;
         pidLimelightReset = false;
         intakeExtensionState = IntakeExtensionState.s_openIntake;
 
-        autonomousPhaseTransType = Util.getConsole("AutonomousPhaseTransition");
+        // autonomousPhaseTransType = Util.getConsole("AutonomousPhaseTransition");
 
         isCompressorEnable = true;
 

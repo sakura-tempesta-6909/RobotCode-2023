@@ -47,7 +47,7 @@ public class DriveMode extends Mode {
             State.Arm.targetHeight = Const.Arm.InitialHeight;
             State.Arm.targetDepth = Const.Arm.InitialDepth;
             State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
-            State.rotateState = RotateState.s_turnHandBack;
+            State.Hand.rotateState = RotateState.s_turnHandBack;
         } else if (driveController.getXButton()) {
             switch (phase) {
                 case Phase1:
@@ -55,7 +55,7 @@ public class DriveMode extends Mode {
                     State.Arm.targetHeight = Const.Arm.InitialHeight;
                     State.Arm.targetDepth = Const.Arm.InitialDepth;
                     State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
-                    State.rotateState = RotateState.s_turnHandBack;
+                    State.Hand.rotateState = RotateState.s_turnHandBack;
                     if (State.Arm.isAtTarget()) {
                         phase = GrabGamePiecePhase.Phase2;
                     }
