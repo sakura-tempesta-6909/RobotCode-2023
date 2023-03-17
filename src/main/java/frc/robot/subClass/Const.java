@@ -151,6 +151,9 @@ public class Const {
 
     public static final class Drive {
 
+        public static final double DriveRightVelocity = 0;
+        public static final double DriveLeftVelocity = 0;
+
         public static final class PID {
             public static final double LengthThreshold = 50;
             public static final double LossTolerance = 0.5;
@@ -160,12 +163,7 @@ public class Const {
             public static final TalonSRXConfiguration DriveRight = new TalonSRXConfiguration();
             public static final TalonSRXConfiguration DriveLeft = new TalonSRXConfiguration();
 
-            public static final double XSpeedP = 0;
-            public static final double XSpeedI = 0;
-            public static final double XSpeedD = 0;
-            public static final double ZRotationP = 0;
-            public static final double ZRotationI = 0;
-            public static final double ZRotationD = 0;
+
 
             public static void init() {
                 DriveRight.slot0.kP = 0.051;

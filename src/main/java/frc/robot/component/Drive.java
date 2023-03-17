@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.State;
 import frc.robot.subClass.Const;
 
@@ -14,8 +15,6 @@ public class Drive implements Component {
     private DifferentialDrive differentialDrive;
     private final PIDController pidLimelightDrive;
     private final PIDController pidCameraDrive;
-    private final PIDController pidDriveXspeed;
-    private final PIDController pidDriveZRotation;
 
 
     public Drive() {
@@ -46,17 +45,11 @@ public class Drive implements Component {
         driveRightBack.setNeutralMode(NeutralMode.Brake);
         driveLeftBack.setNeutralMode(NeutralMode.Brake);
 
-        pidDriveXspeed = new PIDController(Const.Drive.PID.XSpeedP, Const.Drive.PID.XSpeedI, Const.Drive.PID.XSpeedD);
-        pidDriveZRotation = new PIDController(Const.Drive.PID.ZRotationP, Const.Drive.PID.ZRotationI, Const.Drive.PID.ZRotationD);
 
     }
 
     public void arcadeDrive(double xSpeed, double zRotation) {
-        double pidXSpeed = pidDriveXspeed.calculate(xSpeed, 0);
-        double pidZRotation = pidDriveZRotation.calculate(zRotation, 0);
-        driveRightFront.set(pidXSpeed);
-        driveLeftFront.set(pidZRotation);
-        differentialDrive.arcadeDrive(State.Drive.xSpeed, State.Drive.zRotation);
+        differentialDrive.arcadeDrive(xSpeed, zRotation);
         differentialDrive.feed();
     }
 
@@ -121,6 +114,11 @@ public class Drive implements Component {
         boolean isLeftMotorAtTarget = Math.abs(State.Drive.leftLength - State.Drive.targetLength) < Const.Drive.PID.LossTolerance;
         boolean isRightMotorAtTarget = Math.abs(State.Drive.rightLength - State.Drive.targetLength) < Const.Drive.PID.LossTolerance;
         return isRightMotorAtTarget && isLeftMotorAtTarget;
+    }
+
+    private void pidDriveSpeed() {
+        driveRightFront.set(ControlMode.Velocity, Const.Drive.DriveRightVelocity);
+        driveLeftFront.set(ControlMode.Velocity, Const.Drive.DriveLeftVelocity);
     }
 
 
