@@ -55,7 +55,7 @@ public class Const {
             public static final double LimelightLensHeight = 97; //  [cm]
 
             /** LimelightからArmまでの距離 */
-            public static final double LimelightToArm = 0; // [cm]
+            public static final double LimelightToArm = 10; // [cm]
 
 
             // ターゲットの情報
