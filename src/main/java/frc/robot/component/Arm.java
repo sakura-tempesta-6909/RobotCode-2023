@@ -185,7 +185,7 @@ public class Arm implements Component {
     }
 
     public void moveLeftArm(double moveLeftAndRightSpeed) {
-        moveLeftAndRightMotor.set(-moveLeftAndRightSpeed);
+        moveLeftAndRightMotor.set(moveLeftAndRightSpeed);
     }
 
     public void stopLeftAndRightArm() {
