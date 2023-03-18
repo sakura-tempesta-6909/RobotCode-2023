@@ -52,16 +52,6 @@ public class Drive implements Component {
         differentialDrive.feed();
     }
 
-    public void pidControlTargetTracking() {
-        double limelightTrackingZRotation = pidLimelightDrive.calculate(State.tx, 0);
-        if (limelightTrackingZRotation > 0.7) {
-            limelightTrackingZRotation = 0.7;
-        } else if (limelightTrackingZRotation < -0.7) {
-            limelightTrackingZRotation = -0.7;
-        }
-        arcadeDrive(State.limelightXSpeed * 0.7, -limelightTrackingZRotation);
-    }
-
     public void pidControlApriltagTracking() {
         double cameraZRotation = pidCameraDrive.calculate(State.aprilTagAngleWidth, 0);
         if (cameraZRotation > 0.5) {
@@ -176,7 +166,7 @@ public class Drive implements Component {
                 arcadeDrive(Const.Speeds.Neutral * State.Drive.xSpeed, Const.Speeds.Neutral * State.Drive.zRotation);
                 break;
             case s_limelightTracking:
-                pidControlTargetTracking();
+                arcadeDrive(State.limelightXSpeed * 0.7, Const.Speeds.Neutral * State.limelightTrackingZRotation);
                 break;
             case s_aprilTagTracking:
                 pidControlApriltagTracking();
