@@ -262,6 +262,10 @@ public class Arm implements Component {
             rootMotor.getEncoder().setPosition(0.0);
         }
 
+        if (State.Arm.isMoveLeftAndRightEncoderReset) {
+            leftAndRightArmEncoder.setPosition(7.5);
+        }
+
         switch (State.Arm.state) {
             case s_moveArmToSpecifiedPosition:
                 pidControlArm();

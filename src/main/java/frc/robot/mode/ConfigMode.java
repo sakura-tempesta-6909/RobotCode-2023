@@ -22,5 +22,9 @@ public class ConfigMode extends Mode{
         if (driveController.getYButton()) {
             State.isCompressorEnable = false;
         }
+
+        if (driveController.getAButton()) {
+            State.Arm.isMoveLeftAndRightEncoderReset = true;
+        }
     }
 }

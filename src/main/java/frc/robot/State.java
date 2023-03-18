@@ -159,6 +159,7 @@ public class State {
         public static double jointMotorFeedforward;
 
         public static double targetMoveLeftAndRightAngle;
+        public static boolean isMoveLeftAndRightEncoderReset;
 
         /**
          * アームがターゲット位置にいるかを判定
@@ -229,6 +230,7 @@ public class State {
             state = Arm.States.s_fixArmPosition;
             resetPidController = false;
             resetEncoder = false;
+            isMoveLeftAndRightEncoderReset = false;
 
             // TODO どれくらい引くかを計測する
             TargetDepth.TopCorn = 101.0 + 20;
