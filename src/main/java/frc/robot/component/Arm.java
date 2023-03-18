@@ -175,7 +175,7 @@ public class Arm implements Component {
      * @return 変換された回転数
      */
     public double calculateLeftAndRightRotationFromAngle(double angle) {
-        return angle * Const.Hand.HandGearRatio / 360;
+        return angle * Const.Arm.LeftAndRightArmGearRatio / 360;
     }
 
     public void moveRightArm(double moveLeftAndRightSpeed) {
@@ -198,8 +198,9 @@ public class Arm implements Component {
         leftAndRightArmPidController.setReference(0, CANSparkMax.ControlType.kPosition);
     }
 
-    public void pidControlTargetTracking(double targetAngle) {
-        leftAndRightArmPidController.setReference(calculateLeftAndRightRotationFromAngle(targetAngle), CANSparkMax.ControlType.kPosition);
+    public void pidControlTargetTracking() {
+        State.Arm.targetMoveLeftAndRightAngle = State.tx + State.Arm.actualLeftAndRightAngle;
+        leftAndRightArmPidController.setReference(calculateLeftAndRightRotationFromAngle(State.Arm.targetMoveLeftAndRightAngle), CANSparkMax.ControlType.kPosition);
 
     }
 
@@ -232,7 +233,7 @@ public class Arm implements Component {
         State.Arm.actualDepth = Tools.calculateDepth(State.Arm.actualRootAngle, State.Arm.actualJointAngle);
 
         // armが左右に動いてる時の位置（角度）
-        State.Arm.leftAndRightPositionAngle = calculateLeftAndRightAngleFromRotation(leftAndRightArmEncoder.getPosition());
+        State.Arm.actualLeftAndRightAngle = calculateLeftAndRightAngleFromRotation(leftAndRightArmEncoder.getPosition());
 
         // feedforwardを計算する
         // TODO コーンを持っているかによってrequiredTorqueを変える
@@ -284,7 +285,7 @@ public class Arm implements Component {
                 moveArmToMiddle();
                 break;
             case s_limelightTracking:
-                pidControlTargetTracking(State.tx);
+                pidControlTargetTracking(State.targetValue);
                 break;
         }
     }
