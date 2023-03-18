@@ -12,7 +12,6 @@ import frc.robot.subClass.Const;
 public class Drive implements Component {
     private final WPI_TalonSRX driveRightFront, driveLeftFront;
     private DifferentialDrive differentialDrive;
-    private final PIDController pidLimelightDrive;
     private final PIDController pidCameraDrive;
 
 
@@ -37,7 +36,6 @@ public class Drive implements Component {
         driveLeftBack.setInverted(false);
 
         differentialDrive = new DifferentialDrive(driveLeftFront, driveRightFront);
-        pidLimelightDrive = new PIDController(Const.Calculation.Limelight.PID.LimelightDriveP, Const.Calculation.Limelight.PID.LimelightDriveI, Const.Calculation.Limelight.PID.LimelightDriveD);
         pidCameraDrive = new PIDController(Const.Calculation.Camera.PID.CameraDriveP, Const.Calculation.Camera.PID.CameraDriveI, Const.Calculation.Camera.PID.CameraDriveD);
         driveRightFront.setNeutralMode(NeutralMode.Brake);
         driveLeftFront.setNeutralMode(NeutralMode.Brake);
@@ -139,9 +137,6 @@ public class Drive implements Component {
 
     @Override
     public void applyState() {
-        if (State.pidLimelightReset) {
-            pidLimelightDrive.reset();
-        }
         if (State.Drive.resetPosition) {
             driveRightFront.setSelectedSensorPosition(0.0);
             driveLeftFront.setSelectedSensorPosition(0.0);
