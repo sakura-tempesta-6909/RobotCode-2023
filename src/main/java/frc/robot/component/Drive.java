@@ -159,6 +159,10 @@ public class Drive implements Component {
             driveRightFront.setIntegralAccumulator(0.0);
         }
 
+        if (State.pidLimelightReset) {
+            pidLimelightDrive.reset();
+        }
+
         switch (State.Drive.state) {
             case s_fastDrive:
                 arcadeDrive(Const.Speeds.FastDrive * State.Drive.xSpeed, Const.Speeds.FastDrive * State.Drive.zRotation);
