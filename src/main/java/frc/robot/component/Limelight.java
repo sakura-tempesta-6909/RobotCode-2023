@@ -15,8 +15,9 @@ public class Limelight implements Component {
 
     public Limelight() {
         table = NetworkTableInstance.getDefault().getTable("limelight");
-        txEntry = table.getEntry("tx");
-        tyEntry = table.getEntry("ty");
+        // limelightを縦向きにしたのでtxとtyは逆
+        txEntry = table.getEntry("ty");
+        tyEntry = table.getEntry("tx");
         tvEntry = table.getEntry("tv");
 
     }

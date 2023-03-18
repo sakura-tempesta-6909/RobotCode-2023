@@ -52,7 +52,7 @@ public class Const {
             public static final double LimelightMountAngleDegrees = 34.5;
 
             /** Limelightの高さ */
-            public static final double LimelightLensHeight = 81.5; //  [cm]
+            public static final double LimelightLensHeight = 97; //  [cm]
 
             /** LimelightからArmまでの距離 */
             public static final double LimelightToArm = 0; // [cm]
