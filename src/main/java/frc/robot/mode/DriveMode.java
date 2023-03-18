@@ -88,7 +88,7 @@ public class DriveMode extends Mode {
             State.Drive.state = State.Drive.States.s_aprilTagTracking;
             State.cameraXSpeed = -driveController.getLeftY();
         } else if (driveController.getBButton()) {
-            State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_limelightTracking;
+            State.Drive.state = State.Drive.States.s_limelightTracking;
             State.limelightXSpeed = -driveController.getLeftY();
         }
 
