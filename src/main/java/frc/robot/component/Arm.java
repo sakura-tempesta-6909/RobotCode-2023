@@ -169,6 +169,14 @@ public class Arm implements Component {
         return rotation / Const.Arm.LeftAndRightArmGearRatio * 360;
     }
 
+    /**
+     *度数から回転数への変換
+     * @param angle 変換する角度の度数
+     * @return 変換された回転数
+     */
+    public double calculateLeftAndRightRotationFromAngle(double angle) {
+        return angle * Const.Hand.HandGearRatio / 360;
+    }
 
     public void moveRightArm(double moveLeftAndRightSpeed) {
         moveLeftAndRightMotor.set(moveLeftAndRightSpeed);
@@ -190,8 +198,8 @@ public class Arm implements Component {
         leftAndRightArmPidController.setReference(0, CANSparkMax.ControlType.kPosition);
     }
 
-    public void pidControlTargetTracking() {
-        leftAndRightArmPidController.setReference(State.tx, CANSparkMax.ControlType.kPosition);
+    public void pidControlTargetTracking(double targetAngle) {
+        leftAndRightArmPidController.setReference(calculateLeftAndRightRotationFromAngle(targetAngle), CANSparkMax.ControlType.kPosition);
 
     }
 
@@ -276,7 +284,7 @@ public class Arm implements Component {
                 moveArmToMiddle();
                 break;
             case s_limelightTracking:
-                pidControlTargetTracking();
+                pidControlTargetTracking(State.tx);
                 break;
         }
     }
