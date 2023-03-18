@@ -60,6 +60,8 @@ public class Arm implements Component {
         leftAndRightArmPidController.setI(Const.Arm.I_MID);
         leftAndRightArmPidController.setD(Const.Arm.D_MID);
         leftAndRightArmPidController.setIMaxAccum(Const.Arm.IMax_MID, 0);
+        moveLeftAndRightMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 7.5f);
+        moveLeftAndRightMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, -7.5f);
 
     }
 
@@ -184,7 +186,7 @@ public class Arm implements Component {
     }
 
     public void moveLeftArm(double moveLeftAndRightSpeed) {
-        moveLeftAndRightMotor.set(-moveLeftAndRightSpeed);
+        moveLeftAndRightMotor.set(moveLeftAndRightSpeed);
     }
 
     public void stopLeftAndRightArm() {
@@ -259,6 +261,10 @@ public class Arm implements Component {
         if (State.Arm.resetEncoder) {
             jointMotor.getEncoder().setPosition(0.0);
             rootMotor.getEncoder().setPosition(0.0);
+        }
+
+        if (State.Arm.isMoveLeftAndRightEncoderReset) {
+            leftAndRightArmEncoder.setPosition(7.5);
         }
 
         switch (State.Arm.state) {
