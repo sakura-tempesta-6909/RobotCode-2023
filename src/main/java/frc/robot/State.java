@@ -317,6 +317,8 @@ public class State {
         s_fixLeftAndRightMotor,
         /** アームを真ん中に動かす */
         s_movetomiddle,
+        s_limelightTracking,
+
     }
 
 

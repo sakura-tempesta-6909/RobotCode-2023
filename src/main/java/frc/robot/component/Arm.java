@@ -190,6 +190,11 @@ public class Arm implements Component {
         leftAndRightArmPidController.setReference(0, CANSparkMax.ControlType.kPosition);
     }
 
+    public void pidControlTargetTracking() {
+        leftAndRightArmPidController.setReference(State.tx, CANSparkMax.ControlType.kPosition);
+
+    }
+
     @Override
     public void autonomousInit() {
 
@@ -269,6 +274,9 @@ public class Arm implements Component {
                 break;
             case s_movetomiddle:
                 moveArmToMiddle();
+                break;
+            case s_limelightTracking:
+                pidControlTargetTracking();
                 break;
         }
     }
