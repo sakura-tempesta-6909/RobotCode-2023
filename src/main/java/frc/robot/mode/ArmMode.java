@@ -53,7 +53,12 @@ public class ArmMode extends Mode {
         State.Drive.zRotation = -driveController.getRightX();
         State.Drive.state = State.Drive.States.s_midDrive;
 
-        State.intakeExtensionState = IntakeExtensionState.s_closeIntake;
+        if (driveController.getAButton()) {
+            State.intakeExtensionState = IntakeExtensionState.s_openIntake;
+        } else {
+            State.intakeExtensionState = IntakeExtensionState.s_closeIntake;
+        }
+        
 
         if (driveController.getXButton()) {
             State.Arm.resetEncoder = true;
@@ -199,11 +204,12 @@ public class ArmMode extends Mode {
 
         boolean isInOuterBorder = length < Const.Arm.TargetPositionOuterLimit;
         boolean isOutInnerBorder = length > Const.Arm.TargetPositionInnerLimit;
+        boolean isInDepthLimit = Depth > -23;
 
-        SmartDashboard.putBoolean("InLimit", isInOuterBorder && isOutInnerBorder);
+        SmartDashboard.putBoolean("InLimit", isInOuterBorder && isOutInnerBorder && isInDepthLimit);
 
         // TODO XButtonでコントロールする時のターゲット座標の制限を考える
-        return isInOuterBorder && isOutInnerBorder;
+        return isInOuterBorder && isOutInnerBorder && isInDepthLimit;
     }
 
     /**
