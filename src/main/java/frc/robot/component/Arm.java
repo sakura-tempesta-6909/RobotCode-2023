@@ -62,6 +62,7 @@ public class Arm implements Component {
         leftAndRightArmPidController.setIMaxAccum(Const.Arm.IMax_MID, 0);
         moveLeftAndRightMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 7.5f);
         moveLeftAndRightMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, -7.5f);
+        jointMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, (float) calculateJointRotationFromAngle(-90));
 
     }
 
