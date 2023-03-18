@@ -201,7 +201,7 @@ public class Arm implements Component {
     public void pidControlTargetTracking() {
         State.Arm.targetMoveLeftAndRightAngle = State.tx + State.Arm.actualLeftAndRightAngle;
         if (!State.tv) {
-            moveRightArm(0.3);
+            moveRightArm(0.05);
         } else {
             leftAndRightArmPidController.setReference(calculateLeftAndRightRotationFromAngle(State.Arm.targetMoveLeftAndRightAngle), CANSparkMax.ControlType.kPosition);
         }
