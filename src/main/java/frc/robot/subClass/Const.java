@@ -40,6 +40,8 @@ public class Const {
         public static double BottomRollerOuttakeSpeed = -1.0;
         public static double BottomRollerIntakeSpeed = 1.0;
 
+        public static double MoveLeftAndRightMotor = 0.05;
+
     }
 
     public static final class Calculation {

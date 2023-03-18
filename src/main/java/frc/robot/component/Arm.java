@@ -277,10 +277,10 @@ public class Arm implements Component {
 
         switch (State.moveLeftAndRightArmState) {
             case s_moveRightMotor:
-                moveRightArm(State.Arm.moveLeftAndRightMotor);
+                moveRightArm(Const.Speeds.MoveLeftAndRightMotor);
                 break;
             case s_moveLeftMotor:
-                moveLeftArm(-State.Arm.moveLeftAndRightMotor);
+                moveLeftArm(-Const.Speeds.MoveLeftAndRightMotor);
                 break;
             case s_fixLeftAndRightMotor:
                 stopLeftAndRightArm();
