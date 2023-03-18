@@ -12,6 +12,7 @@ import frc.robot.subClass.Const;
 public class Drive implements Component {
     private final WPI_TalonSRX driveRightFront, driveLeftFront;
     private DifferentialDrive differentialDrive;
+    private final PIDController pidLimelightDrive;
     private final PIDController pidCameraDrive;
 
 
@@ -36,6 +37,7 @@ public class Drive implements Component {
         driveLeftBack.setInverted(false);
 
         differentialDrive = new DifferentialDrive(driveLeftFront, driveRightFront);
+        pidLimelightDrive = new PIDController(Const.Calculation.Limelight.PID.LimelightDriveP, Const.Calculation.Limelight.PID.LimelightDriveI, Const.Calculation.Limelight.PID.LimelightDriveD);
         pidCameraDrive = new PIDController(Const.Calculation.Camera.PID.CameraDriveP, Const.Calculation.Camera.PID.CameraDriveI, Const.Calculation.Camera.PID.CameraDriveD);
         driveRightFront.setNeutralMode(NeutralMode.Brake);
         driveLeftFront.setNeutralMode(NeutralMode.Brake);
@@ -48,6 +50,16 @@ public class Drive implements Component {
     public void arcadeDrive(double xSpeed, double zRotation) {
          differentialDrive.arcadeDrive(xSpeed, zRotation);
         differentialDrive.feed();
+    }
+
+    public void pidControlTargetTracking() {
+        double limelightTrackingZRotation = pidLimelightDrive.calculate(State.tx, 0);
+        if (limelightTrackingZRotation > 0.7) {
+            limelightTrackingZRotation = 0.7;
+        } else if (limelightTrackingZRotation < -0.7) {
+            limelightTrackingZRotation = -0.7;
+        }
+        arcadeDrive(State.limelightXSpeed * 0.7, -limelightTrackingZRotation);
     }
 
     public void pidControlApriltagTracking() {
@@ -161,7 +173,7 @@ public class Drive implements Component {
                 arcadeDrive(Const.Speeds.Neutral * State.Drive.xSpeed, Const.Speeds.Neutral * State.Drive.zRotation);
                 break;
             case s_limelightTracking:
-                arcadeDrive(State.limelightXSpeed * 0.7, Const.Speeds.Neutral * State.limelightTrackingZRotation);
+                pidControlTargetTracking();
                 break;
             case s_aprilTagTracking:
                 pidControlApriltagTracking();
@@ -173,4 +185,3 @@ public class Drive implements Component {
 
     }
 }
-

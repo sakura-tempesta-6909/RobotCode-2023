@@ -74,9 +74,9 @@ public class Const {
             public static final double FrontGoalToBackGoal = 43; // [cm]
 
             public static final class PID {
-//                public static final double LimelightDriveP = 0.08;
-//                public static final double LimelightDriveI = 0.02;
-//                public static final double LimelightDriveD = 0;
+                public static final double LimelightDriveP = 0.08;
+                public static final double LimelightDriveI = 0.02;
+                public static final double LimelightDriveD = 0;
             }
 
         }
