@@ -60,6 +60,8 @@ public class Arm implements Component {
         leftAndRightArmPidController.setI(Const.Arm.I_MID);
         leftAndRightArmPidController.setD(Const.Arm.D_MID);
         leftAndRightArmPidController.setIMaxAccum(Const.Arm.IMax_MID, 0);
+        moveLeftAndRightMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 7.5f);
+        moveLeftAndRightMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, -7.5f);
 
     }
 
