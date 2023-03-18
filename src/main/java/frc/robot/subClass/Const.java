@@ -259,7 +259,7 @@ public class Const {
 
 
         /** アームを左右に動かすモーターのPIDのP */
-        public static final double P_MID = 0.0;
+        public static final double P_MID = 0.02;
         /** アームを左右に動かすモーターのPIDのI */
         public static final double I_MID = 0.0;
         /** アームを左右に動かすモーターのPIDのD */
