@@ -170,6 +170,14 @@ public class Arm implements Component {
         return rotation / Const.Arm.LeftAndRightArmGearRatio * 360;
     }
 
+    /**
+     *度数から回転数への変換
+     * @param angle 変換する角度の度数
+     * @return 変換された回転数
+     */
+    public double calculateLeftAndRightRotationFromAngle(double angle) {
+        return angle * Const.Arm.LeftAndRightArmGearRatio / 360;
+    }
 
     public void moveRightArm(double moveLeftAndRightSpeed) {
         moveLeftAndRightMotor.set(moveLeftAndRightSpeed);
@@ -189,6 +197,16 @@ public class Arm implements Component {
      */
     public void moveArmToMiddle() {
         leftAndRightArmPidController.setReference(0, CANSparkMax.ControlType.kPosition);
+    }
+
+    public void pidControlTargetTracking() {
+        State.Arm.targetMoveLeftAndRightAngle = State.tx + State.Arm.actualLeftAndRightAngle;
+        if (!State.tv) {
+            moveRightArm(0.05);
+        } else {
+            leftAndRightArmPidController.setReference(calculateLeftAndRightRotationFromAngle(State.Arm.targetMoveLeftAndRightAngle), CANSparkMax.ControlType.kPosition);
+        }
+
     }
 
     @Override
@@ -220,7 +238,7 @@ public class Arm implements Component {
         State.Arm.actualDepth = Tools.calculateDepth(State.Arm.actualRootAngle, State.Arm.actualJointAngle);
 
         // armが左右に動いてる時の位置（角度）
-        State.Arm.leftAndRightPositionAngle = calculateLeftAndRightAngleFromRotation(leftAndRightArmEncoder.getPosition());
+        State.Arm.actualLeftAndRightAngle = calculateLeftAndRightAngleFromRotation(leftAndRightArmEncoder.getPosition());
 
         // feedforwardを計算する
         // TODO コーンを持っているかによってrequiredTorqueを変える
@@ -260,16 +278,19 @@ public class Arm implements Component {
 
         switch (State.moveLeftAndRightArmState) {
             case s_moveRightMotor:
-                moveRightArm(State.Arm.moveLeftAndRightMotor);
+                moveRightArm(Const.Speeds.MoveLeftAndRightMotor);
                 break;
             case s_moveLeftMotor:
-                moveLeftArm(-State.Arm.moveLeftAndRightMotor);
+                moveLeftArm(-Const.Speeds.MoveLeftAndRightMotor);
                 break;
             case s_fixLeftAndRightMotor:
                 stopLeftAndRightArm();
                 break;
             case s_movetomiddle:
                 moveArmToMiddle();
+                break;
+            case s_limelightTracking:
+                pidControlTargetTracking();
                 break;
         }
     }

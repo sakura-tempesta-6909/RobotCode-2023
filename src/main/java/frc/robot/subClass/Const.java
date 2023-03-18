@@ -40,6 +40,8 @@ public class Const {
         public static double BottomRollerOuttakeSpeed = -1.0;
         public static double BottomRollerIntakeSpeed = 1.0;
 
+        public static double MoveLeftAndRightMotor = 0.05;
+
     }
 
     public static final class Calculation {
@@ -52,10 +54,10 @@ public class Const {
             public static final double LimelightMountAngleDegrees = 34.5;
 
             /** Limelightの高さ */
-            public static final double LimelightLensHeight = 81.5; //  [cm]
+            public static final double LimelightLensHeight = 97; //  [cm]
 
             /** LimelightからArmまでの距離 */
-            public static final double LimelightToArm = 0; // [cm]
+            public static final double LimelightToArm = 10; // [cm]
 
 
             // ターゲットの情報
@@ -259,7 +261,7 @@ public class Const {
 
 
         /** アームを左右に動かすモーターのPIDのP */
-        public static final double P_MID = 0.0;
+        public static final double P_MID = 0.02;
         /** アームを左右に動かすモーターのPIDのI */
         public static final double I_MID = 0.0;
         /** アームを左右に動かすモーターのPIDのD */

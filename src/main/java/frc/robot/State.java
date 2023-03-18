@@ -2,10 +2,8 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.State.Hand.RotateState;
 import frc.robot.mode.*;
 import frc.robot.subClass.Const;
-import frc.robot.subClass.Util;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,6 +33,7 @@ public class State {
     /** 奥のターゲットまでの距離 */
     public static double limelightToBackGoal; // [cm]
     public static double tx;
+    public static boolean tv;
     public static double limelightXSpeed;
     public static boolean pidLimelightReset;
 
@@ -47,6 +46,7 @@ public class State {
     public static boolean isCompressorEnable;
     /** Autonomousの遷移の種類　[ A, B, C ] のいずれか */
     public static String autonomousPhaseTransType;
+
 
     public static class Hand {
         public static GrabHandState grabHandState;
@@ -158,6 +158,8 @@ public class State {
         /** 関節部分のNEOモーターに必要になるfeedforwardのspeed[-1, 1] */
         public static double jointMotorFeedforward;
 
+        public static double targetMoveLeftAndRightAngle;
+
         /**
          * アームがターゲット位置にいるかを判定
          * targetAngleとactualAngleの差がPIDAngleTolerance未満でtrue
@@ -171,7 +173,7 @@ public class State {
 
         public static double moveLeftAndRightMotor;
         /** アームを左右に動かす時の位置 */
-        public static double leftAndRightPositionAngle;
+        public static double actualLeftAndRightAngle;
 
         /** PIDコントローラーをリセットする（Integralの値をリセットする） */
         public static boolean resetPidController;
@@ -317,6 +319,8 @@ public class State {
         s_fixLeftAndRightMotor,
         /** アームを真ん中に動かす */
         s_movetomiddle,
+        s_limelightTracking,
+
     }
 
 

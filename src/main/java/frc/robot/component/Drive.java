@@ -149,9 +149,6 @@ public class Drive implements Component {
 
     @Override
     public void applyState() {
-        if (State.pidLimelightReset) {
-            pidLimelightDrive.reset();
-        }
         if (State.Drive.resetPosition) {
             driveRightFront.setSelectedSensorPosition(0.0);
             driveLeftFront.setSelectedSensorPosition(0.0);
@@ -160,6 +157,10 @@ public class Drive implements Component {
         if (State.Drive.resetPIDController) {
             driveLeftFront.setIntegralAccumulator(0.0);
             driveRightFront.setIntegralAccumulator(0.0);
+        }
+
+        if (State.pidLimelightReset) {
+            pidLimelightDrive.reset();
         }
 
         switch (State.Drive.state) {
@@ -188,4 +189,3 @@ public class Drive implements Component {
 
     }
 }
-

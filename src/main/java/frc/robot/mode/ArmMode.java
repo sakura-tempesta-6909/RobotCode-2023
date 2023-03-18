@@ -177,6 +177,11 @@ public class ArmMode extends Mode {
             State.Arm.targetDepth = Const.Arm.InitialDepth;
         }
 
+        if (driveController.getBButton()) {
+            State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_limelightTracking;
+            State.limelightXSpeed = -driveController.getLeftY();
+        }
+
         // ターゲット座標からターゲットの角度を計算する
         Map<String, Double> targetAngles = Tools.calculateAngles(State.Arm.targetDepth, State.Arm.targetHeight);
         Double target = targetAngles.get("RootAngle");
