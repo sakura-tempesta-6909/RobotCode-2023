@@ -200,7 +200,11 @@ public class Arm implements Component {
 
     public void pidControlTargetTracking() {
         State.Arm.targetMoveLeftAndRightAngle = State.tx + State.Arm.actualLeftAndRightAngle;
-        leftAndRightArmPidController.setReference(calculateLeftAndRightRotationFromAngle(State.Arm.targetMoveLeftAndRightAngle), CANSparkMax.ControlType.kPosition);
+        if (!State.tv) {
+            moveRightArm(0.3);
+        } else {
+            leftAndRightArmPidController.setReference(calculateLeftAndRightRotationFromAngle(State.Arm.targetMoveLeftAndRightAngle), CANSparkMax.ControlType.kPosition);
+        }
 
     }
 
@@ -285,7 +289,7 @@ public class Arm implements Component {
                 moveArmToMiddle();
                 break;
             case s_limelightTracking:
-                pidControlTargetTracking(State.targetValue);
+                pidControlTargetTracking();
                 break;
         }
     }

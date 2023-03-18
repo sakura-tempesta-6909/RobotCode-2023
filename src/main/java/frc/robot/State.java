@@ -33,6 +33,7 @@ public class State {
     /** 奥のターゲットまでの距離 */
     public static double limelightToBackGoal; // [cm]
     public static double tx;
+    public static boolean tv;
     public static double limelightXSpeed;
     public static boolean pidLimelightReset;
 

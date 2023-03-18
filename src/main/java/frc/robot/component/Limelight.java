@@ -43,7 +43,7 @@ public class Limelight implements Component {
         // limelightから見たターゲットの角度
         double targetOffsetAngle_Vertical = -tyEntry.getDouble(0.0);
         State.tx = txEntry.getDouble(0);
-
+        State.tv = tvEntry.getBoolean(false);
 
         //計算
         double angleToGoalDegrees = Const.Calculation.Limelight.LimelightMountAngleDegrees + targetOffsetAngle_Vertical;
