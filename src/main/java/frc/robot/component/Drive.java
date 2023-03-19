@@ -7,7 +7,9 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.State;
+import frc.robot.State.Drive.States;
 import frc.robot.subClass.Const;
+import frc.robot.subClass.Util;
 
 public class Drive implements Component {
     private final WPI_TalonSRX driveRightFront, driveLeftFront;
@@ -36,6 +38,9 @@ public class Drive implements Component {
         driveRightBack.setInverted(true);
         driveLeftFront.setInverted(false);
         driveLeftBack.setInverted(false);
+
+        driveLeftFront.setSensorPhase(true);
+        driveRightFront.setSensorPhase(true);
 
         differentialDrive = new DifferentialDrive(driveLeftFront, driveRightFront);
         pidLimelightDrive = new PIDController(Const.Calculation.Limelight.PID.LimelightDriveP, Const.Calculation.Limelight.PID.LimelightDriveI, Const.Calculation.Limelight.PID.LimelightDriveD);
@@ -144,6 +149,10 @@ public class Drive implements Component {
         State.Drive.rightMeter = getRightMeter();
         State.Drive.leftMeter = getLeftMeter();
         State.Drive.isAtTarget = isAtTarget();
+        
+        Util.sendConsole("TargetMeter", State.Drive.targetMeter);
+        Util.sendConsole("RDrivePosition", State.Drive.rightMeter);
+        Util.sendConsole("LDrivePosition", State.Drive.leftMeter);
     }
 
     @Override

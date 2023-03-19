@@ -142,6 +142,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void testPeriodic() {
+        System.out.println("AAAABBBB");
         externalSensors.readExternalSensors();
         State.StateReset();
         for (Component component : components) {
