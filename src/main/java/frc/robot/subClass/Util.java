@@ -40,5 +40,8 @@ public class Util {
         sendConsole("rootff", State.Arm.rootMotorFeedforward);
         sendConsole("jointff", State.Arm.jointMotorFeedforward);
         sendConsole("handAngle", State.Hand.actualHandAngle % 360);
+
+        sendConsole("driveLeftMeter", State.Drive.rightLength);
+        sendConsole("driveRightMeter", State.Drive.leftLength);
     }
 }

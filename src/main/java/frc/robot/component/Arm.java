@@ -4,6 +4,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.SoftLimitDirection;
+
 import frc.robot.State;
 import frc.robot.subClass.Const;
 import frc.robot.subClass.Tools;
@@ -62,7 +64,8 @@ public class Arm implements Component {
         leftAndRightArmPidController.setIMaxAccum(Const.Arm.IMax_MID, 0);
         moveLeftAndRightMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 7.5f);
         moveLeftAndRightMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, -7.5f);
-        jointMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, (float) calculateJointRotationFromAngle(-90));
+        // jointMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, (float) calculateJointRotationFromAngle(-90));
+
 
     }
 

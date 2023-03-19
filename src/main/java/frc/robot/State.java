@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.networktables.PubSub;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.mode.*;
@@ -189,6 +190,8 @@ public class State {
             public static double TopCube;
             public static double MiddleCube;
             public static double BottomCube;
+
+            public static double SubStation;
         }
 
 
@@ -233,13 +236,15 @@ public class State {
             isMoveLeftAndRightEncoderReset = false;
 
             // TODO どれくらい引くかを計測する
-            TargetDepth.TopCorn = 101.0 + 20;
-            TargetDepth.MiddleCorn = 58.0 + 20;
-            TargetDepth.BottomCorn = 30.0 + 20;
+            TargetDepth.TopCorn = 101.0 ;
+            TargetDepth.MiddleCorn = 58.0 ;
+            TargetDepth.BottomCorn = 30.0;
 
-            TargetDepth.TopCube = 101.0 + 20;
-            TargetDepth.MiddleCube = 58.0 + 20;
-            TargetDepth.BottomCube = 30.0 + 20;
+            TargetDepth.TopCube = 101.0 -10;
+            TargetDepth.MiddleCube = 58.0 + 0;
+            TargetDepth.BottomCube = 30.0 + 0;
+
+            TargetDepth.SubStation = 36 + 20;
         }
     }
 

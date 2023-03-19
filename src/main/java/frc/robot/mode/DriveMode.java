@@ -18,7 +18,7 @@ public class DriveMode extends Mode {
 
     @Override
     public void changeMode() {
-        if (driveController.getBackButtonPressed()) {
+        if (driveController.getBackButton()) {
             State.mode = State.Modes.k_arm;
         } else if (driveController.getLeftBumperPressed() && driveController.getPOV() == 225) {
             State.mode = State.Modes.k_config;
@@ -42,7 +42,7 @@ public class DriveMode extends Mode {
 
         //YボタンでBasicPositionに戻る, XボタンでゲームピースをつかんでbasicPositionに戻る
 
-        if (driveController.getXButtonPressed()) {
+        if (driveController.getRightBumperPressed()) {
             phase = GrabGamePiecePhase.Phase1;
         }
 
@@ -52,7 +52,7 @@ public class DriveMode extends Mode {
             State.Arm.targetDepth = Const.Arm.InitialDepth;
             State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
             State.Hand.rotateState = RotateState.s_turnHandBack;
-        } else if (driveController.getXButton()) {
+        } else if (driveController.getRightBumper()) {
             SmartDashboard.putString("intakePhase", phase.toString());
             switch (phase) {
                 case Phase1:
@@ -70,7 +70,7 @@ public class DriveMode extends Mode {
                 case Phase2:
                     State.Hand.grabHandState = GrabHandState.s_releaseHand;
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.Arm.targetHeight = ( Const.Arm.InitialHeight+Const.GrabGamePiecePhase.armIntakeHeight) / 2;
+                    State.Arm.targetHeight = ( Const.Arm.InitialHeight+Const.GrabGamePiecePhase.armIntakeHeight) / 2 +5;
                     State.Arm.targetDepth = Const.GrabGamePiecePhase.armIntakeDepth;
                     State.Hand.rotateState = RotateState.s_moveHandToSpecifiedAngle;
                     if (State.Arm.isAtTarget()) {
@@ -96,19 +96,38 @@ public class DriveMode extends Mode {
                     break;
                 case Phase5:
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+                    State.Hand.rotateState = RotateState.s_turnHandBack;
                     State.Arm.targetHeight = Const.Arm.InitialHeight;
                     State.Arm.targetDepth = Const.Arm.InitialDepth;
                     break;
+            }
+        } else {
+            if(joystick.getPOV() == 0) {
+                ArmMode.adjustArmPosition(0, Const.Arm.TargetModifyRatio);
+            } else if(joystick.getPOV() == 180) {
+                ArmMode.adjustArmPosition(0,  -Const.Arm.TargetModifyRatio);
+            } else  if(joystick.getPOV() == 90) {
+                ArmMode.adjustArmPosition(Const.Arm.TargetModifyRatio, 0);
+            } else if(joystick.getPOV() == 270) {
+                ArmMode.adjustArmPosition(- Const.Arm.TargetModifyRatio, 0);
+            } else  if(joystick.getPOV() == 45) {
+                ArmMode.adjustArmPosition(Const.Arm.TargetModifyRatio, Const.Arm.TargetModifyRatio);
+            } else if(joystick.getPOV() == 135) {
+                ArmMode.adjustArmPosition(Const.Arm.TargetModifyRatio, -Const.Arm.TargetModifyRatio);
+            }else  if(joystick.getPOV() == 225) {
+                ArmMode.adjustArmPosition(-Const.Arm.TargetModifyRatio, -Const.Arm.TargetModifyRatio);
+            } else if(joystick.getPOV() == 315) {
+                ArmMode.adjustArmPosition(-Const.Arm.TargetModifyRatio, Const.Arm.TargetModifyRatio);
             }
         }
 
         if (driveController.getAButton()) {
             State.Drive.state = State.Drive.States.s_aprilTagTracking;
             State.cameraXSpeed = -driveController.getLeftY();
-        } else if (driveController.getBButton()) {
-            State.Drive.state = State.Drive.States.s_limelightTracking;
-            State.limelightXSpeed = -driveController.getLeftY();
-        }
+        }// else if (driveController.getBButton()) {
+        //     State.Drive.state = State.Drive.States.s_limelightTracking;
+        //     State.limelightXSpeed = -driveController.getLeftY();
+        // }
 
         if (driveController.getBButtonPressed()) {
             State.pidLimelightReset = true;
@@ -134,6 +153,7 @@ public class DriveMode extends Mode {
             State.Arm.targetJointAngle = State.Arm.actualJointAngle;
         }
     }
+
 
     // ToDo  嘘なので直す
     enum GrabGamePiecePhase {

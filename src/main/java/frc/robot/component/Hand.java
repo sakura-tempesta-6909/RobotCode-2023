@@ -123,7 +123,7 @@ public class Hand implements Component{
 
     /** 手首の回転を止める */
     public void stopHand() {
-        controlHandRotation(Const.Speeds.Neutral);
+        // controlHandRotation(Const.Speeds.Neutral);
     }
     /**
      * actual angleを入力してその数に一番近い360の倍数の数を見つけて返す

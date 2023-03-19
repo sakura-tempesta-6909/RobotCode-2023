@@ -19,7 +19,7 @@ public class ArmMode extends Mode {
      * */
     @Override
     public void changeMode() {
-        if (driveController.getStartButtonPressed()){
+        if (driveController.getStartButton()){
             State.mode = State.Modes.k_drive;
         } else if (driveController.getLeftBumperPressed() && driveController.getPOV() == 225) {
             State.mode = State.Modes.k_config;
@@ -57,11 +57,6 @@ public class ArmMode extends Mode {
             State.intakeExtensionState = IntakeExtensionState.s_openIntake;
         } else {
             State.intakeExtensionState = IntakeExtensionState.s_closeIntake;
-        }
-        
-
-        if (driveController.getXButton()) {
-            State.Arm.resetEncoder = true;
         }
         
         final double joystickX = -1 * Tools.deadZoneProcess(joystick.getRawAxis(0));
@@ -148,6 +143,10 @@ public class ArmMode extends Mode {
             // 前のキューブのゴールまでアームを伸ばす
             State.Arm.targetHeight = Const.Calculation.Camera.BottomGoalHeight - Const.Arm.RootHeightFromGr;
             State.Arm.targetDepth = State.Arm.TargetDepth.BottomCube;
+        } else if (driveController.getPOV() == 90) {
+            State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+            State.Arm.targetHeight = -7;
+            State.Arm.targetDepth = State.Arm.TargetDepth.SubStation;
         } else {
             if(joystick.getPOV() == 0) {
                 adjustArmPosition(0, Const.Arm.TargetModifyRatio);
@@ -204,7 +203,7 @@ public class ArmMode extends Mode {
      *               この関数に座標の値域を記述する
      * @return 入力の座標が正しいか[boolean]
      */
-    private boolean isNewTargetPositionInLimit(double Height, double Depth) {
+    private static boolean isNewTargetPositionInLimit(double Height, double Depth) {
         double length = Math.sqrt(Math.pow(Height, 2) + Math.pow(Depth, 2));
 
         boolean isInOuterBorder = length < Const.Arm.TargetPositionOuterLimit;
@@ -259,15 +258,14 @@ public class ArmMode extends Mode {
         return flag;
     }
 
-    private void adjustArmPosition(double diffH, double diffD) {
+    static void adjustArmPosition(double diffH, double diffD) {
         State.Arm.state = State.Arm.States.s_adjustArmPosition;
-    // X方向にスティックを曲げてアームを上下に動かす, Y方向にスティックを倒してアームを前後に動かす
-    if (isNewTargetPositionInLimit(State.Arm.targetHeight +diffH, State.Arm.targetDepth + diffD)) {
-        State.Arm.targetHeight += diffH;
-        State.Arm.targetDepth += diffD;
-    } else {
-        State.Arm.targetHeight = State.Arm.actualHeight;
-        State.Arm.targetDepth = State.Arm.actualDepth;
-    }
+        if (isNewTargetPositionInLimit(State.Arm.targetHeight +diffH, State.Arm.targetDepth + diffD)) {
+            State.Arm.targetHeight += diffH;
+            State.Arm.targetDepth += diffD;
+        } else {
+            State.Arm.targetHeight = State.Arm.actualHeight;
+            State.Arm.targetDepth = State.Arm.actualDepth;
+        }
     }
 }

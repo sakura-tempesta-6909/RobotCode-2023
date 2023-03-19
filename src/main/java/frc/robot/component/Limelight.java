@@ -1,5 +1,6 @@
 package frc.robot.component;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -19,6 +20,8 @@ public class Limelight implements Component {
         txEntry = table.getEntry("ty");
         tyEntry = table.getEntry("tx");
         tvEntry = table.getEntry("tv");
+
+        CameraServer.startAutomaticCapture();
 
     }
 
@@ -44,6 +47,7 @@ public class Limelight implements Component {
         double targetOffsetAngle_Vertical = -tyEntry.getDouble(0.0);
         State.tx = txEntry.getDouble(0);
         State.tv = tvEntry.getBoolean(false);
+        
 
         //計算
         double angleToGoalDegrees = Const.Calculation.Limelight.LimelightMountAngleDegrees + targetOffsetAngle_Vertical;
