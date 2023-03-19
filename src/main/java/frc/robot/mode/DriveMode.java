@@ -1,11 +1,15 @@
 package frc.robot.mode;
 
+import java.util.Map;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.State;
 import frc.robot.State.GrabHandState;
 import frc.robot.State.MoveLeftAndRightArmState;
 import frc.robot.State.RollerState;
 import frc.robot.State.Hand.RotateState;
 import frc.robot.subClass.Const;
+import frc.robot.subClass.Tools;
 
 public class DriveMode extends Mode {
 
@@ -16,6 +20,8 @@ public class DriveMode extends Mode {
     public void changeMode() {
         if (driveController.getBackButtonPressed()) {
             State.mode = State.Modes.k_arm;
+        } else if (driveController.getLeftBumperPressed() && driveController.getPOV() == 0) {
+            State.mode = State.Modes.k_chargeStation;
         } else if (driveController.getLeftBumperPressed() && driveController.getPOV() == 225) {
             State.mode = State.Modes.k_config;
         }
@@ -23,8 +29,8 @@ public class DriveMode extends Mode {
 
     @Override
     public void changeState() {
-        State.Drive.xSpeed = -driveController.getLeftY();
-        State.Drive.zRotation = -driveController.getRightX();
+        State.Drive.xSpeed = -1 * driveController.getLeftY();
+        State.Drive.zRotation = -1 * driveController.getRightX();
         State.Drive.state = State.Drive.States.s_fastDrive;
 
         //RT: intake, LT: outtake
@@ -36,8 +42,7 @@ public class DriveMode extends Mode {
             State.intakeState = RollerState.s_stopRoller;
         }
 
-        //YボタンでBasicPositionに戻る, XボタンでゲームピースをつかんでbasicPositionに戻る
-
+        //joystickのButton2でBasicPositionに戻る, XボタンでゲームピースをつかんでBasicPositionに戻る（Phaseを実行）
         if (driveController.getXButtonPressed()) {
             phase = GrabGamePiecePhase.Phase1;
         }
@@ -47,36 +52,50 @@ public class DriveMode extends Mode {
             State.Arm.targetHeight = Const.Arm.InitialHeight;
             State.Arm.targetDepth = Const.Arm.InitialDepth;
             State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
-            State.rotateState = RotateState.s_turnHandBack;
+            State.Hand.rotateState = RotateState.s_turnHandBack;
         } else if (driveController.getXButton()) {
+            SmartDashboard.putString("intakePhase", phase.toString());
             switch (phase) {
                 case Phase1:
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
                     State.Arm.targetHeight = Const.Arm.InitialHeight;
                     State.Arm.targetDepth = Const.Arm.InitialDepth;
                     State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
-                    State.rotateState = RotateState.s_turnHandBack;
+                    State.Hand.rotateState = RotateState.s_turnHandBack;
+                    State.Hand.grabHandState = GrabHandState.s_releaseHand;
                     if (State.Arm.isAtTarget()) {
+                        State.Hand.targetAngle = State.Hand.actualHandAngle + 90;
                         phase = GrabGamePiecePhase.Phase2;
                     }
+                    break;
                 case Phase2:
                     State.Hand.grabHandState = GrabHandState.s_releaseHand;
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.Arm.targetHeight = Const.GrabGamePiecePhase.armIntakeHeight;
+                    State.Arm.targetHeight = ( Const.Arm.InitialHeight+Const.GrabGamePiecePhase.armIntakeHeight) / 2;
                     State.Arm.targetDepth = Const.GrabGamePiecePhase.armIntakeDepth;
+                    State.Hand.rotateState = RotateState.s_moveHandToSpecifiedAngle;
                     if (State.Arm.isAtTarget()) {
                         phase = GrabGamePiecePhase.Phase3;
                     }
                     break;
                 case Phase3:
-                    State.Hand.grabHandState = GrabHandState.s_grabHand;
-                    GrabCount++;
-                    if (GrabCount >= 20) {
+                    State.Hand.grabHandState = GrabHandState.s_releaseHand;
+                    State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+                    State.Arm.targetHeight = Const.GrabGamePiecePhase.armIntakeHeight;
+                    State.Arm.targetDepth = Const.GrabGamePiecePhase.armIntakeDepth;
+                    if (State.Arm.isAtTarget()) {
                         phase = GrabGamePiecePhase.Phase4;
-                        GrabCount = 0;
                     }
                     break;
                 case Phase4:
+                    State.Hand.grabHandState = GrabHandState.s_grabHand;
+                    GrabCount++;
+                    if (GrabCount >= 20) {
+                        phase = GrabGamePiecePhase.Phase5;
+                        GrabCount = 0;
+                    }
+                    break;
+                case Phase5:
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
                     State.Arm.targetHeight = Const.Arm.InitialHeight;
                     State.Arm.targetDepth = Const.Arm.InitialDepth;
@@ -100,8 +119,24 @@ public class DriveMode extends Mode {
         if (driveController.getLeftBumper() && driveController.getRightBumper()) {
             State.intakeExtensionState = State.IntakeExtensionState.s_closeIntake;
         }
+
+        // ターゲット座標からターゲットの角度を計算する
+        Map<String, Double> targetAngles = Tools.calculateAngles(State.Arm.targetDepth, State.Arm.targetHeight);
+        Double target = targetAngles.get("RootAngle");
+        if(target != null) {
+            State.Arm.targetRootAngle = target;
+        } else {
+            State.Arm.targetRootAngle = State.Arm.actualRootAngle;
+        }
+        target = targetAngles.get("JointAngle");
+        if(target != null) {
+            State.Arm.targetJointAngle = target;
+        } else {
+            State.Arm.targetJointAngle = State.Arm.actualJointAngle;
+        }
     }
 
+    // ToDo  嘘なので直す
     enum GrabGamePiecePhase {
         //basicPositionに移動する
         Phase1,
@@ -111,6 +146,7 @@ public class DriveMode extends Mode {
         Phase3,
         //アームを上げる
         Phase4,
+        Phase5
     }
 
 }

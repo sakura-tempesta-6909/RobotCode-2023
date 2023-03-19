@@ -20,6 +20,7 @@ public class Hand implements Component{
         handSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Const.Ports.HandSolenoid);
 
         handRotationMotor = new CANSparkMax(Const.Ports.HandRotationMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
+        handRotationMotor.setInverted(true);
 
         handRotationPidController = handRotationMotor.getPIDController();
         handRotationEncoder = handRotationMotor.getEncoder();
@@ -150,6 +151,10 @@ public class Hand implements Component{
     }
     @Override
     public void applyState() {
+        if(State.Hand.isResetHandPID) {
+            handRotationPidController.setIAccum(0);
+        }
+
         switch(State.Hand.grabHandState) {
             case s_grabHand:
                 grabHand();
