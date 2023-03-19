@@ -1,5 +1,7 @@
 package frc.robot.phase;
 
+import com.ctre.phoenixpro.Utils;
+import edu.wpi.first.math.util.Units;
 import frc.robot.State;
 import frc.robot.State.GrabHandState;
 import frc.robot.subClass.Const;
@@ -36,13 +38,13 @@ public class Autonomous {
         );
     }
 
-    public static PhaseTransition.Phase driveTo(double targetLength, String phaseName) {
+    public static PhaseTransition.Phase driveTo(double targetInch, String phaseName) {
         return new PhaseTransition.Phase(
                 () -> {
                     State.Drive.resetPIDController = true;
                     State.Drive.resetPosition = true;
                     State.Drive.state = State.Drive.States.s_pidDrive;
-                    State.Drive.targetLength = targetLength;
+                    State.Drive.targetMeter = Units.inchesToMeters(targetInch);
                 },
                 (double time) -> {
                     return State.Drive.isAtTarget;
@@ -68,7 +70,7 @@ public class Autonomous {
         );
 
         phaseTransitionC.registerPhase(
-
+                driveTo(39,"move straight to 1m")
         );
     }
 

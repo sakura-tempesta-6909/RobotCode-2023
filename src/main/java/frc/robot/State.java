@@ -2,10 +2,8 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.State.Hand.RotateState;
 import frc.robot.mode.*;
 import frc.robot.subClass.Const;
-import frc.robot.subClass.Util;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -85,9 +83,9 @@ public class State {
 
         public static States state;
         /** PID時のターゲット[cm] 正が前向き */
-        public static double targetLength;
+        public static double targetMeter;
         /** 左右のモーターの位置[cm] 正が前向き */
-        public static double rightLength, leftLength;
+        public static double rightMeter, leftMeter;
         /** ロボットが目標の位置にいるか */
         public static boolean isAtTarget;
         /** arcadeDrive用の引数 */
@@ -115,11 +113,11 @@ public class State {
         }
 
         public static void StatesInit() {
-            targetLength = 0.0;
+            targetMeter = 0.0;
             xSpeed = 0.0;
             zRotation = 0.0;
-            rightLength = 0.0;
-            leftLength = 0.0;
+            rightMeter = 0.0;
+            leftMeter = 0.0;
         }
 
         public static void StatesReset() {

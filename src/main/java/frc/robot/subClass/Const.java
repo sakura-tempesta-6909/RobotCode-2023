@@ -1,6 +1,7 @@
 package frc.robot.subClass;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
+import edu.wpi.first.math.util.Units;
 
 /** 常に決まっている数値(定数)をまとめたファイル */
 public class Const {
@@ -43,6 +44,17 @@ public class Const {
     }
 
     public static final class Calculation {
+
+        // DrivePoint
+        public static final double EncoderPointsPerRevolution = 4096;
+        // タイヤの直径を求める 単位はメートル
+        public static final double DriveWheelDiameter = Units.inchesToMeters(6.0);
+        // タイヤの円周のを求める　単位はメートル
+        public static final double DriveLengthPerWheelRevolution = DriveWheelDiameter * Math.PI;
+
+        // 1m進むとどのくらいPointが増えるか
+        public static final double DrivePointsPerDriveLength = EncoderPointsPerRevolution / DriveLengthPerWheelRevolution;
+
         public static final class Limelight {
             // limelightの情報
             /** Limelightの横の角度の最大 */
@@ -78,7 +90,15 @@ public class Const {
                 public static final double LimelightDriveI = 0.02;
                 public static final double LimelightDriveD = 0;
             }
+            // DrivePoint
+            public static final double EncoderPointsPerRevolution = 4096;
+            // タイヤの直径を求める 単位はメートル
+            public static final double DriveWheelDiameter = Units.inchesToMeters(6.0);
+            // タイヤの円周のを求める　単位はメートル
+            public static final double DriveLengthPerWheelRevolution = DriveWheelDiameter * Math.PI;
 
+            // 1m進むとどのくらいPointが増えるか
+            public static final double DrivePointsPerDriveLength = EncoderPointsPerRevolution / DriveLengthPerWheelRevolution;
         }
 
 
@@ -152,9 +172,8 @@ public class Const {
     public static final class Drive {
 
         public static final class PID {
-            public static final double LengthThreshold = 50;
+            public static final double ShortThreshold = 0.5;
             public static final double LossTolerance = 0.5;
-            public static final double PointsPerLength = 20;
             public static final int LongSlotIdx = 0;
             public static final int ShortSlotIdx = 1;
             public static final TalonSRXConfiguration DriveRight = new TalonSRXConfiguration();

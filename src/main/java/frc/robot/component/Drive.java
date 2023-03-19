@@ -71,46 +71,47 @@ public class Drive implements Component {
         arcadeDrive(State.cameraXSpeed * Const.Speeds.MidDrive, cameraZRotation);
     }
 
-    public double PointsToLength(double points) {
-        return points / Const.Drive.PID.PointsPerLength;
+    public double pointsToMeter(double points) {
+        return points / Const.Calculation.DrivePointsPerDriveLength;
     }
 
-    public double LengthToPoints(double length) {
-        return length * Const.Drive.PID.PointsPerLength;
+    public double meterToPoints(double meter) {
+        return meter * Const.Calculation.DrivePointsPerDriveLength;
     }
 
     /**
      * PIDでtargetLength分前後に動かす
      */
-    private void pidDrive() {
-        if (Math.abs(State.Drive.targetLength) < Const.Drive.PID.LengthThreshold) {
-            driveRightFront.selectProfileSlot(Const.Drive.PID.ShortSlotIdx, 0);
-            driveLeftFront.selectProfileSlot(Const.Drive.PID.ShortSlotIdx, 0);
-        } else {
+    public void pidDrive() {
+        if (Math.abs(State.Drive.targetMeter) > Const.Drive.PID.ShortThreshold) {
             driveRightFront.selectProfileSlot(Const.Drive.PID.LongSlotIdx, 0);
             driveLeftFront.selectProfileSlot(Const.Drive.PID.LongSlotIdx, 0);
+        } else {
+            driveRightFront.selectProfileSlot(Const.Drive.PID.ShortSlotIdx, 0);
+            driveLeftFront.selectProfileSlot(Const.Drive.PID.ShortSlotIdx, 0);
         }
-        driveRightFront.set(ControlMode.Position, LengthToPoints(State.Drive.targetLength));
-        driveLeftFront.set(ControlMode.Position, LengthToPoints(State.Drive.targetLength));
+        driveRightFront.set(ControlMode.Position, meterToPoints(State.Drive.targetMeter));
+        driveLeftFront.set(ControlMode.Position, meterToPoints(State.Drive.targetMeter));
     }
+
 
     /**
      * @return 右のモーターの進んだ距離を取得する[cm]
      */
-    public double getRightLength() {
-        return PointsToLength(driveRightFront.getSelectedSensorPosition());
+    public double getRightMeter() {
+        return pointsToMeter(driveRightFront.getSelectedSensorPosition());
     }
 
     /**
      * @return 左のモーターの進んだ距離を取得する[cm]
      */
-    public double getLeftLength() {
-        return PointsToLength(driveLeftFront.getSelectedSensorPosition());
+    public double getLeftMeter() {
+        return pointsToMeter(driveLeftFront.getSelectedSensorPosition());
     }
 
     private boolean isAtTarget() {
-        boolean isLeftMotorAtTarget = Math.abs(State.Drive.leftLength - State.Drive.targetLength) < Const.Drive.PID.LossTolerance;
-        boolean isRightMotorAtTarget = Math.abs(State.Drive.rightLength - State.Drive.targetLength) < Const.Drive.PID.LossTolerance;
+        boolean isLeftMotorAtTarget = Math.abs(State.Drive.leftMeter - State.Drive.targetMeter) < Const.Drive.PID.LossTolerance;
+        boolean isRightMotorAtTarget = Math.abs(State.Drive.rightMeter - State.Drive.targetMeter) < Const.Drive.PID.LossTolerance;
         return isRightMotorAtTarget && isLeftMotorAtTarget;
     }
 
@@ -140,9 +141,8 @@ public class Drive implements Component {
 
     @Override
     public void readSensors() {
-        State.Drive.rightLength = getRightLength();
-        State.Drive.leftLength = getLeftLength();
-
+        State.Drive.rightMeter = getRightMeter();
+        State.Drive.leftMeter = getLeftMeter();
         State.Drive.isAtTarget = isAtTarget();
     }
 
