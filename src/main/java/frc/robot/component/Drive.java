@@ -7,7 +7,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.State;
-import frc.robot.State.Drive.States;
 import frc.robot.subClass.Const;
 import frc.robot.subClass.Util;
 
@@ -45,14 +44,10 @@ public class Drive implements Component {
         differentialDrive = new DifferentialDrive(driveLeftFront, driveRightFront);
         pidLimelightDrive = new PIDController(Const.Calculation.Limelight.PID.LimelightDriveP, Const.Calculation.Limelight.PID.LimelightDriveI, Const.Calculation.Limelight.PID.LimelightDriveD);
         pidCameraDrive = new PIDController(Const.Calculation.Camera.PID.CameraDriveP, Const.Calculation.Camera.PID.CameraDriveI, Const.Calculation.Camera.PID.CameraDriveD);
-
-
-
-
     }
 
     public void arcadeDrive(double xSpeed, double zRotation) {
-         differentialDrive.arcadeDrive(xSpeed, zRotation);
+        differentialDrive.arcadeDrive(xSpeed, zRotation);
         differentialDrive.feed();
     }
 
@@ -76,18 +71,11 @@ public class Drive implements Component {
         arcadeDrive(State.cameraXSpeed * Const.Speeds.MidDrive, cameraZRotation);
     }
 
-    public double pointsToMeter(double points) {
-        return points / Const.Calculation.DrivePointsPerDriveLength;
-    }
-
-    public double meterToPoints(double meter) {
-        return meter * Const.Calculation.DrivePointsPerDriveLength;
-    }
 
     /**
      * PIDでtargetLength分前後に動かす
      */
-    public void pidDrive() {
+    public void drivePosition() {
         if (Math.abs(State.Drive.targetMeter) > Const.Drive.PID.ShortThreshold) {
             driveRightFront.selectProfileSlot(Const.Drive.PID.LongSlotIdx, 0);
             driveLeftFront.selectProfileSlot(Const.Drive.PID.LongSlotIdx, 0);
@@ -95,8 +83,8 @@ public class Drive implements Component {
             driveRightFront.selectProfileSlot(Const.Drive.PID.ShortSlotIdx, 0);
             driveLeftFront.selectProfileSlot(Const.Drive.PID.ShortSlotIdx, 0);
         }
-        driveRightFront.set(ControlMode.Position, meterToPoints(State.Drive.targetMeter));
-        driveLeftFront.set(ControlMode.Position, meterToPoints(State.Drive.targetMeter));
+        driveRightFront.set(ControlMode.Position, Util.Calculate.meterToDriveEncoderPoints(State.Drive.targetMeter));
+        driveLeftFront.set(ControlMode.Position, Util.Calculate.meterToDriveEncoderPoints(State.Drive.targetMeter));
     }
 
 
@@ -104,14 +92,14 @@ public class Drive implements Component {
      * @return 右のモーターの進んだ距離を取得する[cm]
      */
     public double getRightMeter() {
-        return pointsToMeter(driveRightFront.getSelectedSensorPosition());
+        return Util.Calculate.driveEncoderPointsToMeter(driveRightFront.getSelectedSensorPosition());
     }
 
     /**
      * @return 左のモーターの進んだ距離を取得する[cm]
      */
     public double getLeftMeter() {
-        return pointsToMeter(driveLeftFront.getSelectedSensorPosition());
+        return Util.Calculate.driveEncoderPointsToMeter(driveLeftFront.getSelectedSensorPosition());
     }
 
     private boolean isAtTarget() {
@@ -149,10 +137,6 @@ public class Drive implements Component {
         State.Drive.rightMeter = getRightMeter();
         State.Drive.leftMeter = getLeftMeter();
         State.Drive.isAtTarget = isAtTarget();
-        
-        Util.sendConsole("TargetMeter", State.Drive.targetMeter);
-        Util.sendConsole("RDrivePosition", State.Drive.rightMeter);
-        Util.sendConsole("LDrivePosition", State.Drive.leftMeter);
     }
 
     @Override
@@ -202,7 +186,7 @@ public class Drive implements Component {
                 pidControlApriltagTracking();
                 break;
             case s_pidDrive:
-                pidDrive();
+                drivePosition();
                 break;
         }
 

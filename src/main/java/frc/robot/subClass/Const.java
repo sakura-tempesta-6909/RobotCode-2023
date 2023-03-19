@@ -172,7 +172,9 @@ public class Const {
     public static final class Drive {
 
         public static final class PID {
+            /** 短い移動と判別するための閾値 [m] */
             public static final double ShortThreshold = 0.5;
+            /** 許容する誤差 [m] */
             public static final double LossTolerance = 0.5;
             public static final int LongSlotIdx = 0;
             public static final int ShortSlotIdx = 1;

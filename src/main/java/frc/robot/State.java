@@ -90,9 +90,8 @@ public class State {
         public static boolean isAtTarget;
         /** arcadeDrive用の引数 */
         public static double xSpeed, zRotation;
-
+        /** PID又はエンコーダーのポジションをリセットするか */
         public static boolean resetPIDController, resetPosition;
-
         public static boolean isMotorBrake;
 
         public enum States {
