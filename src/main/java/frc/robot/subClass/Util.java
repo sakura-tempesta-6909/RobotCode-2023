@@ -45,7 +45,6 @@ public class Util {
         sendConsole("controlMode", State.Arm.state.toString());
         sendConsole("rootff", State.Arm.rootMotorFeedforward);
         sendConsole("jointff", State.Arm.jointMotorFeedforward);
-<<<<<<< HEAD
 
 
         sendConsole("AngleX", State.aprilTagAngleWidth);
@@ -53,8 +52,7 @@ public class Util {
 
         sendConsole("LimeToMidCornDep", State.limelightToMiddleGoalDepth);
         sendConsole("LimeToTopCornDep", State.limelightToTopGoalDepth);
-=======
+
         sendConsole("handAngle", State.Hand.actualHandAngle % 360);
->>>>>>> master
     }
 }
