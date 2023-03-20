@@ -116,6 +116,7 @@ public class ArmMode extends Mode {
             State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
         }
 
+        boolean enableLimelight = true && driveController.getPOV() == 0;
         if (joystick.getRawAxis(3) < -0.8) {
             // 各アームの角度をコントローラーで変える -> もっとも直感的
             State.Arm.state = State.Arm.States.s_moveArmMotor;
@@ -124,11 +125,11 @@ public class ArmMode extends Mode {
         } else if (joystick.getRawButton(7)) {
             // 奥のコーンのゴールまでアームを伸ばす
             State.Arm.targetHeight = Const.Calculation.Limelight.TopGoalHeight - Const.Arm.RootHeightFromGr;
-            State.Arm.targetDepth = State.Arm.TargetDepth.TopCorn;
+            State.Arm.targetDepth = enableLimelight ? State.limelightToBackGoal - Const.Calculation.Limelight.LimelightToArm : State.Arm.TargetDepth.TopCorn;
         } else if (joystick.getRawButton(9)) {
             // 真ん中のコーンのゴールまでアームを伸ばす
             State.Arm.targetHeight = Const.Calculation.Limelight.MiddleGoalHeight - Const.Arm.RootHeightFromGr;
-            State.Arm.targetDepth = State.Arm.TargetDepth.MiddleCorn;
+            State.Arm.targetDepth =  enableLimelight ? State.limelightToFrontGoal - Const.Calculation.Limelight.LimelightToArm : State.Arm.TargetDepth.MiddleCorn;
         } else if (joystick.getRawButton(11)) {
             // 前のコーンのゴールまでアームを伸ばす
             State.Arm.targetHeight = Const.Calculation.Limelight.BottomGoalHeight - Const.Arm.RootHeightFromGr;
