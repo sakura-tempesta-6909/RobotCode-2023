@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 
 import frc.robot.State;
@@ -27,6 +28,7 @@ public class Arm implements Component {
         rootMotor = new CANSparkMax(Const.Arm.Ports.rootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
         jointMotor.setInverted(false);
         rootMotor.setInverted(true);
+        rootMotor.setIdleMode(IdleMode.kCoast);
 
         pidForRoot = rootMotor.getPIDController();
         pidForJoint = jointMotor.getPIDController();
@@ -35,7 +37,8 @@ public class Arm implements Component {
         pidForRoot.setI(Const.Arm.I_R);
         pidForRoot.setD(Const.Arm.D_R);
         pidForRoot.setIMaxAccum(Const.Arm.IMax_R, 0);
-        // pidForRoot.setOutputRange(-.5, .5, 0);
+        pidForRoot.setSmartMotionMaxVelocity(3000, 0);
+        // pidForRoot.setSmartMotionAccelStrategy(accelStrategy, slotID)
 
         
         pidForRoot.setP(Const.Arm.P_R_1, 1);
@@ -79,13 +82,17 @@ public class Arm implements Component {
      * s_moveArmToSpecifiedPositionで実行
      */
     private void pidControlArm(double targetRootAngle, double targetJointAngle) {
-        // feedforwardなし
-        pidForRoot.setReference(calculateRootRotationFromAngle(targetRootAngle), CANSparkMax.ControlType.kPosition);
-        // pidForJoint.setReference(calculateJointRotationFromAngle(targetJointAngle), CANSparkMax.ControlType.kPosition);
+        if(State.Arm.isAtTarget()) {
+            fixPositionWithFF();
+        } else {
+            // feedforwardなし
+            pidForRoot.setReference(calculateRootRotationFromAngle(targetRootAngle), CANSparkMax.ControlType.kPosition);
+            // pidForJoint.setReference(calculateJointRotationFromAngle(targetJointAngle), CANSparkMax.ControlType.kPosition);
 
-        // feedforwardあり
-        // pidForRoot.setReference(calculateRootRotationFromAngle(targetRootAngle), CANSparkMax.ControlType.kPosition, 0, State.Arm.rootMotorFeedforward, ArbFFUnits.kPercentOut);
-        pidForJoint.setReference(calculateJointRotationFromAngle(targetJointAngle), CANSparkMax.ControlType.kPosition, 0, State.Arm.jointMotorFeedforward, ArbFFUnits.kPercentOut);
+            // feedforwardあり
+            // pidForRoot.setReference(calculateRootRotationFromAngle(targetRootAngle), CANSparkMax.ControlType.kPosition, 0, State.Arm.rootMotorFeedforward, ArbFFUnits.kPercentOut);
+            pidForJoint.setReference(calculateJointRotationFromAngle(targetJointAngle), CANSparkMax.ControlType.kPosition, 0, State.Arm.jointMotorFeedforward, ArbFFUnits.kPercentOut);
+        }
     }
 
     /**
@@ -112,12 +119,12 @@ public class Arm implements Component {
      */
     private void rotationControlArm(double joint, double root) {
         // feedforwardなし
-        // rootMotor.set(root * Const.Arm.RootMotorMoveRatio);
-        // jointMotor.set(joint * Const.Arm.JointMotorMoveRatio);
+        rootMotor.set(root * Const.Arm.RootMotorMoveRatio);
+        jointMotor.set(joint * Const.Arm.JointMotorMoveRatio);
 
         // feedforwardあり
-        rootMotor.set(root * Const.Arm.RootMotorMoveRatio + State.Arm.rootMotorFeedforward);
-        jointMotor.set(joint * Const.Arm.JointMotorMoveRatio + State.Arm.jointMotorFeedforward);
+        // rootMotor.set(root * Const.Arm.RootMotorMoveRatio + State.Arm.rootMotorFeedforward);
+        // jointMotor.set(joint * Const.Arm.JointMotorMoveRatio + State.Arm.jointMotorFeedforward);
     }
 
     /**
@@ -257,6 +264,10 @@ public class Arm implements Component {
         State.Arm.rootMotorFeedforward = Tools.changeTorqueToMotorInput(rootRequiredTorque);
         
         SmartDashboard.putNumber("actual leftright angle", State.Arm.actualLeftAndRightAngle);
+
+        SmartDashboard.putNumber("cc", rootMotor.getOutputCurrent());
+        SmartDashboard.putNumber("tmp", rootMotor.getMotorTemperature());
+        SmartDashboard.putNumber("out", rootMotor.getAppliedOutput());
     }
 
     @Override
