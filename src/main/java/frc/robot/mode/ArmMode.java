@@ -21,6 +21,8 @@ public class ArmMode extends Mode {
     public void changeMode() {
         if (driveController.getStartButton()){
             State.mode = State.Modes.k_drive;
+        } else if (driveController.getLeftBumperPressed() && driveController.getPOV() == 0) {
+            State.mode = State.Modes.k_chargeStation;
         } else if (driveController.getLeftBumperPressed() && driveController.getPOV() == 225) {
             State.mode = State.Modes.k_config;
         }

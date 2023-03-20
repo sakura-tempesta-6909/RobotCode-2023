@@ -11,6 +11,7 @@ import frc.robot.subClass.Const;
 
 public class Drive implements Component {
     private final WPI_TalonSRX driveRightFront, driveLeftFront;
+    private final VictorSPX driveRightBack, driveLeftBack;
     private DifferentialDrive differentialDrive;
     private final PIDController pidLimelightDrive;
     private final PIDController pidCameraDrive;
@@ -19,8 +20,8 @@ public class Drive implements Component {
     public Drive() {
         driveRightFront = new WPI_TalonSRX(Const.Ports.DriveRightFront);
         driveLeftFront = new WPI_TalonSRX(Const.Ports.DriveLeftFront);
-        VictorSPX driveRightBack = new VictorSPX(Const.Ports.DriveRightBack);
-        VictorSPX driveLeftBack = new VictorSPX(Const.Ports.DriveLeftBack);
+        driveRightBack = new VictorSPX(Const.Ports.DriveRightBack);
+        driveLeftBack = new VictorSPX(Const.Ports.DriveLeftBack);
 
         driveRightBack.follow(driveRightFront);
         driveLeftBack.follow(driveLeftFront);
@@ -39,10 +40,8 @@ public class Drive implements Component {
         differentialDrive = new DifferentialDrive(driveLeftFront, driveRightFront);
         pidLimelightDrive = new PIDController(Const.Calculation.Limelight.PID.LimelightDriveP, Const.Calculation.Limelight.PID.LimelightDriveI, Const.Calculation.Limelight.PID.LimelightDriveD);
         pidCameraDrive = new PIDController(Const.Calculation.Camera.PID.CameraDriveP, Const.Calculation.Camera.PID.CameraDriveI, Const.Calculation.Camera.PID.CameraDriveD);
-        driveRightFront.setNeutralMode(NeutralMode.Brake);
-        driveLeftFront.setNeutralMode(NeutralMode.Brake);
-        driveRightBack.setNeutralMode(NeutralMode.Brake);
-        driveLeftBack.setNeutralMode(NeutralMode.Brake);
+
+
 
 
     }
@@ -161,6 +160,18 @@ public class Drive implements Component {
 
         if (State.pidLimelightReset) {
             pidLimelightDrive.reset();
+        }
+
+        if (State.Drive.isMotorBrake) {
+            driveRightFront.setNeutralMode(NeutralMode.Brake);
+            driveLeftFront.setNeutralMode(NeutralMode.Brake);
+            driveRightBack.setNeutralMode(NeutralMode.Brake);
+            driveLeftBack.setNeutralMode(NeutralMode.Brake);
+        } else {
+            driveRightFront.setNeutralMode(NeutralMode.Coast);
+            driveLeftFront.setNeutralMode(NeutralMode.Coast);
+            driveRightBack.setNeutralMode(NeutralMode.Coast);
+            driveLeftBack.setNeutralMode(NeutralMode.Coast);
         }
 
         switch (State.Drive.state) {

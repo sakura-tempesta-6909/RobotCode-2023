@@ -96,6 +96,8 @@ public class State {
 
         public static boolean resetPIDController, resetPosition;
 
+        public static boolean isMotorBrake;
+
         public enum States {
             /** ロボットの速度を速くする */
             s_fastDrive,
@@ -125,6 +127,7 @@ public class State {
             state = States.s_stopDrive;
             resetPosition = false;
             resetPIDController = false;
+            isMotorBrake = false;
             Arm.StatesReset();
             Hand.StateReset();
         }
@@ -335,7 +338,8 @@ public class State {
         k_drive(new DriveMode()),
         k_arm(new ArmMode()),
         k_test(new TestMode()),
-        k_config(new ConfigMode());
+        k_config(new ConfigMode()),
+        k_chargeStation(new ChargeStationMode());
 
         private final Mode mode;
 

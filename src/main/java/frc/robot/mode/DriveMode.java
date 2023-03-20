@@ -20,6 +20,8 @@ public class DriveMode extends Mode {
     public void changeMode() {
         if (driveController.getBackButton()) {
             State.mode = State.Modes.k_arm;
+        } else if (driveController.getLeftBumperPressed() && driveController.getPOV() == 0) {
+            State.mode = State.Modes.k_chargeStation;
         } else if (driveController.getLeftBumperPressed() && driveController.getPOV() == 225) {
             State.mode = State.Modes.k_config;
         }
@@ -27,8 +29,8 @@ public class DriveMode extends Mode {
 
     @Override
     public void changeState() {
-        State.Drive.xSpeed = -driveController.getLeftY();
-        State.Drive.zRotation = -driveController.getRightX();
+        State.Drive.xSpeed = -1 * driveController.getLeftY();
+        State.Drive.zRotation = -1 * driveController.getRightX();
         State.Drive.state = State.Drive.States.s_fastDrive;
 
         //RT: intake, LT: outtake
@@ -40,8 +42,7 @@ public class DriveMode extends Mode {
             State.intakeState = RollerState.s_stopRoller;
         }
 
-        //YボタンでBasicPositionに戻る, XボタンでゲームピースをつかんでbasicPositionに戻る
-
+        //YボタンでBasicPositionに戻る, RTボタンでゲームピースをつかんでbasicPositionに戻る
         if (driveController.getRightBumperPressed()) {
             phase = GrabGamePiecePhase.Phase1;
         }
@@ -153,7 +154,6 @@ public class DriveMode extends Mode {
             State.Arm.targetJointAngle = State.Arm.actualJointAngle;
         }
     }
-
 
     // ToDo  嘘なので直す
     enum GrabGamePiecePhase {
