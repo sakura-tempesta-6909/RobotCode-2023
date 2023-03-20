@@ -4,6 +4,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.SoftLimitDirection;
+
 import frc.robot.State;
 import frc.robot.subClass.Const;
 import frc.robot.subClass.Tools;
@@ -60,6 +62,10 @@ public class Arm implements Component {
         leftAndRightArmPidController.setI(Const.Arm.I_MID);
         leftAndRightArmPidController.setD(Const.Arm.D_MID);
         leftAndRightArmPidController.setIMaxAccum(Const.Arm.IMax_MID, 0);
+        moveLeftAndRightMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 7.5f);
+        moveLeftAndRightMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, -7.5f);
+        // jointMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, (float) calculateJointRotationFromAngle(-90));
+
 
     }
 
@@ -170,13 +176,21 @@ public class Arm implements Component {
         return rotation / Const.Arm.LeftAndRightArmGearRatio * 360;
     }
 
+    /**
+     *度数から回転数への変換
+     * @param angle 変換する角度の度数
+     * @return 変換された回転数
+     */
+    public double calculateLeftAndRightRotationFromAngle(double angle) {
+        return angle * Const.Arm.LeftAndRightArmGearRatio / 360;
+    }
 
     public void moveRightArm(double moveLeftAndRightSpeed) {
         moveLeftAndRightMotor.set(moveLeftAndRightSpeed);
     }
 
     public void moveLeftArm(double moveLeftAndRightSpeed) {
-        moveLeftAndRightMotor.set(-moveLeftAndRightSpeed);
+        moveLeftAndRightMotor.set(moveLeftAndRightSpeed);
     }
 
     public void stopLeftAndRightArm() {
@@ -189,6 +203,16 @@ public class Arm implements Component {
      */
     public void moveArmToMiddle() {
         leftAndRightArmPidController.setReference(0, CANSparkMax.ControlType.kPosition);
+    }
+
+    public void pidControlTargetTracking() {
+        State.Arm.targetMoveLeftAndRightAngle = State.tx + State.Arm.actualLeftAndRightAngle;
+        if (!State.tv) {
+            moveRightArm(0.05);
+        } else {
+            leftAndRightArmPidController.setReference(calculateLeftAndRightRotationFromAngle(State.Arm.targetMoveLeftAndRightAngle), CANSparkMax.ControlType.kPosition);
+        }
+
     }
 
     @Override
@@ -220,7 +244,7 @@ public class Arm implements Component {
         State.Arm.actualDepth = Tools.calculateDepth(State.Arm.actualRootAngle, State.Arm.actualJointAngle);
 
         // armが左右に動いてる時の位置（角度）
-        State.Arm.leftAndRightPositionAngle = calculateLeftAndRightAngleFromRotation(leftAndRightArmEncoder.getPosition());
+        State.Arm.actualLeftAndRightAngle = calculateLeftAndRightAngleFromRotation(leftAndRightArmEncoder.getPosition());
 
         // feedforwardを計算する
         // TODO コーンを持っているかによってrequiredTorqueを変える
@@ -243,6 +267,10 @@ public class Arm implements Component {
             rootMotor.getEncoder().setPosition(0.0);
         }
 
+        if (State.Arm.isMoveLeftAndRightEncoderReset) {
+            leftAndRightArmEncoder.setPosition(7.5);
+        }
+
         switch (State.Arm.state) {
             case s_moveArmToSpecifiedPosition:
                 pidControlArm(State.Arm.targetRootAngle, State.Arm.targetJointAngle);
@@ -260,16 +288,19 @@ public class Arm implements Component {
 
         switch (State.moveLeftAndRightArmState) {
             case s_moveRightMotor:
-                moveRightArm(State.Arm.moveLeftAndRightMotor);
+                moveRightArm(Const.Speeds.MoveLeftAndRightMotor);
                 break;
             case s_moveLeftMotor:
-                moveLeftArm(-State.Arm.moveLeftAndRightMotor);
+                moveLeftArm(-Const.Speeds.MoveLeftAndRightMotor);
                 break;
             case s_fixLeftAndRightMotor:
                 stopLeftAndRightArm();
                 break;
             case s_movetomiddle:
                 moveArmToMiddle();
+                break;
+            case s_limelightTracking:
+                pidControlTargetTracking();
                 break;
         }
     }

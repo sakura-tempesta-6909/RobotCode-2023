@@ -2,6 +2,8 @@ package frc.robot.subClass;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 
+import edu.wpi.first.math.util.Units;
+
 /** 常に決まっている数値(定数)をまとめたファイル */
 public class Const {
     public static final class Ports {
@@ -40,6 +42,8 @@ public class Const {
         public static double BottomRollerOuttakeSpeed = -1.0;
         public static double BottomRollerIntakeSpeed = 1.0;
 
+        public static double MoveLeftAndRightMotor = 0.05;
+
     }
 
     public static final class Calculation {
@@ -49,26 +53,26 @@ public class Const {
             public static final double LimelightMaxAngleWidth = 27;
 
             /** Limelightの角度(度数法) */
-            public static final double LimelightMountAngleDegrees = 34.5;
+            public static final double LimelightMountAngleDegrees = -9;
 
             /** Limelightの高さ */
-            public static final double LimelightLensHeight = 81.5; //  [cm]
+            public static final double LimelightLensHeight = 97; //  [cm]
 
             /** LimelightからArmまでの距離 */
-            public static final double LimelightToArm = 0; // [cm]
+            public static final double LimelightToArm = 10; // [cm]
 
 
             // ターゲットの情報
             /** ターゲットの高さ */
-            public static final double GoalHeight = 166; // [cm]
+            public static final double GoalHeight = 87-20-5; // [cm]
 
 
             /** 前のコーンのゴールの高さ[cm] -> ポールの先端（床の面）の高さは13[cm]*/
             public static final double BottomGoalHeight = 13 + 30;
             /** 真ん中のコーンのゴールの高さ[cm] -> ポールの先端の高さは87[cm]*/
-            public static final double MiddleGoalHeight = 87 + 30;
+            public static final double MiddleGoalHeight = 87 + 20;
             /** 奥のコーンのゴールの高さ[cm] -> ポールの先端の高さは117[cm]*/
-            public static final double TopGoalHeight = 117 + 30;
+            public static final double TopGoalHeight = 117 + 0;
 
             /** 手前から奥のターゲットまでの距離 */
             public static final double FrontGoalToBackGoal = 43; // [cm]
@@ -115,7 +119,7 @@ public class Const {
 
 
             /** 奥のキューブのゴールの高さ[cm] -> ゴールの面の高さは90[cm]*/
-            public static final double TopGoalHeight = 90 + 20;
+            public static final double TopGoalHeight = 90 + 30;
             /** 真ん中のキューブのゴールの高さ[cm] -> ゴールの面の高さは60[cm]*/
             public static final double MiddleGoalHeight = 60 + 20;
             /** 前のキューブのゴールの高さ[cm] -> ゴールの面の高さは13[cm]*/
@@ -154,7 +158,16 @@ public class Const {
         public static final class PID {
             public static final double LengthThreshold = 50;
             public static final double LossTolerance = 0.5;
-            public static final double PointsPerLength = 20;
+            // DrivePoint
+            public static final double EncoderPointsPerRevolution = 4096;
+            // タイヤの直径を求める 単位はメートル
+            public static final double DriveWheelDiameter = Units.inchesToMeters(6.0);
+            // タイヤの円周のを求める　単位はメートル
+            public static final double DriveLengthPerWheelRevolution = DriveWheelDiameter * Math.PI;
+
+            // 1m進むとどのくらいPointが増えるか
+            public static final double PointsPerLength = EncoderPointsPerRevolution / DriveLengthPerWheelRevolution;
+
             public static final int LongSlotIdx = 0;
             public static final int ShortSlotIdx = 1;
             public static final TalonSRXConfiguration DriveRight = new TalonSRXConfiguration();
@@ -217,7 +230,7 @@ public class Const {
         /** 根本NEOモーターのPIDのD */
         public static final double D_R = 0.00;
         /** 根本NEOモーターの積分値の最大 */
-        public static final double IMax_R = 10e4;
+        public static final double IMax_R = 10e5;
 
         /** 関節部分NEOモーターのPIDのP */
         public static final double P_J = 0.03 + 0.03;
@@ -259,7 +272,7 @@ public class Const {
 
 
         /** アームを左右に動かすモーターのPIDのP */
-        public static final double P_MID = 0.0;
+        public static final double P_MID = 0.02;
         /** アームを左右に動かすモーターのPIDのI */
         public static final double I_MID = 0.0;
         /** アームを左右に動かすモーターのPIDのD */
@@ -327,7 +340,7 @@ public class Const {
         /** インテイクのゲームピースを掴むアームの高さ */
         public static final double armIntakeHeight = -103;
         /** インテイクのゲームピースを掴むアームの奥行き */
-        public static final double armIntakeDepth = -6;
+        public static final double armIntakeDepth = -10;
     }
 
     public static void ConstInit() {
