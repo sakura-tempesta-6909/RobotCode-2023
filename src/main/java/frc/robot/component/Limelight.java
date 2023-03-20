@@ -45,13 +45,13 @@ public class Limelight implements Component {
         // limelightから受け取る情報
         // limelightから見たターゲットの角度
         double targetOffsetAngle_Vertical = -tyEntry.getDouble(0.0);
-        State.tx = txEntry.getDouble(0);
-        State.tv = tvEntry.getBoolean(false);
+        State.tx = -txEntry.getDouble(0);
+        State.tv = tvEntry.getDouble(0) != 0;
         
 
         //計算
         double angleToGoalDegrees = Const.Calculation.Limelight.LimelightMountAngleDegrees + targetOffsetAngle_Vertical;
-        double angleToGoalRadians = angleToGoalDegrees * (Math.toRadians(180.0));
+        double angleToGoalRadians =  Math.toRadians(angleToGoalDegrees);
         // ターゲットまでの距離
         State.limelightToFrontGoal = (Const.Calculation.Limelight.GoalHeight - Const.Calculation.Limelight.LimelightLensHeight) / Math.tan(angleToGoalRadians);
         State.armToGoal = State.limelightToFrontGoal - Const.Calculation.Limelight.LimelightToArm;
@@ -60,6 +60,7 @@ public class Limelight implements Component {
         SmartDashboard.putNumber("FrontGoal", State.limelightToFrontGoal);
         SmartDashboard.putNumber("ty", tyEntry.getDouble(0));
         SmartDashboard.putNumber("BackGoal", State.limelightToBackGoal);
+        SmartDashboard.putBoolean("Limelight",  tvEntry.getDouble(0) != 0);
 
     }
 

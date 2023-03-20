@@ -12,6 +12,8 @@ import frc.robot.subClass.Tools;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 
 public class Arm implements Component {
     private final CANSparkMax rootMotor, jointMotor;
@@ -33,7 +35,7 @@ public class Arm implements Component {
         pidForRoot.setI(Const.Arm.I_R);
         pidForRoot.setD(Const.Arm.D_R);
         pidForRoot.setIMaxAccum(Const.Arm.IMax_R, 0);
-        pidForRoot.setOutputRange(-.3, .3, 0);
+        // pidForRoot.setOutputRange(-.5, .5, 0);
 
         
         pidForRoot.setP(Const.Arm.P_R_1, 1);
@@ -62,6 +64,7 @@ public class Arm implements Component {
         leftAndRightArmPidController.setI(Const.Arm.I_MID);
         leftAndRightArmPidController.setD(Const.Arm.D_MID);
         leftAndRightArmPidController.setIMaxAccum(Const.Arm.IMax_MID, 0);
+        leftAndRightArmPidController.setOutputRange(-.1, .1);
         moveLeftAndRightMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 7.5f);
         moveLeftAndRightMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, -7.5f);
         // jointMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, (float) calculateJointRotationFromAngle(-90));
@@ -210,7 +213,7 @@ public class Arm implements Component {
         if (!State.tv) {
             moveRightArm(0.05);
         } else {
-            leftAndRightArmPidController.setReference(calculateLeftAndRightRotationFromAngle(State.Arm.targetMoveLeftAndRightAngle), CANSparkMax.ControlType.kPosition);
+            leftAndRightArmPidController.setReference(calculateLeftAndRightRotationFromAngle(-State.Arm.targetMoveLeftAndRightAngle), CANSparkMax.ControlType.kPosition);
         }
 
     }
@@ -252,6 +255,8 @@ public class Arm implements Component {
         double rootRequiredTorque = Tools.calculateRootMotorFeedforward(State.Arm.actualRootAngle, State.Arm.actualJointAngle) / Const.Arm.JointMotorGearRatio;
         State.Arm.jointMotorFeedforward = Tools.changeTorqueToMotorInput(jointRequiredTorque);
         State.Arm.rootMotorFeedforward = Tools.changeTorqueToMotorInput(rootRequiredTorque);
+        
+        SmartDashboard.putNumber("actual leftright angle", State.Arm.actualLeftAndRightAngle);
     }
 
     @Override

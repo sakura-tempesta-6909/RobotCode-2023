@@ -42,8 +42,12 @@ public class DriveMode extends Mode {
             State.intakeState = RollerState.s_stopRoller;
         }
 
-        //YボタンでBasicPositionに戻る, RTボタンでゲームピースをつかんでbasicPositionに戻る
-        if (driveController.getRightBumperPressed()) {
+        if (joystick.getRawButton(1)) {
+            // ハンドを開く
+            State.Hand.grabHandState = GrabHandState.s_releaseHand;
+        }
+
+        if (joystick.getRawButtonPressed(11) || joystick.getRawButtonPressed(12)) {
             phase = GrabGamePiecePhase.Phase1;
         }
 
@@ -53,7 +57,8 @@ public class DriveMode extends Mode {
             State.Arm.targetDepth = Const.Arm.InitialDepth;
             State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
             State.Hand.rotateState = RotateState.s_turnHandBack;
-        } else if (driveController.getRightBumper()) {
+        } else if (joystick.getRawButton(12)) {
+            // キューブ
             SmartDashboard.putString("intakePhase", phase.toString());
             switch (phase) {
                 case Phase1:
@@ -71,8 +76,8 @@ public class DriveMode extends Mode {
                 case Phase2:
                     State.Hand.grabHandState = GrabHandState.s_releaseHand;
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.Arm.targetHeight = ( Const.Arm.InitialHeight+Const.GrabGamePiecePhase.armIntakeHeight) / 2 +5;
-                    State.Arm.targetDepth = Const.GrabGamePiecePhase.armIntakeDepth;
+                    State.Arm.targetHeight = ( Const.Arm.InitialHeight+Const.GrabGamePiecePhase.armCubeIntakeHeight) / 2 +5;
+                    State.Arm.targetDepth = Const.GrabGamePiecePhase.armCubeIntakeDepth;
                     State.Hand.rotateState = RotateState.s_moveHandToSpecifiedAngle;
                     if (State.Arm.isAtTarget()) {
                         phase = GrabGamePiecePhase.Phase3;
@@ -81,8 +86,8 @@ public class DriveMode extends Mode {
                 case Phase3:
                     State.Hand.grabHandState = GrabHandState.s_releaseHand;
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.Arm.targetHeight = Const.GrabGamePiecePhase.armIntakeHeight;
-                    State.Arm.targetDepth = Const.GrabGamePiecePhase.armIntakeDepth;
+                    State.Arm.targetHeight = Const.GrabGamePiecePhase.armCubeIntakeHeight;
+                    State.Arm.targetDepth = Const.GrabGamePiecePhase.armCubeIntakeDepth;
                     if (State.Arm.isAtTarget()) {
                         phase = GrabGamePiecePhase.Phase4;
                     }
@@ -101,6 +106,83 @@ public class DriveMode extends Mode {
                     State.Arm.targetHeight = Const.Arm.InitialHeight;
                     State.Arm.targetDepth = Const.Arm.InitialDepth;
                     break;
+            }
+        } else if (joystick.getRawButton(11)) {
+            // コーン
+            SmartDashboard.putString("intakePhase", phase.toString());
+            switch (phase) {
+                case Phase1:
+                    State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+                    State.Arm.targetHeight = Const.Arm.InitialHeight;
+                    State.Arm.targetDepth = Const.Arm.InitialDepth;
+                    State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
+                    State.Hand.rotateState = RotateState.s_turnHandBack;
+                    State.Hand.grabHandState = GrabHandState.s_grabHand;
+                    if (State.Arm.isAtTarget()) {
+                        phase = GrabGamePiecePhase.Phase2;
+                    }
+                    break;
+                case Phase2:
+                    State.Hand.grabHandState = GrabHandState.s_grabHand;
+                    State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+                    State.Arm.targetHeight = (Const.GrabGamePiecePhase.armConeIntakeHeight+Const.Arm.InitialHeight)/2;
+                    State.Arm.targetDepth = Const.GrabGamePiecePhase.armConeIntakeDepth;
+                    if (State.Arm.isAtTarget()) {
+                        phase = GrabGamePiecePhase.Phase3;
+                    }
+                    break;
+                case Phase3:
+                    State.Hand.grabHandState = GrabHandState.s_grabHand;
+                    State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+                    State.Arm.targetHeight = Const.GrabGamePiecePhase.armConeIntakeRelesaseHeight;
+                    State.Arm.targetDepth = Const.GrabGamePiecePhase.armConeIntakeDepth;
+                    if (State.Arm.isAtTarget()) {
+                        phase = GrabGamePiecePhase.Phase4;
+                    }
+                    break;
+                case Phase4:
+                    State.Hand.grabHandState = GrabHandState.s_releaseHand;
+                    State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+                    State.Arm.targetHeight = Const.GrabGamePiecePhase.armConeIntakeRelesaseHeight;
+                    State.Arm.targetDepth = Const.GrabGamePiecePhase.armConeIntakeDepth;
+                    GrabCount++;
+                    if (GrabCount >= 50) {
+                        phase = GrabGamePiecePhase.Phase5;
+                        GrabCount = 0;
+                    }
+                    break;
+                case Phase5:
+                    State.Hand.grabHandState = GrabHandState.s_releaseHand;
+                    State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+                    State.Arm.targetHeight = Const.GrabGamePiecePhase.armConeIntakeHeight;
+                    State.Arm.targetDepth = Const.GrabGamePiecePhase.armConeIntakeDepth;
+                    if (State.Arm.isAtTarget()) {
+                        phase = GrabGamePiecePhase.Phase6;
+                    }
+                    break;
+                case Phase6:
+                    State.Hand.grabHandState = GrabHandState.s_grabHand;
+                    GrabCount++;
+                    if (GrabCount >= 20) {
+                        phase = GrabGamePiecePhase.Phase7;
+                        GrabCount = 0;
+                    }
+                    break;
+                case Phase7:
+                    State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+                    State.Hand.rotateState = RotateState.s_turnHandBack;
+                    State.Arm.targetHeight = Const.Arm.InitialHeight;
+                    State.Arm.targetDepth =  Const.GrabGamePiecePhase.armConeIntakeDepth;
+                    if (State.Arm.isAtTarget()) {
+                        phase = GrabGamePiecePhase.Phase8;
+                    }
+                    break;
+                case Phase8:
+                    State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+                    State.Hand.rotateState = RotateState.s_turnHandBack;
+                    State.Arm.targetHeight = Const.Arm.InitialHeight;
+                    State.Arm.targetDepth = Const.Arm.InitialDepth;
+                break;
             }
         } else {
             if(joystick.getPOV() == 0) {
@@ -125,10 +207,10 @@ public class DriveMode extends Mode {
         if (driveController.getAButton()) {
             State.Drive.state = State.Drive.States.s_aprilTagTracking;
             State.cameraXSpeed = -driveController.getLeftY();
-        }// else if (driveController.getBButton()) {
-        //     State.Drive.state = State.Drive.States.s_limelightTracking;
-        //     State.limelightXSpeed = -driveController.getLeftY();
-        // }
+        } else if (driveController.getBButton()) {
+            State.Drive.state = State.Drive.States.s_limelightTracking;
+            State.limelightXSpeed = -driveController.getLeftY();
+        }
 
         if (driveController.getBButtonPressed()) {
             State.pidLimelightReset = true;
@@ -165,7 +247,10 @@ public class DriveMode extends Mode {
         Phase3,
         //アームを上げる
         Phase4,
-        Phase5
+        Phase5,
+        Phase6,
+        Phase7,
+        Phase8,
     }
 
 }

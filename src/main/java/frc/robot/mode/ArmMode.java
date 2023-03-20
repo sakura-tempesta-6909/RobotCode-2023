@@ -133,7 +133,7 @@ public class ArmMode extends Mode {
             // 前のコーンのゴールまでアームを伸ばす
             State.Arm.targetHeight = Const.Calculation.Limelight.BottomGoalHeight - Const.Arm.RootHeightFromGr;
             State.Arm.targetDepth = State.Arm.TargetDepth.BottomCorn;
-        } else if (joystick.getRawButton(8)) {
+        } else if (joystick.getRawButton(8)) {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
             // 奥のキューブのゴールまでアームを伸ばす
             State.Arm.targetHeight = Const.Calculation.Camera.TopGoalHeight - Const.Arm.RootHeightFromGr;
             State.Arm.targetDepth = State.Arm.TargetDepth.TopCube;
@@ -180,7 +180,6 @@ public class ArmMode extends Mode {
 
         if (driveController.getBButton()) {
             State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_limelightTracking;
-            State.limelightXSpeed = -driveController.getLeftY();
         }
 
         // ターゲット座標からターゲットの角度を計算する

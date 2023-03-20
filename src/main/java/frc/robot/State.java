@@ -240,12 +240,12 @@ public class State {
 
             // TODO どれくらい引くかを計測する
             TargetDepth.TopCorn = 101.0 ;
-            TargetDepth.MiddleCorn = 58.0 ;
-            TargetDepth.BottomCorn = 30.0;
+            TargetDepth.MiddleCorn = 58.0 + 20;
+            TargetDepth.BottomCorn = 30.0 + 10;
 
             TargetDepth.TopCube = 101.0 -10;
-            TargetDepth.MiddleCube = 58.0 + 0;
-            TargetDepth.BottomCube = 30.0 + 0;
+            TargetDepth.MiddleCube = 58.0 + 20;
+            TargetDepth.BottomCube = 30.0 + 10;
 
             TargetDepth.SubStation = 36 + 20;
         }
