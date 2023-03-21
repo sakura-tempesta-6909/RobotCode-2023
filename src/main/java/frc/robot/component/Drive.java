@@ -52,7 +52,10 @@ public class Drive implements Component {
     }
 
     public void pidControlTargetTracking() {
-        double limelightTrackingZRotation = pidLimelightDrive.calculate(State.tx, 0);
+        double limelightTrackingZRotation = 0;
+        if(State.tv) {
+        limelightTrackingZRotation = pidLimelightDrive.calculate(State.tx, 0);
+        } 
         if (limelightTrackingZRotation > 0.7) {
             limelightTrackingZRotation = 0.7;
         } else if (limelightTrackingZRotation < -0.7) {
