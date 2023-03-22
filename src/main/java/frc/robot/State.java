@@ -89,14 +89,18 @@ public class State {
         public static double targetLength;
         /** 左右のモーターの位置[cm] 正が前向き */
         public static double rightLength, leftLength;
-        /** ロボットが目標の位置にいるか */
-        public static boolean isAtTarget;
         /** arcadeDrive用の引数 */
         public static double xSpeed, zRotation;
 
         public static boolean resetPIDController, resetPosition;
 
         public static boolean isMotorBrake;
+
+        public static boolean isAtTarget() {
+            boolean isLeftMotorAtTarget = Math.abs(State.Drive.leftLength - State.Drive.targetLength) < Const.Drive.PID.LossTolerance;
+            boolean isRightMotorAtTarget = Math.abs(State.Drive.rightLength - State.Drive.targetLength) < Const.Drive.PID.LossTolerance;
+            return isRightMotorAtTarget && isLeftMotorAtTarget;
+        }
 
         public enum States {
             /** ロボットの速度を速くする */

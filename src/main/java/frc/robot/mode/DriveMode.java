@@ -194,7 +194,7 @@ public class DriveMode extends Mode {
                 case Phase1:
                     State.Drive.targetLength = -1;
                     State.Drive.state = State.Drive.States.s_pidDrive;
-                    if (State.Arm.isAtTarget()){
+                    if (State.Drive.isAtTarget()){
                         phase = GrabGamePiecePhase.Phase2;
                     }
                     break;

@@ -111,11 +111,6 @@ public class Drive implements Component {
         return PointsToLength(driveLeftFront.getSelectedSensorPosition());
     }
 
-    private boolean isAtTarget() {
-        boolean isLeftMotorAtTarget = Math.abs(State.Drive.leftLength - State.Drive.targetLength) < Const.Drive.PID.LossTolerance;
-        boolean isRightMotorAtTarget = Math.abs(State.Drive.rightLength - State.Drive.targetLength) < Const.Drive.PID.LossTolerance;
-        return isRightMotorAtTarget && isLeftMotorAtTarget;
-    }
 
     @Override
     public void autonomousInit() {
@@ -146,7 +141,6 @@ public class Drive implements Component {
         State.Drive.rightLength = getRightLength();
         State.Drive.leftLength = getLeftLength();
 
-        State.Drive.isAtTarget = isAtTarget();
     }
 
     @Override
