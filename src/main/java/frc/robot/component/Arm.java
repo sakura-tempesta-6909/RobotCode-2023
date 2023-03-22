@@ -29,6 +29,7 @@ public class Arm implements Component {
         jointMotor.setInverted(false);
         rootMotor.setInverted(true);
         rootMotor.setIdleMode(IdleMode.kCoast);
+        jointMotor.setIdleMode(IdleMode.kBrake);
 
         pidForRoot = rootMotor.getPIDController();
         pidForJoint = jointMotor.getPIDController();
