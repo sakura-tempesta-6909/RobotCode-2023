@@ -60,13 +60,13 @@ public class Autonomous {
         phaseTransitionA.registerPhase(
                 moveArmTo(Const.Calculation.Camera.GoalHeight - Const.Arm.RootHeightFromGr, State.armToTag, "move arm to cube goal"),
                 releaseHand(2, "release cube"),
-                driveTo(3, "move target")
+                driveTo(3, "move to target")
         );
 
         phaseTransitionB.registerPhase(
                 moveArmTo(Const.Calculation.Limelight.GoalHeight - Const.Arm.RootHeightFromGr, State.armToGoal, "move arm to corn goal"),
                 releaseHand(2, "release corn"),
-                driveTo(3, "move target")
+                driveTo(3, "move to target")
         );
 
         phaseTransitionC.registerPhase(
