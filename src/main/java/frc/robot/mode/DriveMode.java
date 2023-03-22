@@ -51,6 +51,11 @@ public class DriveMode extends Mode {
             phase = GrabGamePiecePhase.Phase1;
         }
 
+        if (joystick.getRawButtonPressed(10)) {
+            State.Drive.resetPosition = true;
+            State.Drive.resetPIDController = true;
+        }
+
         if (joystick.getRawButton(2)) {
             State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
             State.Arm.targetHeight = Const.Arm.InitialHeight;
