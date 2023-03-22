@@ -47,7 +47,7 @@ public class DriveMode extends Mode {
             State.Hand.grabHandState = GrabHandState.s_releaseHand;
         }
 
-        if (joystick.getRawButtonPressed(11) || joystick.getRawButtonPressed(12)) {
+        if (joystick.getRawButtonPressed(11) || joystick.getRawButtonPressed(12) || joystick.getRawButtonPressed(10)) {
             phase = GrabGamePiecePhase.Phase1;
         }
 
@@ -184,7 +184,7 @@ public class DriveMode extends Mode {
                     State.Arm.targetDepth = Const.Arm.InitialDepth;
                     break;
             }
-        }else if (driveController.getPOV() == 90) {
+        }else if (joystick.getRawButton(10)) {
             switch (phase){
                 case Phase1:
                     State.Drive.targetLength = -1;
