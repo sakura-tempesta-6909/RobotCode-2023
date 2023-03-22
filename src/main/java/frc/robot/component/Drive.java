@@ -140,7 +140,6 @@ public class Drive implements Component {
     public void readSensors() {
         State.Drive.rightLength = getRightLength();
         State.Drive.leftLength = getLeftLength();
-
     }
 
     @Override

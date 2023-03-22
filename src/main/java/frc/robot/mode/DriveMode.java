@@ -219,7 +219,6 @@ public class DriveMode extends Mode {
                         phase = GrabGamePiecePhase.Phase4;
                     }
                     break;
-
             }
         } else {
             if(joystick.getPOV() == 0) {
