@@ -157,7 +157,7 @@ public class Const {
 
         public static final class PID {
             public static final double LengthThreshold = 50;
-            public static final double LossTolerance = 0.05;
+            public static final double LossTolerance = 0.1;
             // DrivePoint
             public static final double EncoderPointsPerRevolution = 4096;
             // タイヤの直径を求める 単位はメートル
