@@ -197,6 +197,7 @@ public class ArmMode extends Mode {
         } else {
             State.Arm.targetJointAngle = State.Arm.actualJointAngle;
         }
+
     }
 
     /**
