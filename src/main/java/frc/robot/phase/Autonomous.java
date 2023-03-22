@@ -60,7 +60,7 @@ public class Autonomous {
         phaseTransitionA.registerPhase(
                 moveArmTo(Const.Calculation.Camera.GoalHeight - Const.Arm.RootHeightFromGr, State.armToTag, "move arm to cube goal"),
                 releaseHand(2, "release cube"),
-                driveTo(3, "move to target")
+                driveTo(-3, "move to target")
         );
 
         phaseTransitionB.registerPhase(
