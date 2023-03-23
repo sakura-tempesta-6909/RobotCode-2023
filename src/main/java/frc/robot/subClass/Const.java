@@ -352,7 +352,7 @@ public class Const {
         public static final double armConeIntakeDepth = -11;
 
         public static final double armRelayPointHeight = 0;
-        public static final double armRelayPointDepth = 0;
+        public static final double armRelayPointDepth = 60;
 
         public static final double armSubStationHeight = -7;
         public static final double armSubStationDepth = 56;
