@@ -71,6 +71,7 @@ public class Arm implements Component {
         leftAndRightArmPidController.setOutputRange(-.1, .1);
         moveLeftAndRightMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 7.5f);
         moveLeftAndRightMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, -7.5f);
+        rootMotor.setSoftLimit(SoftLimitDirection.kForward, (float) calculateRootAngleFromRotation(90));
         // jointMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, (float) calculateJointRotationFromAngle(-90));
 
 
