@@ -2,10 +2,6 @@ package frc.robot.mode;
 
 import frc.robot.States.LimelightState;
 import frc.robot.States.State;
-import frc.robot.States.State.GrabHandState;
-import frc.robot.States.State.IntakeExtensionState;
-import frc.robot.States.State.MoveLeftAndRightArmState;
-import frc.robot.States.State.Hand.RotateState;
 import frc.robot.subClass.Const;
 import frc.robot.subClass.Tools;
 
@@ -59,9 +55,9 @@ public class ArmMode extends Mode {
         LimelightState.isLimelightOn = true;
 
         if (driveController.getAButton()) {
-            State.intakeExtensionState = IntakeExtensionState.s_openIntake;
+            State.intakeExtensionState = State.IntakeExtensionState.s_openIntake;
         } else {
-            State.intakeExtensionState = IntakeExtensionState.s_closeIntake;
+            State.intakeExtensionState = State.IntakeExtensionState.s_closeIntake;
         }
         
         final double joystickX = -1 * Tools.deadZoneProcess(joystick.getRawAxis(0));
@@ -74,32 +70,32 @@ public class ArmMode extends Mode {
 
         if (driveController.getRightBumper() && driveController.getLeftBumper()) {
             // アームの位置をリセット
-            State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
+            State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_movetomiddle;
         } else if (joystickZ > 0.5) {
             // アームを右に動かす
-            State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_moveRightMotor;
+            State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_moveRightMotor;
         } else if (joystickZ < -0.5) {
             // アームを左に動かす
-            State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_moveLeftMotor;
+            State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_moveLeftMotor;
         }
 
         if (joystick.getRawButton(1)) {
             // ハンドを開く
-            State.Hand.grabHandState = GrabHandState.s_releaseHand;
+            State.Hand.grabHandState = State.GrabHandState.s_releaseHand;
         }
 
         if (joystick.getRawButton(3)) {
             // 手首の位置をリセット
-            State.Hand.rotateState = RotateState.s_turnHandBack;
+            State.Hand.rotateState = State.Hand.RotateState.s_turnHandBack;
         } else if (joystick.getRawButton(5)) {
             // 手首が右回転する
-            State.Hand.rotateState = RotateState.s_rightRotateHand;
+            State.Hand.rotateState = State.Hand.RotateState.s_rightRotateHand;
         } else if (joystick.getRawButton(6)) {
             // 手首が左回転する
-            State.Hand.rotateState = RotateState.s_leftRotateHand;
+            State.Hand.rotateState = State.Hand.RotateState.s_leftRotateHand;
         } else if (joystick.getRawButton(4)) {
             // 手首が180°回転する
-            State.Hand.rotateState = RotateState.s_moveHandToSpecifiedAngle;
+            State.Hand.rotateState = State.Hand.RotateState.s_moveHandToSpecifiedAngle;
         }
         if (joystick.getRawButtonPressed(4)) {
             // 手首が180°回転する
@@ -176,14 +172,14 @@ public class ArmMode extends Mode {
         if (joystick.getRawButton(2)) {
             // すべてBasicPositionに戻る
             State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-            State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
-            State.Hand.rotateState = RotateState.s_turnHandBack;
+            State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_movetomiddle;
+            State.Hand.rotateState = State.Hand.RotateState.s_turnHandBack;
             State.Arm.targetHeight = Const.Arm.InitialHeight;
             State.Arm.targetDepth = Const.Arm.InitialDepth;
         }
 
         if (driveController.getBButton()) {
-            State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_limelightTracking;
+            State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_limelightTracking;
         }
 
         // ターゲット座標からターゲットの角度を計算する
