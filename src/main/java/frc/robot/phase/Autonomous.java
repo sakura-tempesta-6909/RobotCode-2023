@@ -69,7 +69,17 @@ public class Autonomous {
         );
 
         phaseTransitionC.registerPhase(
-
+                new PhaseTransition.Phase(
+                        () -> {
+                            State.Drive.resetPIDController = true;
+                            State.Drive.resetPosition = true;
+                            State.Drive.state = State.Drive.States.s_midDrive;
+                            State.Drive.xSpeed = -1;
+                        },
+                        (double time) -> {
+                            return time > 8;
+                        }
+                )
         );
     }
 
