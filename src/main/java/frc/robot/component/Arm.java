@@ -70,7 +70,7 @@ public class Arm implements Component {
         leftAndRightArmPidController.setOutputRange(-.1, .1);
         moveLeftAndRightMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 7.5f);
         moveLeftAndRightMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, -7.5f);
-        rootMotor.setSoftLimit(SoftLimitDirection.kForward, (float) calculateRootRotationFromAngle(90));
+        rootMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, (float) calculateRootRotationFromAngle(90));
         // jointMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, (float) calculateJointRotationFromAngle(-90));
 
 
@@ -153,7 +153,7 @@ public class Arm implements Component {
      * @return 根本アームの角度[deg]
      * */
     private double calculateRootAngleFromRotation(double rotation) {
-        return rotation / Const.Arm.RootMotorGearRatio * 360;
+        return rotation / Const.Arm.RootMotorGearRatio * 360 + Const.Arm.RootHomePosition;
     }
 
     /**
@@ -162,7 +162,7 @@ public class Arm implements Component {
      * @return 先端アームの角度[deg]
      * */
     private double calculateJointAngleFromRotation(double rotation) {
-        return rotation / Const.Arm.JointMotorGearRatio * 360;
+        return rotation / Const.Arm.JointMotorGearRatio * 360 + Const.Arm.JointHomePosition;
     }
 
     /**
@@ -171,7 +171,7 @@ public class Arm implements Component {
      * @return 根本NEOモーターの回転数
      * */
     private double calculateRootRotationFromAngle(double angle) {
-        return angle * Const.Arm.RootMotorGearRatio / 360;
+        return  (angle - Const.Arm.RootHomePosition) / 360 * Const.Arm.RootMotorGearRatio;
     }
 
     /**
@@ -180,7 +180,7 @@ public class Arm implements Component {
      * @return 関節部分NEOモーターの回転数
      * */
     private double calculateJointRotationFromAngle(double angle) {
-        return angle * Const.Arm.JointMotorGearRatio / 360;
+        return (angle - Const.Arm.JointHomePosition) / 360 * Const.Arm.JointMotorGearRatio;
     }
 
     private double calculateLeftAndRightAngleFromRotation(double rotation) {
@@ -192,7 +192,7 @@ public class Arm implements Component {
      * @param angle 変換する角度の度数
      * @return 変換された回転数
      */
-    public double calculateLeftAndRightRotationFromAngle(double angle) {
+    private double calculateLeftAndRightRotationFromAngle(double angle) {
         return angle * Const.Arm.LeftAndRightArmGearRatio / 360;
     }
 

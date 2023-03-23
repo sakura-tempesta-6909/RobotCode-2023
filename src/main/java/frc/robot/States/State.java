@@ -167,7 +167,6 @@ public class State {
 
         public static double targetMoveLeftAndRightAngle;
         public static boolean isMoveLeftAndRightEncoderReset;
-
         /**
          * アームがターゲット位置にいるかを判定
          * targetAngleとactualAngleの差がPIDAngleTolerance未満でtrue

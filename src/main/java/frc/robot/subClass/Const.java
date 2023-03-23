@@ -200,8 +200,8 @@ public class Const {
     public static final class Arm {
 
         public static final class Ports {
-            public static final int jointMotor = 1;
-            public static final int rootMotor = 2;
+            public static final int jointMotor = 2;
+            public static final int rootMotor = 1;
         }
 
         /** 根本アームの長さ[cm] */
@@ -321,6 +321,8 @@ public class Const {
         /** アームの根本の高さ[cm]（地面から） -> 座標の原点の高さ */
         public static final double RootHeightFromGr = 127;
 
+        public static final double RootHomePosition = -87.5;
+        public static final double JointHomePosition = -52.9;
     }
 
     public static final class Hand {
@@ -338,16 +340,16 @@ public class Const {
 
     public static final class GrabGamePiecePhase {
         /**　キューブを掴むアームの高さ */
-        public static final double armCubeIntakeHeight = -103;
+        public static final double armCubeIntakeHeight = -100;
         /** キューブを掴むアームの奥行き */
-        public static final double armCubeIntakeDepth = -10;
+        public static final double armCubeIntakeDepth = -8;
 
         /**　コーンを掴むアームの高さ */
           public static final double armConeIntakeRelesaseHeight = -88;
         /**　コーンを掴むアームの高さ */
         public static final double armConeIntakeHeight = -100;
         /** コーンを掴むアームの奥行き */
-        public static final double armConeIntakeDepth = -12;
+        public static final double armConeIntakeDepth = -11;
 
         public static final double armSubStationHeight = -7;
         public static final double getArmSubStationDepth = 56;
