@@ -21,6 +21,8 @@ public class ConfigMode extends Mode{
 
         if (driveController.getYButton()) {
             State.isCompressorEnable = false;
+        } else if (driveController.getAButton()) {
+            State.isCompressorEnable = true;
         }
     }
 }

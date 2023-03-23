@@ -101,11 +101,6 @@ public class DriveMode extends Mode {
             State.intakeExtensionState = State.IntakeExtensionState.s_closeIntake;
         }
 
-        if (driveController.getYButton() && driveController.getPOV() == 90) {
-            State.isCompressorEnable = false;
-        } else if (driveController.getYButton() && driveController.getPOV() == 270) {
-            State.isCompressorEnable = false;
-        }
     }
 
     enum GrabGamePiecePhase {
