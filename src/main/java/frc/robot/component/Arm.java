@@ -171,8 +171,8 @@ public class Arm implements Component {
      * @return 根本NEOモーターの回転数
      * */
     private double calculateRootRotationFromAngle(double angle) {
-        double a = 0 ,b = 0;
-        angle = (-Const.Arm.RootHomePosition + b) / a;
+        double a = 0 ;
+        angle = (-State.Arm.actualRootAngle + Const.Arm.RootHomePosition) / a;
         return angle * Const.Arm.RootMotorGearRatio / 360;
     }
 
