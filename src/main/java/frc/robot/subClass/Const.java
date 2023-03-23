@@ -64,7 +64,7 @@ public class Const {
 
             // ターゲットの情報
             /** ターゲットの高さ */
-            public static final double GoalHeight = 60; // [cm]
+            public static final double GoalHeight = 87 - 20 - 5; // [cm]
 
 
             /** 前のコーンのゴールの高さ[cm] -> ポールの先端（床の面）の高さは13[cm]*/
