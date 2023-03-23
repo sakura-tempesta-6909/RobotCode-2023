@@ -53,10 +53,10 @@ public class Const {
             public static final double LimelightMaxAngleWidth = 27;
 
             /** Limelightの角度(度数法) */
-            public static final double LimelightMountAngleDegrees = -8;
+            public static final double LimelightMountAngleDegrees = -9;
 
             /** Limelightの高さ */
-            public static final double LimelightLensHeight = 97; //  [cm]
+            public static final double LimelightLensHeight = 97.5; //  [cm]
 
             /** LimelightからArmまでの距離 */
             public static final double LimelightToArm = 10; // [cm]
@@ -64,7 +64,7 @@ public class Const {
 
             // ターゲットの情報
             /** ターゲットの高さ */
-            public static final double GoalHeight = 87-20-5; // [cm]
+            public static final double GoalHeight = 60; // [cm]
 
 
             /** 前のコーンのゴールの高さ[cm] -> ポールの先端（床の面）の高さは13[cm]*/
@@ -107,10 +107,10 @@ public class Const {
             public static final double CameraMountAngleDegrees = 0;
 
             /** Cameraの高さ */
-            public static final double CameraLensHeight = 42.5; // [cm]
+            public static final double CameraLensHeight = 99; // [cm]
 
             /** CameraからArmまでの距離 */
-            public static final double CameraToArm = 0; // [cm]
+            public static final double CameraToArm = 10; // [cm]
 
 
             //ターゲットの情報
