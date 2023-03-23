@@ -1,7 +1,6 @@
 package frc.robot.phase;
 
 import frc.robot.States.State;
-import frc.robot.States.State.GrabHandState;
 import frc.robot.subClass.Const;
 
 public class Autonomous {
@@ -27,7 +26,7 @@ public class Autonomous {
     public static PhaseTransition.Phase releaseHand(double waiter, String phaseName) {
         return new PhaseTransition.Phase(
                 () -> {
-                    State.Hand.grabHandState = GrabHandState.s_releaseHand;
+                    State.Hand.grabHandState = State.GrabHandState.s_releaseHand;
                 },
                 (double time) -> {
                     return time > waiter;
