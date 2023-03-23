@@ -147,13 +147,12 @@ public class Arm implements Component {
         jointMotor.set(State.Arm.jointMotorFeedforward);
     }
 
-// **
-//         * 根本NEOモーターの回転数から根本アームの角度を計算（根本の回転数 * 360）
-//            * @param rotation encoderから取得したPosition（モーターの回転数）
-//            * @return 根本アームの角度[deg]
-//            * */
+    /**
+     * 根本NEOモーターの回転数から根本アームの角度を計算（根本の回転数 * 360）
+     * @param rotation encoderから取得したPosition（モーターの回転数）
+     * @return 根本アームの角度[deg]
+     * */
     private double calculateRootAngleFromRotation(double rotation) {
-//        System.out.println("rotation" + rotation);
         return rotation / Const.Arm.RootMotorGearRatio * 360 + Const.Arm.RootHomePosition;
     }
 
@@ -171,8 +170,7 @@ public class Arm implements Component {
      * @param angle 根本アームの角度[deg]
      * @return 根本NEOモーターの回転数
      * */
-    public double calculateRootRotationFromAngle(double angle) {
-//        System.out.println("angle"+angle);
+    private double calculateRootRotationFromAngle(double angle) {
         return  (angle - Const.Arm.RootHomePosition) / 360 * Const.Arm.RootMotorGearRatio;
     }
 
@@ -182,8 +180,7 @@ public class Arm implements Component {
      * @return 関節部分NEOモーターの回転数
      * */
     private double calculateJointRotationFromAngle(double angle) {
-        double rotation = (angle - Const.Arm.JointHomePosition) / 360 / Const.Arm.JointMotorGearRatio;
-        return rotation;
+        return (angle - Const.Arm.JointHomePosition) / 360 * Const.Arm.JointMotorGearRatio;
     }
 
     private double calculateLeftAndRightAngleFromRotation(double rotation) {
