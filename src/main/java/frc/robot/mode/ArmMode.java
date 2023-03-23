@@ -1,10 +1,11 @@
 package frc.robot.mode;
 
-import frc.robot.State;
-import frc.robot.State.GrabHandState;
-import frc.robot.State.IntakeExtensionState;
-import frc.robot.State.MoveLeftAndRightArmState;
-import frc.robot.State.Hand.RotateState;
+import frc.robot.States.LimelightState;
+import frc.robot.States.State;
+import frc.robot.States.State.GrabHandState;
+import frc.robot.States.State.IntakeExtensionState;
+import frc.robot.States.State.MoveLeftAndRightArmState;
+import frc.robot.States.State.Hand.RotateState;
 import frc.robot.subClass.Const;
 import frc.robot.subClass.Tools;
 
@@ -54,6 +55,8 @@ public class ArmMode extends Mode {
         State.Drive.xSpeed = -driveController.getLeftY();
         State.Drive.zRotation = -driveController.getRightX();
         State.Drive.state = State.Drive.States.s_midDrive;
+
+        LimelightState.isLimelightOn = true;
 
         if (driveController.getAButton()) {
             State.intakeExtensionState = IntakeExtensionState.s_openIntake;

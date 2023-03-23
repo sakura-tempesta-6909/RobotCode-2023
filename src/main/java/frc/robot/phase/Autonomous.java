@@ -1,7 +1,7 @@
 package frc.robot.phase;
 
-import frc.robot.State;
-import frc.robot.State.GrabHandState;
+import frc.robot.States.State;
+import frc.robot.States.State.GrabHandState;
 import frc.robot.subClass.Const;
 
 public class Autonomous {

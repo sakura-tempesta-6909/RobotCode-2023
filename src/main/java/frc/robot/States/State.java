@@ -1,6 +1,5 @@
-package frc.robot;
+package frc.robot.States;
 
-import edu.wpi.first.networktables.PubSub;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.mode.*;
@@ -235,6 +234,7 @@ public class State {
             moveLeftAndRightMotor = 0.0;
         }
 
+
         public static void StatesReset() {
             state = Arm.States.s_fixArmPosition;
             resetPidController = false;
@@ -274,6 +274,7 @@ public class State {
         Drive.StatesInit();
         Arm.StatesInit();
         Hand.StateInit();
+        LimelightState.StateInit();
 
         voltage = new HashMap<>();
 
@@ -297,6 +298,7 @@ public class State {
         Drive.StatesReset();
         Arm.StatesReset();
         Hand.StateReset();
+        LimelightState.StateReset();
     }
 
     public enum RollerState {
