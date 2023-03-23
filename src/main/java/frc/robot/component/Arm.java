@@ -170,7 +170,7 @@ public class Arm implements Component {
      * @param angle 根本アームの角度[deg]
      * @return 根本NEOモーターの回転数
      * */
-    public double calculateRootRotationFromAngle(double angle) {
+    private double calculateRootRotationFromAngle(double angle) {
         double rotation = (-angle + Const.Arm.RootHomePosition) / 360 / Const.Arm.RootMotorGearRatio;
         return rotation;
     }
@@ -193,7 +193,7 @@ public class Arm implements Component {
      * @param angle 変換する角度の度数
      * @return 変換された回転数
      */
-    public double calculateLeftAndRightRotationFromAngle(double angle) {
+    private double calculateLeftAndRightRotationFromAngle(double angle) {
         return angle * Const.Arm.LeftAndRightArmGearRatio / 360;
     }
 
