@@ -3,11 +3,12 @@ package frc.robot.mode;
 import java.util.Map;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.State;
-import frc.robot.State.GrabHandState;
-import frc.robot.State.MoveLeftAndRightArmState;
-import frc.robot.State.RollerState;
-import frc.robot.State.Hand.RotateState;
+import frc.robot.States.LimelightState;
+import frc.robot.States.State;
+import frc.robot.States.State.GrabHandState;
+import frc.robot.States.State.MoveLeftAndRightArmState;
+import frc.robot.States.State.RollerState;
+import frc.robot.States.State.Hand.RotateState;
 import frc.robot.subClass.Const;
 import frc.robot.subClass.Tools;
 
@@ -241,9 +242,11 @@ public class DriveMode extends Mode {
         }
 
         if (driveController.getAButton()) {
+            LimelightState.isLimelightOn = true;
             State.Drive.state = State.Drive.States.s_aprilTagTracking;
             State.cameraXSpeed = -driveController.getLeftY();
         } else if (driveController.getBButton()) {
+            LimelightState.isLimelightOn = true;
             State.Drive.state = State.Drive.States.s_limelightTracking;
             State.limelightXSpeed = -driveController.getLeftY();
         }

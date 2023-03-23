@@ -5,21 +5,20 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.State;
+import frc.robot.States.LimelightState;
+import frc.robot.States.State;
 import frc.robot.subClass.Const;
 
 
 public class Limelight implements Component {
-
-    private final NetworkTable table;
     private final NetworkTableEntry txEntry, tyEntry, tvEntry;
 
     public Limelight() {
-        table = NetworkTableInstance.getDefault().getTable("limelight");
+        LimelightState.table = NetworkTableInstance.getDefault().getTable("limelight");
         // limelightを縦向きにしたのでtxとtyは逆
-        txEntry = table.getEntry("ty");
-        tyEntry = table.getEntry("tx");
-        tvEntry = table.getEntry("tv");
+        txEntry = LimelightState.table.getEntry("ty");
+        tyEntry = LimelightState.table.getEntry("tx");
+        tvEntry = LimelightState.table.getEntry("tv");
 
         CameraServer.startAutomaticCapture();
 
@@ -65,6 +64,11 @@ public class Limelight implements Component {
     }
 
     public void applyState() {
+        if (LimelightState.isLimelightOn) {
+            LimelightState.table.getEntry("ledMode").setNumber(3);
+        } else {
+            LimelightState.table.getEntry("ledMode").setNumber(1);
+        }
 
     }
 

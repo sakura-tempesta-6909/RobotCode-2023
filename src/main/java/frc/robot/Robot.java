@@ -4,6 +4,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
+import frc.robot.States.State;
 import frc.robot.component.*;
 import frc.robot.phase.Autonomous;
 import frc.robot.subClass.Const;

@@ -1,6 +1,6 @@
 package frc.robot.subClass;
 
-import frc.robot.State;
+import frc.robot.States.State;
 
 import java.util.HashMap;
 import java.util.Map;

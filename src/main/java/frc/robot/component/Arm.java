@@ -5,9 +5,8 @@ import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMax.SoftLimitDirection;
 
-import frc.robot.State;
+import frc.robot.States.State;
 import frc.robot.subClass.Const;
 import frc.robot.subClass.Tools;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
