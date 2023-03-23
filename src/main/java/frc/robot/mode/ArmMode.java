@@ -13,6 +13,7 @@ import java.util.Map;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ArmMode extends Mode {
+    private static DriveMode.GrabGamePiecePhase phase = DriveMode.GrabGamePiecePhase.Phase1;
 
     /**
      * StartButton - DriveModeに
@@ -170,6 +171,40 @@ public class ArmMode extends Mode {
             }
         }
 
+        if (joystick.getRawAxis(3) < -0.8) {
+            State.Arm.state = State.Arm.States.s_moveArmMotor;
+            State.Arm.rootSpeed = joystickX;
+            State.Arm.jointSpeed = joystickY;
+        // 奥のコーン
+        } else if (joystick.getRawButton(7)) {
+            switch (phase) {
+                case Phase1:
+                    State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+                    State.Arm.targetHeight = Const.Arm.InitialHeight;
+                    State.Arm.targetDepth = Const.Arm.InitialDepth;
+                    State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
+                    State.Hand.rotateState = RotateState.s_turnHandBack;
+                    State.Hand.grabHandState = GrabHandState.s_grabHand;
+                    if (State.Arm.isAtTarget()) {
+                        phase = DriveMode.GrabGamePiecePhase.Phase2;
+                    }
+                    break;
+                case Phase2:
+                    State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+                    State.Arm.targetHeight = Const.GrabGamePiecePhase.armRelayPointHeight;
+                    State.Arm.targetDepth = Const.GrabGamePiecePhase.armRelayPointDepth;
+                    if (State.Arm.isAtTarget()) {
+                        phase = DriveMode.GrabGamePiecePhase.Phase3;
+                    }
+                case Phase3:
+                    State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+                    State.Arm.targetHeight = Const.Calculation.Limelight.TopGoalHeight - Const.Arm.RootHeightFromGr;
+                    State.Arm.targetDepth = enableLimelight ? State.limelightToBackGoal - Const.Calculation.Limelight.LimelightToArm : State.Arm.TargetDepth.TopCorn;
+                    State.Hand.grabHandState = GrabHandState.s_releaseHand;
+                    break;
+            }
+        }
+
         if (joystick.getRawButton(2)) {
             // すべてBasicPositionに戻る
             State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
@@ -271,4 +306,19 @@ public class ArmMode extends Mode {
             State.Arm.targetDepth = State.Arm.actualDepth;
         }
     }
+    enum GrabGamePiecePhase {
+        //basicPositionに移動する
+        Phase1,
+        //ハンドを開ける, アームを下げる
+        Phase2,
+        //ハンドを閉める
+        Phase3,
+        //アームを上げる
+        Phase4,
+        Phase5,
+        Phase6,
+        Phase7,
+        Phase8,
+    }
+
 }
