@@ -171,7 +171,7 @@ public class Arm implements Component {
      * @return 根本NEOモーターの回転数
      * */
     private double calculateRootRotationFromAngle(double angle) {
-        double rotation = (-angle + Const.Arm.RootHomePosition) / 360 / Const.Arm.RootMotorGearRatio;
+        double rotation = (angle - Const.Arm.RootHomePosition) / 360 / Const.Arm.RootMotorGearRatio;
         return rotation;
     }
 
@@ -181,7 +181,7 @@ public class Arm implements Component {
      * @return 関節部分NEOモーターの回転数
      * */
     private double calculateJointRotationFromAngle(double angle) {
-        double rotation = (-angle + Const.Arm.JointHomePosition) / 360 / Const.Arm.JointMotorGearRatio;
+        double rotation = (angle - Const.Arm.JointHomePosition) / 360 / Const.Arm.JointMotorGearRatio;
         return rotation;
     }
 
