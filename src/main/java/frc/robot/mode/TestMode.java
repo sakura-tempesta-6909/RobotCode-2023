@@ -1,7 +1,6 @@
 package frc.robot.mode;
 
-import frc.robot.State;
-import frc.robot.State.Arm.States;
+import frc.robot.States.State;
 
 public class TestMode extends Mode{
     @Override

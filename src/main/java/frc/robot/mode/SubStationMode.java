@@ -1,6 +1,6 @@
 package frc.robot.mode;
 
-import frc.robot.State;
+import frc.robot.States.State;
 import frc.robot.subClass.Const;
 
 public class SubStationMode extends Mode {

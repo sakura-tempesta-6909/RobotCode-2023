@@ -6,7 +6,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
-import frc.robot.State;
+import frc.robot.States.State;
 import frc.robot.subClass.Const;
 
 

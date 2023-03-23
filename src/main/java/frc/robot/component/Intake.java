@@ -7,7 +7,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
-import frc.robot.State;
+import frc.robot.States.State;
 import frc.robot.subClass.Const;
 
 public class Intake implements Component{

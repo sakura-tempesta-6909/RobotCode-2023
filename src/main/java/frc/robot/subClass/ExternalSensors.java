@@ -3,7 +3,6 @@ package frc.robot.subClass;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.PowerDistribution;
-import frc.robot.State;
 
 public class ExternalSensors {
     PowerDistribution mainPDP;
