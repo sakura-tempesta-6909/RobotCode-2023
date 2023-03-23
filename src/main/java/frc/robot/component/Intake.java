@@ -96,7 +96,6 @@ public class Intake implements Component{
         intakeControl(false);
     }
 
-
     @Override
     public void applyState() {
         if (State.isCompressorEnable) {
