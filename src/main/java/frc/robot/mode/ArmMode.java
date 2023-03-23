@@ -125,24 +125,44 @@ public class ArmMode extends Mode {
             State.Arm.jointSpeed = joystickY;
         } else if (joystick.getRawButton(7)) {
             // 奥のコーンのゴールまでアームを伸ばす
-            State.Arm.targetHeight = Const.Calculation.Limelight.TopGoalHeight - Const.Arm.RootHeightFromGr;
-            State.Arm.targetDepth = enableLimelight ? State.limelightToBackGoal - Const.Calculation.Limelight.LimelightToArm : State.Arm.TargetDepth.TopCorn;
+            if (State.Arm.targetHeight < 50) {
+                State.Arm.targetHeight = Const.GrabGamePiecePhase.armRelayPointHeight;
+                State.Arm.targetDepth = Const.GrabGamePiecePhase.armRelayPointDepth;
+            } else {
+                State.Arm.targetHeight = Const.Calculation.Limelight.TopGoalHeight - Const.Arm.RootHeightFromGr;
+                State.Arm.targetDepth = enableLimelight ? State.limelightToBackGoal - Const.Calculation.Limelight.LimelightToArm : State.Arm.TargetDepth.TopCorn;
+            }
         } else if (joystick.getRawButton(9)) {
             // 真ん中のコーンのゴールまでアームを伸ばす
-            State.Arm.targetHeight = Const.Calculation.Limelight.MiddleGoalHeight - Const.Arm.RootHeightFromGr;
-            State.Arm.targetDepth = enableLimelight ? State.limelightToFrontGoal - Const.Calculation.Limelight.LimelightToArm : State.Arm.TargetDepth.MiddleCorn;
+            if (State.Arm.targetHeight < 50) {
+                State.Arm.targetHeight = Const.GrabGamePiecePhase.armRelayPointHeight;
+                State.Arm.targetDepth = Const.GrabGamePiecePhase.armRelayPointDepth;
+            } else {
+                State.Arm.targetHeight = Const.Calculation.Limelight.MiddleGoalHeight - Const.Arm.RootHeightFromGr;
+                State.Arm.targetDepth = enableLimelight ? State.limelightToFrontGoal - Const.Calculation.Limelight.LimelightToArm : State.Arm.TargetDepth.MiddleCorn;
+            }
         } else if (joystick.getRawButton(11)) {
             // 前のコーンのゴールまでアームを伸ばす
-            State.Arm.targetHeight = Const.Calculation.Limelight.BottomGoalHeight - Const.Arm.RootHeightFromGr;
-            State.Arm.targetDepth = State.Arm.TargetDepth.BottomCorn;
+                State.Arm.targetHeight = Const.Calculation.Limelight.BottomGoalHeight - Const.Arm.RootHeightFromGr;
+                State.Arm.targetDepth = State.Arm.TargetDepth.BottomCorn;
         } else if (joystick.getRawButton(8)) {
             // 奥のキューブのゴールまでアームを伸ばす
-            State.Arm.targetHeight = Const.Calculation.Camera.TopGoalHeight - Const.Arm.RootHeightFromGr;
-            State.Arm.targetDepth = State.Arm.TargetDepth.TopCube;
+            if (State.Arm.targetHeight < 50) {
+                State.Arm.targetHeight = Const.GrabGamePiecePhase.armRelayPointHeight;
+                State.Arm.targetDepth = Const.GrabGamePiecePhase.armRelayPointDepth;
+            } else {
+                State.Arm.targetHeight = Const.Calculation.Camera.TopGoalHeight - Const.Arm.RootHeightFromGr;
+                State.Arm.targetDepth = State.Arm.TargetDepth.TopCube;
+            }
         } else if (joystick.getRawButton(10)) {
             // 真ん中のキューブのゴールまでアームを伸ばす
-            State.Arm.targetHeight = Const.Calculation.Camera.MiddleGoalHeight - Const.Arm.RootHeightFromGr;
-            State.Arm.targetDepth = State.Arm.TargetDepth.MiddleCube;
+            if(State.Arm.targetHeight < 50) {
+                State.Arm.targetHeight = Const.GrabGamePiecePhase.armRelayPointHeight;
+                State.Arm.targetDepth = Const.GrabGamePiecePhase.armRelayPointDepth;
+            } else {
+                State.Arm.targetHeight = Const.Calculation.Camera.MiddleGoalHeight - Const.Arm.RootHeightFromGr;
+                State.Arm.targetDepth = State.Arm.TargetDepth.MiddleCube;
+            }
         } else if (joystick.getRawButton(12)) {
             // 前のキューブのゴールまでアームを伸ばす
             State.Arm.targetHeight = Const.Calculation.Camera.BottomGoalHeight - Const.Arm.RootHeightFromGr;
