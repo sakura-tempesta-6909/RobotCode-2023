@@ -193,7 +193,7 @@ public class DriveMode extends Mode {
         }else if (joystick.getRawButton(10)) {
             switch (phase){
                 case Phase1:
-                    State.Drive.targetLength = -1;
+                    State.Drive.targetMeter = -1;
                     State.Drive.state = State.Drive.States.s_pidDrive;
                     if (State.Drive.isAtTarget()){
                         phase = GrabGamePiecePhase.Phase2;

@@ -41,7 +41,26 @@ public class Util {
         sendConsole("jointff", State.Arm.jointMotorFeedforward);
         sendConsole("handAngle", State.Hand.actualHandAngle % 360);
 
-        sendConsole("driveLeftMeter", State.Drive.rightLength);
-        sendConsole("driveRightMeter", State.Drive.leftLength);
+        sendConsole("DriveTargetMeter", State.Drive.targetMeter);
+        sendConsole("RDrivePosition", State.Drive.rightMeter);
+        sendConsole("LDrivePosition", State.Drive.leftMeter);
+    }
+
+    public static class Calculate {
+        /**
+         * @param points ドライブのエンコーダーの値
+         * @return ドライブのエンコーダーの値をメートルに変換した値
+         */
+        public static double driveEncoderPointsToMeter(double points) {
+            return points / Const.Calculation.Drive.DrivePointsPerDriveLength;
+        }
+
+        /**
+         * @param meter メートル
+         * @return メートルをドライブのエンコーダーのポジションに変換した値
+         */
+        public static double meterToDriveEncoderPoints(double meter) {
+            return meter * Const.Calculation.Drive.DrivePointsPerDriveLength;
+        }
     }
 }

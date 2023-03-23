@@ -11,7 +11,7 @@ public class TestMode extends Mode{
 
         if(driveController.getXButton()){
             State.Drive.state=State.Drive.States.s_pidDrive;
-            State.Drive.targetLength = State.Drive.leftLength;
+            State.Drive.targetMeter = State.Drive.leftMeter;
         }
     }
 }

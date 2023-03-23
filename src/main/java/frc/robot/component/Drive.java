@@ -8,6 +8,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.States.State;
 import frc.robot.subClass.Const;
+import frc.robot.subClass.Util;
 
 public class Drive implements Component {
     private final WPI_TalonSRX driveRightFront, driveLeftFront;
@@ -32,6 +33,9 @@ public class Drive implements Component {
         driveRightFront.configAllSettings(Const.Drive.PID.DriveRight);
         driveLeftFront.configAllSettings(Const.Drive.PID.DriveLeft);
 
+        driveLeftFront.setSensorPhase(true);
+        driveRightFront.setSensorPhase(true);
+
         driveRightFront.setInverted(true);
         driveRightBack.setInverted(true);
         driveLeftFront.setInverted(false);
@@ -40,10 +44,6 @@ public class Drive implements Component {
         differentialDrive = new DifferentialDrive(driveLeftFront, driveRightFront);
         pidLimelightDrive = new PIDController(Const.Calculation.Limelight.PID.LimelightDriveP, Const.Calculation.Limelight.PID.LimelightDriveI, Const.Calculation.Limelight.PID.LimelightDriveD);
         pidCameraDrive = new PIDController(Const.Calculation.Camera.PID.CameraDriveP, Const.Calculation.Camera.PID.CameraDriveI, Const.Calculation.Camera.PID.CameraDriveD);
-
-
-
-
     }
 
     public void arcadeDrive(double xSpeed, double zRotation) {
@@ -55,7 +55,7 @@ public class Drive implements Component {
         double limelightTrackingZRotation = 0;
         if(State.tv) {
         limelightTrackingZRotation = pidLimelightDrive.calculate(State.tx, 0);
-        } 
+        }
         if (limelightTrackingZRotation > 0.7) {
             limelightTrackingZRotation = 0.7;
         } else if (limelightTrackingZRotation < -0.7) {
@@ -74,43 +74,40 @@ public class Drive implements Component {
         arcadeDrive(State.cameraXSpeed * Const.Speeds.MidDrive, cameraZRotation);
     }
 
-    public double PointsToLength(double points) {
-        return points / Const.Drive.PID.PointsPerLength;
-    }
-
-    public double LengthToPoints(double length) {
-        return length * Const.Drive.PID.PointsPerLength;
-    }
-
     /**
      * PIDでtargetLength分前後に動かす
      */
-    private void pidDrive() {
-        if (Math.abs(State.Drive.targetLength) < Const.Drive.PID.LengthThreshold) {
-            driveRightFront.selectProfileSlot(Const.Drive.PID.ShortSlotIdx, 0);
-            driveLeftFront.selectProfileSlot(Const.Drive.PID.ShortSlotIdx, 0);
-        } else {
+    private void drivePosition() {
+        if (Math.abs(State.Drive.targetMeter) > Const.Drive.PID.ShortThreshold) {
             driveRightFront.selectProfileSlot(Const.Drive.PID.LongSlotIdx, 0);
             driveLeftFront.selectProfileSlot(Const.Drive.PID.LongSlotIdx, 0);
+        } else {
+            driveRightFront.selectProfileSlot(Const.Drive.PID.ShortSlotIdx, 0);
+            driveLeftFront.selectProfileSlot(Const.Drive.PID.ShortSlotIdx, 0);
         }
-        driveRightFront.set(ControlMode.Position, LengthToPoints(State.Drive.targetLength));
-        driveLeftFront.set(ControlMode.Position, LengthToPoints(State.Drive.targetLength));
+        driveRightFront.set(ControlMode.Position, Util.Calculate.meterToDriveEncoderPoints(State.Drive.targetMeter));
+        driveLeftFront.set(ControlMode.Position, Util.Calculate.meterToDriveEncoderPoints(State.Drive.targetMeter));
     }
 
     /**
      * @return 右のモーターの進んだ距離を取得する[cm]
      */
     public double getRightLength() {
-        return PointsToLength(driveRightFront.getSelectedSensorPosition());
+        return Util.Calculate.driveEncoderPointsToMeter(driveRightFront.getSelectedSensorPosition());
     }
 
     /**
      * @return 左のモーターの進んだ距離を取得する[cm]
      */
     public double getLeftLength() {
-        return PointsToLength(driveLeftFront.getSelectedSensorPosition());
+        return Util.Calculate.driveEncoderPointsToMeter(driveLeftFront.getSelectedSensorPosition());
     }
 
+    private boolean isAtTarget() {
+        boolean isLeftMotorAtTarget = Math.abs(State.Drive.leftMeter - State.Drive.targetMeter) < Const.Drive.PID.LossTolerance;
+        boolean isRightMotorAtTarget = Math.abs(State.Drive.rightMeter - State.Drive.targetMeter) < Const.Drive.PID.LossTolerance;
+        return isRightMotorAtTarget && isLeftMotorAtTarget;
+    }
 
     @Override
     public void autonomousInit() {
@@ -138,12 +135,15 @@ public class Drive implements Component {
 
     @Override
     public void readSensors() {
-        State.Drive.rightLength = getRightLength();
-        State.Drive.leftLength = getLeftLength();
+        State.Drive.rightMeter = getRightLength();
+        State.Drive.leftMeter = getLeftLength();
     }
 
     @Override
     public void applyState() {
+        if (State.pidLimelightReset) {
+            pidLimelightDrive.reset();
+        }
         if (State.Drive.resetPosition) {
             driveRightFront.setSelectedSensorPosition(0.0);
             driveLeftFront.setSelectedSensorPosition(0.0);
@@ -152,10 +152,6 @@ public class Drive implements Component {
         if (State.Drive.resetPIDController) {
             driveLeftFront.setIntegralAccumulator(0.0);
             driveRightFront.setIntegralAccumulator(0.0);
-        }
-
-        if (State.pidLimelightReset) {
-            pidLimelightDrive.reset();
         }
 
         if (State.Drive.isMotorBrake) {
@@ -190,7 +186,7 @@ public class Drive implements Component {
                 pidControlApriltagTracking();
                 break;
             case s_pidDrive:
-                pidDrive();
+                drivePosition();
                 break;
         }
 

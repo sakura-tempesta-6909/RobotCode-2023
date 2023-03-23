@@ -36,16 +36,16 @@ public class Autonomous {
         );
     }
 
-    public static PhaseTransition.Phase driveTo(double targetLength, String phaseName) {
+    public static PhaseTransition.Phase driveTo(double targetMeter, String phaseName) {
         return new PhaseTransition.Phase(
                 () -> {
                     State.Drive.resetPIDController = true;
                     State.Drive.resetPosition = true;
                     State.Drive.state = State.Drive.States.s_pidDrive;
-                    State.Drive.targetLength = targetLength;
+                    State.Drive.targetMeter = targetMeter;
                 },
                 (double time) -> {
-                    return time > targetLength;
+                    return time > targetMeter;
                 },
                 phaseName
         );
