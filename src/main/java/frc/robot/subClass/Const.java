@@ -340,16 +340,16 @@ public class Const {
 
     public static final class GrabGamePiecePhase {
         /**　キューブを掴むアームの高さ */
-        public static final double armCubeIntakeHeight = -103;
+        public static final double armCubeIntakeHeight = -100;
         /** キューブを掴むアームの奥行き */
-        public static final double armCubeIntakeDepth = -10;
+        public static final double armCubeIntakeDepth = -8;
 
         /**　コーンを掴むアームの高さ */
           public static final double armConeIntakeRelesaseHeight = -88;
         /**　コーンを掴むアームの高さ */
         public static final double armConeIntakeHeight = -100;
         /** コーンを掴むアームの奥行き */
-        public static final double armConeIntakeDepth = -12;
+        public static final double armConeIntakeDepth = -11;
 
         public static final double armSubStationHeight = -7;
         public static final double getArmSubStationDepth = 56;
