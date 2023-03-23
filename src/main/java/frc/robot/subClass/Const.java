@@ -321,8 +321,7 @@ public class Const {
         /** アームの根本の高さ[cm]（地面から） -> 座標の原点の高さ */
         public static final double RootHeightFromGr = 127;
 
-        public static final double RootHomePositionAngle = 0;
-        public static final double RootHomePositionRotation = 0;
+        public static final double RootHomePosition = -90;
     }
 
     public static final class Hand {
