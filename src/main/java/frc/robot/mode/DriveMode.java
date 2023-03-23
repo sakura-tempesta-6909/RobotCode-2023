@@ -242,7 +242,6 @@ public class DriveMode extends Mode {
         }
 
         if (driveController.getAButton()) {
-            LimelightState.isLimelightOn = true;
             State.Drive.state = State.Drive.States.s_aprilTagTracking;
             State.cameraXSpeed = -driveController.getLeftY();
         } else if (driveController.getBButton()) {
