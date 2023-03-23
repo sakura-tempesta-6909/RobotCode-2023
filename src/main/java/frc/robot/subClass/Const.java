@@ -349,8 +349,11 @@ public class Const {
         /** コーンを掴むアームの奥行き */
         public static final double armConeIntakeDepth = -12;
 
+        public static final double armRelayPointHeight = 0;
+        public static final double armRelayPointDepth = 0;
+
         public static final double armSubStationHeight = -7;
-        public static final double getArmSubStationDepth = 56;
+        public static final double armSubStationDepth = 56;
     }
 
     public static void ConstInit() {
