@@ -171,8 +171,8 @@ public class Arm implements Component {
      * @return 根本NEOモーターの回転数
      * */
     private double calculateRootRotationFromAngle(double angle) {
-        State.Arm.rootRotation = (-State.Arm.actualRootAngle + Const.Arm.RootHomePosition) / 360;
-        return angle * Const.Arm.RootMotorGearRatio / 360;
+        double rotation = -(Const.Arm.RootMotorGearRatio * 360) * (-angle + Const.Arm.RootHomePosition);
+        return angle * Const.Arm.RootMotorGearRatio / 360 + rotation;
     }
 
     /**
@@ -250,7 +250,6 @@ public class Arm implements Component {
     @Override
     public void readSensors() {
         // motorのencodeからアームの実際のX,Z座標を計算
-        State.Arm.rootRotation = rootMotor.getEncoder().getPosition();
         State.Arm.actualRootAngle = calculateRootAngleFromRotation(rootMotor.getEncoder().getPosition());
         State.Arm.actualJointAngle = calculateJointAngleFromRotation(jointMotor.getEncoder().getPosition());
         State.Arm.actualHeight = Tools.calculateHeight(State.Arm.actualRootAngle, State.Arm.actualJointAngle);
