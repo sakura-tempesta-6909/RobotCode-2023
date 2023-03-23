@@ -322,6 +322,7 @@ public class Const {
         public static final double RootHeightFromGr = 127;
 
         public static final double RootHomePosition = -87.5;
+        public static final double JointHomePosition = -52.9;
     }
 
     public static final class Hand {
