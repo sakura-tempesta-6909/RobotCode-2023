@@ -5,7 +5,6 @@ import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMax.SoftLimitDirection;
 
 import frc.robot.State;
 import frc.robot.subClass.Const;
@@ -152,7 +151,7 @@ public class Arm implements Component {
      * @param rotation encoderから取得したPosition（モーターの回転数）
      * @return 根本アームの角度[deg]
      * */
-    private double calculateRootAngleFromRotation(double rotation) {
+    public double calculateRootAngleFromRotation(double rotation) {
         return rotation / Const.Arm.RootMotorGearRatio * 360 + Const.Arm.RootHomePosition;
     }
 
@@ -170,9 +169,9 @@ public class Arm implements Component {
      * @param angle 根本アームの角度[deg]
      * @return 根本NEOモーターの回転数
      * */
-    private double calculateRootRotationFromAngle(double angle) {
-        double rotation = -(Const.Arm.RootMotorGearRatio * 360) * (-angle + Const.Arm.RootHomePosition);
-        return angle * Const.Arm.RootMotorGearRatio / 360 + rotation;
+    public double calculateRootRotationFromAngle(double angle) {
+        double rotation = (-angle + Const.Arm.RootHomePosition) / 360 / Const.Arm.RootMotorGearRatio;
+        return rotation;
     }
 
     /**
