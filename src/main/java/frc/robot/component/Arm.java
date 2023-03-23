@@ -152,7 +152,7 @@ public class Arm implements Component {
      * @param rotation encoderから取得したPosition（モーターの回転数）
      * @return 根本アームの角度[deg]
      * */
-    public double calculateRootAngleFromRotation(double rotation) {
+    private double calculateRootAngleFromRotation(double rotation) {
         return rotation / Const.Arm.RootMotorGearRatio * 360 + Const.Arm.RootHomePosition;
     }
 
