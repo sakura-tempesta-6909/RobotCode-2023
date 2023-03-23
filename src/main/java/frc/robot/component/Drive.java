@@ -64,7 +64,7 @@ public class Drive implements Component {
         arcadeDrive(State.limelightXSpeed * 0.7, -limelightTrackingZRotation);
     }
 
-    public void pidControlApriltagTracking() {
+    public void pidControlAprilTagTracking() {
         double cameraZRotation = pidCameraDrive.calculate(State.aprilTagAngleWidth, 0);
         if (cameraZRotation > 0.5) {
             cameraZRotation = 0.5;
@@ -183,7 +183,7 @@ public class Drive implements Component {
                 pidControlTargetTracking();
                 break;
             case s_aprilTagTracking:
-                pidControlApriltagTracking();
+                pidControlAprilTagTracking();
                 break;
             case s_pidDrive:
                 drivePosition();
