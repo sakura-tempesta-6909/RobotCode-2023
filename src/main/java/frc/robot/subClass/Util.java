@@ -1,7 +1,7 @@
 package frc.robot.subClass;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.State;
+import frc.robot.States.State;
 
 public class Util {
 
@@ -39,5 +39,9 @@ public class Util {
         sendConsole("controlMode", State.Arm.state.toString());
         sendConsole("rootff", State.Arm.rootMotorFeedforward);
         sendConsole("jointff", State.Arm.jointMotorFeedforward);
+        sendConsole("handAngle", State.Hand.actualHandAngle % 360);
+
+        sendConsole("driveLeftMeter", State.Drive.rightLength);
+        sendConsole("driveRightMeter", State.Drive.leftLength);
     }
 }

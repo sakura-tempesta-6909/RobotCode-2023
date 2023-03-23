@@ -1,7 +1,7 @@
 package frc.robot.phase;
 
-import frc.robot.State;
-import frc.robot.State.GrabHandState;
+import frc.robot.States.State;
+import frc.robot.States.State.GrabHandState;
 import frc.robot.subClass.Const;
 
 public class Autonomous {
@@ -45,7 +45,7 @@ public class Autonomous {
                     State.Drive.targetLength = targetLength;
                 },
                 (double time) -> {
-                    return State.Drive.isAtTarget;
+                    return time > targetLength;
                 },
                 phaseName
         );
@@ -59,12 +59,14 @@ public class Autonomous {
 
         phaseTransitionA.registerPhase(
                 moveArmTo(Const.Calculation.Camera.GoalHeight - Const.Arm.RootHeightFromGr, State.armToTag, "move arm to cube goal"),
-                releaseHand(2, "release cube")
+                releaseHand(2, "release cube"),
+                driveTo(-3, "move to target")
         );
 
         phaseTransitionB.registerPhase(
                 moveArmTo(Const.Calculation.Limelight.GoalHeight - Const.Arm.RootHeightFromGr, State.armToGoal, "move arm to corn goal"),
-                releaseHand(2, "release corn")
+                releaseHand(2, "release corn"),
+                driveTo(-3, "move to target")
         );
 
         phaseTransitionC.registerPhase(

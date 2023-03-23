@@ -6,7 +6,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
-import frc.robot.State;
+import frc.robot.States.State;
 import frc.robot.subClass.Const;
 
 
@@ -20,6 +20,7 @@ public class Hand implements Component{
         handSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Const.Ports.HandSolenoid);
 
         handRotationMotor = new CANSparkMax(Const.Ports.HandRotationMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
+        handRotationMotor.setInverted(true);
 
         handRotationPidController = handRotationMotor.getPIDController();
         handRotationEncoder = handRotationMotor.getEncoder();
@@ -122,7 +123,7 @@ public class Hand implements Component{
 
     /** 手首の回転を止める */
     public void stopHand() {
-        controlHandRotation(Const.Speeds.Neutral);
+         controlHandRotation(Const.Speeds.Neutral);
     }
     /**
      * actual angleを入力してその数に一番近い360の倍数の数を見つけて返す
@@ -150,6 +151,10 @@ public class Hand implements Component{
     }
     @Override
     public void applyState() {
+        if(State.Hand.isResetHandPID) {
+            handRotationPidController.setIAccum(0);
+        }
+
         switch(State.Hand.grabHandState) {
             case s_grabHand:
                 grabHand();

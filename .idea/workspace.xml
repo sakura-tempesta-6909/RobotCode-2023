@@ -4,12 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="f72108f7-ce51-49f9-91b3-cbf1659a19a4" name="Changes" comment="ChangeModeの実装">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/State.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/State.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/component/Intake.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/component/Intake.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/mode/DriveMode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/mode/DriveMode.java" afterDir="false" />
     </list>
+=======
+    <list default="true" id="8beddb76-d512-4844-ac98-c05e68c48f48" name="変更" comment="" />
+>>>>>>> master
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -29,6 +33,13 @@
         <projects_view />
       </state>
     </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />

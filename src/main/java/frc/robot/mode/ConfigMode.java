@@ -1,6 +1,6 @@
 package frc.robot.mode;
 
-import frc.robot.State;
+import frc.robot.States.State;
 
 public class ConfigMode extends Mode{
 
@@ -10,6 +10,8 @@ public class ConfigMode extends Mode{
             State.mode = State.Modes.k_drive;
         } else if (driveController.getBackButtonPressed()) {
             State.mode = State.Modes.k_arm;
+        } else if (driveController.getLeftBumperPressed() && driveController.getPOV() == 0) {
+            State.mode = State.Modes.k_chargeStation;
         }
     }
 
@@ -23,6 +25,10 @@ public class ConfigMode extends Mode{
             State.isCompressorEnable = false;
         } else if (driveController.getAButton()) {
             State.isCompressorEnable = true;
+        }
+
+        if (driveController.getAButton()) {
+            State.Arm.isMoveLeftAndRightEncoderReset = true;
         }
     }
 }

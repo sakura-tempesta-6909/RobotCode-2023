@@ -6,11 +6,12 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import frc.robot.State;
+import frc.robot.States.State;
 import frc.robot.subClass.Const;
 
 public class Drive implements Component {
     private final WPI_TalonSRX driveRightFront, driveLeftFront;
+    private final VictorSPX driveRightBack, driveLeftBack;
     private DifferentialDrive differentialDrive;
     private final PIDController pidLimelightDrive;
     private final PIDController pidCameraDrive;
@@ -19,8 +20,8 @@ public class Drive implements Component {
     public Drive() {
         driveRightFront = new WPI_TalonSRX(Const.Ports.DriveRightFront);
         driveLeftFront = new WPI_TalonSRX(Const.Ports.DriveLeftFront);
-        VictorSPX driveRightBack = new VictorSPX(Const.Ports.DriveRightBack);
-        VictorSPX driveLeftBack = new VictorSPX(Const.Ports.DriveLeftBack);
+        driveRightBack = new VictorSPX(Const.Ports.DriveRightBack);
+        driveLeftBack = new VictorSPX(Const.Ports.DriveLeftBack);
 
         driveRightBack.follow(driveRightFront);
         driveLeftBack.follow(driveLeftFront);
@@ -39,10 +40,8 @@ public class Drive implements Component {
         differentialDrive = new DifferentialDrive(driveLeftFront, driveRightFront);
         pidLimelightDrive = new PIDController(Const.Calculation.Limelight.PID.LimelightDriveP, Const.Calculation.Limelight.PID.LimelightDriveI, Const.Calculation.Limelight.PID.LimelightDriveD);
         pidCameraDrive = new PIDController(Const.Calculation.Camera.PID.CameraDriveP, Const.Calculation.Camera.PID.CameraDriveI, Const.Calculation.Camera.PID.CameraDriveD);
-        driveRightFront.setNeutralMode(NeutralMode.Brake);
-        driveLeftFront.setNeutralMode(NeutralMode.Brake);
-        driveRightBack.setNeutralMode(NeutralMode.Brake);
-        driveLeftBack.setNeutralMode(NeutralMode.Brake);
+
+
 
 
     }
@@ -53,7 +52,10 @@ public class Drive implements Component {
     }
 
     public void pidControlTargetTracking() {
-        double limelightTrackingZRotation = pidLimelightDrive.calculate(State.tx, 0);
+        double limelightTrackingZRotation = 0;
+        if(State.tv) {
+        limelightTrackingZRotation = pidLimelightDrive.calculate(State.tx, 0);
+        } 
         if (limelightTrackingZRotation > 0.7) {
             limelightTrackingZRotation = 0.7;
         } else if (limelightTrackingZRotation < -0.7) {
@@ -109,11 +111,6 @@ public class Drive implements Component {
         return PointsToLength(driveLeftFront.getSelectedSensorPosition());
     }
 
-    private boolean isAtTarget() {
-        boolean isLeftMotorAtTarget = Math.abs(State.Drive.leftLength - State.Drive.targetLength) < Const.Drive.PID.LossTolerance;
-        boolean isRightMotorAtTarget = Math.abs(State.Drive.rightLength - State.Drive.targetLength) < Const.Drive.PID.LossTolerance;
-        return isRightMotorAtTarget && isLeftMotorAtTarget;
-    }
 
     @Override
     public void autonomousInit() {
@@ -143,15 +140,10 @@ public class Drive implements Component {
     public void readSensors() {
         State.Drive.rightLength = getRightLength();
         State.Drive.leftLength = getLeftLength();
-
-        State.Drive.isAtTarget = isAtTarget();
     }
 
     @Override
     public void applyState() {
-        if (State.pidLimelightReset) {
-            pidLimelightDrive.reset();
-        }
         if (State.Drive.resetPosition) {
             driveRightFront.setSelectedSensorPosition(0.0);
             driveLeftFront.setSelectedSensorPosition(0.0);
@@ -160,6 +152,22 @@ public class Drive implements Component {
         if (State.Drive.resetPIDController) {
             driveLeftFront.setIntegralAccumulator(0.0);
             driveRightFront.setIntegralAccumulator(0.0);
+        }
+
+        if (State.pidLimelightReset) {
+            pidLimelightDrive.reset();
+        }
+
+        if (State.Drive.isMotorBrake) {
+            driveRightFront.setNeutralMode(NeutralMode.Brake);
+            driveLeftFront.setNeutralMode(NeutralMode.Brake);
+            driveRightBack.setNeutralMode(NeutralMode.Brake);
+            driveLeftBack.setNeutralMode(NeutralMode.Brake);
+        } else {
+            driveRightFront.setNeutralMode(NeutralMode.Coast);
+            driveLeftFront.setNeutralMode(NeutralMode.Coast);
+            driveRightBack.setNeutralMode(NeutralMode.Coast);
+            driveLeftBack.setNeutralMode(NeutralMode.Coast);
         }
 
         switch (State.Drive.state) {
@@ -188,4 +196,3 @@ public class Drive implements Component {
 
     }
 }
-

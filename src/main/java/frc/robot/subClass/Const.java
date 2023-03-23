@@ -2,6 +2,8 @@ package frc.robot.subClass;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 
+import edu.wpi.first.math.util.Units;
+
 /** 常に決まっている数値(定数)をまとめたファイル */
 public class Const {
     public static final class Ports {
@@ -29,16 +31,18 @@ public class Const {
     public static final class Speeds {
         public static final double Neutral = 0;
 
-        public static final double FastDrive = 0.8;
-        public static final double MidDrive = 0.5;
+        public static final double FastDrive = .9;
+        public static final double MidDrive = 0.6;
         public static final double SlowDrive = 0.3;
 
-        public static final double HandRotationSpeed = 0.5;
+        public static final double HandRotationSpeed = 0.1;
 
         public static double SideRollerOuttakeSpeed = -1.0;
         public static double SideRollerIntakeSpeed = 0.6;
         public static double BottomRollerOuttakeSpeed = -1.0;
         public static double BottomRollerIntakeSpeed = 1.0;
+
+        public static double MoveLeftAndRightMotor = 0.05;
 
     }
 
@@ -49,26 +53,26 @@ public class Const {
             public static final double LimelightMaxAngleWidth = 27;
 
             /** Limelightの角度(度数法) */
-            public static final double LimelightMountAngleDegrees = 34.5;
+            public static final double LimelightMountAngleDegrees = -9;
 
             /** Limelightの高さ */
-            public static final double LimelightLensHeight = 81.5; //  [cm]
+            public static final double LimelightLensHeight = 97.5; //  [cm]
 
             /** LimelightからArmまでの距離 */
-            public static final double LimelightToArm = 0; // [cm]
+            public static final double LimelightToArm = 10; // [cm]
 
 
             // ターゲットの情報
             /** ターゲットの高さ */
-            public static final double GoalHeight = 166; // [cm]
+            public static final double GoalHeight = 87 - 20 - 5; // [cm]
 
 
             /** 前のコーンのゴールの高さ[cm] -> ポールの先端（床の面）の高さは13[cm]*/
-            public static final double BottomGoalHeight = 40;
+            public static final double BottomGoalHeight = 13 + 30;
             /** 真ん中のコーンのゴールの高さ[cm] -> ポールの先端の高さは87[cm]*/
-            public static final double MiddleGoalHeight = 100;
+            public static final double MiddleGoalHeight = 87 + 30;
             /** 奥のコーンのゴールの高さ[cm] -> ポールの先端の高さは117[cm]*/
-            public static final double TopGoalHeight = 130;
+            public static final double TopGoalHeight = 117 + 40;
 
             /** 手前から奥のターゲットまでの距離 */
             public static final double FrontGoalToBackGoal = 43; // [cm]
@@ -103,10 +107,10 @@ public class Const {
             public static final double CameraMountAngleDegrees = 0;
 
             /** Cameraの高さ */
-            public static final double CameraLensHeight = 42.5; // [cm]
+            public static final double CameraLensHeight = 99; // [cm]
 
             /** CameraからArmまでの距離 */
-            public static final double CameraToArm = 0; // [cm]
+            public static final double CameraToArm = 10; // [cm]
 
 
             //ターゲットの情報
@@ -115,11 +119,11 @@ public class Const {
 
 
             /** 奥のキューブのゴールの高さ[cm] -> ゴールの面の高さは90[cm]*/
-            public static final double TopGoalHeight = 105;
+            public static final double TopGoalHeight = 90 + 30;
             /** 真ん中のキューブのゴールの高さ[cm] -> ゴールの面の高さは60[cm]*/
-            public static final double MiddleGoalHeight = 75;
+            public static final double MiddleGoalHeight = 60 + 20;
             /** 前のキューブのゴールの高さ[cm] -> ゴールの面の高さは13[cm]*/
-            public static final double BottomGoalHeight = 40;
+            public static final double BottomGoalHeight = 13 + 20;
 
 
             //計算
@@ -153,8 +157,17 @@ public class Const {
 
         public static final class PID {
             public static final double LengthThreshold = 50;
-            public static final double LossTolerance = 0.5;
-            public static final double PointsPerLength = 20;
+            public static final double LossTolerance = 0.1;
+            // DrivePoint
+            public static final double EncoderPointsPerRevolution = 4096;
+            // タイヤの直径を求める 単位はメートル
+            public static final double DriveWheelDiameter = Units.inchesToMeters(6.0);
+            // タイヤの円周のを求める　単位はメートル
+            public static final double DriveLengthPerWheelRevolution = DriveWheelDiameter * Math.PI;
+
+            // 1m進むとどのくらいPointが増えるか
+            public static final double PointsPerLength = EncoderPointsPerRevolution / DriveLengthPerWheelRevolution;
+
             public static final int LongSlotIdx = 0;
             public static final int ShortSlotIdx = 1;
             public static final TalonSRXConfiguration DriveRight = new TalonSRXConfiguration();
@@ -204,7 +217,7 @@ public class Const {
         /** 先端アームの重さ[N] 注意 - [N]=[kg*9.8] */
         public static final double HeadArmMass = 5.961 * 9.8;
         /** ターゲットの変更の速さ（コントローラーの値に乗算する） */
-        public static final double TargetModifyRatio = 0.2;
+        public static final double TargetModifyRatio = 0.5;
         /** 掴んだ後に先端を持ちあげる高さ[cm] */
         public static final double TakeUpLengthAfterGrab = 20.0;
 
@@ -213,20 +226,38 @@ public class Const {
         /** 根本NEOモーターのPIDのP */
         public static final double P_R = 0.04;
         /** 根本NEOモーターのPIDのI */
-        public static final double I_R = 10e-5 / 10;
+        public static final double I_R = 10e-5 / 100;
         /** 根本NEOモーターのPIDのD */
         public static final double D_R = 0.00;
         /** 根本NEOモーターの積分値の最大 */
-        public static final double IMax_R = 10e3;
+        public static final double IMax_R = 10e5;
 
         /** 関節部分NEOモーターのPIDのP */
         public static final double P_J = 0.03 + 0.03;
         /** 関節部分NEOモーターのPIDのI */
-        public static final double I_J = 5e-7 * 3;
+        public static final double I_J = 5e-7 *30;
         /** 関節部分NEOモーターのPIDのD */
-        public static final double D_J = 0.000;
+        public static final double D_J = 10;
         /** 関節部分NEOモーターの積分値の最大 */
-        public static final double IMax_J = 10e5 * 20 / 3;
+        public static final double IMax_J = 10e5 * 8000 / 3;
+
+        /** 根本NEOモーターのPIDのP */
+        public static final double P_R_1 = 0.04;
+        /** 根本NEOモーターのPIDのI */
+        public static final double I_R_1 = 10e-5 / 10;
+        /** 根本NEOモーターのPIDのD */
+        public static final double D_R_1 = 0.00;
+        /** 根本NEOモーターの積分値の最大 */
+        public static final double IMax_R_1 = 10e3;
+
+        /** 関節部分NEOモーターのPIDのP */
+        public static final double P_J_1 = 0.03 + 0.03;
+        /** 関節部分NEOモーターのPIDのI */
+        public static final double I_J_1 = 5e-7 *3;
+        /** 関節部分NEOモーターのPIDのD */
+        public static final double D_J_1 = 0;
+        /** 関節部分NEOモーターの積分値の最大 */
+        public static final double IMax_J_1 = 10e5 * 20 / 3;
 
         /** 根本NEOモーターのフィードフォワードの値（定数） -> 固いため計算不要の際に */
         public static final double ConstantRootMotorFF = 0.03;
@@ -235,23 +266,23 @@ public class Const {
         /** 根本NEOモーターにおける根本アームのモーメントの影響力（Weight） */
         public static final double RootArmFFWeightForRM = 1.0;
         /** 根本NEOモーターのfeedforwardの強さ（Weight） */
-        public static final double RootMotorFFWeight = 1.0 / 4.0;
+        public static final double RootMotorFFWeight = 1.0 / 3.0;
         /** 先端NEOモーターのfeedforwardの強さ（Weight） */
-        public static final double JointMotorFFWeight = 1.0 / 2.0;
+        public static final double JointMotorFFWeight = 1.0 / 4;
 
 
         /** アームを左右に動かすモーターのPIDのP */
-        public static final double P_MID = 0.0;
+        public static final double P_MID = 0.008;
         /** アームを左右に動かすモーターのPIDのI */
-        public static final double I_MID = 0.0;
+        public static final double I_MID = 0.000001;
         /** アームを左右に動かすモーターのPIDのD */
         public static final double D_MID = 0.0;
         /** アームを左右に動かすモーターの積分値の最大 */
         public static final double IMax_MID = 0.0;
         /** handのモーターののPIDのP */
-        public static final double P_HANDR = 0.0;
+        public static final double P_HANDR = 0.03;
         /** handのモーターののPIDのI */
-        public static final double I_HANDR = 0.0;
+        public static final double I_HANDR = 0.00001;
         /** handのモーターののPIDのD */
         public static final double D_HANDR = 0.0;
         /** handのモーターのの積分値の最大値 */
@@ -264,38 +295,39 @@ public class Const {
          */
         public static final double MotorMaxTorque = 2.6 * 100;
         /** ターゲットの座標の閾値（外側）[cm] */
-        public static final double TargetPositionOuterLimit = RootArmLength + HeadArmLength - 2;
+        public static final double TargetPositionOuterLimit = RootArmLength + HeadArmLength;
         /** ターゲットの座標の閾値（内側）[cm] */
-        public static final double TargetPositionInnerLimit = RootArmLength - HeadArmLength + 2;
+        public static final double TargetPositionInnerLimit = RootArmLength - HeadArmLength;
         /** 関節部分NEOモーターのギア比 */
         public static final double JointMotorGearRatio = 4.0 * 5.0 * 40.0 / 12.0;
         /** 根本NEOモーターのギア比 */
-        public static final double RootMotorGearRatio = 3.0 * 5.0 * 5.0 * 40.0 / 12.0;
+        public static final double RootMotorGearRatio = 5.0 * 5.0 * 5.0 * 40.0 / 12.0;
 
 
         /** アームを左右に動かす時のギア比 */
-        public static final double LeftAndRightArmGearRatio = 1;
+        public static final double LeftAndRightArmGearRatio = 186;
         /** 関節部分NEOモーターをコントローラーで動かす時の最大の速さ */
         public static final double JointMotorMoveRatio = 0.09;
         /** 根本NEOモーターをコントローラーで動かす時の最大の速さ */
-        public static final double RootMotorMoveRatio = 0.5;
-        /** PIDコントロールの誤差の許容量[deg] 注意! isArmAtTargetの判定に用いているだけ */
-        public static final double PIDAngleTolerance = 0.7;
+        public static final double RootMotorMoveRatio = 1;
+        /** PIDコントロールの誤差の許容量[cn] 注意! isArmAtTargetの判定に用いているだけ */
+        public static final double PIDAngleTolerance = 3;
 
         /** アームの理想的な高さ */
-        public static final double InitialHeight = 0;
+        public static final double InitialHeight = -60;
         /** アームの理想的な奥行き */
-        public static final double InitialDepth = 0;
-
+        public static final double InitialDepth = 27;
 
         /** アームの根本の高さ[cm]（地面から） -> 座標の原点の高さ */
         public static final double RootHeightFromGr = 127;
 
+        public static final double RootHomePosition = -87.5;
+        public static final double JointHomePosition = -52.9;
     }
 
     public static final class Hand {
         /** アームを左右に動かす時のギア比 */
-        public static final double HandGearRatio = 1;
+        public static final double HandGearRatio = 12 * 40 / 24;
     }
 
 
@@ -307,10 +339,20 @@ public class Const {
     }
 
     public static final class GrabGamePiecePhase {
-        /** インテイクのゲームピースを掴むアームの高さ */
-        public static final double armIntakeHeight = 0;
-        /** インテイクのゲームピースを掴むアームの奥行き */
-        public static final double armIntakeDepth = 0;
+        /**　キューブを掴むアームの高さ */
+        public static final double armCubeIntakeHeight = -100;
+        /** キューブを掴むアームの奥行き */
+        public static final double armCubeIntakeDepth = -8;
+
+        /**　コーンを掴むアームの高さ */
+          public static final double armConeIntakeRelesaseHeight = -88;
+        /**　コーンを掴むアームの高さ */
+        public static final double armConeIntakeHeight = -100;
+        /** コーンを掴むアームの奥行き */
+        public static final double armConeIntakeDepth = -11;
+
+        public static final double armSubStationHeight = -7;
+        public static final double getArmSubStationDepth = 56;
     }
 
     public static void ConstInit() {

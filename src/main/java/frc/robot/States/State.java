@@ -1,11 +1,9 @@
-package frc.robot;
+package frc.robot.States;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.State.Hand.RotateState;
 import frc.robot.mode.*;
 import frc.robot.subClass.Const;
-import frc.robot.subClass.Util;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,6 +33,7 @@ public class State {
     /** 奥のターゲットまでの距離 */
     public static double limelightToBackGoal; // [cm]
     public static double tx;
+    public static boolean tv;
     public static double limelightXSpeed;
     public static boolean pidLimelightReset;
 
@@ -47,6 +46,7 @@ public class State {
 
     /** Autonomousの遷移の種類　[ A, B, C ] のいずれか */
     public static String autonomousPhaseTransType;
+
 
     public static class Hand {
         public static GrabHandState grabHandState;
@@ -69,6 +69,7 @@ public class State {
         public static double actualHandAngle = 0.0;
 
         public static double targetAngle = 0.0;
+        public static boolean isResetHandPID = false;
 
         public static void StateInit() {
         }
@@ -76,6 +77,7 @@ public class State {
         public static void StateReset() {
             grabHandState = GrabHandState.s_grabHand;
             rotateState = RotateState.s_stopHand;
+            isResetHandPID = false;
         }
     }
 
@@ -86,12 +88,18 @@ public class State {
         public static double targetLength;
         /** 左右のモーターの位置[cm] 正が前向き */
         public static double rightLength, leftLength;
-        /** ロボットが目標の位置にいるか */
-        public static boolean isAtTarget;
         /** arcadeDrive用の引数 */
         public static double xSpeed, zRotation;
 
         public static boolean resetPIDController, resetPosition;
+
+        public static boolean isMotorBrake;
+
+        public static boolean isAtTarget() {
+            boolean isLeftMotorAtTarget = Math.abs(State.Drive.leftLength - State.Drive.targetLength) < Const.Drive.PID.LossTolerance;
+            boolean isRightMotorAtTarget = Math.abs(State.Drive.rightLength - State.Drive.targetLength) < Const.Drive.PID.LossTolerance;
+            return isRightMotorAtTarget && isLeftMotorAtTarget;
+        }
 
         public enum States {
             /** ロボットの速度を速くする */
@@ -123,6 +131,7 @@ public class State {
             resetPosition = false;
             resetPIDController = false;
             isCompressorEnable = true;
+            isMotorBrake = false;
             Arm.StatesReset();
             Hand.StateReset();
         }
@@ -157,20 +166,22 @@ public class State {
         /** 関節部分のNEOモーターに必要になるfeedforwardのspeed[-1, 1] */
         public static double jointMotorFeedforward;
 
+        public static double targetMoveLeftAndRightAngle;
+        public static boolean isMoveLeftAndRightEncoderReset;
         /**
          * アームがターゲット位置にいるかを判定
          * targetAngleとactualAngleの差がPIDAngleTolerance未満でtrue
          * @return jointMotorとrootMotorの両方がatSetpointかどうか
          * */
         public static boolean isAtTarget() {
-            boolean isRootMotorAtSetpoint = Math.abs(State.Arm.targetRootAngle - State.Arm.actualRootAngle) < Const.Arm.PIDAngleTolerance;
-            boolean isJointMotorAtSetpoint = Math.abs(State.Arm.targetJointAngle - State.Arm.actualJointAngle) < Const.Arm.PIDAngleTolerance;
-            return isJointMotorAtSetpoint && isRootMotorAtSetpoint;
+            boolean isDepthAtSetpoint = Math.abs(State.Arm.targetDepth - State.Arm.actualDepth) < Const.Arm.PIDAngleTolerance;
+            boolean isHeightMotorAtSetpoint = Math.abs(State.Arm.targetHeight - State.Arm.actualHeight) < Const.Arm.PIDAngleTolerance;
+            return isHeightMotorAtSetpoint && isDepthAtSetpoint;
         }
 
         public static double moveLeftAndRightMotor;
         /** アームを左右に動かす時の位置 */
-        public static double leftAndRightPositionAngle;
+        public static double actualLeftAndRightAngle;
 
         /** PIDコントローラーをリセットする（Integralの値をリセットする） */
         public static boolean resetPidController;
@@ -185,12 +196,16 @@ public class State {
             public static double TopCube;
             public static double MiddleCube;
             public static double BottomCube;
+
+            public static double SubStation;
         }
 
 
         public enum States {
             /** アームを指定した場所に移動させる */
             s_moveArmToSpecifiedPosition,
+            /** アームを微調整する */
+            s_adjustArmPosition,
             /** アームの支点を動かす */
             s_moveArmMotor,
             /** アームをその場で固定する */
@@ -199,8 +214,8 @@ public class State {
 
         public static void StatesInit() {
             //init armMode value
-            targetHeight = 0.0;
-            targetDepth = 0.0;
+            targetHeight = 10000.0;
+            targetDepth = 10000.0;
 
             actualHeight = 0.0;
             actualDepth = 0.0;
@@ -220,25 +235,27 @@ public class State {
             moveLeftAndRightMotor = 0.0;
         }
 
+
         public static void StatesReset() {
             state = Arm.States.s_fixArmPosition;
             resetPidController = false;
             resetEncoder = false;
+            isMoveLeftAndRightEncoderReset = false;
 
             // TODO どれくらい引くかを計測する
-            TargetDepth.TopCorn = 101.0 - 40.0;
-            TargetDepth.MiddleCorn = 58.0 - 20.0;
-            TargetDepth.BottomCorn = 30.0;
+            TargetDepth.TopCorn = 101.0 ;
+            TargetDepth.MiddleCorn = 58.0 + 20;
+            TargetDepth.BottomCorn = 30.0 + 10;
 
-            TargetDepth.TopCube = 101.0 - 40.0;
-            TargetDepth.MiddleCube = 58.0 - 20.0;
-            TargetDepth.BottomCube = 30.0;
+            TargetDepth.TopCube = 101.0 -10;
+            TargetDepth.MiddleCube = 58.0 + 20;
+            TargetDepth.BottomCube = 30.0 + 10;
+
+            TargetDepth.SubStation = 36 + 20;
         }
     }
 
     public static Map<String, Double> voltage = new HashMap<>();
-    public static RotateState rotateState;
-
 
     /**
      * Enableされたときの状態
@@ -258,6 +275,7 @@ public class State {
         Drive.StatesInit();
         Arm.StatesInit();
         Hand.StateInit();
+        LimelightState.StateInit();
 
         voltage = new HashMap<>();
 
@@ -269,12 +287,11 @@ public class State {
      */
     public static void StateReset() {
         intakeState = RollerState.s_stopRoller;
-        rotateState = RotateState.s_stopHand;
         moveLeftAndRightArmState = MoveLeftAndRightArmState.s_fixLeftAndRightMotor;
         pidLimelightReset = false;
         intakeExtensionState = IntakeExtensionState.s_openIntake;
 
-        autonomousPhaseTransType = Util.getConsole("AutonomousPhaseTransition");
+        // autonomousPhaseTransType = Util.getConsole("AutonomousPhaseTransition");
 
         isCompressorEnable = true;
 
@@ -282,6 +299,7 @@ public class State {
         Drive.StatesReset();
         Arm.StatesReset();
         Hand.StateReset();
+        LimelightState.StateReset();
     }
 
     public enum RollerState {
@@ -317,6 +335,8 @@ public class State {
         s_fixLeftAndRightMotor,
         /** アームを真ん中に動かす */
         s_movetomiddle,
+        s_limelightTracking,
+
     }
 
 
@@ -324,7 +344,8 @@ public class State {
         k_drive(new DriveMode()),
         k_arm(new ArmMode()),
         k_test(new TestMode()),
-        k_config(new ConfigMode());
+        k_config(new ConfigMode()),
+        k_chargeStation(new ChargeStationMode());
 
         private final Mode mode;
 
