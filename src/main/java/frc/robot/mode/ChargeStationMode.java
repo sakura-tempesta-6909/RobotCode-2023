@@ -1,6 +1,7 @@
 package frc.robot.mode;
 
 import frc.robot.States.State;
+import frc.robot.subClass.*;
 
 public class ChargeStationMode extends Mode{
 // 正式名称は「ワクワクドキドキ神様お願いブレイクモード」
@@ -22,5 +23,11 @@ public class ChargeStationMode extends Mode{
         State.Drive.zRotation = -1 * driveController.getRightX();
 
         State.Drive.state = State.Drive.States.s_fastDrive;
+
+        if (joystick.getRawButton(1)) {
+            State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+            State.Arm.targetHeight = Const.GrabGamePiecePhase.armCubeIntakeHeight;
+            State.Arm.targetDepth = Const.GrabGamePiecePhase.armCubeIntakeDepth;
+        }
     }
 }
