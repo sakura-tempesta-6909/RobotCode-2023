@@ -7,6 +7,8 @@ import frc.robot.subClass.*;
 
 public class ChargeStationMode extends Mode{
 // 正式名称は「ワクワクドキドキ神様お願いブレイクモード」
+
+private static GrabGamePiecePhase phase = GrabGamePiecePhase.Phase1;
     @Override
     public void changeMode() {
         if (driveController.getStartButtonPressed()) {
@@ -27,29 +29,36 @@ public class ChargeStationMode extends Mode{
         State.Drive.state = State.Drive.States.s_fastDrive;
 
         if (joystick.getRawButton(1)) {
-            if (State.Arm.targetHeight < -20) {
-                State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                State.Arm.targetHeight = 0;
-                State.Arm.targetDepth = 60;
-            } else {
-                State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                State.Arm.targetHeight = Const.GrabGamePiecePhase.armCubeIntakeHeight;
-                State.Arm.targetDepth = Const.GrabGamePiecePhase.armCubeIntakeDepth;
-            }
-           
-        } else if (joystick.getRawButton(2)) {
+            switch (phase) {
+                case Phase1:
+                    State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+                    State.Arm.targetHeight = 0;
+                    State.Arm.targetDepth = 60;
+                    break;
+                case Phase2:
+                    State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+                    State.Arm.targetHeight = Const.GrabGamePiecePhase.armCubeIntakeHeight;
+                    State.Arm.targetDepth = Const.GrabGamePiecePhase.armCubeIntakeDepth;
+                    break;
+                }
+            } else if (joystick.getRawButton(2)) {
             // すべてBasicPositionに戻る
-            if (State.Arm.targetHeight < -20) {
-                State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                State.Arm.targetHeight = 0;
-                State.Arm.targetDepth = 60;
-            } else {
-                State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_movetomiddle;
-                State.Hand.rotateState = State.Hand.RotateState.s_turnHandBack;
-                State.Arm.targetHeight = Const.Arm.InitialHeight;
-                State.Arm.targetDepth = Const.Arm.InitialDepth;
-            }
+                switch (phase) {
+                    case Phase1:
+                        State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+                        State.Arm.targetHeight = 0;
+                        State.Arm.targetDepth = 60;
+                        break;
+                    case Phase2:
+                        State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+                        State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_movetomiddle;
+                        State.Hand.rotateState = State.Hand.RotateState.s_turnHandBack;
+                        State.Arm.targetHeight = Const.Arm.InitialHeight;
+                        State.Arm.targetDepth = Const.Arm.InitialDepth;
+                        break;
+                }
+
+
           
         }
 
@@ -73,5 +82,19 @@ public class ChargeStationMode extends Mode{
           } else {
               State.Arm.targetJointAngle = State.Arm.actualJointAngle;
           }
+    }
+    enum GrabGamePiecePhase {
+        //basicPositionに移動する
+        Phase1,
+        //ハンドを開ける, アームを下げる
+        Phase2,
+        //ハンドを閉める
+        Phase3,
+        //アームを上げる
+        Phase4,
+        Phase5,
+        Phase6,
+        Phase7,
+        Phase8,
     }
 }
