@@ -55,15 +55,6 @@ public class ChargeStationMode extends Mode{
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
                     State.Arm.targetHeight = Const.GrabGamePiecePhase.armCubeIntakeHeight;
                     State.Arm.targetDepth = Const.GrabGamePiecePhase.armCubeIntakeDepth;
-                    if (State.Arm.isAtTarget()) {
-                        phase = GrabGamePiecePhase.Phase4;
-                    }
-                    break;
-                case Phase4:
-                    State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.Hand.rotateState = State.Hand.RotateState.s_turnHandBack;
-                    State.Arm.targetHeight = Const.Arm.InitialHeight;
-                    State.Arm.targetDepth = Const.Arm.InitialDepth;
                     break;
             }
 
