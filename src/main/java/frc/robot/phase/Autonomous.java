@@ -77,7 +77,7 @@ public class Autonomous {
                             State.Drive.xSpeed = -1;
                         },
                         (double time) -> {
-                            return time > 8;
+                            return time > 4;
                         }
                 )
         );

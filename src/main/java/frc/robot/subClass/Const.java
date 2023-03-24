@@ -513,7 +513,7 @@ public class Const {
         /**
          * 　コーンを掴むアームの高さ
          */
-        public static final double armConeIntakeRelesaseHeight = -88;
+        public static final double armConeIntakeRelesaseHeight = -85;
         /**
          * 　コーンを掴むアームの高さ
          */
@@ -521,7 +521,7 @@ public class Const {
         /**
          * コーンを掴むアームの奥行き
          */
-        public static final double armConeIntakeDepth = -11;
+        public static final double armConeIntakeDepth = -8;
 
         public static final double armSubStationHeight = -7;
         public static final double getArmSubStationDepth = 56;

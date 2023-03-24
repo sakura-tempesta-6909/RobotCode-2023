@@ -17,7 +17,7 @@ public class DriveMode extends Mode {
     public void changeMode() {
         if (driveController.getBackButton()) {
             State.mode = State.Modes.k_arm;
-        } else if (driveController.getLeftBumperPressed() && driveController.getPOV() == 0) {
+        } else if (driveController.getPOV() == 0) {
             State.mode = State.Modes.k_chargeStation;
         } else if (driveController.getLeftBumperPressed() && driveController.getPOV() == 225) {
             State.mode = State.Modes.k_config;
@@ -167,7 +167,7 @@ public class DriveMode extends Mode {
                     State.Arm.targetHeight = Const.GrabGamePiecePhase.armConeIntakeRelesaseHeight;
                     State.Arm.targetDepth = Const.GrabGamePiecePhase.armConeIntakeDepth;
                     GrabCount++;
-                    if (GrabCount >= 50) {
+                    if (GrabCount >= 80) {
                         phase = GrabGamePiecePhase.Phase5;
                         GrabCount = 0;
                     }
