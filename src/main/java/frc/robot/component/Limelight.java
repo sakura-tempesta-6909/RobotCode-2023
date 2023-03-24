@@ -59,6 +59,7 @@ public class Limelight implements Component {
         SmartDashboard.putNumber("ty", tyEntry.getDouble(0));
         SmartDashboard.putNumber("BackGoal", State.limelightToBackGoal);
         SmartDashboard.putBoolean("Limelight",  tvEntry.getDouble(0) != 0);
+        SmartDashboard.putNumber("armToFrontGoal", State.armToGoal);
 
     }
 
