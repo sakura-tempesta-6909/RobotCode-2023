@@ -23,6 +23,8 @@ public class Intake implements Component{
         leftRoller = new TalonSRX(Const.Ports.LeftRoller);
         bottomRoller = new VictorSPX(Const.Ports.BottomRoller);
         compressor = new Compressor(PneumaticsModuleType.CTREPCM);
+
+       bottomRoller.setInverted(true);
     }
         
     @Override
@@ -95,7 +97,6 @@ public class Intake implements Component{
     public void closeIntake() {
         intakeControl(false);
     }
-
 
     @Override
     public void applyState() {

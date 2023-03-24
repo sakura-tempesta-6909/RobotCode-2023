@@ -2,10 +2,6 @@ package frc.robot.mode;
 
 import frc.robot.States.LimelightState;
 import frc.robot.States.State;
-import frc.robot.States.State.GrabHandState;
-import frc.robot.States.State.IntakeExtensionState;
-import frc.robot.States.State.MoveLeftAndRightArmState;
-import frc.robot.States.State.Hand.RotateState;
 import frc.robot.subClass.Const;
 import frc.robot.subClass.Tools;
 
@@ -23,7 +19,7 @@ public class ArmMode extends Mode {
     public void changeMode() {
         if (driveController.getStartButton()) {
             State.mode = State.Modes.k_drive;
-        } else if (driveController.getLeftBumperPressed() && driveController.getPOV() == 0) {
+        } else if (driveController.getPOV() == 0) {
             State.mode = State.Modes.k_chargeStation;
         } else if (driveController.getLeftBumperPressed() && driveController.getPOV() == 225) {
             State.mode = State.Modes.k_config;
@@ -60,9 +56,9 @@ public class ArmMode extends Mode {
         LimelightState.isLimelightOn = true;
 
         if (driveController.getAButton()) {
-            State.intakeExtensionState = IntakeExtensionState.s_openIntake;
+            State.intakeExtensionState = State.IntakeExtensionState.s_openIntake;
         } else {
-            State.intakeExtensionState = IntakeExtensionState.s_closeIntake;
+            State.intakeExtensionState = State.IntakeExtensionState.s_closeIntake;
         }
 
         final double joystickX = -1 * Tools.deadZoneProcess(joystick.getRawAxis(0));
@@ -75,32 +71,32 @@ public class ArmMode extends Mode {
 
         if (driveController.getRightBumper() && driveController.getLeftBumper()) {
             // アームの位置をリセット
-            State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
+            State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_movetomiddle;
         } else if (joystickZ > 0.5) {
             // アームを右に動かす
-            State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_moveRightMotor;
+            State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_moveRightMotor;
         } else if (joystickZ < -0.5) {
             // アームを左に動かす
-            State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_moveLeftMotor;
+            State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_moveLeftMotor;
         }
 
         if (joystick.getRawButton(1)) {
             // ハンドを開く
-            State.Hand.grabHandState = GrabHandState.s_releaseHand;
+            State.Hand.grabHandState = State.GrabHandState.s_releaseHand;
         }
 
         if (joystick.getRawButton(3)) {
             // 手首の位置をリセット
-            State.Hand.rotateState = RotateState.s_turnHandBack;
+            State.Hand.rotateState = State.Hand.RotateState.s_turnHandBack;
         } else if (joystick.getRawButton(5)) {
             // 手首が右回転する
-            State.Hand.rotateState = RotateState.s_rightRotateHand;
+            State.Hand.rotateState = State.Hand.RotateState.s_rightRotateHand;
         } else if (joystick.getRawButton(6)) {
             // 手首が左回転する
-            State.Hand.rotateState = RotateState.s_leftRotateHand;
+            State.Hand.rotateState = State.Hand.RotateState.s_leftRotateHand;
         } else if (joystick.getRawButton(4)) {
             // 手首が180°回転する
-            State.Hand.rotateState = RotateState.s_moveHandToSpecifiedAngle;
+            State.Hand.rotateState = State.Hand.RotateState.s_moveHandToSpecifiedAngle;
         }
         if (joystick.getRawButtonPressed(4)) {
             // 手首が180°回転する
@@ -120,7 +116,7 @@ public class ArmMode extends Mode {
             State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
         }
 
-        boolean enableLimelight = true && driveController.getPOV() == 0;
+        boolean enableLimelight = true && driveController.getAButton();
         if (joystick.getRawAxis(3) < -0.8) {
             // 各アームの角度をコントローラーで変える -> もっとも直感的
             State.Arm.state = State.Arm.States.s_moveArmMotor;
@@ -205,9 +201,9 @@ public class ArmMode extends Mode {
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
                     State.Arm.targetHeight = Const.Arm.InitialHeight;
                     State.Arm.targetDepth = Const.Arm.InitialDepth;
-                    State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
-                    State.Hand.rotateState = RotateState.s_turnHandBack;
-                    State.Hand.grabHandState = GrabHandState.s_grabHand;
+                    State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_movetomiddle;
+                    State.Hand.rotateState = State.Hand.RotateState.s_turnHandBack;
+                    State.Hand.grabHandState = State.GrabHandState.s_grabHand;
                     if (State.Arm.isAtTarget()) {
                         phase = DriveMode.GrabGamePiecePhase.Phase2;
                     }
@@ -225,7 +221,7 @@ public class ArmMode extends Mode {
                         State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
                         State.Arm.targetHeight = Const.Calculation.Limelight.TopGoalHeight - Const.Arm.RootHeightFromGr;
                         State.Arm.targetDepth = enableLimelight ? State.limelightToBackGoal - Const.Calculation.Limelight.LimelightToArm : State.Arm.TargetDepth.TopCorn;
-                        State.Hand.grabHandState = GrabHandState.s_releaseHand;
+                        State.Hand.grabHandState = State.GrabHandState.s_releaseHand;
                     }
                     break;
             }
@@ -235,9 +231,9 @@ public class ArmMode extends Mode {
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
                     State.Arm.targetHeight = Const.Arm.InitialHeight;
                     State.Arm.targetDepth = Const.Arm.InitialDepth;
-                    State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
-                    State.Hand.rotateState = RotateState.s_turnHandBack;
-                    State.Hand.grabHandState = GrabHandState.s_grabHand;
+                    State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_movetomiddle;
+                    State.Hand.rotateState = State.Hand.RotateState.s_turnHandBack;
+                    State.Hand.grabHandState = State.GrabHandState.s_grabHand;
                     if (State.Arm.isAtTarget()) {
                         phase = DriveMode.GrabGamePiecePhase.Phase2;
                     }
@@ -255,7 +251,7 @@ public class ArmMode extends Mode {
                         State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
                         State.Arm.targetHeight = Const.Calculation.Limelight.MiddleGoalHeight - Const.Arm.RootHeightFromGr;
                         State.Arm.targetDepth = enableLimelight ? State.limelightToFrontGoal - Const.Calculation.Limelight.LimelightToArm : State.Arm.TargetDepth.MiddleCorn;
-                        State.Hand.grabHandState = GrabHandState.s_releaseHand;
+                        State.Hand.grabHandState = State.GrabHandState.s_releaseHand;
                     }
                     break;
             }
@@ -266,9 +262,9 @@ public class ArmMode extends Mode {
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
                     State.Arm.targetHeight = Const.Arm.InitialHeight;
                     State.Arm.targetDepth = Const.Arm.InitialDepth;
-                    State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
-                    State.Hand.rotateState = RotateState.s_turnHandBack;
-                    State.Hand.grabHandState = GrabHandState.s_grabHand;
+                    State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_movetomiddle;
+                    State.Hand.rotateState = State.Hand.RotateState.s_turnHandBack;
+                    State.Hand.grabHandState = State.GrabHandState.s_grabHand;
                     if (State.Arm.isAtTarget()) {
                         phase = DriveMode.GrabGamePiecePhase.Phase2;
                     }
@@ -286,7 +282,7 @@ public class ArmMode extends Mode {
                         State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
                         State.Arm.targetHeight = Const.Calculation.Camera.TopGoalHeight - Const.Arm.RootHeightFromGr;
                         State.Arm.targetDepth = State.Arm.TargetDepth.TopCube;
-                        State.Hand.grabHandState = GrabHandState.s_releaseHand;
+                        State.Hand.grabHandState = State.GrabHandState.s_releaseHand;
                     }
                     break;
             }
@@ -296,9 +292,9 @@ public class ArmMode extends Mode {
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
                     State.Arm.targetHeight = Const.Arm.InitialHeight;
                     State.Arm.targetDepth = Const.Arm.InitialDepth;
-                    State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
-                    State.Hand.rotateState = RotateState.s_turnHandBack;
-                    State.Hand.grabHandState = GrabHandState.s_grabHand;
+                    State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_movetomiddle;
+                    State.Hand.rotateState = State.Hand.RotateState.s_turnHandBack;
+                    State.Hand.grabHandState = State.GrabHandState.s_grabHand;
                     if (State.Arm.isAtTarget()) {
                         phase = DriveMode.GrabGamePiecePhase.Phase2;
                     }
@@ -316,7 +312,7 @@ public class ArmMode extends Mode {
                         State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
                         State.Arm.targetHeight = Const.Calculation.Camera.MiddleGoalHeight - Const.Arm.RootHeightFromGr;
                         State.Arm.targetDepth = State.Arm.TargetDepth.MiddleCube;
-                        State.Hand.grabHandState = GrabHandState.s_releaseHand;
+                        State.Hand.grabHandState = State.GrabHandState.s_releaseHand;
                     }
                     break;
             }
@@ -325,14 +321,14 @@ public class ArmMode extends Mode {
         if (joystick.getRawButton(2)) {
             // すべてBasicPositionに戻る
             State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-            State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_movetomiddle;
-            State.Hand.rotateState = RotateState.s_turnHandBack;
+            State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_movetomiddle;
+            State.Hand.rotateState = State.Hand.RotateState.s_turnHandBack;
             State.Arm.targetHeight = Const.Arm.InitialHeight;
             State.Arm.targetDepth = Const.Arm.InitialDepth;
         }
 
         if (driveController.getBButton()) {
-            State.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_limelightTracking;
+            State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_limelightTracking;
         }
 
         // ターゲット座標からターゲットの角度を計算する

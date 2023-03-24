@@ -2,7 +2,6 @@ package frc.robot.mode;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public abstract class Mode {
     static XboxController driveController, operateController;
