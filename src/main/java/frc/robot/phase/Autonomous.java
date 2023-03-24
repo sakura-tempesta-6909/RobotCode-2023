@@ -2,7 +2,9 @@ package frc.robot.phase;
 
 import java.lang.ref.PhantomReference;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.States.State;
+import frc.robot.mode.ArmMode;
 import frc.robot.subClass.Const;
 
 public class Autonomous {
@@ -41,7 +43,7 @@ public class Autonomous {
 
             },
             (double time) -> {
-                return State.Arm.targetHeight < Const.Arm.RelayPointHeight;
+                return State.Arm.targetHeight > Const.Arm.RelayPointHeight;
             },
             () -> {
                 State.Drive.resetPIDController = true;
@@ -127,6 +129,28 @@ public class Autonomous {
         );
     }
 
+    private static PhaseTransition.Phase armAdjust(double targetHeight, double targetDepth, String phaseName) {
+        return new PhaseTransition.Phase(
+        () -> {
+            
+            State.Arm.state = State.Arm.States.s_adjustArmPosition;
+            ArmMode.adjustArmPosition(targetHeight, targetDepth);
+
+
+    },
+    (double time) -> {
+        return State.Arm.isAtTarget();
+    },
+    () -> {
+        State.Drive.resetPIDController = true;
+        State.Drive.resetPosition = true;
+        State.Arm.resetPidController = true;
+    },
+    phaseName
+);
+
+    }
+
     public static void autonomousInit() {
         phaseTransitionA = new PhaseTransition();
         phaseTransitionB = new PhaseTransition();
@@ -134,21 +158,50 @@ public class Autonomous {
         PhaseTransition.Phase.PhaseInit();
 
         phaseTransitionA.registerPhase(
+            new PhaseTransition.Phase(
+            () -> {
+            
+            },
+            (double time) -> {
+                return time > 2;
+            },
+            () -> {
+                State.Drive.resetPIDController = true;
+                State.Drive.resetPosition = true;
+                State.Arm.resetPidController = true;
+            },
+            "wait"
+        ),
             basicArmTo(Const.Arm.InitialHeight, Const.Arm.InitialDepth, "move arm to basic position"),
+            armAdjust(Const.Arm.TargetModifyRatio, -Const.Arm.TargetModifyRatio, null),
             relayArmTo(Const.GrabGamePiecePhase.armRelayPointHeight, Const.GrabGamePiecePhase.armRelayPointDepth, "move arm to relay point"),
             moveArmTo( Const.Calculation.Camera.GoalHeight - Const.Arm.RootHeightFromGr, State.armToTag, "move arm to cube goal"),
-            releaseHand(2, "release cube"),
-            drive(-1, 2, "move to target")
+            releaseHand(2, "release cone")
+            // drive(-1, 2, "move to target")
             // driveTo(-3, "move to target")
                 
         );
 
         phaseTransitionB.registerPhase(
+            new PhaseTransition.Phase(
+                () -> {
+                
+                },
+                (double time) -> {
+                    return time > 2;
+                },
+                () -> {
+                    State.Drive.resetPIDController = true;
+                    State.Drive.resetPosition = true;
+                    State.Arm.resetPidController = true;
+                },
+                "wait"
+            ),
             basicArmTo(Const.Arm.InitialHeight, Const.Arm.InitialDepth, "move arm to basic position"),
             relayArmTo(Const.GrabGamePiecePhase.armRelayPointHeight, Const.GrabGamePiecePhase.armRelayPointDepth, "move arm to relay point"),
-            moveArmTo( Const.Calculation.Camera.GoalHeight - Const.Arm.RootHeightFromGr, State.armToTag, "move arm to cube goal"),
-            releaseHand(2, "release cube"),
-            drive(-1, 2, "move to target")
+            moveArmTo(  Const.Calculation.Camera.MiddleGoalHeight - Const.Arm.RootHeightFromGr, State.Arm.TargetDepth.MiddleCube, "move arm to cube goal"),
+            releaseHand(2, "release cube")
+            // drive(-1, 2, "move to target")
             // driveTo(-3, "move to target")
         );
 

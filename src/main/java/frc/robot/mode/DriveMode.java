@@ -28,7 +28,11 @@ public class DriveMode extends Mode {
     public void changeState() {
         State.Drive.xSpeed = -1 * driveController.getLeftY();
         State.Drive.zRotation = -1 * driveController.getRightX();
+        if (driveController.getRightBumper()) {
+            State.Drive.state = State.Drive.States.s_midDrive;
+        } else {
         State.Drive.state = State.Drive.States.s_fastDrive;
+        }
 
         //RT: intake, LT: outtake
         if (driveController.getRightTriggerAxis() > 0.5) {
@@ -242,7 +246,6 @@ public class DriveMode extends Mode {
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
                     State.Arm.targetHeight = Const.GrabGamePiecePhase.armRelayPointHeight;
                     State.Arm.targetDepth = Const.GrabGamePiecePhase.armRelayPointDepth;
-                    State.Hand.rotateState = State.Hand.RotateState.s_moveHandToSpecifiedAngle;
                     if (State.Arm.actualHeight > -10) {
                         phase = GrabGamePiecePhase.Phase4;
                     }
@@ -250,7 +253,6 @@ public class DriveMode extends Mode {
                 case Phase4:
                     State.Hand.grabHandState = State.GrabHandState.s_releaseHand;
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.Hand.rotateState = State.Hand.RotateState.s_moveHandToSpecifiedAngle;
                     State.Arm.targetHeight = Const.GrabGamePiecePhase.armSubStationHeight;
                     State.Arm.targetDepth = Const.GrabGamePiecePhase.armSubStationDepth;
                     break;

@@ -59,6 +59,13 @@ public class ChargeStationMode extends Mode{
             }
 
           
+        } else if (joystick.getRawButton(2)) {
+            // すべてBasicPositionに戻る
+            State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+            State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_movetomiddle;
+            State.Hand.rotateState = State.Hand.RotateState.s_turnHandBack;
+            State.Arm.targetHeight = Const.Arm.InitialHeight;
+            State.Arm.targetDepth = Const.Arm.InitialDepth;
         }
 
         if (joystick.getRawButtonPressed(1)) {

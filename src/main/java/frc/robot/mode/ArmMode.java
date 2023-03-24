@@ -291,7 +291,7 @@ public class ArmMode extends Mode {
         return flag;
     }
 
-    static void adjustArmPosition(double diffH, double diffD) {
+    public static void adjustArmPosition(double diffH, double diffD) {
         State.Arm.state = State.Arm.States.s_adjustArmPosition;
         if (isNewTargetPositionInLimit(State.Arm.targetHeight + diffH, State.Arm.targetDepth + diffD)) {
             State.Arm.targetHeight += diffH;

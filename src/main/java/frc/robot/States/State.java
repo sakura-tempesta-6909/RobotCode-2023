@@ -292,10 +292,7 @@ public class State {
         pidLimelightReset = false;
         intakeExtensionState = IntakeExtensionState.s_openIntake;
 
-        // autonomousPhaseTransType = Util.getConsole("AutonomousPhaseTransition");
-
         isCompressorEnable = true;
-        autonomousPhaseTransType = Util.getConsole("autonomousPhaseTransType");
 
         // reset arm states
         Drive.StatesReset();
