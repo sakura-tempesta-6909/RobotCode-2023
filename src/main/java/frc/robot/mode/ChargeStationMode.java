@@ -21,6 +21,6 @@ public class ChargeStationMode extends Mode{
         State.Drive.xSpeed = -1 * driveController.getLeftY();
         State.Drive.zRotation = -1 * driveController.getRightX();
 
-        State.Drive.state = State.Drive.States.s_fastDrive;
+        State.Drive.state = State.Drive.States.s_midDrive;
     }
 }

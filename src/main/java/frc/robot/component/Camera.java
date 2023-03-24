@@ -23,7 +23,8 @@ public class Camera implements Component {
         double angleToGoalRadians = angleToGoalDegrees * (Math.PI / 180);
         State.cameraToTag = (Const.Calculation.Camera.GoalHeight - Const.Calculation.Camera.CameraLensHeight) / Math.tan(angleToGoalRadians);
         State.armToTag = State.cameraToTag - Const.Calculation.Camera.CameraToArm;
-        SmartDashboard.putNumber("Distance", State.cameraToTag);
+        SmartDashboard.putNumber("cameraToTag", State.cameraToTag);
+        SmartDashboard.putNumber("armToTag", State.armToTag);
 
 
     }
