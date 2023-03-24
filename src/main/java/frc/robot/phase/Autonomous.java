@@ -10,6 +10,25 @@ public class Autonomous {
     private static PhaseTransition phaseTransitionB;
     private static PhaseTransition phaseTransitionC;
 
+    private static PhaseTransition.Phase basicArmTo(double targetHeight, double targetDepth, String phaseName) {
+        return new PhaseTransition.Phase(
+            () -> {
+                State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+                State.Arm.targetHeight = targetHeight;
+                State.Arm.targetDepth = targetDepth;
+            },
+            (double time) -> {
+                return State.Arm.isAtTarget();
+            },
+            () -> {
+                State.Drive.resetPIDController = true;
+                State.Drive.resetPosition = true;
+                State.Arm.resetPidController  = true;
+            }, 
+            phaseName
+        );
+    }
+
 
     private static PhaseTransition.Phase relayArmTo(double relayHeight, double relayDepth, String phaseName) {
         return new PhaseTransition.Phase(
@@ -97,7 +116,8 @@ public class Autonomous {
         PhaseTransition.Phase.PhaseInit();
 
         phaseTransitionA.registerPhase(
-            relayArmTo(Const.Arm.InitialHeight, Const.Arm.InitialDepth, "move arm to relay point"),
+            basicArmTo(Const.Arm.InitialHeight, Const.Arm.InitialDepth, "move arm to basic position"),
+            relayArmTo(Const.GrabGamePiecePhase.armRelayPointHeight, Const.GrabGamePiecePhase.armRelayPointDepth, "move arm to relay point"),
             moveArmTo(-60, 20, "move arm to cube goal"),
             moveArmTo(-60, 20, "move arm to cube goal"),
             moveArmTo(Const.GrabGamePiecePhase.armRelayPointHeight, Const.GrabGamePiecePhase.armRelayPointDepth,"move arm to cube goal"),
