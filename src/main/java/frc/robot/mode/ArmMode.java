@@ -124,7 +124,7 @@ public class ArmMode extends Mode {
             State.Arm.jointSpeed = joystickY;
         } else if (joystick.getRawButton(7)) {
             // 奥のコーンのゴールまでアームを伸ばす
-            if (State.Arm.actualHeight < -10) {
+            if (State.Arm.actualHeight < Const.Arm.RelayPointHeight) {
                 State.Arm.targetHeight = Const.GrabGamePiecePhase.armRelayPointHeight;
                 State.Arm.targetDepth = Const.GrabGamePiecePhase.armRelayPointDepth;
             } else {
@@ -133,7 +133,7 @@ public class ArmMode extends Mode {
             }
         } else if (joystick.getRawButton(9)) {
             // 真ん中のコーンのゴールまでアームを伸ばす
-            if (State.Arm.actualHeight < -10) {
+            if (State.Arm.actualHeight < Const.Arm.RelayPointHeight) {
                 State.Arm.targetHeight = Const.GrabGamePiecePhase.armRelayPointHeight;
                 State.Arm.targetDepth = Const.GrabGamePiecePhase.armRelayPointDepth;
             } else {
@@ -146,7 +146,7 @@ public class ArmMode extends Mode {
                 State.Arm.targetDepth = State.Arm.TargetDepth.BottomCorn;
         } else if (joystick.getRawButton(8)) {
             // 奥のキューブのゴールまでアームを伸ばす
-            if (State.Arm.actualHeight < -10) {
+            if (State.Arm.actualHeight < Const.Arm.RelayPointHeight) {
                 State.Arm.targetHeight = Const.GrabGamePiecePhase.armRelayPointHeight;
                 State.Arm.targetDepth = Const.GrabGamePiecePhase.armRelayPointDepth;
             } else {
@@ -155,7 +155,7 @@ public class ArmMode extends Mode {
             }
         } else if (joystick.getRawButton(10)) {
             // 真ん中のキューブのゴールまでアームを伸ばす
-            if(State.Arm.actualHeight < -10) {
+            if(State.Arm.actualHeight < Const.Arm.RelayPointHeight) {
                 State.Arm.targetHeight = Const.GrabGamePiecePhase.armRelayPointHeight;
                 State.Arm.targetDepth = Const.GrabGamePiecePhase.armRelayPointDepth;
             } else {
@@ -195,127 +195,6 @@ public class ArmMode extends Mode {
             State.Arm.rootSpeed = joystickX;
             State.Arm.jointSpeed = joystickY;
             // 奥のコーン
-        } else if (joystick.getRawButton(7)) {
-            switch (phase) {
-                case Phase1:
-                    State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.Arm.targetHeight = Const.Arm.InitialHeight;
-                    State.Arm.targetDepth = Const.Arm.InitialDepth;
-                    State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_movetomiddle;
-                    State.Hand.rotateState = State.Hand.RotateState.s_turnHandBack;
-                    State.Hand.grabHandState = State.GrabHandState.s_grabHand;
-                    if (State.Arm.isAtTarget()) {
-                        phase = DriveMode.GrabGamePiecePhase.Phase2;
-                    }
-                    break;
-                case Phase2:
-                    State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.Arm.targetHeight = Const.GrabGamePiecePhase.armRelayPointHeight;
-                    State.Arm.targetDepth = Const.GrabGamePiecePhase.armRelayPointDepth;
-                    if (State.Arm.isAtTarget()) {
-                        phase = DriveMode.GrabGamePiecePhase.Phase3;
-                    }
-                    break;
-                case Phase3:
-                    if (State.Arm.targetHeight < 50) {
-                        State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                        State.Arm.targetHeight = Const.Calculation.Limelight.TopGoalHeight - Const.Arm.RootHeightFromGr;
-                        State.Arm.targetDepth = enableLimelight ? State.limelightToBackGoal - Const.Calculation.Limelight.LimelightToArm : State.Arm.TargetDepth.TopCorn;
-                        State.Hand.grabHandState = State.GrabHandState.s_releaseHand;
-                    }
-                    break;
-            }
-        } else if (joystick.getRawButton(9)) {
-            switch (phase) {
-                case Phase1:
-                    State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.Arm.targetHeight = Const.Arm.InitialHeight;
-                    State.Arm.targetDepth = Const.Arm.InitialDepth;
-                    State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_movetomiddle;
-                    State.Hand.rotateState = State.Hand.RotateState.s_turnHandBack;
-                    State.Hand.grabHandState = State.GrabHandState.s_grabHand;
-                    if (State.Arm.isAtTarget()) {
-                        phase = DriveMode.GrabGamePiecePhase.Phase2;
-                    }
-                    break;
-                case Phase2:
-                    State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.Arm.targetHeight = Const.GrabGamePiecePhase.armRelayPointHeight;
-                    State.Arm.targetDepth = Const.GrabGamePiecePhase.armRelayPointDepth;
-                    if (State.Arm.isAtTarget()) {
-                        phase = DriveMode.GrabGamePiecePhase.Phase3;
-                    }
-                    break;
-                case Phase3:
-                    if (State.Arm.targetHeight < 50) {
-                        State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                        State.Arm.targetHeight = Const.Calculation.Limelight.MiddleGoalHeight - Const.Arm.RootHeightFromGr;
-                        State.Arm.targetDepth = enableLimelight ? State.limelightToFrontGoal - Const.Calculation.Limelight.LimelightToArm : State.Arm.TargetDepth.MiddleCorn;
-                        State.Hand.grabHandState = State.GrabHandState.s_releaseHand;
-                    }
-                    break;
-            }
-
-        } else if (joystick.getRawButton(8)) {
-            switch (phase) {
-                case Phase1:
-                    State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.Arm.targetHeight = Const.Arm.InitialHeight;
-                    State.Arm.targetDepth = Const.Arm.InitialDepth;
-                    State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_movetomiddle;
-                    State.Hand.rotateState = State.Hand.RotateState.s_turnHandBack;
-                    State.Hand.grabHandState = State.GrabHandState.s_grabHand;
-                    if (State.Arm.isAtTarget()) {
-                        phase = DriveMode.GrabGamePiecePhase.Phase2;
-                    }
-                    break;
-                case Phase2:
-                    State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.Arm.targetHeight = Const.GrabGamePiecePhase.armRelayPointHeight;
-                    State.Arm.targetDepth = Const.GrabGamePiecePhase.armRelayPointDepth;
-                    if (State.Arm.isAtTarget()) {
-                        phase = DriveMode.GrabGamePiecePhase.Phase3;
-                    }
-                    break;
-                case Phase3:
-                    if (State.Arm.targetHeight < 50) {
-                        State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                        State.Arm.targetHeight = Const.Calculation.Camera.TopGoalHeight - Const.Arm.RootHeightFromGr;
-                        State.Arm.targetDepth = State.Arm.TargetDepth.TopCube;
-                        State.Hand.grabHandState = State.GrabHandState.s_releaseHand;
-                    }
-                    break;
-            }
-        } else if (joystick.getRawButton(10)) {
-            switch (phase) {
-                case Phase1:
-                    State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.Arm.targetHeight = Const.Arm.InitialHeight;
-                    State.Arm.targetDepth = Const.Arm.InitialDepth;
-                    State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_movetomiddle;
-                    State.Hand.rotateState = State.Hand.RotateState.s_turnHandBack;
-                    State.Hand.grabHandState = State.GrabHandState.s_grabHand;
-                    if (State.Arm.isAtTarget()) {
-                        phase = DriveMode.GrabGamePiecePhase.Phase2;
-                    }
-                    break;
-                case Phase2:
-                    State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.Arm.targetHeight = Const.GrabGamePiecePhase.armRelayPointHeight;
-                    State.Arm.targetDepth = Const.GrabGamePiecePhase.armRelayPointDepth;
-                    if (State.Arm.isAtTarget()) {
-                        phase = DriveMode.GrabGamePiecePhase.Phase3;
-                    }
-                    break;
-                case Phase3:
-                    if (State.Arm.targetHeight < 50) {
-                        State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                        State.Arm.targetHeight = Const.Calculation.Camera.MiddleGoalHeight - Const.Arm.RootHeightFromGr;
-                        State.Arm.targetDepth = State.Arm.TargetDepth.MiddleCube;
-                        State.Hand.grabHandState = State.GrabHandState.s_releaseHand;
-                    }
-                    break;
-            }
         }
 
         if (joystick.getRawButton(2)) {

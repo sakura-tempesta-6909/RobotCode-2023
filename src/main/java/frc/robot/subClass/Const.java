@@ -34,7 +34,7 @@ public class Const {
         public static final double Neutral = 0;
 
         public static final double FastDrive = .9;
-        public static final double MidDrive = 0.6;
+        public static final double MidDrive = 0.75;
         public static final double SlowDrive = 0.3;
 
         public static final double HandRotationSpeed = 0.1;
@@ -483,6 +483,8 @@ public class Const {
 
         public static final double RootHomePosition = -87.5;
         public static final double JointHomePosition = -52.9;
+
+        public static final double RelayPointHeight = -20;
     }
 
     public static final class Hand {
