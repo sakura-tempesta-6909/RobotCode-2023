@@ -1,5 +1,7 @@
 package frc.robot.phase;
 
+import java.lang.ref.PhantomReference;
+
 import frc.robot.States.State;
 import frc.robot.subClass.Const;
 
@@ -8,6 +10,28 @@ public class Autonomous {
     private static PhaseTransition phaseTransitionB;
     private static PhaseTransition phaseTransitionC;
 
+
+    private static PhaseTransition.Phase relayArmTo(double relayHeight, double relayDepth, String phaseName) {
+        return new PhaseTransition.Phase(
+            () -> {
+        
+                    State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+                    State.Arm.targetHeight = relayHeight;
+                    State.Arm.targetDepth = relayDepth;
+                
+
+            },
+            (double time) -> {
+                return State.Arm.targetHeight < Const.Arm.RelayPointHeight;
+            },
+            () -> {
+                State.Drive.resetPIDController = true;
+                State.Drive.resetPosition = true;
+                State.Arm.resetPidController = true;
+            },
+            phaseName
+    );
+    }
 
     private static PhaseTransition.Phase moveArmTo(double targetHeight, double targetDepth, String phaseName) {
         return new PhaseTransition.Phase(
@@ -73,6 +97,7 @@ public class Autonomous {
         PhaseTransition.Phase.PhaseInit();
 
         phaseTransitionA.registerPhase(
+            relayArmTo(Const.Arm.InitialHeight, Const.Arm.InitialDepth, "move arm to relay point"),
             moveArmTo(-60, 20, "move arm to cube goal"),
             moveArmTo(-60, 20, "move arm to cube goal"),
             moveArmTo(Const.GrabGamePiecePhase.armRelayPointHeight, Const.GrabGamePiecePhase.armRelayPointDepth,"move arm to cube goal"),
@@ -83,6 +108,7 @@ public class Autonomous {
         );
 
         phaseTransitionB.registerPhase(
+            relayArmTo(Const.Arm.InitialHeight, Const.Arm.InitialDepth, "move arm to relay point"),
             moveArmTo(-60, -20, "move arm to cube goal"),
             moveArmTo(-60, 20, "move arm to cube goal"),
             moveArmTo(Const.GrabGamePiecePhase.armRelayPointHeight, Const.GrabGamePiecePhase.armRelayPointDepth,"move arm to cube goal"),
