@@ -42,10 +42,10 @@ public class State {
     /** カメラの盾の中心座標 */
     public static double cameraCenterHeight;
     public static double cameraXSpeed;
-
     public static boolean isCompressorEnable;
+
     /** Autonomousの遷移の種類　[ A, B, C ] のいずれか */
-    public static String autonomousPhaseTransType;
+    public static String autonomousPhaseTransType = "";
 
 
     public static class Hand {
@@ -85,9 +85,9 @@ public class State {
 
         public static States state;
         /** PID時のターゲット[cm] 正が前向き */
-        public static double targetLength;
+        public static double targetMeter;
         /** 左右のモーターの位置[cm] 正が前向き */
-        public static double rightLength, leftLength;
+        public static double rightMeter, leftMeter;
         /** arcadeDrive用の引数 */
         public static double xSpeed, zRotation;
 
@@ -96,8 +96,8 @@ public class State {
         public static boolean isMotorBrake;
 
         public static boolean isAtTarget() {
-            boolean isLeftMotorAtTarget = Math.abs(State.Drive.leftLength - State.Drive.targetLength) < Const.Drive.PID.LossTolerance;
-            boolean isRightMotorAtTarget = Math.abs(State.Drive.rightLength - State.Drive.targetLength) < Const.Drive.PID.LossTolerance;
+            boolean isLeftMotorAtTarget = Math.abs(State.Drive.leftMeter - State.Drive.targetMeter) < Const.Drive.PID.LossTolerance;
+            boolean isRightMotorAtTarget = Math.abs(State.Drive.rightMeter - State.Drive.targetMeter) < Const.Drive.PID.LossTolerance;
             return isRightMotorAtTarget && isLeftMotorAtTarget;
         }
 
@@ -119,17 +119,18 @@ public class State {
         }
 
         public static void StatesInit() {
-            targetLength = 0.0;
+            targetMeter = 0.0;
             xSpeed = 0.0;
             zRotation = 0.0;
-            rightLength = 0.0;
-            leftLength = 0.0;
+            rightMeter = 0.0;
+            leftMeter = 0.0;
         }
 
         public static void StatesReset() {
             state = States.s_stopDrive;
             resetPosition = false;
             resetPIDController = false;
+            isCompressorEnable = true;
             isMotorBrake = false;
             Arm.StatesReset();
             Hand.StateReset();

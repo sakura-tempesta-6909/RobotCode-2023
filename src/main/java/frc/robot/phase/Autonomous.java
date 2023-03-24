@@ -1,7 +1,6 @@
 package frc.robot.phase;
 
 import frc.robot.States.State;
-import frc.robot.States.State.GrabHandState;
 import frc.robot.subClass.Const;
 
 public class Autonomous {
@@ -42,7 +41,7 @@ public class Autonomous {
     public static PhaseTransition.Phase releaseHand(double waiter, String phaseName) {
         return new PhaseTransition.Phase(
                 () -> {
-                    State.Hand.grabHandState = GrabHandState.s_releaseHand;
+                    State.Hand.grabHandState = State.GrabHandState.s_releaseHand;
                 },
                 (double time) -> {
                     return time > waiter;
@@ -51,16 +50,16 @@ public class Autonomous {
         );
     }
 
-    public static PhaseTransition.Phase driveTo(double targetLength, String phaseName) {
+    public static PhaseTransition.Phase driveTo(double targetMeter, String phaseName) {
         return new PhaseTransition.Phase(
                 () -> {
                     State.Drive.resetPIDController = true;
                     State.Drive.resetPosition = true;
                     State.Drive.state = State.Drive.States.s_pidDrive;
-                    State.Drive.targetLength = targetLength;
+                    State.Drive.targetMeter = targetMeter;
                 },
                 (double time) -> {
-                    return time > targetLength;
+                    return time > targetMeter;
                 },
                 phaseName
         );
@@ -88,7 +87,17 @@ public class Autonomous {
         );
 
         phaseTransitionC.registerPhase(
-
+                new PhaseTransition.Phase(
+                        () -> {
+                            State.Drive.resetPIDController = true;
+                            State.Drive.resetPosition = true;
+                            State.Drive.state = State.Drive.States.s_midDrive;
+                            State.Drive.xSpeed = -1;
+                        },
+                        (double time) -> {
+                            return time > 4;
+                        }
+                )
         );
     }
 
