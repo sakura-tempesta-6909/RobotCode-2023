@@ -32,8 +32,8 @@ private static GrabGamePiecePhase phase = GrabGamePiecePhase.Phase1;
             switch (phase) {
                 case Phase1:
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.Arm.targetHeight = 0;
-                    State.Arm.targetDepth = 60;
+                    State.Arm.targetHeight = -100;
+                    State.Arm.targetDepth = -8;
                     break;
                 case Phase2:
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
@@ -46,8 +46,8 @@ private static GrabGamePiecePhase phase = GrabGamePiecePhase.Phase1;
                 switch (phase) {
                     case Phase1:
                         State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                        State.Arm.targetHeight = 0;
-                        State.Arm.targetDepth = 60;
+                        State.Arm.targetHeight = -60;
+                        State.Arm.targetDepth = 27;
                         break;
                     case Phase2:
                         State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
