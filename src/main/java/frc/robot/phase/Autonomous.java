@@ -138,7 +138,7 @@ public class Autonomous {
             relayArmTo(Const.GrabGamePiecePhase.armRelayPointHeight, Const.GrabGamePiecePhase.armRelayPointDepth, "move arm to relay point"),
             moveArmTo( Const.Calculation.Camera.GoalHeight - Const.Arm.RootHeightFromGr, State.armToTag, "move arm to cube goal"),
             releaseHand(2, "release cube"),
-            drive(-0.7, 4, "move to target")
+            drive(-1, 2, "move to target")
             // driveTo(-3, "move to target")
                 
         );
@@ -148,7 +148,7 @@ public class Autonomous {
             relayArmTo(Const.GrabGamePiecePhase.armRelayPointHeight, Const.GrabGamePiecePhase.armRelayPointDepth, "move arm to relay point"),
             moveArmTo( Const.Calculation.Camera.GoalHeight - Const.Arm.RootHeightFromGr, State.armToTag, "move arm to cube goal"),
             releaseHand(2, "release cube"),
-            drive(-0.7, 4, "move to target")
+            drive(-1, 2, "move to target")
             // driveTo(-3, "move to target")
         );
 
