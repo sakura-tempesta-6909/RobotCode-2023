@@ -109,14 +109,14 @@ public class Autonomous {
         );
     }
 
-    private static PhaseTransition.Phase drive(double xSpeed, String phaseName) {
+    private static PhaseTransition.Phase drive(double xSpeed, double waiter, String phaseName) {
         return new PhaseTransition.Phase(
             () -> {
                 State.Drive.state = State.Drive.States.s_midDrive;
                 State.Drive.xSpeed = xSpeed;
             },
             (double time) -> {
-                return time > 4;
+                return time > waiter;
             },
             () -> {
                 State.Drive.resetPIDController = true;
@@ -138,7 +138,7 @@ public class Autonomous {
             relayArmTo(Const.GrabGamePiecePhase.armRelayPointHeight, Const.GrabGamePiecePhase.armRelayPointDepth, "move arm to relay point"),
             moveArmTo( Const.Calculation.Camera.GoalHeight - Const.Arm.RootHeightFromGr, State.armToTag, "move arm to cube goal"),
             releaseHand(2, "release cube"),
-            drive(1, "move to target")
+            drive(1, 4, "move to target")
             // driveTo(-3, "move to target")
                 
         );
@@ -148,7 +148,7 @@ public class Autonomous {
             relayArmTo(Const.GrabGamePiecePhase.armRelayPointHeight, Const.GrabGamePiecePhase.armRelayPointDepth, "move arm to relay point"),
             moveArmTo( Const.Calculation.Camera.GoalHeight - Const.Arm.RootHeightFromGr, State.armToTag, "move arm to cube goal"),
             releaseHand(2, "release cube"),
-            drive(1, "move to target")
+            drive(1, 4, "move to target")
             // driveTo(-3, "move to target")
         );
 
