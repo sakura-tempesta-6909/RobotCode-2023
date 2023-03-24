@@ -8,7 +8,8 @@ import frc.robot.subClass.*;
 public class ChargeStationMode extends Mode{
 // 正式名称は「ワクワクドキドキ神様お願いブレイクモード」
 
-private static GrabGamePiecePhase phase = GrabGamePiecePhase.Phase1;
+    private static GrabGamePiecePhase phase = GrabGamePiecePhase.Phase1;
+    private static int GrabCount = 0;
     @Override
     public void changeMode() {
         if (driveController.getStartButtonPressed()) {
@@ -32,25 +33,34 @@ private static GrabGamePiecePhase phase = GrabGamePiecePhase.Phase1;
             switch (phase) {
                 case Phase1:
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.Arm.targetHeight = Const.GrabGamePiecePhase.armCubeIntakeHeight;
-                    State.Arm.targetDepth = Const.GrabGamePiecePhase.armCubeIntakeDepth;
+                    State.Arm.targetHeight = Const.Arm.InitialHeight;
+                    State.Arm.targetDepth = Const.Arm.InitialDepth;
+                    State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_movetomiddle;
+                    State.Hand.rotateState = State.Hand.RotateState.s_turnHandBack;
+                    if (State.Arm.isAtTarget()) {
+                        State.Hand.targetAngle = State.Hand.actualHandAngle + 90;
+                        phase = GrabGamePiecePhase.Phase2;
+                    }
                     break;
                 case Phase2:
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.Arm.targetHeight = Const.GrabGamePiecePhase.armCubeIntakeHeight;
+                    State.Arm.targetHeight = ( Const.Arm.InitialHeight+Const.GrabGamePiecePhase.armCubeIntakeHeight) / 2 +5;
                     State.Arm.targetDepth = Const.GrabGamePiecePhase.armCubeIntakeDepth;
+                    State.Hand.rotateState = State.Hand.RotateState.s_moveHandToSpecifiedAngle;
+                    if (State.Arm.isAtTarget()) {
+                        phase = GrabGamePiecePhase.Phase3;
+                    }
                     break;
-                      // すべてBasicPositionに戻る
                 case Phase3:
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_movetomiddle;
-                    State.Hand.rotateState = State.Hand.RotateState.s_turnHandBack;
-                    State.Arm.targetHeight = Const.Arm.InitialHeight;
-                    State.Arm.targetDepth = Const.Arm.InitialDepth;
+                    State.Arm.targetHeight = Const.GrabGamePiecePhase.armCubeIntakeHeight;
+                    State.Arm.targetDepth = Const.GrabGamePiecePhase.armCubeIntakeDepth;
+                    if (State.Arm.isAtTarget()) {
+                        phase = GrabGamePiecePhase.Phase4;
+                    }
                     break;
                 case Phase4:
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_movetomiddle;
                     State.Hand.rotateState = State.Hand.RotateState.s_turnHandBack;
                     State.Arm.targetHeight = Const.Arm.InitialHeight;
                     State.Arm.targetDepth = Const.Arm.InitialDepth;
