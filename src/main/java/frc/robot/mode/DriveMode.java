@@ -39,6 +39,19 @@ public class DriveMode extends Mode {
             State.intakeState = State.RollerState.s_stopRoller;
         }
 
+        final double joystickZ = 1 * Tools.deadZoneProcess(joystick.getRawAxis(2));
+
+        if (driveController.getRightBumper() && driveController.getLeftBumper()) {
+            // アームの位置をリセット
+            State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_movetomiddle;
+        } else if (joystickZ > 0.5) {
+            // アームを右に動かす
+            State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_moveRightMotor;
+        } else if (joystickZ < -0.5) {
+            // アームを左に動かす
+            State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_moveLeftMotor;
+        }
+
         if (joystick.getRawButton(1)) {
             // ハンドを開く
             State.Hand.grabHandState = State.GrabHandState.s_releaseHand;

@@ -9,22 +9,23 @@ public class Autonomous {
     private static PhaseTransition phaseTransitionC;
 
 
-    private static PhaseTransition.Phase moveArmTo(double relayHeight, double relayDepth, double targetHeight, double targetDepth, String phaseName) {
+    private static PhaseTransition.Phase moveArmTo(double targetHeight, double targetDepth, String phaseName) {
         return new PhaseTransition.Phase(
                 () -> {
-                    if (State.Arm.targetHeight < -20) {
-                        State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                        State.Arm.targetHeight = relayHeight;
-                        State.Arm.targetDepth = relayDepth;
-                    } else {
+            
                         State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
                         State.Arm.targetHeight = targetHeight;
                         State.Arm.targetDepth = targetDepth;
-                    }
+                    
 
                 },
                 (double time) -> {
                     return State.Arm.isAtTarget();
+                },
+                () -> {
+                    State.Drive.resetPIDController = true;
+                    State.Drive.resetPosition = true;
+                    State.Arm.resetPidController = true;
                 },
                 phaseName
         );
@@ -38,6 +39,11 @@ public class Autonomous {
                 (double time) -> {
                     return time > waiter;
                 },
+                () -> {
+                    State.Drive.resetPIDController = true;
+                    State.Drive.resetPosition = true;
+                    State.Arm.resetPidController = true;
+                },
                 phaseName
         );
     }
@@ -45,13 +51,16 @@ public class Autonomous {
     public static PhaseTransition.Phase driveTo(double targetMeter, String phaseName) {
         return new PhaseTransition.Phase(
                 () -> {
-                    State.Drive.resetPIDController = true;
-                    State.Drive.resetPosition = true;
                     State.Drive.state = State.Drive.States.s_pidDrive;
                     State.Drive.targetMeter = targetMeter;
                 },
                 (double time) -> {
                     return time > targetMeter;
+                },
+                () -> {
+                    State.Drive.resetPIDController = true;
+                    State.Drive.resetPosition = true;
+                    State.Arm.resetPidController = true;
                 },
                 phaseName
         );
@@ -64,16 +73,22 @@ public class Autonomous {
         PhaseTransition.Phase.PhaseInit();
 
         phaseTransitionA.registerPhase(
-                moveArmTo(0, 60, Const.Calculation.Camera.GoalHeight - Const.Arm.RootHeightFromGr, State.armToTag, "move arm to cube goal"),
-                releaseHand(2, "release cube"),
-                driveTo(-3, "move to target")
+            moveArmTo(-60, 20, "move arm to cube goal"),
+            moveArmTo(-60, 20, "move arm to cube goal"),
+            moveArmTo(Const.GrabGamePiecePhase.armRelayPointHeight, Const.GrabGamePiecePhase.armRelayPointDepth,"move arm to cube goal"),
+                moveArmTo( Const.Calculation.Camera.GoalHeight - Const.Arm.RootHeightFromGr, State.armToTag, "move arm to cube goal"),
+                releaseHand(2, "release cube")
+                // driveTo(-3, "move to target")
                 
         );
 
         phaseTransitionB.registerPhase(
-                moveArmTo(0, 60, Const.Calculation.Limelight.GoalHeight - Const.Arm.RootHeightFromGr, State.armToGoal, "move arm to corn goal"),
-                releaseHand(2, "release corn"),
-                driveTo(-3, "move to target")
+            moveArmTo(-60, -20, "move arm to cube goal"),
+            moveArmTo(-60, 20, "move arm to cube goal"),
+            moveArmTo(Const.GrabGamePiecePhase.armRelayPointHeight, Const.GrabGamePiecePhase.armRelayPointDepth,"move arm to cube goal"),
+                moveArmTo(Const.Calculation.Limelight.GoalHeight - Const.Arm.RootHeightFromGr, State.armToGoal, "move arm to corn goal"),
+                releaseHand(2, "release corn")
+                // driveTo(-3, "move to target")
         );
 
         phaseTransitionC.registerPhase(
