@@ -63,6 +63,7 @@ public class ChargeStationMode extends Mode{
 
         if (joystick.getRawButtonPressed(1)) {
             State.Arm.resetPidController = true;
+            phase = GrabGamePiecePhase.Phase1;
         } else if (joystick.getRawButtonPressed(2)) {
             State.Arm.resetPidController = true;
         }
