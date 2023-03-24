@@ -27,16 +27,30 @@ public class ChargeStationMode extends Mode{
         State.Drive.state = State.Drive.States.s_fastDrive;
 
         if (joystick.getRawButton(1)) {
-            State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-            State.Arm.targetHeight = Const.GrabGamePiecePhase.armCubeIntakeHeight;
-            State.Arm.targetDepth = Const.GrabGamePiecePhase.armCubeIntakeDepth;
+            if (State.Arm.targetHeight < -20) {
+                State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+                State.Arm.targetHeight = 0;
+                State.Arm.targetDepth = 60;
+            } else {
+                State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+                State.Arm.targetHeight = Const.GrabGamePiecePhase.armCubeIntakeHeight;
+                State.Arm.targetDepth = Const.GrabGamePiecePhase.armCubeIntakeDepth;
+            }
+           
         } else if (joystick.getRawButton(2)) {
             // すべてBasicPositionに戻る
-            State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-            State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_movetomiddle;
-            State.Hand.rotateState = State.Hand.RotateState.s_turnHandBack;
-            State.Arm.targetHeight = Const.Arm.InitialHeight;
-            State.Arm.targetDepth = Const.Arm.InitialDepth;
+            if (State.Arm.targetHeight < -20) {
+                State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+                State.Arm.targetHeight = 0;
+                State.Arm.targetDepth = 60;
+            } else {
+                State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+                State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_movetomiddle;
+                State.Hand.rotateState = State.Hand.RotateState.s_turnHandBack;
+                State.Arm.targetHeight = Const.Arm.InitialHeight;
+                State.Arm.targetDepth = Const.Arm.InitialDepth;
+            }
+          
         }
 
         if (joystick.getRawButtonPressed(1)) {
