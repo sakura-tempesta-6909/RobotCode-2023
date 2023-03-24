@@ -8,28 +8,20 @@ public class Autonomous {
     private static PhaseTransition phaseTransitionB;
     private static PhaseTransition phaseTransitionC;
 
-    public static PhaseTransition.Phase moveRelay(double relayHeight, double relayDepth, String phaseName) {
-        return new PhaseTransition.Phase(
-                () -> {
-                    State.Arm.resetPidController = true;
-                    State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.Arm.targetHeight = relayHeight;
-                    State.Arm.targetDepth = relayDepth;
-                },
-                (double time) -> {
-                    return State.Arm.isAtTarget();
-                },
-                phaseName
-        );
-    }
 
-    private static PhaseTransition.Phase moveArmTo(double targetHeight, double targetDepth, String phaseName) {
+    private static PhaseTransition.Phase moveArmTo(double relayHeight, double relayDepth, double targetHeight, double targetDepth, String phaseName) {
         return new PhaseTransition.Phase(
                 () -> {
-                    State.Arm.resetPidController = true;
-                    State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.Arm.targetHeight = targetHeight;
-                    State.Arm.targetDepth = targetDepth;
+                    if (State.Arm.targetHeight < -20) {
+                        State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+                        State.Arm.targetHeight = relayHeight;
+                        State.Arm.targetDepth = relayDepth;
+                    } else {
+                        State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+                        State.Arm.targetHeight = targetHeight;
+                        State.Arm.targetDepth = targetDepth;
+                    }
+
                 },
                 (double time) -> {
                     return State.Arm.isAtTarget();
@@ -72,16 +64,14 @@ public class Autonomous {
         PhaseTransition.Phase.PhaseInit();
 
         phaseTransitionA.registerPhase(
-                moveRelay(0, 60, "move to relay point"),
-                moveArmTo(Const.Calculation.Camera.GoalHeight - Const.Arm.RootHeightFromGr, State.armToTag, "move arm to cube goal"),
+                moveArmTo(0, 60, Const.Calculation.Camera.GoalHeight - Const.Arm.RootHeightFromGr, State.armToTag, "move arm to cube goal"),
                 releaseHand(2, "release cube"),
                 driveTo(-3, "move to target")
                 
         );
 
         phaseTransitionB.registerPhase(
-                moveRelay(0, 60, "move to relay point"),
-                moveArmTo(Const.Calculation.Limelight.GoalHeight - Const.Arm.RootHeightFromGr, State.armToGoal, "move arm to corn goal"),
+                moveArmTo(0, 60, Const.Calculation.Limelight.GoalHeight - Const.Arm.RootHeightFromGr, State.armToGoal, "move arm to corn goal"),
                 releaseHand(2, "release corn"),
                 driveTo(-3, "move to target")
         );

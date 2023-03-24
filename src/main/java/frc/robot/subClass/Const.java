@@ -465,7 +465,7 @@ public class Const {
         /**
          * PIDコントロールの誤差の許容量[cn] 注意! isArmAtTargetの判定に用いているだけ
          */
-        public static final double PIDAngleTolerance = 3;
+        public static final double PIDAngleTolerance = 5;
 
         /**
          * アームの理想的な高さ
@@ -519,7 +519,7 @@ public class Const {
         /**
          * 　コーンを掴むアームの高さ
          */
-        public static final double armConeIntakeHeight = -100;
+        public static final double armConeIntakeHeight = -103;
         /**
          * コーンを掴むアームの奥行き
          */
