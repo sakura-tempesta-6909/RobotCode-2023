@@ -17,7 +17,7 @@ public class DriveMode extends Mode {
     public void changeMode() {
         if (driveController.getBackButton()) {
             State.mode = State.Modes.k_arm;
-        } else if (driveController.getLeftBumperPressed() && driveController.getPOV() == 0) {
+        } else if (driveController.getPOV() == 0) {
             State.mode = State.Modes.k_chargeStation;
         } else if (driveController.getLeftBumperPressed() && driveController.getPOV() == 225) {
             State.mode = State.Modes.k_config;
@@ -42,6 +42,25 @@ public class DriveMode extends Mode {
         if (joystick.getRawButton(1)) {
             // ハンドを開く
             State.Hand.grabHandState = State.GrabHandState.s_releaseHand;
+        }
+
+        if (joystick.getRawButton(3)) {
+            // 手首の位置をリセット
+            State.Hand.rotateState = State.Hand.RotateState.s_turnHandBack;
+        } else if (joystick.getRawButton(5)) {
+            // 手首が右回転する
+            State.Hand.rotateState = State.Hand.RotateState.s_rightRotateHand;
+        } else if (joystick.getRawButton(6)) {
+            // 手首が左回転する
+            State.Hand.rotateState = State.Hand.RotateState.s_leftRotateHand;
+        } else if (joystick.getRawButton(4)) {
+            // 手首が180°回転する
+            State.Hand.rotateState = State.Hand.RotateState.s_moveHandToSpecifiedAngle;
+        }
+        if (joystick.getRawButtonPressed(4)) {
+            // 手首が180°回転する
+            State.Hand.targetAngle = State.Hand.actualHandAngle + 180;
+            State.Hand.isResetHandPID = true;
         }
 
         if (joystick.getRawButtonPressed(11) || joystick.getRawButtonPressed(12) || joystick.getRawButtonPressed(10)) {
@@ -148,7 +167,7 @@ public class DriveMode extends Mode {
                     State.Arm.targetHeight = Const.GrabGamePiecePhase.armConeIntakeRelesaseHeight;
                     State.Arm.targetDepth = Const.GrabGamePiecePhase.armConeIntakeDepth;
                     GrabCount++;
-                    if (GrabCount >= 50) {
+                    if (GrabCount >= 80) {
                         phase = GrabGamePiecePhase.Phase5;
                         GrabCount = 0;
                     }
@@ -191,7 +210,7 @@ public class DriveMode extends Mode {
                 case Phase1:
                     State.Drive.targetMeter = -1;
                     State.Drive.state = State.Drive.States.s_pidDrive;
-                    if (State.Drive.isAtTarget()){
+                    if (State.Drive.isAtTarget() || true){
                         phase = GrabGamePiecePhase.Phase2;
                     }
                     break;

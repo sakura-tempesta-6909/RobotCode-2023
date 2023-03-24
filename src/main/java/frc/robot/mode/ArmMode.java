@@ -18,7 +18,7 @@ public class ArmMode extends Mode {
     public void changeMode() {
         if (driveController.getStartButton()){
             State.mode = State.Modes.k_drive;
-        } else if (driveController.getLeftBumperPressed() && driveController.getPOV() == 0) {
+        } else if (driveController.getPOV() == 0) {
             State.mode = State.Modes.k_chargeStation;
         } else if (driveController.getLeftBumperPressed() && driveController.getPOV() == 225) {
             State.mode = State.Modes.k_config;
@@ -115,7 +115,7 @@ public class ArmMode extends Mode {
             State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
         }
 
-        boolean enableLimelight = true && driveController.getPOV() == 0;
+        boolean enableLimelight = true && driveController.getAButton();
         if (joystick.getRawAxis(3) < -0.8) {
             // 各アームの角度をコントローラーで変える -> もっとも直感的
             State.Arm.state = State.Arm.States.s_moveArmMotor;
