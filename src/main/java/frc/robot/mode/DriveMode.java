@@ -215,7 +215,7 @@ public class DriveMode extends Mode {
                     State.Arm.targetHeight = Const.GrabGamePiecePhase.armRelayPointHeight;
                     State.Arm.targetDepth = Const.GrabGamePiecePhase.armRelayPointDepth;
                     State.Hand.rotateState = RotateState.s_moveHandToSpecifiedAngle;
-                    if (State.Arm.actualHeight < -10) {
+                    if (State.Arm.actualHeight > -10) {
                         phase = GrabGamePiecePhase.Phase4;
                     }
                     break;
