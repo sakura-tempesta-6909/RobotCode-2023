@@ -32,32 +32,30 @@ private static GrabGamePiecePhase phase = GrabGamePiecePhase.Phase1;
             switch (phase) {
                 case Phase1:
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.Arm.targetHeight = -100;
-                    State.Arm.targetDepth = -8;
+                    State.Arm.targetHeight = Const.GrabGamePiecePhase.armCubeIntakeHeight;
+                    State.Arm.targetDepth = Const.GrabGamePiecePhase.armCubeIntakeDepth;
                     break;
                 case Phase2:
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
                     State.Arm.targetHeight = Const.GrabGamePiecePhase.armCubeIntakeHeight;
                     State.Arm.targetDepth = Const.GrabGamePiecePhase.armCubeIntakeDepth;
                     break;
-                }
-            } else if (joystick.getRawButton(2)) {
-            // すべてBasicPositionに戻る
-                switch (phase) {
-                    case Phase1:
-                        State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                        State.Arm.targetHeight = -60;
-                        State.Arm.targetDepth = 27;
-                        break;
-                    case Phase2:
-                        State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                        State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_movetomiddle;
-                        State.Hand.rotateState = State.Hand.RotateState.s_turnHandBack;
-                        State.Arm.targetHeight = Const.Arm.InitialHeight;
-                        State.Arm.targetDepth = Const.Arm.InitialDepth;
-                        break;
-                }
-
+                      // すべてBasicPositionに戻る
+                case Phase3:
+                    State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+                    State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_movetomiddle;
+                    State.Hand.rotateState = State.Hand.RotateState.s_turnHandBack;
+                    State.Arm.targetHeight = Const.Arm.InitialHeight;
+                    State.Arm.targetDepth = Const.Arm.InitialDepth;
+                    break;
+                case Phase4:
+                    State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
+                    State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_movetomiddle;
+                    State.Hand.rotateState = State.Hand.RotateState.s_turnHandBack;
+                    State.Arm.targetHeight = Const.Arm.InitialHeight;
+                    State.Arm.targetDepth = Const.Arm.InitialDepth;
+                    break;
+            }
 
           
         }
