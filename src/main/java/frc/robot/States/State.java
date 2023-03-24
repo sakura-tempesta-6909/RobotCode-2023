@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.mode.*;
 import frc.robot.subClass.Const;
+import frc.robot.subClass.Util;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -294,6 +295,7 @@ public class State {
         // autonomousPhaseTransType = Util.getConsole("AutonomousPhaseTransition");
 
         isCompressorEnable = true;
+        autonomousPhaseTransType = Util.getConsole("autonomousPhaseTransType");
 
         // reset arm states
         Drive.StatesReset();
