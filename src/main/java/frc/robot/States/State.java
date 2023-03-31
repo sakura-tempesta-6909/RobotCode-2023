@@ -97,8 +97,6 @@ public class State {
 
         public static boolean isMotorBrake;
 
-        public static boolean trapezoidState;
-
         public static boolean isAtTarget() {
             boolean isLeftMotorAtTarget = Math.abs(State.Drive.leftMeter - State.Drive.targetMeter) < Const.Drive.PID.LossTolerance;
             boolean isRightMotorAtTarget = Math.abs(State.Drive.rightMeter - State.Drive.targetMeter) < Const.Drive.PID.LossTolerance;
