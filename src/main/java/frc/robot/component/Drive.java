@@ -51,8 +51,6 @@ public class Drive implements Component {
     }
 
     public void arcadeDrive(double xSpeed, double zRotation) {
-        preXSpeed = State.Drive.xSpeed;
-        preZRotation = State.Drive.zRotation;
         if (xSpeed - preXSpeed >= Const.Drive.TrapezoidalAcceleration) {
             xSpeed = preXSpeed + Const.Drive.TrapezoidalAcceleration;
         } else if (xSpeed - preXSpeed <= -Const.Drive.TrapezoidalAcceleration) {
@@ -66,6 +64,9 @@ public class Drive implements Component {
         }
         differentialDrive.arcadeDrive(xSpeed, zRotation);
         differentialDrive.feed();
+
+        preXSpeed = State.Drive.xSpeed;
+        preZRotation = State.Drive.zRotation;
     }
 
     public void pidControlTargetTracking() {
