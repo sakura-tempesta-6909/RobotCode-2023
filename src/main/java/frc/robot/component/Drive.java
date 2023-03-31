@@ -58,7 +58,7 @@ public class Drive implements Component {
         }
 
          if (zRotation - preZRotation >= Const.Drive.TrapezoidalAcceleration) {
-            zRotation = preZRotation - Const.Drive.TrapezoidalAcceleration;
+            zRotation = preZRotation + Const.Drive.TrapezoidalAcceleration;
         } else if (zRotation - preZRotation <= -Const.Drive.TrapezoidalAcceleration) {
             zRotation = preZRotation - Const.Drive.TrapezoidalAcceleration;
         }
