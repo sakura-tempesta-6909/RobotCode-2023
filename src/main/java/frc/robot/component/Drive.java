@@ -65,8 +65,8 @@ public class Drive implements Component {
         differentialDrive.arcadeDrive(xSpeed, zRotation);
         differentialDrive.feed();
 
-        preXSpeed = State.Drive.xSpeed;
-        preZRotation = State.Drive.zRotation;
+        preXSpeed = xSpeed;
+        preZRotation = zRotation;
     }
 
     public void pidControlTargetTracking() {
