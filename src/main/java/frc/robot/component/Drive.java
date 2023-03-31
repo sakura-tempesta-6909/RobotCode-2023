@@ -56,8 +56,12 @@ public class Drive implements Component {
     public void arcadeDrive(double xSpeed, double zRotation) {
         if (preXSpeed - xSpeed >= 0.5) {
             xSpeed++;
+        } else if (xSpeed - preXSpeed >= 0.5) {
+            xSpeed--;
         } else if (preZRotation -zRotation >= 0.5) {
             zRotation++;
+        } else if (zRotation - preZRotation >= 0.5) {
+            zRotation--;
         }
         differentialDrive.arcadeDrive(xSpeed, zRotation);
         differentialDrive.feed();
