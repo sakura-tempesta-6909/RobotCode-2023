@@ -48,15 +48,11 @@ public class Drive implements Component {
         pidLimelightDrive = new PIDController(Const.Calculation.Limelight.PID.LimelightDriveP, Const.Calculation.Limelight.PID.LimelightDriveI, Const.Calculation.Limelight.PID.LimelightDriveD);
         pidCameraDrive = new PIDController(Const.Calculation.Camera.PID.CameraDriveP, Const.Calculation.Camera.PID.CameraDriveI, Const.Calculation.Camera.PID.CameraDriveD);
 
-        preXSpeed = State.Drive.xSpeed;
-        preZRotation = State.Drive.zRotation;
-
-
-
-
     }
 
     public void arcadeDrive(double xSpeed, double zRotation) {
+        preXSpeed = State.Drive.xSpeed;
+        preZRotation = State.Drive.zRotation;
         if (xSpeed - preXSpeed >= Const.Drive.TrapezoidalAcceleration) {
             xSpeed = preXSpeed + Const.Drive.TrapezoidalAcceleration;
         } else if (xSpeed - preXSpeed <= -Const.Drive.TrapezoidalAcceleration) {
