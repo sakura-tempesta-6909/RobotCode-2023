@@ -57,14 +57,14 @@ public class Drive implements Component {
     }
 
     public void arcadeDrive(double xSpeed, double zRotation) {
-        if (preXSpeed - xSpeed <= -0.5) {
-            xSpeed -= 0.5;
-        } else if (xSpeed - preXSpeed >= 0.5) {
-            xSpeed += 0.5;
-        } else if (preZRotation -zRotation <= -0.5) {
-            zRotation -= 0.5;
-        } else if (zRotation - preZRotation >= 0.5) {
-            zRotation += 0.5;
+        if (preXSpeed - xSpeed <= -Const.Drive.TrapezoidalAcceleration) {
+            xSpeed = preXSpeed - Const.Drive.TrapezoidalAcceleration;
+        } else if (xSpeed - preXSpeed >= Const.Drive.TrapezoidalAcceleration) {
+            xSpeed = preXSpeed + Const.Drive.TrapezoidalAcceleration
+        } else if (preZRotation -zRotation <= -Const.Drive.TrapezoidalAcceleration) {
+            zRotation = preZRotation - 0.02;
+        } else if (zRotation - preZRotation >= Const.Drive.TrapezoidalAcceleration) {
+            zRotation = preZRotation - Const.Drive.TrapezoidalAcceleration;
         }
         differentialDrive.arcadeDrive(xSpeed, zRotation);
         differentialDrive.feed();

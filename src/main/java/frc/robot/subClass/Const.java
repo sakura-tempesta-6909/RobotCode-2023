@@ -216,6 +216,8 @@ public class Const {
 
     public static final class Drive {
 
+        public static final double TrapezoidalAcceleration = 0.02;
+
         public static final class PID {
             /**
              * 短い移動と判別するための閾値 [m]
