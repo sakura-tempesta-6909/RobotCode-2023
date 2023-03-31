@@ -1,5 +1,7 @@
 package frc.robot.States;
 
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.mode.*;
@@ -94,6 +96,8 @@ public class State {
         public static boolean resetPIDController, resetPosition;
 
         public static boolean isMotorBrake;
+
+        public static boolean trapezoidState;
 
         public static boolean isAtTarget() {
             boolean isLeftMotorAtTarget = Math.abs(State.Drive.leftMeter - State.Drive.targetMeter) < Const.Drive.PID.LossTolerance;

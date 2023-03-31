@@ -5,6 +5,8 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.States.State;
 import frc.robot.subClass.Const;
@@ -16,6 +18,14 @@ public class Drive implements Component {
     private DifferentialDrive differentialDrive;
     private final PIDController pidLimelightDrive;
     private final PIDController pidCameraDrive;
+    private final SimpleMotorFeedforward m_feedforward = new SimpleMotorFeedforward(1, 1.5);
+
+    private final TrapezoidProfile.Constraints m_constraints =
+            new TrapezoidProfile.Constraints(1.75, 0.75);
+    private TrapezoidProfile.State m_goal = new TrapezoidProfile.State();
+    private TrapezoidProfile.State m_setpoint = new TrapezoidProfile.State();
+
+    private double preXSpeed, preZRotation;
 
 
     public Drive() {
@@ -44,10 +54,19 @@ public class Drive implements Component {
         differentialDrive = new DifferentialDrive(driveLeftFront, driveRightFront);
         pidLimelightDrive = new PIDController(Const.Calculation.Limelight.PID.LimelightDriveP, Const.Calculation.Limelight.PID.LimelightDriveI, Const.Calculation.Limelight.PID.LimelightDriveD);
         pidCameraDrive = new PIDController(Const.Calculation.Camera.PID.CameraDriveP, Const.Calculation.Camera.PID.CameraDriveI, Const.Calculation.Camera.PID.CameraDriveD);
+
+
+
+
     }
 
     public void arcadeDrive(double xSpeed, double zRotation) {
-         differentialDrive.arcadeDrive(xSpeed, zRotation);
+        if (preXSpeed - xSpeed >= 0.5) {
+            xSpeed += 0.1;
+        } else if (preZRotation -zRotation >= 0.5) {
+            zRotation += -0.1;
+        }
+        differentialDrive.arcadeDrive(xSpeed, zRotation);
         differentialDrive.feed();
     }
 
@@ -109,6 +128,7 @@ public class Drive implements Component {
         return isRightMotorAtTarget && isLeftMotorAtTarget;
     }
 
+
     @Override
     public void autonomousInit() {
         // TODO Auto-generated method stub
@@ -164,6 +184,12 @@ public class Drive implements Component {
             driveLeftFront.setNeutralMode(NeutralMode.Coast);
             driveRightBack.setNeutralMode(NeutralMode.Coast);
             driveLeftBack.setNeutralMode(NeutralMode.Coast);
+        }
+
+        if (State.Drive.trapezoidState) {
+            m_goal = new TrapezoidProfile.State(5, 0);
+        } else {
+            m_goal = new TrapezoidProfile.State(0, 0);
         }
 
         switch (State.Drive.state) {
