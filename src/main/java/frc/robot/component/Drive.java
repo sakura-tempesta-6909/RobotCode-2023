@@ -166,29 +166,29 @@ public class Drive implements Component {
             driveLeftBack.setNeutralMode(NeutralMode.Coast);
         }
 
-        // switch (State.Drive.state) {
-        //     case s_fastDrive:
-        //         arcadeDrive(Const.Speeds.FastDrive * State.Drive.xSpeed, Const.Speeds.FastDrive * State.Drive.zRotation);
-        //         break;
-        //     case s_midDrive:
-        //         arcadeDrive(Const.Speeds.MidDrive * State.Drive.xSpeed, Const.Speeds.MidDrive * State.Drive.zRotation);
-        //         break;
-        //     case s_slowDrive:
-        //         arcadeDrive(Const.Speeds.SlowDrive * State.Drive.xSpeed, Const.Speeds.SlowDrive * State.Drive.zRotation);
-        //         break;
-        //     case s_stopDrive:
-        //         arcadeDrive(Const.Speeds.Neutral * State.Drive.xSpeed, Const.Speeds.Neutral * State.Drive.zRotation);
-        //         break;
-        //     case s_limelightTracking:
-        //         pidControlTargetTracking();
-        //         break;
-        //     case s_aprilTagTracking:
-        //         pidControlAprilTagTracking();
-        //         break;
-        //     case s_pidDrive:
-        //         drivePosition();
-        //         break;
-        // }
+        switch (State.Drive.state) {
+            case s_fastDrive:
+                arcadeDrive(Const.Speeds.FastDrive * State.Drive.xSpeed, Const.Speeds.FastDrive * State.Drive.zRotation);
+                break;
+            case s_midDrive:
+                arcadeDrive(Const.Speeds.MidDrive * State.Drive.xSpeed, Const.Speeds.MidDrive * State.Drive.zRotation);
+                break;
+            case s_slowDrive:
+                arcadeDrive(Const.Speeds.SlowDrive * State.Drive.xSpeed, Const.Speeds.SlowDrive * State.Drive.zRotation);
+                break;
+            case s_stopDrive:
+                arcadeDrive(Const.Speeds.Neutral * State.Drive.xSpeed, Const.Speeds.Neutral * State.Drive.zRotation);
+                break;
+            case s_limelightTracking:
+                pidControlTargetTracking();
+                break;
+            case s_aprilTagTracking:
+                pidControlAprilTagTracking();
+                break;
+            case s_pidDrive:
+                drivePosition();
+                break;
+        }
 
     }
 }

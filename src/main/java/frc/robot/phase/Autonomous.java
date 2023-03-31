@@ -1,9 +1,9 @@
 package frc.robot.phase;
 
-import java.lang.ref.PhantomReference;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.States.State;
+import frc.robot.States.State.RollerState;
+import frc.robot.States.State.Hand.RotateState;
 import frc.robot.mode.ArmMode;
 import frc.robot.subClass.Const;
 
@@ -129,17 +129,14 @@ public class Autonomous {
         );
     }
 
-    private static PhaseTransition.Phase armAdjust(double targetHeight, double targetDepth, String phaseName) {
+    private static PhaseTransition.Phase armAdjust(double diffH, double diffD, double waiter, String phaseName) {
         return new PhaseTransition.Phase(
         () -> {
-            
             State.Arm.state = State.Arm.States.s_adjustArmPosition;
-            ArmMode.adjustArmPosition(targetHeight, targetDepth);
-
-
+            ArmMode.adjustArmPosition(diffH, diffD);
     },
     (double time) -> {
-        return State.Arm.isAtTarget();
+        return time > waiter;
     },
     () -> {
         State.Drive.resetPIDController = true;
@@ -151,6 +148,23 @@ public class Autonomous {
 
     }
 
+    private static PhaseTransition.Phase outtake(double waiter, String phaseName) {
+        return new PhaseTransition.Phase(
+            () -> {
+                State.intakeState = RollerState.s_outtakeGamePiece;
+            },
+            (double time) -> {
+                return time > waiter;
+            },
+            () -> {
+                State.Drive.resetPIDController = true;
+                State.Drive.resetPosition = true;
+                State.Arm.resetPidController = true;
+            },
+            phaseName
+        );
+    }
+
     public static void autonomousInit() {
         phaseTransitionA = new PhaseTransition();
         phaseTransitionB = new PhaseTransition();
@@ -159,24 +173,25 @@ public class Autonomous {
 
         phaseTransitionA.registerPhase(
             new PhaseTransition.Phase(
-            () -> {
-            
-            },
-            (double time) -> {
-                return time > 2;
-            },
-            () -> {
-                State.Drive.resetPIDController = true;
-                State.Drive.resetPosition = true;
-                State.Arm.resetPidController = true;
-            },
-            "wait"
-        ),
-            basicArmTo(Const.Arm.InitialHeight, Const.Arm.InitialDepth, "move arm to basic position"),
-            armAdjust(Const.Arm.TargetModifyRatio, -Const.Arm.TargetModifyRatio, null),
-            relayArmTo(Const.GrabGamePiecePhase.armRelayPointHeight, Const.GrabGamePiecePhase.armRelayPointDepth, "move arm to relay point"),
-            moveArmTo( Const.Calculation.Camera.GoalHeight - Const.Arm.RootHeightFromGr, State.armToTag, "move arm to cube goal"),
-            releaseHand(2, "release cone")
+                () -> {
+                
+                },
+                (double time) -> {
+                    return time > 10;
+                },
+                () -> {
+                    State.Drive.resetPIDController = true;
+                    State.Drive.resetPosition = true;
+                    State.Arm.resetPidController = true;
+                },
+                "wait"
+            ),
+            // basicArmTo(Const.Arm.InitialHeight, Const.Arm.InitialDepth, "move arm to basic position"),
+            armAdjust(Const.Arm.TargetModifyRatio, Const.Arm.TargetModifyRatio,2,"move to target"),
+            armAdjust(0, Const.Arm.TargetModifyRatio, 3, "move foward")
+            // relayArmTo(Const.GrabGamePiecePhase.armRelayPointHeight, Const.GrabGamePiecePhase.armRelayPointDepth, "move arm to relay point"),
+            // moveArmTo( Const.Calculation.Camera.GoalHeight - Const.Arm.RootHeightFromGr, State.armToTag, "move arm to cube goal"),
+            // releaseHand(2, "release cone")
             // drive(-1, 2, "move to target")
             // driveTo(-3, "move to target")
                 
@@ -188,7 +203,7 @@ public class Autonomous {
                 
                 },
                 (double time) -> {
-                    return time > 2;
+                    return time > 10;
                 },
                 () -> {
                     State.Drive.resetPIDController = true;
@@ -206,17 +221,18 @@ public class Autonomous {
         );
 
         phaseTransitionC.registerPhase(
-                new PhaseTransition.Phase(
-                        () -> {
-                            State.Drive.resetPIDController = true;
-                            State.Drive.resetPosition = true;
-                            State.Drive.state = State.Drive.States.s_midDrive;
-                            State.Drive.xSpeed = -1;
-                        },
-                        (double time) -> {
-                            return time > 2;
-                        }
-                )
+            // drive(1, 0.5, "drive to target"),
+            //     new PhaseTransition.Phase(
+            //             () -> {
+            //                 State.Drive.resetPIDController = true;
+            //                 State.Drive.resetPosition = true;
+            //                 State.Drive.state = State.Drive.States.s_midDrive;
+            //                 State.Drive.xSpeed = -1;
+            //             },
+            //             (double time) -> {
+            //                 return time > 2;
+            //             }
+            //     )
         );
     }
 

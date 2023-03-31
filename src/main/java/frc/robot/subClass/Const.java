@@ -18,7 +18,7 @@ public class Const {
         public static final int DriveRightBack = 7;
         public static final int DriveLeftBack = 9;
 
-        public static final int HandSolenoid = 2;
+        public static final int HandSolenoid = 1;
 
         public static final int IntakeSolenoid = 3;
 

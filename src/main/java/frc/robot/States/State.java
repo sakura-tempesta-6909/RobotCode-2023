@@ -46,7 +46,7 @@ public class State {
     public static boolean isCompressorEnable;
 
     /** Autonomousの遷移の種類　[ A, B, C ] のいずれか */
-    public static String autonomousPhaseTransType = "A";
+    public static String autonomousPhaseTransType = "C";
 
 
     public static class Hand {
