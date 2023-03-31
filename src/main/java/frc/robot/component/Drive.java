@@ -48,6 +48,9 @@ public class Drive implements Component {
         pidLimelightDrive = new PIDController(Const.Calculation.Limelight.PID.LimelightDriveP, Const.Calculation.Limelight.PID.LimelightDriveI, Const.Calculation.Limelight.PID.LimelightDriveD);
         pidCameraDrive = new PIDController(Const.Calculation.Camera.PID.CameraDriveP, Const.Calculation.Camera.PID.CameraDriveI, Const.Calculation.Camera.PID.CameraDriveD);
 
+        preXSpeed = State.Drive.xSpeed;
+        preZRotation = State.Drive.zRotation;
+
 
 
 
