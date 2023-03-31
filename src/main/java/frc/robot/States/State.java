@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.mode.*;
 import frc.robot.subClass.Const;
+import frc.robot.subClass.Util;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,7 +48,7 @@ public class State {
     public static boolean isCompressorEnable;
 
     /** Autonomousの遷移の種類　[ A, B, C ] のいずれか */
-    public static String autonomousPhaseTransType = "";
+    public static String autonomousPhaseTransType = "C";
 
 
     public static class Hand {
@@ -292,8 +293,6 @@ public class State {
         moveLeftAndRightArmState = MoveLeftAndRightArmState.s_fixLeftAndRightMotor;
         pidLimelightReset = false;
         intakeExtensionState = IntakeExtensionState.s_openIntake;
-
-        // autonomousPhaseTransType = Util.getConsole("AutonomousPhaseTransition");
 
         isCompressorEnable = true;
 

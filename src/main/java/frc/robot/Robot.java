@@ -23,7 +23,7 @@ public class Robot extends TimedRobot {
 
     ExternalSensors externalSensors;
 
-    MQTT mqtt = new MQTT();
+    // MQTT mqtt = new MQTT();
 
     PrintStream defaultConsole = System.out;
     ByteArrayOutputStream newConsole = new ByteArrayOutputStream();
@@ -35,8 +35,8 @@ public class Robot extends TimedRobot {
         System.setOut(new PrintStream(newConsole));
         Const.ConstInit();
 
-        Thread thread = new Thread(() -> mqtt.connect());
-        thread.start();
+        // Thread thread = new Thread(() -> mqtt.connect());
+        // thread.start();_
 
         components = new ArrayList<>();
         components.add(new Drive());
@@ -50,16 +50,16 @@ public class Robot extends TimedRobot {
 
         State.StateInit();
 
-        defaultConsole.print(newConsole);
-        newConsole = new ByteArrayOutputStream();
+        // defaultConsole.print(newConsole);
+        // newConsole = new ByteArrayOutputStream();
         table =  NetworkTableInstance.getDefault().getTable("SmartDashboard");
         entry = table.getEntry("center");
     }
 
     @Override
     public void robotPeriodic() {
-        defaultConsole.print(newConsole);
-        newConsole = new ByteArrayOutputStream();
+        // defaultConsole.print(newConsole);
+        // newConsole = new ByteArrayOutputStream();
         double[] array = entry.getDoubleArray(new double[]{0.0, 0.0});
         System.out.println("NetworkTables");
         System.out.println(array[0]);

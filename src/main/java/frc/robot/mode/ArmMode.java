@@ -116,7 +116,6 @@ public class ArmMode extends Mode {
             State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
         }
 
-        boolean enableLimelight = true && driveController.getAButton();
         if (joystick.getRawAxis(3) < -0.8) {
             // 各アームの角度をコントローラーで変える -> もっとも直感的
             State.Arm.state = State.Arm.States.s_moveArmMotor;
@@ -129,7 +128,7 @@ public class ArmMode extends Mode {
                 State.Arm.targetDepth = Const.GrabGamePiecePhase.armRelayPointDepth;
             } else {
                 State.Arm.targetHeight = Const.Calculation.Limelight.TopGoalHeight - Const.Arm.RootHeightFromGr;
-                State.Arm.targetDepth = enableLimelight ? State.limelightToBackGoal - Const.Calculation.Limelight.LimelightToArm : State.Arm.TargetDepth.TopCorn;
+                State.Arm.targetDepth = State.Arm.TargetDepth.TopCorn;
             }
         } else if (joystick.getRawButton(9)) {
             // 真ん中のコーンのゴールまでアームを伸ばす
@@ -138,7 +137,7 @@ public class ArmMode extends Mode {
                 State.Arm.targetDepth = Const.GrabGamePiecePhase.armRelayPointDepth;
             } else {
                 State.Arm.targetHeight = Const.Calculation.Limelight.MiddleGoalHeight - Const.Arm.RootHeightFromGr;
-                State.Arm.targetDepth = enableLimelight ? State.limelightToFrontGoal - Const.Calculation.Limelight.LimelightToArm : State.Arm.TargetDepth.MiddleCorn;
+                State.Arm.targetDepth = State.Arm.TargetDepth.MiddleCorn;
             }
         } else if (joystick.getRawButton(11)) {
             // 前のコーンのゴールまでアームを伸ばす
@@ -238,12 +237,12 @@ public class ArmMode extends Mode {
 
         boolean isInOuterBorder = length < Const.Arm.TargetPositionOuterLimit;
         boolean isOutInnerBorder = length > Const.Arm.TargetPositionInnerLimit;
-        boolean isInDepthLimit = Depth > -23;
+        // boolean isInDepthLimit = Depth > -23;
 
-        SmartDashboard.putBoolean("InLimit", isInOuterBorder && isOutInnerBorder && isInDepthLimit);
+        SmartDashboard.putBoolean("InLimit", isInOuterBorder && isOutInnerBorder);
 
         // TODO XButtonでコントロールする時のターゲット座標の制限を考える
-        return isInOuterBorder && isOutInnerBorder && isInDepthLimit;
+        return isInOuterBorder && isOutInnerBorder;
     }
 
     /**
@@ -291,7 +290,7 @@ public class ArmMode extends Mode {
         return flag;
     }
 
-    static void adjustArmPosition(double diffH, double diffD) {
+    public static void adjustArmPosition(double diffH, double diffD) {
         State.Arm.state = State.Arm.States.s_adjustArmPosition;
         if (isNewTargetPositionInLimit(State.Arm.targetHeight + diffH, State.Arm.targetDepth + diffD)) {
             State.Arm.targetHeight += diffH;
