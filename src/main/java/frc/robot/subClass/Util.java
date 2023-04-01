@@ -69,7 +69,7 @@ public class Util {
          * @param actualDepth　実際の奥行き
          * @return 中継地点に到達しているかどうか
          */
-        public static boolean relayJudge(double actualHeight, double actualDepth) {
+        public static boolean relayReach(double actualHeight, double actualDepth) {
             return actualHeight > Const.Arm.RelayPointHeight && actualDepth > Const.Arm.RelayPointDepth;
 
         }
