@@ -15,7 +15,7 @@ public class Tools {
      * @return 回転先の位置ベクトル <br>（x_dash,<br>&emsp;y_dash）
      */
     public static Map<Integer, Double> rotateMatrix(double theta, double x, double y) {
-        theta = Math.toRadians(theta);
+        theta = Math.toRadians(theta); // [rad]
         double x_dash = x * Math.cos(theta) - y * Math.sin(theta);
         double y_dash = x * Math.sin(theta) + y * Math.cos(theta);
         Map<Integer, Double> vector = new HashMap<>();
@@ -52,7 +52,7 @@ public class Tools {
      * 1 - Y座標 - 高さ（Height）[cm]<br>
      */
     public static Map<Integer, Double> calculatePositionVec(double theta_r, double theta_j) {
-        double theta_c = Const.Arm.HandFoldAngle;
+        double theta_c = Const.Arm.HandFoldAngle; // [deg]
 
         double l_r = Const.Arm.RootArmLength;
         double l_j = Const.Arm.HeadArmLength;
@@ -92,29 +92,43 @@ public class Tools {
      * @return アームのターゲットの角度[deg]
      */
     public static Map<String, Double> calculateAngles(double x, double y) {
+        double theta_j_pm;
+        if (x >= 0 & y >= 0) {
+            // 第1象限
+            theta_j_pm = -1;
+        } else if (x < 0 & y >= 0) {
+            // 第2象限
+            theta_j_pm = 1;
+        } else if (x < 0 & y < 0) {
+            // 第3象限
+            theta_j_pm = -1;
+        } else {
+            // 第4象限
+            theta_j_pm = -1;
+        }
+
         double l_r = Const.Arm.RootArmLength;
         double l_v = Const.Arm.VirtualHeadArmLength;
 
-        double theta_h = Math.toRadians(Const.Arm.VirtualArmFoldAngle);
-        double theta_j = Math.acos((Math.pow(x, 2) + Math.pow(y, 2)
-                - Math.pow(l_r, 2) - Math.pow(l_v, 2)) / (2 * l_r * l_v))
-                - theta_h;
-
+        double theta_h = Math.toRadians(Const.Arm.VirtualArmFoldAngle); // [rad]
+        double theta_j = theta_j_pm * Math.acos((Math.pow(x, 2) + Math.pow(y, 2)
+                - Math.pow(l_r, 2) - Math.pow(l_v, 2)) / (2 * l_r * l_v)) // [rad]
+                - theta_h; // [rad]
         double theta_arg_target = Math.atan2(
                 y,
                 x
-        );
+        ); // [rad]
         double theta_arg_zero = Math.atan2(
                 l_v * Math.sin(theta_j + theta_h),
                 l_r + l_v * Math.cos(theta_j + theta_h)
-        );
-        double theta_r = theta_arg_target - theta_arg_zero;
+        ); // [rad]
+        double theta_r = theta_arg_target - theta_arg_zero; // [rad]
 
         Map<String, Double> angles = new HashMap<>();
         angles.put("RootAngle", Math.toDegrees(theta_r));
         angles.put("JointAngle", Math.toDegrees(theta_j));
 
-        return angles;
+        return angles; // [deg]
     }
 
     /**
@@ -222,8 +236,8 @@ public class Tools {
 
         System.out.printf("Correct : %d / %d\n", correct, all);
         System.out.printf("Incorrect : %d / %d\n", error, all);
-        System.out.printf("CorrectRate : %d\n", correct/all);
-        System.out.printf("IncorrectRate : %d\n", error/all);
+        System.out.printf("CorrectRate : %d\n", correct / all);
+        System.out.printf("IncorrectRate : %d\n", error / all);
     }
 
     private static boolean isLossInTolerance(double original, double predicted, double tolerance) {
