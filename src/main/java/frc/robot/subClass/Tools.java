@@ -38,8 +38,8 @@ public class Tools {
         double x_dash = x * Math.cos(theta) - y * Math.sin(theta);
         double y_dash = x * Math.sin(theta) + y * Math.cos(theta);
         Map<Integer, Double> newVector = new HashMap<>();
-        vector.put(0, x_dash);
-        vector.put(1, y_dash);
+        newVector.put(0, x_dash);
+        newVector.put(1, y_dash);
         return newVector;
     }
 
@@ -207,6 +207,8 @@ public class Tools {
         double root = map.get("RootAngle");
         System.out.println(calculateDepth(root, joint));
         System.out.println(calculateHeight(root, joint));
+//        Map<Integer, Double> vec = rotateMatrix(90, 1, 0);
+//        System.out.println(rotateMatrix(90, vec));
     }
 
     private static boolean isNewTargetPositionInLimit(double Height, double Depth) {
