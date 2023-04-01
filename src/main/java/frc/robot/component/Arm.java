@@ -154,8 +154,8 @@ public class Arm implements Component {
         // rootMotor.set(State.Arm.rootMotorFeedforward);
         jointMotor.set(State.Arm.jointMotorFeedforward);
 
-        pidForRoot.setReference(0, CANSparkMax.ControlType.kVelocity ,2, Const.Arm.ConstantRootMotorFF);
-        pidForJoint.setReference(0, CANSparkMax.ControlType.kVelocity, 2, State.Arm.jointMotorFeedforward);
+        pidForRoot.setReference(0, CANSparkMax.ControlType.kVelocity ,2, Const.Arm.ConstantRootMotorFF, ArbFFUnits.kPercentOut);
+        pidForJoint.setReference(0, CANSparkMax.ControlType.kVelocity, 2, State.Arm.jointMotorFeedforward, ArbFFUnits.kPercentOut);
 
     }
 
