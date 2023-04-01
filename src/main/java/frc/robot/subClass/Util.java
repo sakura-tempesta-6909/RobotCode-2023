@@ -63,6 +63,12 @@ public class Util {
             return meter * Const.Calculation.Drive.DrivePointsPerDriveLength;
         }
 
+        /**
+         *
+         * @param actualHeight 実際の高さ
+         * @param actualDepth　実際の奥行き
+         * @return 中継地点に到達したかどうか
+         */
         public static boolean relayJudge(double actualHeight, double actualDepth) {
             return actualHeight < Const.Arm.RelayPointHeight && actualDepth < Const.Arm.RelayPointDepth;
 
