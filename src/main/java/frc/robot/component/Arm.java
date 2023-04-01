@@ -142,20 +142,21 @@ public class Arm implements Component {
      * s_fixArmPositionで実行
      * */
     private void fixPositionWithFF() {
-//        // adjustArmPosition(State.Arm.actualRootAngle, State.Arm.actualJointAngle);
-//        // feedforwardなし
-//        // rootMotor.set(0.0);
-//        // jointMotor.set(0.0);
-//
-//        // 常に一定の数値をfeedforwardとして入れる
-//        rootMotor.set(Const.Arm.ConstantRootMotorFF);
-//
-//        // feedforwardあり
-//        // rootMotor.set(State.Arm.rootMotorFeedforward);
-//        jointMotor.set(State.Arm.jointMotorFeedforward);
+        // adjustArmPosition(State.Arm.actualRootAngle, State.Arm.actualJointAngle);
+        // feedforwardなし
+        // rootMotor.set(0.0);
+        // jointMotor.set(0.0);
 
-        pidForRoot.setReference(0, CANSparkMax.ControlType.kVelocity ,2);
-        pidForJoint.setReference(0, CANSparkMax.ControlType.kVelocity, 2);
+        // 常に一定の数値をfeedforwardとして入れる
+        rootMotor.set(Const.Arm.ConstantRootMotorFF);
+
+        // feedforwardあり
+        // rootMotor.set(State.Arm.rootMotorFeedforward);
+        jointMotor.set(State.Arm.jointMotorFeedforward);
+
+        pidForRoot.setReference(0, CANSparkMax.ControlType.kVelocity ,2, Const.Arm.ConstantRootMotorFF);
+        pidForJoint.setReference(0, CANSparkMax.ControlType.kVelocity, 2, State.Arm.jointMotorFeedforward);
+
     }
 
     /**
