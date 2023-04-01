@@ -25,25 +25,6 @@ public class Tools {
     }
 
     /**
-     * 回転行列をかける <a href="https://mathlandscape.com/rotation-matrix/">rotation matrix</a>
-     *
-     * @param theta  回転する角度[deg]
-     * @param vector 回転元の位置ベクトル <br>（x,<br>&emsp;y）
-     * @return 回転先の位置ベクトル <br>（x_dash,<br>&emsp;y_dash）
-     */
-    public static Map<Integer, Double> rotateMatrix(double theta, Map<Integer, Double> vector) {
-        theta = Math.toRadians(theta);
-        double x = vector.get(0);
-        double y = vector.get(1);
-        double x_dash = x * Math.cos(theta) - y * Math.sin(theta);
-        double y_dash = x * Math.sin(theta) + y * Math.cos(theta);
-        Map<Integer, Double> newVector = new HashMap<>();
-        newVector.put(0, x_dash);
-        newVector.put(1, y_dash);
-        return newVector;
-    }
-
-    /**
      * @param theta_r readSensorで取得した実際の角度[deg]
      * @param theta_j readSensorで取得した実際の角度[deg]
      * @return Depth座標[cm]
@@ -71,17 +52,15 @@ public class Tools {
      * 1 - Y座標 - 高さ（Height）[cm]<br>
      */
     public static Map<Integer, Double> calculatePositionVec(double theta_r, double theta_j) {
-        theta_r = Math.toRadians(theta_r);
-        theta_j = Math.toRadians(theta_j);
-        double theta_c = Math.toRadians(Const.Arm.HandFoldAngle);
+        double theta_c = Const.Arm.HandFoldAngle;
 
         double l_r = Const.Arm.RootArmLength;
         double l_j = Const.Arm.HeadArmLength;
         double l_h = Const.Arm.HandLength;
 
         Map<Integer, Double> rootVec = rotateMatrix(theta_r, l_r, 0.0);
-        Map<Integer, Double> headVec = rotateMatrix(theta_r, rotateMatrix(theta_j, l_j, 0.0));
-        Map<Integer, Double> handVec = rotateMatrix(theta_c, rotateMatrix(theta_r, rotateMatrix(theta_j, l_h, 0.0)));
+        Map<Integer, Double> headVec = rotateMatrix(theta_r + theta_j, l_j, 0.0);
+        Map<Integer, Double> handVec = rotateMatrix(theta_c + theta_r + theta_j, l_h, 0.0);
 
         Map<Integer, Double> positionVec = new HashMap<>();
         positionVec.put(0, rootVec.get(0) + headVec.get(0) + handVec.get(0));
@@ -196,6 +175,7 @@ public class Tools {
 
     public static void main(String[] args) {
         State.StateReset();
+
         double targetDepth = -10;//State.Arm.TargetDepth.TopCorn;
         double targetHeight = -60;//Const.Calculation.Limelight.TopGoalHeight - Const.Arm.RootHeightFromGr;
         System.out.println(targetDepth);
@@ -203,12 +183,51 @@ public class Tools {
         System.out.println(isNewTargetPositionInLimit(targetHeight, targetDepth));
         Map<String, Double> map = calculateAngles(targetDepth, targetHeight);
         System.out.println(map);
-        double joint = map.get("JointAngle");
-        double root = map.get("RootAngle");
-        System.out.println(calculateDepth(root, joint));
-        System.out.println(calculateHeight(root, joint));
-//        Map<Integer, Double> vec = rotateMatrix(90, 1, 0);
-//        System.out.println(rotateMatrix(90, vec));
+//        double joint = map.get("JointAngle");
+//        double root = map.get("RootAngle");
+//        double joint = -90;
+//        double root = 0;
+//        System.out.println(calculateDepth(root, joint));
+//        System.out.println(calculateHeight(root, joint));
+
+        double l_r = Const.Arm.RootArmLength;
+        double l_j = Const.Arm.HeadArmLength;
+        double l_h = Const.Arm.HandLength;
+
+        double theta_r = 0;
+        double theta_j = 0;
+        double theta_c = Const.Arm.HandFoldAngle;
+
+        Map<Integer, Double> vec = rotateMatrix(theta_c + theta_r + theta_j, l_h, 0.0);
+        System.out.println(vec);
+
+        int correct = 0;
+        int error = 0;
+        int all = 0;
+        for (double root = -180; root <= 180; root += 1) {
+            for (double joint = -180; joint <= 180; joint += 1) {
+                all++;
+                Map<String, Double> angles = calculateAngles(calculateDepth(root, joint), calculateHeight(root, joint));
+                double p_root = angles.get("RootAngle");
+                double p_joint = angles.get("JointAngle");
+                if (isLossInTolerance(calculateDepth(root, joint), calculateDepth(p_root, p_joint), 0.1) && isLossInTolerance(calculateHeight(root, joint), calculateHeight(p_root, p_joint), 0.1)) {
+                    correct++;
+                } else {
+                    System.out.println(root);
+                    System.out.println(joint);
+                    error++;
+                }
+            }
+        }
+
+        System.out.printf("Correct : %d / %d\n", correct, all);
+        System.out.printf("Incorrect : %d / %d\n", error, all);
+        System.out.printf("CorrectRate : %d\n", correct/all);
+        System.out.printf("IncorrectRate : %d\n", error/all);
+    }
+
+    private static boolean isLossInTolerance(double original, double predicted, double tolerance) {
+        return Math.abs(original - predicted) < tolerance;
     }
 
     private static boolean isNewTargetPositionInLimit(double Height, double Depth) {
