@@ -7,6 +7,7 @@ import frc.robot.States.LimelightState;
 import frc.robot.States.State;
 import frc.robot.subClass.Const;
 import frc.robot.subClass.Tools;
+import frc.robot.subClass.Util;
 
 public class DriveMode extends Mode {
 
@@ -246,7 +247,7 @@ public class DriveMode extends Mode {
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
                     State.Arm.targetHeight = Const.GrabGamePiecePhase.armRelayPointHeight;
                     State.Arm.targetDepth = Const.GrabGamePiecePhase.armRelayPointDepth;
-                    if (State.Arm.actualHeight > -10) {
+                    if (Util.Calculate.relayJudge(State.Arm.actualHeight, -20, State.Arm.actualDepth, 30)) {
                         phase = GrabGamePiecePhase.Phase4;
                     }
                     break;
