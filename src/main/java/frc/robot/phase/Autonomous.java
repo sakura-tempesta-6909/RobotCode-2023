@@ -6,6 +6,7 @@ import frc.robot.States.State.RollerState;
 import frc.robot.States.State.Hand.RotateState;
 import frc.robot.mode.ArmMode;
 import frc.robot.subClass.Const;
+import frc.robot.subClass.Util;
 
 public class Autonomous {
     private static PhaseTransition phaseTransitionA;
@@ -43,7 +44,7 @@ public class Autonomous {
 
             },
             (double time) -> {
-                return State.Arm.targetHeight > Const.Arm.RelayPointHeight;
+                return Util.Calculate.relayJudge(State.Arm.actualHeight, State.Arm.actualDepth);
             },
             () -> {
                 State.Drive.resetPIDController = true;

@@ -483,8 +483,9 @@ public class Const {
 
         public static final double RootHomePosition = -87.5;
         public static final double JointHomePosition = -52.9;
-
         public static final double RelayPointHeight = -20;
+        public static final double RelayPointDepth = 30;
+
     }
 
     public static final class Hand {
