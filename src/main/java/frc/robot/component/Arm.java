@@ -60,6 +60,14 @@ public class Arm implements Component {
         pidForJoint.setIMaxAccum(Const.Arm.IMax_J_1, 1);
         pidForJoint.setOutputRange(-.5, .5, 1);
 
+        pidForRoot.setP(Const.Arm.P_R_2, 2);
+        pidForRoot.setI(Const.Arm.I_R_2, 2);
+        pidForRoot.setD(Const.Arm.D_R_2, 2);
+
+        pidForJoint.setP(Const.Arm.P_J_2, 2);
+        pidForJoint.setI(Const.Arm.I_J_2, 2);
+        pidForJoint.setD(Const.Arm.D_J_2, 2);
+
         moveLeftAndRightMotor = new CANSparkMax(Const.Ports.MoveLeftAndRightMotor, MotorType.kBrushless);
         leftAndRightArmPidController = moveLeftAndRightMotor.getPIDController();
         leftAndRightArmEncoder = moveLeftAndRightMotor.getEncoder();
@@ -134,20 +142,20 @@ public class Arm implements Component {
      * s_fixArmPositionで実行
      * */
     private void fixPositionWithFF() {
-        // adjustArmPosition(State.Arm.actualRootAngle, State.Arm.actualJointAngle);
-        // feedforwardなし
-        // rootMotor.set(0.0);
-        // jointMotor.set(0.0);
+//        // adjustArmPosition(State.Arm.actualRootAngle, State.Arm.actualJointAngle);
+//        // feedforwardなし
+//        // rootMotor.set(0.0);
+//        // jointMotor.set(0.0);
+//
+//        // 常に一定の数値をfeedforwardとして入れる
+//        rootMotor.set(Const.Arm.ConstantRootMotorFF);
+//
+//        // feedforwardあり
+//        // rootMotor.set(State.Arm.rootMotorFeedforward);
+//        jointMotor.set(State.Arm.jointMotorFeedforward);
 
-        // 常に一定の数値をfeedforwardとして入れる
-        rootMotor.set(Const.Arm.ConstantRootMotorFF);
-
-        // feedforwardあり
-        // rootMotor.set(State.Arm.rootMotorFeedforward);
-        jointMotor.set(State.Arm.jointMotorFeedforward);
-
-        pidForRoot.setReference(0, CANSparkMax.ControlType.kVelocity);
-        pidForJoint.setReference(0, CANSparkMax.ControlType.kVelocity);
+        pidForRoot.setReference(0, CANSparkMax.ControlType.kVelocity ,2);
+        pidForJoint.setReference(0, CANSparkMax.ControlType.kVelocity, 2);
     }
 
     /**
