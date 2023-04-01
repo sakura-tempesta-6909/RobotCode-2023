@@ -51,23 +51,32 @@ public class Tools {
     /**
      * @param x ターゲットの奥行き（Depth）[cm]
      * @param y ターゲットの高さ（Height）[cm]<br>
-     * Target[Depth/Height]からTarget[Root/Joint]Angle を計算
+     * Target[Depth/Height]からTarget[Root/Joint]Angleを計算
+     * 関数内はすべて[rad] 出力はすべて[deg]で統一
      * @return アームのターゲットの角度[deg]
      */
     public static Map<String, Double> calculateAngles(double x, double y) {
         double l_r = Const.Arm.RootArmLength;
         double l_j = Const.Arm.VirtualHeadArmLength;
 
-        double theta_h = Const.Arm.VirtualArmFoldAngle;
+        double theta_h = Math.toRadians(Const.Arm.VirtualArmFoldAngle);
         double theta_j = Math.acos((Math.pow(x, 2) + Math.pow(y, 2)
                 - Math.pow(l_r, 2) - Math.pow(l_j, 2)) / (2 * l_r * l_j))
                 - theta_h;
-        double theta_arg = Math.toDegrees(Math.atan2(y, x));
-        double theta_r = theta_arg - theta_j - theta_h;
+
+        double theta_arg_target = Math.atan2(
+                y,
+                x
+        );
+        double theta_arg_zero = Math.atan2(
+                l_j * Math.sin(theta_j + theta_h),
+                l_r + l_j * Math.cos(theta_j + theta_h)
+        );
+        double theta_r = theta_arg_target - theta_arg_zero;
 
         Map<String, Double> angles = new HashMap<String, Double>();
-        angles.put("RootAngle", theta_r);
-        angles.put("JointAngle", theta_j);
+        angles.put("RootAngle", Math.toDegrees(theta_r));
+        angles.put("JointAngle", Math.toDegrees(theta_j));
 
         return angles;
     }
