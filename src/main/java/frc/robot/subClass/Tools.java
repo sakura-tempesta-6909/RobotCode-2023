@@ -55,45 +55,22 @@ public class Tools {
      * @return アームのターゲットの角度[deg]
      */
     public static Map<String, Double> calculateAngles(double Depth, double Height) {
-        double l1 = Const.Arm.RootArmLength;
-        double l2 = Const.Arm.HeadArmLength;
+        double l_r = Const.Arm.RootArmLength;
+        double l_j = Const.Arm.HeadArmLength;
 
-        double DepthPM = Math.signum(Depth);
-        double HeightPM = Math.signum(Height);
+        double x = Depth;
+        double y = Height;
 
-        Depth = Math.abs(Depth);
-        Height = Math.abs(Height);
-
-        double JointAngle = Math.acos(Math.min((Math.pow(Height, 2) + Math.pow(Depth, 2)
-                - Math.pow(l1, 2) - Math.pow(l2, 2)) / (2 * l1 * l2), 1.0));
-
-        double tX = l1 + l2 * Math.cos(JointAngle);
-        double tY = l2 * Math.sin(JointAngle);
-        double r = Math.sqrt(Math.pow(tX, 2) + Math.pow(tY, 2));
-
-        double alpha = Math.acos(tX / r);
+        double theta_h = 5.0;
+        double theta_j = Math.acos((Math.pow(x, 2) + Math.pow(y, 2)
+                - Math.pow(l_r, 2) - Math.pow(l_j, 2)) / (2 * l_r * l_j))
+                - theta_h;
+        double theta_arg = Math.toDegrees(Math.atan2(y, x));
+        double theta_r = theta_arg - theta_j - theta_h;
 
         Map<String, Double> angles = new HashMap<String, Double>();
-
-        // theta2 < 0の時
-        double RootAngleM = Math.acos(Math.max(Math.min(Depth / r, 1.0), -1.0)) + alpha;
-        // theta2 > 0の時
-        double RootAngleP = Math.acos(Math.max(Math.min(Depth / r, 1.0), -1.0)) - alpha;
-
-        if (HeightPM >= 0 && DepthPM >= 0) {
-            angles.put("RootAngle", Math.toDegrees(RootAngleM));
-            angles.put("JointAngle", Math.toDegrees(-1 * JointAngle));
-        } else if (HeightPM < 0 && DepthPM >= 0) {
-            angles.put("RootAngle", Math.toDegrees(-1 * RootAngleP));
-            angles.put("JointAngle", Math.toDegrees(-1 * JointAngle));
-        } else if (HeightPM < 0 && DepthPM < 0) {
-            System.out.println(Math.toDegrees(RootAngleM));
-            angles.put("RootAngle", Math.toDegrees(RootAngleM) - 180);
-            angles.put("JointAngle", -1 * Math.toDegrees(JointAngle));
-        } else {
-            angles.put("RootAngle", 180 - Math.toDegrees(RootAngleP));
-            angles.put("JointAngle", -1 * Math.toDegrees(JointAngle));
-        }
+        angles.put("RootAngle", theta_r);
+        angles.put("JointAngle", theta_j);
 
         return angles;
     }
