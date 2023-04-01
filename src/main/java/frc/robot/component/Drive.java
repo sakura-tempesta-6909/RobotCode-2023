@@ -51,17 +51,24 @@ public class Drive implements Component {
     }
 
     public void arcadeDrive(double xSpeed, double zRotation) {
-        if (xSpeed - preXSpeed >= Const.Drive.TrapezoidalAcceleration) {
-            xSpeed = preXSpeed + Const.Drive.TrapezoidalAcceleration;
-        } else if (xSpeed - preXSpeed <= -Const.Drive.TrapezoidalAcceleration) {
-            xSpeed = preXSpeed - Const.Drive.TrapezoidalAcceleration;
+        if(Math.abs(preXSpeed) <  Const.Drive.SkipLowSpeedThreshold) {
+            xSpeed = xSpeed >  Const.Drive.SkipLowSpeedThreshold ?  Const.Drive.SkipLowSpeedThreshold : xSpeed < - Const.Drive.SkipLowSpeedThreshold ? - Const.Drive.SkipLowSpeedThreshold : xSpeed;
+        }
+        if(Math.abs(preZRotation) <  Const.Drive.SkipLowSpeedThreshold) {
+            zRotation = zRotation >  Const.Drive.SkipLowSpeedThreshold ?  Const.Drive.SkipLowSpeedThreshold : zRotation < - Const.Drive.SkipLowSpeedThreshold ? - Const.Drive.SkipLowSpeedThreshold : zRotation;
+        }
+        if (xSpeed - preXSpeed >= Const.Drive.TrapezoidalAccelerationX) {
+            xSpeed = preXSpeed + Const.Drive.TrapezoidalAccelerationX;
+        } else if (xSpeed - preXSpeed <= -Const.Drive.TrapezoidalAccelerationX) {
+            xSpeed = preXSpeed - Const.Drive.TrapezoidalAccelerationX;
         }
 
-         if (zRotation - preZRotation >= Const.Drive.TrapezoidalAcceleration) {
-            zRotation = preZRotation + Const.Drive.TrapezoidalAcceleration;
-        } else if (zRotation - preZRotation <= -Const.Drive.TrapezoidalAcceleration) {
-            zRotation = preZRotation - Const.Drive.TrapezoidalAcceleration;
+         if (zRotation - preZRotation >= Const.Drive.TrapezoidalAccelerationZ) {
+            zRotation = preZRotation + Const.Drive.TrapezoidalAccelerationZ;
+        } else if (zRotation - preZRotation <= -Const.Drive.TrapezoidalAccelerationZ) {
+            zRotation = preZRotation - Const.Drive.TrapezoidalAccelerationZ;
         }
+        zRotation = Math.max(Math.min(zRotation, 0.7), -0.7);
         differentialDrive.arcadeDrive(xSpeed, zRotation);
         differentialDrive.feed();
 

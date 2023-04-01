@@ -216,7 +216,9 @@ public class Const {
 
     public static final class Drive {
 
-        public static final double TrapezoidalAcceleration = 0.02;
+        public static final double TrapezoidalAccelerationX = 0.03;
+        public static final double TrapezoidalAccelerationZ = 0.06;
+        public static final double SkipLowSpeedThreshold = 0.7;
 
         public static final class PID {
             /**
