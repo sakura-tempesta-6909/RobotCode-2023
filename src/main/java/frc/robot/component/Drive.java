@@ -5,6 +5,8 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.States.State;
 import frc.robot.subClass.Const;
@@ -16,6 +18,7 @@ public class Drive implements Component {
     private DifferentialDrive differentialDrive;
     private final PIDController pidLimelightDrive;
     private final PIDController pidCameraDrive;
+    private double preXSpeed, preZRotation;
 
 
     public Drive() {
@@ -44,11 +47,33 @@ public class Drive implements Component {
         differentialDrive = new DifferentialDrive(driveLeftFront, driveRightFront);
         pidLimelightDrive = new PIDController(Const.Calculation.Limelight.PID.LimelightDriveP, Const.Calculation.Limelight.PID.LimelightDriveI, Const.Calculation.Limelight.PID.LimelightDriveD);
         pidCameraDrive = new PIDController(Const.Calculation.Camera.PID.CameraDriveP, Const.Calculation.Camera.PID.CameraDriveI, Const.Calculation.Camera.PID.CameraDriveD);
+
     }
 
     public void arcadeDrive(double xSpeed, double zRotation) {
-         differentialDrive.arcadeDrive(xSpeed, zRotation);
+        if(Math.abs(preXSpeed) <  Const.Drive.SkipLowSpeedThreshold) {
+            xSpeed = xSpeed >  Const.Drive.SkipLowSpeedThreshold ?  Const.Drive.SkipLowSpeedThreshold : xSpeed < - Const.Drive.SkipLowSpeedThreshold ? - Const.Drive.SkipLowSpeedThreshold : xSpeed;
+        }
+        if(Math.abs(preZRotation) <  Const.Drive.SkipLowSpeedThreshold) {
+            zRotation = zRotation >  Const.Drive.SkipLowSpeedThreshold ?  Const.Drive.SkipLowSpeedThreshold : zRotation < - Const.Drive.SkipLowSpeedThreshold ? - Const.Drive.SkipLowSpeedThreshold : zRotation;
+        }
+        if (xSpeed - preXSpeed >= Const.Drive.TrapezoidalAccelerationX) {
+            xSpeed = preXSpeed + Const.Drive.TrapezoidalAccelerationX;
+        } else if (xSpeed - preXSpeed <= -Const.Drive.TrapezoidalAccelerationX) {
+            xSpeed = preXSpeed - Const.Drive.TrapezoidalAccelerationX;
+        }
+
+         if (zRotation - preZRotation >= Const.Drive.TrapezoidalAccelerationZ) {
+            zRotation = preZRotation + Const.Drive.TrapezoidalAccelerationZ;
+        } else if (zRotation - preZRotation <= -Const.Drive.TrapezoidalAccelerationZ) {
+            zRotation = preZRotation - Const.Drive.TrapezoidalAccelerationZ;
+        }
+        zRotation = Math.max(Math.min(zRotation, 0.7), -0.7);
+        differentialDrive.arcadeDrive(xSpeed, zRotation);
         differentialDrive.feed();
+
+        preXSpeed = xSpeed;
+        preZRotation = zRotation;
     }
 
     public void pidControlTargetTracking() {
@@ -109,6 +134,7 @@ public class Drive implements Component {
         return isRightMotorAtTarget && isLeftMotorAtTarget;
     }
 
+
     @Override
     public void autonomousInit() {
         // TODO Auto-generated method stub
@@ -165,6 +191,7 @@ public class Drive implements Component {
             driveRightBack.setNeutralMode(NeutralMode.Coast);
             driveLeftBack.setNeutralMode(NeutralMode.Coast);
         }
+
 
         switch (State.Drive.state) {
             case s_fastDrive:
