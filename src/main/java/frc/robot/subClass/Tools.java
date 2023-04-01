@@ -27,32 +27,33 @@ public class Tools {
     }
 
     /**
-     * @param theta_r RootAngle - readSensorで取得した実際の角度[deg]
-     * @param theta_j JointAngle - readSensorで取得した実際の角度[deg]
-     * @return Height座標[cm]
-     * */
-    public static double calculateHeight(double theta_r, double theta_j) {
-        theta_r = Math.toRadians(theta_r);
-        theta_j = Math.toRadians(theta_j);
-        double theta_c = Math.toRadians(Const.Arm.HandFoldAngle);
-
-        double l_r = Const.Arm.RootArmLength;
-        double l_j = Const.Arm.HeadArmLength;
-        double l_h = Const.Arm.HandLength;
-
-        Map<Integer, Double> rootVec = rotateMatrix(theta_r, l_r, 0.0);
-        Map<Integer, Double> headVec = rotateMatrix(theta_r, rotateMatrix(theta_j, l_j, 0.0));
-        Map<Integer, Double> handVec = rotateMatrix(theta_c, rotateMatrix(theta_r, rotateMatrix(theta_j, l_h, 0.0)));
-
-        return rootVec.get(1) + headVec.get(1) + handVec.get(1);
-    }
-
-    /**
      * @param theta_r readSensorで取得した実際の角度[deg]
      * @param theta_j readSensorで取得した実際の角度[deg]
      * @return Depth座標[cm]
      * */
     public static double calculateDepth(double theta_r, double theta_j) {
+        Map<Integer, Double> positionVec = calculatePositionVec(theta_r, theta_j);
+        return positionVec.get(0);
+    }
+
+    /**
+     * @param theta_r RootAngle - readSensorで取得した実際の角度[deg]
+     * @param theta_j JointAngle - readSensorで取得した実際の角度[deg]
+     * @return Height座標[cm]
+     * */
+    public static double calculateHeight(double theta_r, double theta_j) {
+        Map<Integer, Double> positionVec = calculatePositionVec(theta_r, theta_j);
+        return positionVec.get(1);
+    }
+
+    /**
+     * @param theta_r readSensorで取得した実際の角度[deg]
+     * @param theta_j readSensorで取得した実際の角度[deg]
+     * @return アームの先端の座標の位置ベクトル <br>
+     * 0 - X座標 - 奥行き（Depth）[cm]<br>
+     * 1 - Y座標 - 高さ（Height）[cm]<br>
+     * */
+    public static Map<Integer, Double> calculatePositionVec(double theta_r, double theta_j) {
         theta_r = Math.toRadians(theta_r);
         theta_j = Math.toRadians(theta_j);
         double theta_c = Math.toRadians(Const.Arm.HandFoldAngle);
@@ -65,7 +66,11 @@ public class Tools {
         Map<Integer, Double> headVec = rotateMatrix(theta_r, rotateMatrix(theta_j, l_j, 0.0));
         Map<Integer, Double> handVec = rotateMatrix(theta_c, rotateMatrix(theta_r, rotateMatrix(theta_j, l_h, 0.0)));
 
-        return rootVec.get(0) + headVec.get(0) + handVec.get(0);
+        Map<Integer, Double> positionVec = new HashMap<>();
+        positionVec.put(0, rootVec.get(0) + headVec.get(0) + handVec.get(0));
+        positionVec.put(1, rootVec.get(1) + headVec.get(1) + handVec.get(1));
+
+        return positionVec;
     }
 
     /** コントローラーの不感帯の大きさ（絶対値）[0.0) */
@@ -108,7 +113,7 @@ public class Tools {
         );
         double theta_r = theta_arg_target - theta_arg_zero;
 
-        Map<String, Double> angles = new HashMap<String, Double>();
+        Map<String, Double> angles = new HashMap<>();
         angles.put("RootAngle", Math.toDegrees(theta_r));
         angles.put("JointAngle", Math.toDegrees(theta_j));
 
