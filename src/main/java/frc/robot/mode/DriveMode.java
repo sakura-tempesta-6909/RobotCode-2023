@@ -247,7 +247,7 @@ public class DriveMode extends Mode {
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
                     State.Arm.targetHeight = Const.GrabGamePiecePhase.armRelayPointHeight;
                     State.Arm.targetDepth = Const.GrabGamePiecePhase.armRelayPointDepth;
-                    if (Util.Calculate.relayJudge(State.Arm.actualHeight, -20, State.Arm.actualDepth, 30)) {
+                    if (Util.Calculate.relayJudge()) {
                         phase = GrabGamePiecePhase.Phase4;
                     }
                     break;

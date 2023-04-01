@@ -63,8 +63,8 @@ public class Util {
             return meter * Const.Calculation.Drive.DrivePointsPerDriveLength;
         }
 
-        public static boolean relayJudge(double actualHeight, double relayHeight, double actualDepth, double relayDepth) {
-            return actualHeight < relayHeight && actualDepth < relayDepth;
+        public static boolean relayJudge() {
+            return State.Arm.actualHeight < -20 && State.Arm.actualDepth < 30;
 
         }
     }
