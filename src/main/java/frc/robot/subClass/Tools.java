@@ -4,6 +4,28 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Tools {
+
+    public static Map<Integer, Double> rotateMatrix(double theta, double x, double y) {
+        theta = Math.toRadians(theta);
+        double x_dash = x * Math.cos(theta) - y * Math.sin(theta);
+        double y_dash = x * Math.sin(theta) + y * Math.cos(theta);
+        Map<Integer, Double> vector = new HashMap<>();
+        vector.put(0, x_dash);
+        vector.put(1, y_dash);
+        return vector;
+    }
+
+    public static Map<Integer, Double> rotateMatrix(double theta, Map<Integer, Double> vector) {
+        theta = Math.toRadians(theta);
+        double x = vector.get(0); double y = vector.get(1);
+        double x_dash = x * Math.cos(theta) - y * Math.sin(theta);
+        double y_dash = x * Math.sin(theta) + y * Math.cos(theta);
+        Map<Integer, Double> newVector = new HashMap<>();
+        vector.put(0, x_dash);
+        vector.put(1, y_dash);
+        return newVector;
+    }
+
     /**
      * @param theta_r RootAngle - readSensorで取得した実際の角度[deg]
      * @param theta_j JointAngle - readSensorで取得した実際の角度[deg]
@@ -12,26 +34,38 @@ public class Tools {
     public static double calculateHeight(double theta_r, double theta_j) {
         theta_r = Math.toRadians(theta_r);
         theta_j = Math.toRadians(theta_j);
-        double SumAngle = theta_r + theta_j;
-        double l1 = Const.Arm.RootArmLength;
-        double l2 = Const.Arm.HeadArmLength;
+        double theta_c = Math.toRadians(Const.Arm.HandFoldAngle);
 
-        return l1 * Math.sin(theta_r) + l2 * Math.sin(SumAngle);
+        double l_r = Const.Arm.RootArmLength;
+        double l_j = Const.Arm.HeadArmLength;
+        double l_h = Const.Arm.HandLength;
+
+        Map<Integer, Double> rootVec = rotateMatrix(theta_r, l_r, 0.0);
+        Map<Integer, Double> headVec = rotateMatrix(theta_r, rotateMatrix(theta_j, l_j, 0.0));
+        Map<Integer, Double> handVec = rotateMatrix(theta_c, rotateMatrix(theta_r, rotateMatrix(theta_j, l_h, 0.0)));
+
+        return rootVec.get(1) + headVec.get(1) + handVec.get(1);
     }
 
     /**
-     * @param RootAngle readSensorで取得した実際の角度[deg]
-     * @param JointAngle readSensorで取得した実際の角度[deg]
+     * @param theta_r readSensorで取得した実際の角度[deg]
+     * @param theta_j readSensorで取得した実際の角度[deg]
      * @return Depth座標[cm]
      * */
-    public static double calculateDepth(double RootAngle, double JointAngle) {
-        RootAngle = Math.toRadians(RootAngle);
-        JointAngle = Math.toRadians(JointAngle);
-        double SumAngle = RootAngle + JointAngle;
-        double l1 = Const.Arm.RootArmLength;
-        double l2 = Const.Arm.HeadArmLength;
+    public static double calculateDepth(double theta_r, double theta_j) {
+        theta_r = Math.toRadians(theta_r);
+        theta_j = Math.toRadians(theta_j);
+        double theta_c = Math.toRadians(Const.Arm.HandFoldAngle);
 
-        return l1 * Math.cos(RootAngle) + l2 * Math.cos(SumAngle);
+        double l_r = Const.Arm.RootArmLength;
+        double l_j = Const.Arm.HeadArmLength;
+        double l_h = Const.Arm.HandLength;
+
+        Map<Integer, Double> rootVec = rotateMatrix(theta_r, l_r, 0.0);
+        Map<Integer, Double> headVec = rotateMatrix(theta_r, rotateMatrix(theta_j, l_j, 0.0));
+        Map<Integer, Double> handVec = rotateMatrix(theta_c, rotateMatrix(theta_r, rotateMatrix(theta_j, l_h, 0.0)));
+
+        return rootVec.get(0) + headVec.get(0) + handVec.get(0);
     }
 
     /** コントローラーの不感帯の大きさ（絶対値）[0.0) */
@@ -57,11 +91,11 @@ public class Tools {
      */
     public static Map<String, Double> calculateAngles(double x, double y) {
         double l_r = Const.Arm.RootArmLength;
-        double l_j = Const.Arm.VirtualHeadArmLength;
+        double l_v = Const.Arm.VirtualHeadArmLength;
 
         double theta_h = Math.toRadians(Const.Arm.VirtualArmFoldAngle);
         double theta_j = Math.acos((Math.pow(x, 2) + Math.pow(y, 2)
-                - Math.pow(l_r, 2) - Math.pow(l_j, 2)) / (2 * l_r * l_j))
+                - Math.pow(l_r, 2) - Math.pow(l_v, 2)) / (2 * l_r * l_v))
                 - theta_h;
 
         double theta_arg_target = Math.atan2(
@@ -69,8 +103,8 @@ public class Tools {
                 x
         );
         double theta_arg_zero = Math.atan2(
-                l_j * Math.sin(theta_j + theta_h),
-                l_r + l_j * Math.cos(theta_j + theta_h)
+                l_v * Math.sin(theta_j + theta_h),
+                l_r + l_v * Math.cos(theta_j + theta_h)
         );
         double theta_r = theta_arg_target - theta_arg_zero;
 
