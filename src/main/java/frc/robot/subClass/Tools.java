@@ -49,19 +49,16 @@ public class Tools {
     }
 
     /**
-     * @param Depth ターゲットのX座標[cm]
-     * @param Height ターゲットのY座標[cm]
-     * X,YからRootAngle, JointAngle を計算
+     * @param x ターゲットの奥行き（Depth）[cm]
+     * @param y ターゲットの高さ（Height）[cm]<br>
+     * Target[Depth/Height]からTarget[Root/Joint]Angle を計算
      * @return アームのターゲットの角度[deg]
      */
-    public static Map<String, Double> calculateAngles(double Depth, double Height) {
+    public static Map<String, Double> calculateAngles(double x, double y) {
         double l_r = Const.Arm.RootArmLength;
-        double l_j = Const.Arm.HeadArmLength;
+        double l_j = Const.Arm.VirtualHeadArmLength;
 
-        double x = Depth;
-        double y = Height;
-
-        double theta_h = 5.0;
+        double theta_h = Const.Arm.VirtualArmFoldAngle;
         double theta_j = Math.acos((Math.pow(x, 2) + Math.pow(y, 2)
                 - Math.pow(l_r, 2) - Math.pow(l_j, 2)) / (2 * l_r * l_j))
                 - theta_h;

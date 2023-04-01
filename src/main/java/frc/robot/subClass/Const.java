@@ -273,9 +273,31 @@ public class Const {
          */
         public static final double RootArmLength = 45.0;
         /**
-         * 先端アームの長さ[cm]
+         * 先端アームの長さ[cm]（45.5はハンドの付け根までの長さ）
          */
-        public static final double HeadArmLength = 69.744; // 45.5はハンドの付け根までの長さ
+        public static final double HeadArmLength = 45.5;
+        /**
+         * ハンドの折れた角度（折れ具合）[deg]
+         * */
+        public static final double HandFoldAngle = 55.0;
+        /**
+         * ハンドの長さ[cm]（ハンドの付け根から先端まで）
+         * */
+        public static final double HandLength = 46.0;
+        /**
+         * ハンドが折れていることによって生じる仮想アームの折れた角度（折れ具合）[deg]
+         * */
+        public static final double VirtualArmFoldAngle = Math.toDegrees(
+                Math.atan((Math.sin(Math.toRadians(HandFoldAngle)) * HandLength) /
+                        (HeadArmLength + Math.cos(Math.toRadians(HandFoldAngle)) * HandLength))
+        );
+        /**
+         * 仮想の先端アームの長さ[cm]（関節部分からハンドの先端まで）
+         * */
+        public static final double VirtualHeadArmLength = Math.sqrt(
+                Math.pow(HeadArmLength + Math.cos(Math.toRadians(HandFoldAngle)) * HandLength, 2)
+                        + Math.pow(Math.sin(Math.toRadians(HandFoldAngle)) * HandLength, 2)
+        );
         /**
          * 根本アームの重心の位置[cm]（根本からの距離）
          */
