@@ -1,10 +1,19 @@
 package frc.robot.subClass;
+
 import frc.robot.States.State;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class Tools {
-
+    /**
+     * 回転行列をかける <a href="https://mathlandscape.com/rotation-matrix/">rotation matrix</a>
+     *
+     * @param theta 回転する角度[deg]
+     * @param x     x座標[cm]
+     * @param y     y座標[cm]
+     * @return 回転先の位置ベクトル <br>（x_dash,<br>&emsp;y_dash）
+     */
     public static Map<Integer, Double> rotateMatrix(double theta, double x, double y) {
         theta = Math.toRadians(theta);
         double x_dash = x * Math.cos(theta) - y * Math.sin(theta);
@@ -15,9 +24,17 @@ public class Tools {
         return vector;
     }
 
+    /**
+     * 回転行列をかける <a href="https://mathlandscape.com/rotation-matrix/">rotation matrix</a>
+     *
+     * @param theta  回転する角度[deg]
+     * @param vector 回転元の位置ベクトル <br>（x,<br>&emsp;y）
+     * @return 回転先の位置ベクトル <br>（x_dash,<br>&emsp;y_dash）
+     */
     public static Map<Integer, Double> rotateMatrix(double theta, Map<Integer, Double> vector) {
         theta = Math.toRadians(theta);
-        double x = vector.get(0); double y = vector.get(1);
+        double x = vector.get(0);
+        double y = vector.get(1);
         double x_dash = x * Math.cos(theta) - y * Math.sin(theta);
         double y_dash = x * Math.sin(theta) + y * Math.cos(theta);
         Map<Integer, Double> newVector = new HashMap<>();
@@ -30,7 +47,7 @@ public class Tools {
      * @param theta_r readSensorで取得した実際の角度[deg]
      * @param theta_j readSensorで取得した実際の角度[deg]
      * @return Depth座標[cm]
-     * */
+     */
     public static double calculateDepth(double theta_r, double theta_j) {
         Map<Integer, Double> positionVec = calculatePositionVec(theta_r, theta_j);
         return positionVec.get(0);
@@ -40,7 +57,7 @@ public class Tools {
      * @param theta_r RootAngle - readSensorで取得した実際の角度[deg]
      * @param theta_j JointAngle - readSensorで取得した実際の角度[deg]
      * @return Height座標[cm]
-     * */
+     */
     public static double calculateHeight(double theta_r, double theta_j) {
         Map<Integer, Double> positionVec = calculatePositionVec(theta_r, theta_j);
         return positionVec.get(1);
@@ -52,7 +69,7 @@ public class Tools {
      * @return アームの先端の座標の位置ベクトル <br>
      * 0 - X座標 - 奥行き（Depth）[cm]<br>
      * 1 - Y座標 - 高さ（Height）[cm]<br>
-     * */
+     */
     public static Map<Integer, Double> calculatePositionVec(double theta_r, double theta_j) {
         theta_r = Math.toRadians(theta_r);
         theta_j = Math.toRadians(theta_j);
@@ -79,19 +96,20 @@ public class Tools {
     /**
      * 不感帯処理関数
      * 絶対値がdeadZoneThreshold未満のものを淘汰
+     *
      * @param input コントローラーの値を入力
      * @return 不感帯処理を施したinput
-     * */
+     */
     public static double deadZoneProcess(double input) {
-        if(Math.abs(input) < deadZoneThreshold) return 0.0;
+        if (Math.abs(input) < deadZoneThreshold) return 0.0;
         else return input;
     }
 
     /**
      * @param x ターゲットの奥行き（Depth）[cm]
      * @param y ターゲットの高さ（Height）[cm]<br>
-     * Target[Depth/Height]からTarget[Root/Joint]Angleを計算
-     * 関数内はすべて[rad] 出力はすべて[deg]で統一
+     *          Target[Depth/Height]からTarget[Root/Joint]Angleを計算
+     *          関数内はすべて[rad] 出力はすべて[deg]で統一
      * @return アームのターゲットの角度[deg]
      */
     public static Map<String, Double> calculateAngles(double x, double y) {
@@ -121,12 +139,12 @@ public class Tools {
     }
 
     /**
-     * @param RootAngle readSensorで取得した実際の角度[deg]
+     * @param RootAngle  readSensorで取得した実際の角度[deg]
      * @param JointAngle readSensorで取得した実際の角度[deg]
-     * underMotorのフィードフォワードを計算
-     * それぞれのアームの重心をConstから取得
+     *                   underMotorのフィードフォワードを計算
+     *                   それぞれのアームの重心をConstから取得
      * @return モーメント[N*cm]
-     * */
+     */
     public static double calculateRootMotorFeedforward(double RootAngle, double JointAngle) {
         RootAngle = Math.toRadians(RootAngle);
         JointAngle = Math.toRadians(JointAngle);
@@ -148,12 +166,12 @@ public class Tools {
     }
 
     /**
-     * @param RootAngle readSensorで取得した実際の角度[deg]
+     * @param RootAngle  readSensorで取得した実際の角度[deg]
      * @param JointAngle readSensorで取得した実際の角度[deg]
-     * topMotorのフィードフォワードを計算
-     * 重心などをConstから取得
+     *                   topMotorのフィードフォワードを計算
+     *                   重心などをConstから取得
      * @return モーメント[N*cm]
-     * */
+     */
     public static double calculateJointMotorFeedforward(double RootAngle, double JointAngle) {
         RootAngle = Math.toRadians(RootAngle);
         JointAngle = Math.toRadians(JointAngle);
@@ -167,10 +185,11 @@ public class Tools {
     /**
      * NEOモーターのトルクとRPMの関係を利用 <a href="https://www.revrobotics.com/content/docs/REV-21-1650-DS.pdf">NEOのデータシート</a>
      * [注意] NEOモーターに合わせて出力する
+     *
      * @param torque トルク[N*cm] = モーメント / Const.Arms.[Under/Top]MotorGearRatio（ギア比に合わせて入力）
      * @return motor.setへの入力[-1.0, 1.0] (CANSparkMax)
-     * */
-    public static double changeTorqueToMotorInput (double torque) {
+     */
+    public static double changeTorqueToMotorInput(double torque) {
         return torque / Const.Arm.MotorMaxTorque;
         // TODO 2次関数的にトルクを求める必要があるらしい？
     }
