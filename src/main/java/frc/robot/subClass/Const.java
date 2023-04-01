@@ -286,9 +286,9 @@ public class Const {
         public static final double HandLength = 46.0;
         /**
          * ハンドが折れていることによって生じる仮想アームの折れた角度（折れ具合）[deg]
-         * （負の向きに折れ曲がっているので * -1）
+         * （正の向きに折れ曲がっている）
          * */
-        public static final double VirtualArmFoldAngle = -1 * Math.toDegrees(
+        public static final double VirtualArmFoldAngle = Math.toDegrees(
                 Math.atan((Math.sin(Math.toRadians(HandFoldAngle)) * HandLength) /
                         (HeadArmLength + Math.cos(Math.toRadians(HandFoldAngle)) * HandLength))
         );

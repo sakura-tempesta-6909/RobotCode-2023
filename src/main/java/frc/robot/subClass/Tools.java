@@ -5,18 +5,18 @@ import java.util.Map;
 
 public class Tools {
     /**
-     * @param RootAngle readSensorで取得した実際の角度[deg]
-     * @param JointAngle readSensorで取得した実際の角度[deg]
+     * @param theta_r RootAngle - readSensorで取得した実際の角度[deg]
+     * @param theta_j JointAngle - readSensorで取得した実際の角度[deg]
      * @return Height座標[cm]
      * */
-    public static double calculateHeight(double RootAngle, double JointAngle) {
-        RootAngle = Math.toRadians(RootAngle);
-        JointAngle = Math.toRadians(JointAngle);
-        double SumAngle = RootAngle + JointAngle;
+    public static double calculateHeight(double theta_r, double theta_j) {
+        theta_r = Math.toRadians(theta_r);
+        theta_j = Math.toRadians(theta_j);
+        double SumAngle = theta_r + theta_j;
         double l1 = Const.Arm.RootArmLength;
         double l2 = Const.Arm.HeadArmLength;
 
-        return l1 * Math.sin(RootAngle) + l2 * Math.sin(SumAngle);
+        return l1 * Math.sin(theta_r) + l2 * Math.sin(SumAngle);
     }
 
     /**
