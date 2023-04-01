@@ -62,5 +62,9 @@ public class Util {
         public static double meterToDriveEncoderPoints(double meter) {
             return meter * Const.Calculation.Drive.DrivePointsPerDriveLength;
         }
+
+        public static boolean relayJudge(double actual, double relay) {
+            return actual < relay;
+        }
     }
 }
