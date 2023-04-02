@@ -216,6 +216,10 @@ public class Const {
 
     public static final class Drive {
 
+        public static final double TrapezoidalAccelerationX = 0.03;
+        public static final double TrapezoidalAccelerationZ = 0.06;
+        public static final double SkipLowSpeedThreshold = 0.7;
+
         public static final class PID {
             /**
              * 短い移動と判別するための閾値 [m]
@@ -508,6 +512,8 @@ public class Const {
         public static final double JointHomePosition = -79.32;
 
         public static final double RelayPointHeight = -20;
+        public static final double RelayPointDepth = 30;
+
     }
 
     public static final class Hand {

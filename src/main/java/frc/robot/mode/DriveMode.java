@@ -2,11 +2,13 @@ package frc.robot.mode;
 
 import java.util.Map;
 
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.States.LimelightState;
 import frc.robot.States.State;
 import frc.robot.subClass.Const;
 import frc.robot.subClass.Tools;
+import frc.robot.subClass.Util;
 
 public class DriveMode extends Mode {
 
@@ -248,7 +250,7 @@ public class DriveMode extends Mode {
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
                     State.Arm.targetHeight = Const.GrabGamePiecePhase.armRelayPointHeight;
                     State.Arm.targetDepth = Const.GrabGamePiecePhase.armRelayPointDepth;
-                    if (State.Arm.actualHeight > -10) {
+                    if (Util.Calculate.relayReach(State.Arm.actualHeight, State.Arm.actualDepth)) {
                         phase = GrabGamePiecePhase.Phase4;
                     }
                     break;
