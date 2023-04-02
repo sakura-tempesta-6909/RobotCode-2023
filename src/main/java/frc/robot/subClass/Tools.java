@@ -1,6 +1,7 @@
 package frc.robot.subClass;
 
 import frc.robot.States.State;
+import frc.robot.consts.ArmConst;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -52,11 +53,11 @@ public class Tools {
      * 1 - Y座標 - 高さ（Height）[cm]<br>
      */
     public static Map<Integer, Double> calculatePositionVec(double theta_r, double theta_j) {
-        double theta_c = Const.Arm.HandFoldAngle; // [deg]
+        double theta_c = ArmConst.HandFoldAngle; // [deg]
 
-        double l_r = Const.Arm.RootArmLength;
-        double l_j = Const.Arm.HeadArmLength;
-        double l_h = Const.Arm.HandLength;
+        double l_r = ArmConst.RootArmLength;
+        double l_j = ArmConst.HeadArmLength;
+        double l_h = ArmConst.HandLength;
 
         Map<Integer, Double> rootVec = rotateMatrix(theta_r, l_r, 0.0);
         Map<Integer, Double> headVec = rotateMatrix(theta_r + theta_j, l_j, 0.0);
@@ -107,10 +108,10 @@ public class Tools {
             theta_j_pm = -1;
         }
 
-        double l_r = Const.Arm.RootArmLength;
-        double l_v = Const.Arm.VirtualHeadArmLength;
+        double l_r = ArmConst.RootArmLength;
+        double l_v = ArmConst.VirtualHeadArmLength;
 
-        double theta_h = Math.toRadians(Const.Arm.VirtualArmFoldAngle); // [rad]
+        double theta_h = Math.toRadians(ArmConst.VirtualArmFoldAngle); // [rad]
         double theta_j = theta_j_pm * Math.acos((Math.pow(x, 2) + Math.pow(y, 2)
                 - Math.pow(l_r, 2) - Math.pow(l_v, 2)) / (2 * l_r * l_v)) // [rad]
                 - theta_h; // [rad]
@@ -142,20 +143,20 @@ public class Tools {
         RootAngle = Math.toRadians(RootAngle);
         JointAngle = Math.toRadians(JointAngle);
         double SumAngle = RootAngle + JointAngle;
-        double l1 = Const.Arm.RootArmLength;
-        double l2 = Const.Arm.HeadArmLength;
-        double b1 = Const.Arm.RootArmBarycenter; //FirstBarycenter -> fb
-        double b2 = Const.Arm.HeadArmBarycenter; //SecondBarycenter -> sb
-        double m1 = Const.Arm.RootArmMass;
-        double m2 = Const.Arm.HeadArmMass;
+        double l1 = ArmConst.RootArmLength;
+        double l2 = ArmConst.HeadArmLength;
+        double b1 = ArmConst.RootArmBarycenter; //FirstBarycenter -> fb
+        double b2 = ArmConst.HeadArmBarycenter; //SecondBarycenter -> sb
+        double m1 = ArmConst.RootArmMass;
+        double m2 = ArmConst.HeadArmMass;
 
         double ffMomentForRootArm = b1 * m1 * Math.cos(RootAngle);
         double ffMomentForHeadArm = l1 * m2 * Math.cos(RootAngle) + b2 * m2 * Math.cos(SumAngle);
 
         //TODO feedforwardでmotor.setに渡す値はトルクの計算が必要
-        return (ffMomentForRootArm * Const.Arm.RootArmFFWeightForRM
-                + ffMomentForHeadArm * Const.Arm.HeadArmFFWeightForRM)
-                * Const.Arm.RootMotorFFWeight;
+        return (ffMomentForRootArm * ArmConst.RootArmFFWeightForRM
+                + ffMomentForHeadArm * ArmConst.HeadArmFFWeightForRM)
+                * ArmConst.RootMotorFFWeight;
     }
 
     /**
@@ -169,10 +170,10 @@ public class Tools {
         RootAngle = Math.toRadians(RootAngle);
         JointAngle = Math.toRadians(JointAngle);
         double SumAngle = RootAngle + JointAngle;
-        double b2 = Const.Arm.HeadArmBarycenter; //SecondBarycenter -> sb
-        double m2 = Const.Arm.HeadArmMass;
+        double b2 = ArmConst.HeadArmBarycenter; //SecondBarycenter -> sb
+        double m2 = ArmConst.HeadArmMass;
 
-        return (b2 * m2 * Math.cos(SumAngle)) * Const.Arm.JointMotorFFWeight;
+        return (b2 * m2 * Math.cos(SumAngle)) * ArmConst.JointMotorFFWeight;
     }
 
     /**
@@ -183,7 +184,7 @@ public class Tools {
      * @return motor.setへの入力[-1.0, 1.0] (CANSparkMax)
      */
     public static double changeTorqueToMotorInput(double torque) {
-        return torque / Const.Arm.MotorMaxTorque;
+        return torque / ArmConst.MotorMaxTorque;
         // TODO 2次関数的にトルクを求める必要があるらしい？
     }
 
@@ -191,7 +192,7 @@ public class Tools {
         State.StateReset();
 
         double targetDepth = -10;//State.Arm.TargetDepth.TopCorn;
-        double targetHeight = -60;//Const.Calculation.Limelight.TopGoalHeight - Const.Arm.RootHeightFromGr;
+        double targetHeight = -60;//LimelightConst.TopGoalHeight - ArmConst.RootHeightFromGr;
         System.out.println(targetDepth);
         System.out.println(targetHeight);
         System.out.println(isNewTargetPositionInLimit(targetHeight, targetDepth));
@@ -204,13 +205,13 @@ public class Tools {
 //        System.out.println(calculateDepth(root, joint));
 //        System.out.println(calculateHeight(root, joint));
 
-        double l_r = Const.Arm.RootArmLength;
-        double l_j = Const.Arm.HeadArmLength;
-        double l_h = Const.Arm.HandLength;
+        double l_r = ArmConst.RootArmLength;
+        double l_j = ArmConst.HeadArmLength;
+        double l_h = ArmConst.HandLength;
 
         double theta_r = 0;
         double theta_j = 0;
-        double theta_c = Const.Arm.HandFoldAngle;
+        double theta_c = ArmConst.HandFoldAngle;
 
         Map<Integer, Double> vec = rotateMatrix(theta_c + theta_r + theta_j, l_h, 0.0);
         System.out.println(vec);
@@ -247,8 +248,8 @@ public class Tools {
     private static boolean isNewTargetPositionInLimit(double Height, double Depth) {
         double length = Math.sqrt(Math.pow(Height, 2) + Math.pow(Depth, 2));
 
-        boolean isInOuterBorder = length < Const.Arm.TargetPositionOuterLimit;
-        boolean isOutInnerBorder = length > Const.Arm.TargetPositionInnerLimit;
+        boolean isInOuterBorder = length < ArmConst.TargetPositionOuterLimit;
+        boolean isOutInnerBorder = length > ArmConst.TargetPositionInnerLimit;
         boolean isInDepthLimit = Depth > -23;
 
         // TODO XButtonでコントロールする時のターゲット座標の制限を考える

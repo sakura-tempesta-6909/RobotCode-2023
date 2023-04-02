@@ -2,8 +2,10 @@ package frc.robot.States;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.consts.ArmConst;
+import frc.robot.consts.Const;
+import frc.robot.consts.DriveConst;
 import frc.robot.mode.*;
-import frc.robot.subClass.Const;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -96,8 +98,8 @@ public class State {
         public static boolean isMotorBrake;
 
         public static boolean isAtTarget() {
-            boolean isLeftMotorAtTarget = Math.abs(State.Drive.leftMeter - State.Drive.targetMeter) < Const.Drive.PID.LossTolerance;
-            boolean isRightMotorAtTarget = Math.abs(State.Drive.rightMeter - State.Drive.targetMeter) < Const.Drive.PID.LossTolerance;
+            boolean isLeftMotorAtTarget = Math.abs(State.Drive.leftMeter - State.Drive.targetMeter) < DriveConst.PID.LossTolerance;
+            boolean isRightMotorAtTarget = Math.abs(State.Drive.rightMeter - State.Drive.targetMeter) < DriveConst.PID.LossTolerance;
             return isRightMotorAtTarget && isLeftMotorAtTarget;
         }
 
@@ -176,8 +178,8 @@ public class State {
          * @return jointMotorとrootMotorの両方がatSetpointかどうか
          */
         public static boolean isAtTarget() {
-            boolean isDepthAtSetpoint = Math.abs(State.Arm.targetDepth - State.Arm.actualDepth) < Const.Arm.PIDAngleTolerance;
-            boolean isHeightMotorAtSetpoint = Math.abs(State.Arm.targetHeight - State.Arm.actualHeight) < Const.Arm.PIDAngleTolerance;
+            boolean isDepthAtSetpoint = Math.abs(State.Arm.targetDepth - State.Arm.actualDepth) < ArmConst.PIDAngleTolerance;
+            boolean isHeightMotorAtSetpoint = Math.abs(State.Arm.targetHeight - State.Arm.actualHeight) < ArmConst.PIDAngleTolerance;
             return isHeightMotorAtSetpoint && isDepthAtSetpoint;
         }
 

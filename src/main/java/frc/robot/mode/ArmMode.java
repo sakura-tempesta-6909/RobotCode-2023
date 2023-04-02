@@ -2,9 +2,13 @@ package frc.robot.mode;
 
 import frc.robot.States.LimelightState;
 import frc.robot.States.State;
-import frc.robot.subClass.Const;
+import frc.robot.consts.ArmConst;
+import frc.robot.consts.CameraConst;
+import frc.robot.consts.GrabGamePiecePhaseConst;
+import frc.robot.consts.LimelightConst;
 import frc.robot.subClass.Tools;
 
+import java.lang.management.GarbageCollectorMXBean;
 import java.util.Map;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -125,46 +129,46 @@ public class ArmMode extends Mode {
         } else if (joystick.getRawButton(7)) {
             // 奥のコーンのゴールまでアームを伸ばす
             if (!State.Arm.relayPositionOver) {
-                State.Arm.targetHeight = Const.GrabGamePiecePhase.armRelayPointHeight;
-                State.Arm.targetDepth = Const.GrabGamePiecePhase.armRelayPointDepth;
+                State.Arm.targetHeight = GrabGamePiecePhaseConst.armRelayPointHeight;
+                State.Arm.targetDepth = GrabGamePiecePhaseConst.armRelayPointDepth;
             } else {
-                State.Arm.targetHeight = Const.Calculation.Limelight.TopGoalHeight - Const.Arm.RootHeightFromGr;
+                State.Arm.targetHeight = LimelightConst.TopGoalHeight - ArmConst.RootHeightFromGr;
                 State.Arm.targetDepth = State.Arm.TargetDepth.TopCorn;
             }
         } else if (joystick.getRawButton(9)) {
             // 真ん中のコーンのゴールまでアームを伸ばす
             if (!State.Arm.relayPositionOver) {
-                State.Arm.targetHeight = Const.GrabGamePiecePhase.armRelayPointHeight;
-                State.Arm.targetDepth = Const.GrabGamePiecePhase.armRelayPointDepth;
+                State.Arm.targetHeight = GrabGamePiecePhaseConst.armRelayPointHeight;
+                State.Arm.targetDepth = GrabGamePiecePhaseConst.armRelayPointDepth;
             } else {
-                State.Arm.targetHeight = Const.Calculation.Limelight.MiddleGoalHeight - Const.Arm.RootHeightFromGr;
+                State.Arm.targetHeight = LimelightConst.MiddleGoalHeight - ArmConst.RootHeightFromGr;
                 State.Arm.targetDepth = State.Arm.TargetDepth.MiddleCorn;
             }
         } else if (joystick.getRawButton(11)) {
             // 前のコーンのゴールまでアームを伸ばす
-                State.Arm.targetHeight = Const.Calculation.Limelight.BottomGoalHeight - Const.Arm.RootHeightFromGr;
+                State.Arm.targetHeight = LimelightConst.BottomGoalHeight - ArmConst.RootHeightFromGr;
                 State.Arm.targetDepth = State.Arm.TargetDepth.BottomCorn;
         } else if (joystick.getRawButton(8)) {
             // 奥のキューブのゴールまでアームを伸ばす
             if (!State.Arm.relayPositionOver) {
-                State.Arm.targetHeight = Const.GrabGamePiecePhase.armRelayPointHeight;
-                State.Arm.targetDepth = Const.GrabGamePiecePhase.armRelayPointDepth;
+                State.Arm.targetHeight = GrabGamePiecePhaseConst.armRelayPointHeight;
+                State.Arm.targetDepth = GrabGamePiecePhaseConst.armRelayPointDepth;
             } else {
-                State.Arm.targetHeight = Const.Calculation.Camera.TopGoalHeight - Const.Arm.RootHeightFromGr;
+                State.Arm.targetHeight = CameraConst.TopGoalHeight - ArmConst.RootHeightFromGr;
                 State.Arm.targetDepth = State.Arm.TargetDepth.TopCube;
             }
         } else if (joystick.getRawButton(10)) {
             // 真ん中のキューブのゴールまでアームを伸ばす
             if(!State.Arm.relayPositionOver) {
-                State.Arm.targetHeight = Const.GrabGamePiecePhase.armRelayPointHeight;
-                State.Arm.targetDepth = Const.GrabGamePiecePhase.armRelayPointDepth;
+                State.Arm.targetHeight = GrabGamePiecePhaseConst.armRelayPointHeight;
+                State.Arm.targetDepth = GrabGamePiecePhaseConst.armRelayPointDepth;
             } else {
-                State.Arm.targetHeight = Const.Calculation.Camera.MiddleGoalHeight - Const.Arm.RootHeightFromGr;
+                State.Arm.targetHeight = CameraConst.MiddleGoalHeight - ArmConst.RootHeightFromGr;
                 State.Arm.targetDepth = State.Arm.TargetDepth.MiddleCube;
             }
         } else if (joystick.getRawButton(12)) {
             // 前のキューブのゴールまでアームを伸ばす
-            State.Arm.targetHeight = Const.Calculation.Camera.BottomGoalHeight - Const.Arm.RootHeightFromGr;
+            State.Arm.targetHeight = CameraConst.BottomGoalHeight - ArmConst.RootHeightFromGr;
             State.Arm.targetDepth = State.Arm.TargetDepth.BottomCube;
         } else if (driveController.getPOV() == 90) {
             State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
@@ -172,21 +176,21 @@ public class ArmMode extends Mode {
             State.Arm.targetDepth = State.Arm.TargetDepth.SubStation;
         } else {
             if (joystick.getPOV() == 0) {
-                adjustArmPosition(0, Const.Arm.TargetModifyRatio);
+                adjustArmPosition(0, ArmConst.TargetModifyRatio);
             } else if (joystick.getPOV() == 180) {
-                adjustArmPosition(0, -Const.Arm.TargetModifyRatio);
+                adjustArmPosition(0, -ArmConst.TargetModifyRatio);
             } else if (joystick.getPOV() == 90) {
-                adjustArmPosition(Const.Arm.TargetModifyRatio, 0);
+                adjustArmPosition(ArmConst.TargetModifyRatio, 0);
             } else if (joystick.getPOV() == 270) {
-                adjustArmPosition(-Const.Arm.TargetModifyRatio, 0);
+                adjustArmPosition(-ArmConst.TargetModifyRatio, 0);
             } else if (joystick.getPOV() == 45) {
-                adjustArmPosition(Const.Arm.TargetModifyRatio, Const.Arm.TargetModifyRatio);
+                adjustArmPosition(ArmConst.TargetModifyRatio, ArmConst.TargetModifyRatio);
             } else if (joystick.getPOV() == 135) {
-                adjustArmPosition(Const.Arm.TargetModifyRatio, -Const.Arm.TargetModifyRatio);
+                adjustArmPosition(ArmConst.TargetModifyRatio, -ArmConst.TargetModifyRatio);
             } else if (joystick.getPOV() == 225) {
-                adjustArmPosition(-Const.Arm.TargetModifyRatio, -Const.Arm.TargetModifyRatio);
+                adjustArmPosition(-ArmConst.TargetModifyRatio, -ArmConst.TargetModifyRatio);
             } else if (joystick.getPOV() == 315) {
-                adjustArmPosition(-Const.Arm.TargetModifyRatio, Const.Arm.TargetModifyRatio);
+                adjustArmPosition(-ArmConst.TargetModifyRatio, ArmConst.TargetModifyRatio);
             }
         }
 
@@ -202,8 +206,8 @@ public class ArmMode extends Mode {
             State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
             State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_movetomiddle;
             State.Hand.rotateState = State.Hand.RotateState.s_turnHandBack;
-            State.Arm.targetHeight = Const.Arm.InitialHeight;
-            State.Arm.targetDepth = Const.Arm.InitialDepth;
+            State.Arm.targetHeight = ArmConst.InitialHeight;
+            State.Arm.targetDepth = ArmConst.InitialDepth;
         }
 
         if (driveController.getBButton()) {
@@ -236,8 +240,8 @@ public class ArmMode extends Mode {
     private static boolean isNewTargetPositionInLimit(double Height, double Depth) {
         double length = Math.sqrt(Math.pow(Height, 2) + Math.pow(Depth, 2));
 
-        boolean isInOuterBorder = length < Const.Arm.TargetPositionOuterLimit;
-        boolean isOutInnerBorder = length > Const.Arm.TargetPositionInnerLimit;
+        boolean isInOuterBorder = length < ArmConst.TargetPositionOuterLimit;
+        boolean isOutInnerBorder = length > ArmConst.TargetPositionInnerLimit;
         // boolean isInDepthLimit = Depth > -23;
 
         SmartDashboard.putBoolean("InLimit", isInOuterBorder && isOutInnerBorder);

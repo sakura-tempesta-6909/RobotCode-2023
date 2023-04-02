@@ -6,7 +6,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.States.LimelightState;
 import frc.robot.States.State;
-import frc.robot.subClass.Const;
+import frc.robot.consts.LimelightConst;
 
 
 public class Limelight implements Component {
@@ -48,12 +48,12 @@ public class Limelight implements Component {
         
 
         //計算
-        double angleToGoalDegrees = Const.Calculation.Limelight.LimelightMountAngleDegrees + targetOffsetAngle_Vertical;
+        double angleToGoalDegrees = LimelightConst.LimelightMountAngleDegrees + targetOffsetAngle_Vertical;
         double angleToGoalRadians =  Math.toRadians(angleToGoalDegrees);
         // ターゲットまでの距離
-        State.limelightToFrontGoal = (Const.Calculation.Limelight.GoalHeight - Const.Calculation.Limelight.LimelightLensHeight) / Math.tan(angleToGoalRadians);
-        State.armToGoal = State.limelightToFrontGoal - Const.Calculation.Limelight.LimelightToArm;
-        State.limelightToBackGoal = State.limelightToFrontGoal + Const.Calculation.Limelight.FrontGoalToBackGoal;
+        State.limelightToFrontGoal = (LimelightConst.GoalHeight - LimelightConst.LimelightLensHeight) / Math.tan(angleToGoalRadians);
+        State.armToGoal = State.limelightToFrontGoal - LimelightConst.LimelightToArm;
+        State.limelightToBackGoal = State.limelightToFrontGoal + LimelightConst.FrontGoalToBackGoal;
 
         SmartDashboard.putNumber("FrontGoal", State.limelightToFrontGoal);
         SmartDashboard.putNumber("ty", tyEntry.getDouble(0));
