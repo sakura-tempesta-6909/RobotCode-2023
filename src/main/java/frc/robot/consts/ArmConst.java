@@ -37,6 +37,21 @@ public class ArmConst {
      * */
     public static final double HandLength = 46.0;
     /**
+     * ハンドが折れていることによって生じる仮想アームの折れた角度（折れ具合）[deg]
+     * （正の向きに折れ曲がっている）
+     * */
+    public static final double VirtualHeadArmLength = Math.toDegrees(
+            Math.atan((Math.sin(Math.toRadians(HandFoldAngle)) * HandLength) /
+                    (HeadArmLength + Math.cos(Math.toRadians(HandFoldAngle)) * HandLength))
+    );
+    /**
+     * 仮想の先端アームの長さ[cm]（関節部分からハンドの先端まで）
+     * */
+    public static final double VirtualHeadArmAngle = Math.sqrt(
+            Math.pow(HeadArmLength + Math.cos(Math.toRadians(HandFoldAngle)) * HandLength, 2)
+                    + Math.pow(Math.sin(Math.toRadians(HandFoldAngle)) * HandLength, 2)
+    );
+    /**
      * 根本アームの重さ[N] 注意 - [N]=[kg*9.8]
      */
     public static final double RootArmMass = 3.302 * 9.8;

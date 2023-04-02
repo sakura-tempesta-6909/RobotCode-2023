@@ -108,10 +108,10 @@ public class Tools {
             theta_j_pm = -1;
         }
 
-        double l_r = Const.Arm.RootArmLength;
-        double l_v = Const.Arm.VirtualHeadArmLength;
+        double l_r = ArmConst.RootArmLength;
+        double l_v = ArmConst.VirtualHeadArmLength;
 
-        double theta_h = Math.toRadians(Const.Arm.VirtualArmFoldAngle); // [rad]
+        double theta_h = Math.toRadians(ArmConst.VirtualHeadArmAngle); // [rad]
         double theta_j = theta_j_pm * Math.acos((Math.pow(x, 2) + Math.pow(y, 2)
                 - Math.pow(l_r, 2) - Math.pow(l_v, 2)) / (2 * l_r * l_v)) // [rad]
                 - theta_h; // [rad]
@@ -184,7 +184,7 @@ public class Tools {
      * @return motor.setへの入力[-1.0, 1.0] (CANSparkMax)
      */
     public static double changeTorqueToMotorInput(double torque) {
-        return torque / Const.Arm.MotorMaxTorque;
+        return torque / ArmConst.MotorMaxTorque;
         // TODO 2次関数的にトルクを求める必要があるらしい？
     }
 
@@ -205,13 +205,13 @@ public class Tools {
 //        System.out.println(calculateDepth(root, joint));
 //        System.out.println(calculateHeight(root, joint));
 
-        double l_r = Const.Arm.RootArmLength;
-        double l_j = Const.Arm.HeadArmLength;
-        double l_h = Const.Arm.HandLength;
+        double l_r = ArmConst.RootArmLength;
+        double l_j = ArmConst.HeadArmLength;
+        double l_h = ArmConst.HandLength;
 
         double theta_r = 0;
         double theta_j = 0;
-        double theta_c = Const.Arm.HandFoldAngle;
+        double theta_c = ArmConst.HandFoldAngle;
 
         Map<Integer, Double> vec = rotateMatrix(theta_c + theta_r + theta_j, l_h, 0.0);
         System.out.println(vec);
