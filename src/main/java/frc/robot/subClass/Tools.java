@@ -111,7 +111,7 @@ public class Tools {
         double l_r = ArmConst.RootArmLength;
         double l_v = ArmConst.VirtualHeadArmLength;
 
-        double theta_h = Math.toRadians(ArmConst.VirtualHeadArmAngle); // [rad]
+        double theta_h = Math.toRadians(ArmConst.VirtualArmFoldAngle); // [rad]
         double theta_j = theta_j_pm * Math.acos((Math.pow(x, 2) + Math.pow(y, 2)
                 - Math.pow(l_r, 2) - Math.pow(l_v, 2)) / (2 * l_r * l_v)) // [rad]
                 - theta_h; // [rad]
