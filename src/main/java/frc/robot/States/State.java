@@ -248,9 +248,9 @@ public class State {
             TargetDepth.MiddleCorn = 58.0 + 20;
             TargetDepth.BottomCorn = 30.0 + 10;
 
-            TargetDepth.TopCube = 101.0 -10;
-            TargetDepth.MiddleCube = 58.0 + 20;
-            TargetDepth.BottomCube = 30.0 + 10;
+            TargetDepth.TopCube = 101.0 + 15.0;
+            TargetDepth.MiddleCube = 58.0 + 15.0;
+            TargetDepth.BottomCube = 30.0 + 15.0;
 
             TargetDepth.SubStation = 36 + 20;
         }
