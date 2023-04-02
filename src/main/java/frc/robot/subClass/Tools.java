@@ -1,5 +1,7 @@
 package frc.robot.subClass;
 import frc.robot.States.State;
+import frc.robot.consts.ArmConst;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,8 +15,8 @@ public class Tools {
         RootAngle = Math.toRadians(RootAngle);
         JointAngle = Math.toRadians(JointAngle);
         double SumAngle = RootAngle + JointAngle;
-        double l1 = Const.Arm.RootArmLength;
-        double l2 = Const.Arm.HeadArmLength;
+        double l1 = ArmConst.RootArmLength;
+        double l2 = ArmConst.HeadArmLength;
 
         return l1 * Math.sin(RootAngle) + l2 * Math.sin(SumAngle);
     }
@@ -28,8 +30,8 @@ public class Tools {
         RootAngle = Math.toRadians(RootAngle);
         JointAngle = Math.toRadians(JointAngle);
         double SumAngle = RootAngle + JointAngle;
-        double l1 = Const.Arm.RootArmLength;
-        double l2 = Const.Arm.HeadArmLength;
+        double l1 = ArmConst.RootArmLength;
+        double l2 = ArmConst.HeadArmLength;
 
         return l1 * Math.cos(RootAngle) + l2 * Math.cos(SumAngle);
     }
@@ -55,8 +57,8 @@ public class Tools {
      * @return アームのターゲットの角度[deg]
      */
     public static Map<String, Double> calculateAngles(double Depth, double Height) {
-        double l1 = Const.Arm.RootArmLength;
-        double l2 = Const.Arm.HeadArmLength;
+        double l1 = ArmConst.RootArmLength;
+        double l2 = ArmConst.HeadArmLength;
 
         double DepthPM = Math.signum(Depth);
         double HeightPM = Math.signum(Height);
@@ -109,20 +111,20 @@ public class Tools {
         RootAngle = Math.toRadians(RootAngle);
         JointAngle = Math.toRadians(JointAngle);
         double SumAngle = RootAngle + JointAngle;
-        double l1 = Const.Arm.RootArmLength;
-        double l2 = Const.Arm.HeadArmLength;
-        double b1 = Const.Arm.RootArmBarycenter; //FirstBarycenter -> fb
-        double b2 = Const.Arm.HeadArmBarycenter; //SecondBarycenter -> sb
-        double m1 = Const.Arm.RootArmMass;
-        double m2 = Const.Arm.HeadArmMass;
+        double l1 = ArmConst.RootArmLength;
+        double l2 = ArmConst.HeadArmLength;
+        double b1 = ArmConst.RootArmBarycenter; //FirstBarycenter -> fb
+        double b2 = ArmConst.HeadArmBarycenter; //SecondBarycenter -> sb
+        double m1 = ArmConst.RootArmMass;
+        double m2 = ArmConst.HeadArmMass;
 
         double ffMomentForRootArm = b1 * m1 * Math.cos(RootAngle);
         double ffMomentForHeadArm = l1 * m2 * Math.cos(RootAngle) + b2 * m2 * Math.cos(SumAngle);
 
         //TODO feedforwardでmotor.setに渡す値はトルクの計算が必要
-        return (ffMomentForRootArm * Const.Arm.RootArmFFWeightForRM
-                + ffMomentForHeadArm * Const.Arm.HeadArmFFWeightForRM)
-                * Const.Arm.RootMotorFFWeight;
+        return (ffMomentForRootArm * ArmConst.RootArmFFWeightForRM
+                + ffMomentForHeadArm * ArmConst.HeadArmFFWeightForRM)
+                * ArmConst.RootMotorFFWeight;
     }
 
     /**
@@ -136,27 +138,27 @@ public class Tools {
         RootAngle = Math.toRadians(RootAngle);
         JointAngle = Math.toRadians(JointAngle);
         double SumAngle = RootAngle + JointAngle;
-        double b2 = Const.Arm.HeadArmBarycenter; //SecondBarycenter -> sb
-        double m2 = Const.Arm.HeadArmMass;
+        double b2 = ArmConst.HeadArmBarycenter; //SecondBarycenter -> sb
+        double m2 = ArmConst.HeadArmMass;
 
-        return (b2 * m2 * Math.cos(SumAngle)) * Const.Arm.JointMotorFFWeight;
+        return (b2 * m2 * Math.cos(SumAngle)) * ArmConst.JointMotorFFWeight;
     }
 
     /**
      * NEOモーターのトルクとRPMの関係を利用 <a href="https://www.revrobotics.com/content/docs/REV-21-1650-DS.pdf">NEOのデータシート</a>
      * [注意] NEOモーターに合わせて出力する
-     * @param torque トルク[N*cm] = モーメント / Const.Arms.[Under/Top]MotorGearRatio（ギア比に合わせて入力）
+     * @param torque トルク[N*cm] = モーメント / ArmConsts.[Under/Top]MotorGearRatio（ギア比に合わせて入力）
      * @return motor.setへの入力[-1.0, 1.0] (CANSparkMax)
      * */
     public static double changeTorqueToMotorInput (double torque) {
-        return torque / Const.Arm.MotorMaxTorque;
+        return torque / ArmConst.MotorMaxTorque;
         // TODO 2次関数的にトルクを求める必要があるらしい？
     }
 
     public static void main(String[] args) {
         State.StateReset();
         double targetDepth = -10;//State.Arm.TargetDepth.TopCorn;
-        double targetHeight = -60;//Const.Calculation.Limelight.TopGoalHeight - Const.Arm.RootHeightFromGr;
+        double targetHeight = -60;//LimelightConst.TopGoalHeight - ArmConst.RootHeightFromGr;
         System.out.println(targetDepth);
         System.out.println(targetHeight);
         System.out.println(isNewTargetPositionInLimit(targetHeight, targetDepth));
@@ -171,8 +173,8 @@ public class Tools {
     private static boolean isNewTargetPositionInLimit(double Height, double Depth) {
         double length = Math.sqrt(Math.pow(Height, 2) + Math.pow(Depth, 2));
 
-        boolean isInOuterBorder = length < Const.Arm.TargetPositionOuterLimit;
-        boolean isOutInnerBorder = length > Const.Arm.TargetPositionInnerLimit;
+        boolean isInOuterBorder = length < ArmConst.TargetPositionOuterLimit;
+        boolean isOutInnerBorder = length > ArmConst.TargetPositionInnerLimit;
         boolean isInDepthLimit = Depth > -23;
 
         // TODO XButtonでコントロールする時のターゲット座標の制限を考える

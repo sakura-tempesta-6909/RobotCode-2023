@@ -185,11 +185,11 @@ public class Autonomous {
                 },
                 "wait"
             ),
-            // basicArmTo(Const.Arm.InitialHeight, Const.Arm.InitialDepth, "move arm to basic position"),
-            armAdjust(Const.Arm.TargetModifyRatio, Const.Arm.TargetModifyRatio,2,"move to target"),
-            armAdjust(0, Const.Arm.TargetModifyRatio, 3, "move foward")
+            // basicArmTo(ArmConst.InitialHeight, ArmConst.InitialDepth, "move arm to basic position"),
+            armAdjust(ArmConst.TargetModifyRatio, ArmConst.TargetModifyRatio,2,"move to target"),
+            armAdjust(0, ArmConst.TargetModifyRatio, 3, "move foward")
             // relayArmTo(Const.GrabGamePiecePhase.armRelayPointHeight, Const.GrabGamePiecePhase.armRelayPointDepth, "move arm to relay point"),
-            // moveArmTo( Const.Calculation.Camera.GoalHeight - Const.Arm.RootHeightFromGr, State.armToTag, "move arm to cube goal"),
+            // moveArmTo( CameraConst.GoalHeight - ArmConst.RootHeightFromGr, State.armToTag, "move arm to cube goal"),
             // releaseHand(2, "release cone")
             // drive(-1, 2, "move to target")
             // driveTo(-3, "move to target")
@@ -211,9 +211,9 @@ public class Autonomous {
                 },
                 "wait"
             ),
-            basicArmTo(Const.Arm.InitialHeight, Const.Arm.InitialDepth, "move arm to basic position"),
+            basicArmTo(ArmConst.InitialHeight, ArmConst.InitialDepth, "move arm to basic position"),
             relayArmTo(Const.GrabGamePiecePhase.armRelayPointHeight, Const.GrabGamePiecePhase.armRelayPointDepth, "move arm to relay point"),
-            moveArmTo(  Const.Calculation.Camera.MiddleGoalHeight - Const.Arm.RootHeightFromGr, State.Arm.TargetDepth.MiddleCube, "move arm to cube goal"),
+            moveArmTo(  CameraConst.MiddleGoalHeight - ArmConst.RootHeightFromGr, State.Arm.TargetDepth.MiddleCube, "move arm to cube goal"),
             releaseHand(2, "release cube")
             // drive(-1, 2, "move to target")
             // driveTo(-3, "move to target")

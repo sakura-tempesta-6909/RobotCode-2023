@@ -9,6 +9,9 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.States.State;
+import frc.robot.consts.CameraConst;
+import frc.robot.consts.DriveConst;
+import frc.robot.consts.LimelightConst;
 import frc.robot.subClass.Const;
 import frc.robot.subClass.Util;
 
@@ -32,9 +35,9 @@ public class Drive implements Component {
 
         differentialDrive = new DifferentialDrive(driveLeftFront, driveRightFront);
 
-        Const.Drive.PID.init();
-        driveRightFront.configAllSettings(Const.Drive.PID.DriveRight);
-        driveLeftFront.configAllSettings(Const.Drive.PID.DriveLeft);
+        DriveConst.PID.init();
+        driveRightFront.configAllSettings(DriveConst.PID.DriveRight);
+        driveLeftFront.configAllSettings(DriveConst.PID.DriveLeft);
 
         driveLeftFront.setSensorPhase(true);
         driveRightFront.setSensorPhase(true);
@@ -45,28 +48,28 @@ public class Drive implements Component {
         driveLeftBack.setInverted(false);
 
         differentialDrive = new DifferentialDrive(driveLeftFront, driveRightFront);
-        pidLimelightDrive = new PIDController(Const.Calculation.Limelight.PID.LimelightDriveP, Const.Calculation.Limelight.PID.LimelightDriveI, Const.Calculation.Limelight.PID.LimelightDriveD);
-        pidCameraDrive = new PIDController(Const.Calculation.Camera.PID.CameraDriveP, Const.Calculation.Camera.PID.CameraDriveI, Const.Calculation.Camera.PID.CameraDriveD);
+        pidLimelightDrive = new PIDController(LimelightConst.PID.LimelightDriveP, LimelightConst.PID.LimelightDriveI, LimelightConst.PID.LimelightDriveD);
+        pidCameraDrive = new PIDController(CameraConst.PID.CameraDriveP, CameraConst.PID.CameraDriveI, CameraConst.PID.CameraDriveD);
 
     }
 
     public void arcadeDrive(double xSpeed, double zRotation) {
-        if(Math.abs(preXSpeed) <  Const.Drive.SkipLowSpeedThreshold) {
-            xSpeed = xSpeed >  Const.Drive.SkipLowSpeedThreshold ?  Const.Drive.SkipLowSpeedThreshold : xSpeed < - Const.Drive.SkipLowSpeedThreshold ? - Const.Drive.SkipLowSpeedThreshold : xSpeed;
+        if(Math.abs(preXSpeed) <  DriveConst.SkipLowSpeedThreshold) {
+            xSpeed = xSpeed >  DriveConst.SkipLowSpeedThreshold ?  DriveConst.SkipLowSpeedThreshold : xSpeed < - DriveConst.SkipLowSpeedThreshold ? - DriveConst.SkipLowSpeedThreshold : xSpeed;
         }
-        if(Math.abs(preZRotation) <  Const.Drive.SkipLowSpeedThreshold) {
-            zRotation = zRotation >  Const.Drive.SkipLowSpeedThreshold ?  Const.Drive.SkipLowSpeedThreshold : zRotation < - Const.Drive.SkipLowSpeedThreshold ? - Const.Drive.SkipLowSpeedThreshold : zRotation;
+        if(Math.abs(preZRotation) <  DriveConst.SkipLowSpeedThreshold) {
+            zRotation = zRotation >  DriveConst.SkipLowSpeedThreshold ?  DriveConst.SkipLowSpeedThreshold : zRotation < - DriveConst.SkipLowSpeedThreshold ? - DriveConst.SkipLowSpeedThreshold : zRotation;
         }
-        if (xSpeed - preXSpeed >= Const.Drive.TrapezoidalAccelerationX) {
-            xSpeed = preXSpeed + Const.Drive.TrapezoidalAccelerationX;
-        } else if (xSpeed - preXSpeed <= -Const.Drive.TrapezoidalAccelerationX) {
-            xSpeed = preXSpeed - Const.Drive.TrapezoidalAccelerationX;
+        if (xSpeed - preXSpeed >= DriveConst.TrapezoidalAccelerationX) {
+            xSpeed = preXSpeed + DriveConst.TrapezoidalAccelerationX;
+        } else if (xSpeed - preXSpeed <= -DriveConst.TrapezoidalAccelerationX) {
+            xSpeed = preXSpeed - DriveConst.TrapezoidalAccelerationX;
         }
 
-         if (zRotation - preZRotation >= Const.Drive.TrapezoidalAccelerationZ) {
-            zRotation = preZRotation + Const.Drive.TrapezoidalAccelerationZ;
-        } else if (zRotation - preZRotation <= -Const.Drive.TrapezoidalAccelerationZ) {
-            zRotation = preZRotation - Const.Drive.TrapezoidalAccelerationZ;
+         if (zRotation - preZRotation >= DriveConst.TrapezoidalAccelerationZ) {
+            zRotation = preZRotation + DriveConst.TrapezoidalAccelerationZ;
+        } else if (zRotation - preZRotation <= -DriveConst.TrapezoidalAccelerationZ) {
+            zRotation = preZRotation - DriveConst.TrapezoidalAccelerationZ;
         }
         zRotation = Math.max(Math.min(zRotation, 0.7), -0.7);
         differentialDrive.arcadeDrive(xSpeed, zRotation);
@@ -103,12 +106,12 @@ public class Drive implements Component {
      * PIDでtargetLength分前後に動かす
      */
     private void drivePosition() {
-        if (Math.abs(State.Drive.targetMeter) > Const.Drive.PID.ShortThreshold) {
-            driveRightFront.selectProfileSlot(Const.Drive.PID.LongSlotIdx, 0);
-            driveLeftFront.selectProfileSlot(Const.Drive.PID.LongSlotIdx, 0);
+        if (Math.abs(State.Drive.targetMeter) > DriveConst.PID.ShortThreshold) {
+            driveRightFront.selectProfileSlot(DriveConst.PID.LongSlotIdx, 0);
+            driveLeftFront.selectProfileSlot(DriveConst.PID.LongSlotIdx, 0);
         } else {
-            driveRightFront.selectProfileSlot(Const.Drive.PID.ShortSlotIdx, 0);
-            driveLeftFront.selectProfileSlot(Const.Drive.PID.ShortSlotIdx, 0);
+            driveRightFront.selectProfileSlot(DriveConst.PID.ShortSlotIdx, 0);
+            driveLeftFront.selectProfileSlot(DriveConst.PID.ShortSlotIdx, 0);
         }
         driveRightFront.set(ControlMode.Position, Util.Calculate.meterToDriveEncoderPoints(State.Drive.targetMeter));
         driveLeftFront.set(ControlMode.Position, Util.Calculate.meterToDriveEncoderPoints(State.Drive.targetMeter));
@@ -129,8 +132,8 @@ public class Drive implements Component {
     }
 
     private boolean isAtTarget() {
-        boolean isLeftMotorAtTarget = Math.abs(State.Drive.leftMeter - State.Drive.targetMeter) < Const.Drive.PID.LossTolerance;
-        boolean isRightMotorAtTarget = Math.abs(State.Drive.rightMeter - State.Drive.targetMeter) < Const.Drive.PID.LossTolerance;
+        boolean isLeftMotorAtTarget = Math.abs(State.Drive.leftMeter - State.Drive.targetMeter) < DriveConst.PID.LossTolerance;
+        boolean isRightMotorAtTarget = Math.abs(State.Drive.rightMeter - State.Drive.targetMeter) < DriveConst.PID.LossTolerance;
         return isRightMotorAtTarget && isLeftMotorAtTarget;
     }
 

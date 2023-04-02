@@ -2,6 +2,7 @@ package frc.robot.component;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.States.State;
+import frc.robot.consts.CameraConst;
 import frc.robot.subClass.Const;
 
 public class Camera implements Component {
@@ -13,16 +14,16 @@ public class Camera implements Component {
         //角度を求める
         State.cameraCenterWidth = SmartDashboard.getNumber("CenterX", 0);
         State.cameraCenterHeight = SmartDashboard.getNumber("CenterY", 0);
-        State.aprilTagAngleWidth = Math.toDegrees(Math.atan(State.cameraCenterWidth  / Const.Calculation.Camera.FocalLengthWeight));
-        State.aprilTagAngleHeight = Math.toDegrees(Math.atan(State.cameraCenterHeight / Const.Calculation.Camera.FocalLengthHeight));
+        State.aprilTagAngleWidth = Math.toDegrees(Math.atan(State.cameraCenterWidth  / CameraConst.FocalLengthWeight));
+        State.aprilTagAngleHeight = Math.toDegrees(Math.atan(State.cameraCenterHeight / CameraConst.FocalLengthHeight));
         SmartDashboard.putNumber("AngleX", State.aprilTagAngleWidth);
         SmartDashboard.putNumber("AngleY", State.aprilTagAngleHeight);
 
         //距離を求める
-        double angleToGoalDegrees = Const.Calculation.Camera.CameraMountAngleDegrees + State.aprilTagAngleHeight;
+        double angleToGoalDegrees = CameraConst.CameraMountAngleDegrees + State.aprilTagAngleHeight;
         double angleToGoalRadians = angleToGoalDegrees * (Math.PI / 180);
-        State.cameraToTag = (Const.Calculation.Camera.GoalHeight - Const.Calculation.Camera.CameraLensHeight) / Math.tan(angleToGoalRadians);
-        State.armToTag = State.cameraToTag - Const.Calculation.Camera.CameraToArm;
+        State.cameraToTag = (CameraConst.GoalHeight - CameraConst.CameraLensHeight) / Math.tan(angleToGoalRadians);
+        State.armToTag = State.cameraToTag - CameraConst.CameraToArm;
         SmartDashboard.putNumber("cameraToTag", State.cameraToTag);
         SmartDashboard.putNumber("armToTag", State.armToTag);
 

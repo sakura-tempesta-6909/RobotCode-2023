@@ -128,7 +128,7 @@ public class ArmMode extends Mode {
                 State.Arm.targetHeight = Const.GrabGamePiecePhase.armRelayPointHeight;
                 State.Arm.targetDepth = Const.GrabGamePiecePhase.armRelayPointDepth;
             } else {
-                State.Arm.targetHeight = Const.Calculation.Limelight.TopGoalHeight - Const.Arm.RootHeightFromGr;
+                State.Arm.targetHeight = LimelightConst.TopGoalHeight - ArmConst.RootHeightFromGr;
                 State.Arm.targetDepth = State.Arm.TargetDepth.TopCorn;
             }
         } else if (joystick.getRawButton(9)) {
@@ -137,12 +137,12 @@ public class ArmMode extends Mode {
                 State.Arm.targetHeight = Const.GrabGamePiecePhase.armRelayPointHeight;
                 State.Arm.targetDepth = Const.GrabGamePiecePhase.armRelayPointDepth;
             } else {
-                State.Arm.targetHeight = Const.Calculation.Limelight.MiddleGoalHeight - Const.Arm.RootHeightFromGr;
+                State.Arm.targetHeight = LimelightConst.MiddleGoalHeight - ArmConst.RootHeightFromGr;
                 State.Arm.targetDepth = State.Arm.TargetDepth.MiddleCorn;
             }
         } else if (joystick.getRawButton(11)) {
             // 前のコーンのゴールまでアームを伸ばす
-                State.Arm.targetHeight = Const.Calculation.Limelight.BottomGoalHeight - Const.Arm.RootHeightFromGr;
+                State.Arm.targetHeight = LimelightConst.BottomGoalHeight - ArmConst.RootHeightFromGr;
                 State.Arm.targetDepth = State.Arm.TargetDepth.BottomCorn;
         } else if (joystick.getRawButton(8)) {
             // 奥のキューブのゴールまでアームを伸ばす
@@ -150,7 +150,7 @@ public class ArmMode extends Mode {
                 State.Arm.targetHeight = Const.GrabGamePiecePhase.armRelayPointHeight;
                 State.Arm.targetDepth = Const.GrabGamePiecePhase.armRelayPointDepth;
             } else {
-                State.Arm.targetHeight = Const.Calculation.Camera.TopGoalHeight - Const.Arm.RootHeightFromGr;
+                State.Arm.targetHeight = CameraConst.TopGoalHeight - ArmConst.RootHeightFromGr;
                 State.Arm.targetDepth = State.Arm.TargetDepth.TopCube;
             }
         } else if (joystick.getRawButton(10)) {
@@ -159,12 +159,12 @@ public class ArmMode extends Mode {
                 State.Arm.targetHeight = Const.GrabGamePiecePhase.armRelayPointHeight;
                 State.Arm.targetDepth = Const.GrabGamePiecePhase.armRelayPointDepth;
             } else {
-                State.Arm.targetHeight = Const.Calculation.Camera.MiddleGoalHeight - Const.Arm.RootHeightFromGr;
+                State.Arm.targetHeight = CameraConst.MiddleGoalHeight - ArmConst.RootHeightFromGr;
                 State.Arm.targetDepth = State.Arm.TargetDepth.MiddleCube;
             }
         } else if (joystick.getRawButton(12)) {
             // 前のキューブのゴールまでアームを伸ばす
-            State.Arm.targetHeight = Const.Calculation.Camera.BottomGoalHeight - Const.Arm.RootHeightFromGr;
+            State.Arm.targetHeight = CameraConst.BottomGoalHeight - ArmConst.RootHeightFromGr;
             State.Arm.targetDepth = State.Arm.TargetDepth.BottomCube;
         } else if (driveController.getPOV() == 90) {
             State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
@@ -172,15 +172,15 @@ public class ArmMode extends Mode {
             State.Arm.targetDepth = State.Arm.TargetDepth.SubStation;
         } else {
             if (joystick.getPOV() == 0) {
-                adjustArmPosition(0, Const.Arm.TargetModifyRatio);
+                adjustArmPosition(0, ArmConst.TargetModifyRatio);
             } else if (joystick.getPOV() == 180) {
-                adjustArmPosition(0, -Const.Arm.TargetModifyRatio);
+                adjustArmPosition(0, -ArmConst.TargetModifyRatio);
             } else if (joystick.getPOV() == 90) {
-                adjustArmPosition(Const.Arm.TargetModifyRatio, 0);
+                adjustArmPosition(ArmConst.TargetModifyRatio, 0);
             } else if (joystick.getPOV() == 270) {
-                adjustArmPosition(-Const.Arm.TargetModifyRatio, 0);
+                adjustArmPosition(-ArmConst.TargetModifyRatio, 0);
             } else if (joystick.getPOV() == 45) {
-                adjustArmPosition(Const.Arm.TargetModifyRatio, Const.Arm.TargetModifyRatio);
+                adjustArmPosition(ArmConst.TargetModifyRatio, Const.Arm.TargetModifyRatio);
             } else if (joystick.getPOV() == 135) {
                 adjustArmPosition(Const.Arm.TargetModifyRatio, -Const.Arm.TargetModifyRatio);
             } else if (joystick.getPOV() == 225) {

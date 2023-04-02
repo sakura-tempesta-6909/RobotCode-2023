@@ -7,6 +7,7 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import frc.robot.States.State;
+import frc.robot.consts.ArmConst;
 import frc.robot.subClass.Const;
 import frc.robot.subClass.Tools;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -23,8 +24,8 @@ public class Arm implements Component {
     private final CANSparkMax moveLeftAndRightMotor;
 
     public Arm() {
-        jointMotor = new CANSparkMax(Const.Arm.Ports.jointMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
-        rootMotor = new CANSparkMax(Const.Arm.Ports.rootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
+        jointMotor = new CANSparkMax(ArmConst.Ports.jointMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
+        rootMotor = new CANSparkMax(ArmConst.Ports.rootMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
         jointMotor.setInverted(false);
         rootMotor.setInverted(true);
         rootMotor.setIdleMode(IdleMode.kCoast);
@@ -33,38 +34,38 @@ public class Arm implements Component {
         pidForRoot = rootMotor.getPIDController();
         pidForJoint = jointMotor.getPIDController();
 
-        pidForRoot.setP(Const.Arm.P_R);
-        pidForRoot.setI(Const.Arm.I_R);
-        pidForRoot.setD(Const.Arm.D_R);
-        pidForRoot.setIMaxAccum(Const.Arm.IMax_R, 0);
+        pidForRoot.setP(ArmConst.P_R);
+        pidForRoot.setI(ArmConst.I_R);
+        pidForRoot.setD(ArmConst.D_R);
+        pidForRoot.setIMaxAccum(ArmConst.IMax_R, 0);
         pidForRoot.setSmartMotionMaxVelocity(3000, 0);
         // pidForRoot.setSmartMotionAccelStrategy(accelStrategy, slotID)
 
         
-        pidForRoot.setP(Const.Arm.P_R_1, 1);
-        pidForRoot.setI(Const.Arm.I_R_1, 1);
-        pidForRoot.setD(Const.Arm.D_R_1, 1);
-        pidForRoot.setIMaxAccum(Const.Arm.IMax_R_1, 1);
+        pidForRoot.setP(ArmConst.P_R_1, 1);
+        pidForRoot.setI(ArmConst.I_R_1, 1);
+        pidForRoot.setD(ArmConst.D_R_1, 1);
+        pidForRoot.setIMaxAccum(ArmConst.IMax_R_1, 1);
         pidForRoot.setOutputRange(-.3, .3, 1);
 
-        pidForJoint.setP(Const.Arm.P_J);
-        pidForJoint.setI(Const.Arm.I_J);
-        pidForJoint.setD(Const.Arm.D_J);
-        pidForJoint.setIMaxAccum(Const.Arm.IMax_J, 0);
+        pidForJoint.setP(ArmConst.P_J);
+        pidForJoint.setI(ArmConst.I_J);
+        pidForJoint.setD(ArmConst.D_J);
+        pidForJoint.setIMaxAccum(ArmConst.IMax_J, 0);
         pidForJoint.setOutputRange(-.5, .5);
 
         
-        pidForJoint.setP(Const.Arm.P_J_1, 1);
-        pidForJoint.setI(Const.Arm.I_J_1, 1);
-        pidForJoint.setD(Const.Arm.D_J_1, 1);
-        pidForJoint.setIMaxAccum(Const.Arm.IMax_J_1, 1);
+        pidForJoint.setP(ArmConst.P_J_1, 1);
+        pidForJoint.setI(ArmConst.I_J_1, 1);
+        pidForJoint.setD(ArmConst.D_J_1, 1);
+        pidForJoint.setIMaxAccum(ArmConst.IMax_J_1, 1);
         pidForJoint.setOutputRange(-.5, .5, 1);
 
         moveLeftAndRightMotor = new CANSparkMax(Const.Ports.MoveLeftAndRightMotor, MotorType.kBrushless);
         leftAndRightArmPidController = moveLeftAndRightMotor.getPIDController();
         leftAndRightArmEncoder = moveLeftAndRightMotor.getEncoder();
-        leftAndRightArmPidController.setP(Const.Arm.P_MID);
-        leftAndRightArmPidController.setI(Const.Arm.I_MID);
+        leftAndRightArmPidController.setP(ArmConst.P_MID);
+        leftAndRightArmPidController.setI(ArmConst.I_MID);
         leftAndRightArmPidController.setD(Const.Arm.D_MID);
         leftAndRightArmPidController.setIMaxAccum(Const.Arm.IMax_MID, 0);
         leftAndRightArmPidController.setOutputRange(-.1, .1);

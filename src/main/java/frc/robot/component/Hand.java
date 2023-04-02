@@ -7,6 +7,8 @@ import com.revrobotics.SparkMaxPIDController;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import frc.robot.States.State;
+import frc.robot.consts.ArmConst;
+import frc.robot.consts.HandConst;
 import frc.robot.subClass.Const;
 
 
@@ -24,10 +26,10 @@ public class Hand implements Component{
 
         handRotationPidController = handRotationMotor.getPIDController();
         handRotationEncoder = handRotationMotor.getEncoder();
-        handRotationPidController.setP(Const.Arm.P_HANDR);
-        handRotationPidController.setI(Const.Arm.I_HANDR);
-        handRotationPidController.setD(Const.Arm.D_HANDR);
-        handRotationPidController.setIMaxAccum(Const.Arm.IMax_HANDR, 0);
+        handRotationPidController.setP(ArmConst.P_HANDR);
+        handRotationPidController.setI(ArmConst.I_HANDR);
+        handRotationPidController.setD(ArmConst.D_HANDR);
+        handRotationPidController.setIMaxAccum(ArmConst.IMax_HANDR, 0);
     }
 
     @Override
@@ -66,7 +68,7 @@ public class Hand implements Component{
      * @return 変換された角度の度数
      * */
     private double calculateHandAngleFromRotation(double rotation) {
-        return rotation / Const.Hand.HandGearRatio * 360;
+        return rotation / HandConst.HandGearRatio * 360;
     }
 
     /**
@@ -75,7 +77,7 @@ public class Hand implements Component{
      * @return 変換された回転数
      */
     public double calculateRotationFromHandAngle(double angle) {
-        return angle * Const.Hand.HandGearRatio / 360;
+        return angle * HandConst.HandGearRatio / 360;
     }
 
 

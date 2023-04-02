@@ -1,6 +1,8 @@
 package frc.robot.mode;
 
 import frc.robot.States.State;
+import frc.robot.consts.ArmConst;
+import frc.robot.consts.LimelightConst;
 import frc.robot.subClass.Const;
 
 public class SubStationMode extends Mode {
@@ -16,7 +18,7 @@ public class SubStationMode extends Mode {
         // TODO Auto-generated method stub
         if (joystick.getRawButton(7)) {
             // 奥のコーンのゴールまでアームを伸ばす
-            State.Arm.targetHeight = Const.Calculation.Limelight.TopGoalHeight - Const.Arm.RootHeightFromGr;
+            State.Arm.targetHeight = LimelightConst.TopGoalHeight - ArmConst.RootHeightFromGr;
             State.Arm.targetDepth = State.Arm.TargetDepth.TopCorn;
         }
         

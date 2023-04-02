@@ -33,8 +33,8 @@ public class ChargeStationMode extends Mode{
             switch (phase) {
                 case Phase1:
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.Arm.targetHeight = Const.Arm.InitialHeight;
-                    State.Arm.targetDepth = Const.Arm.InitialDepth;
+                    State.Arm.targetHeight = ArmConst.InitialHeight;
+                    State.Arm.targetDepth = ArmConst.InitialDepth;
                     State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_movetomiddle;
                     State.Hand.rotateState = State.Hand.RotateState.s_turnHandBack;
                     if (State.Arm.isAtTarget()) {
@@ -44,7 +44,7 @@ public class ChargeStationMode extends Mode{
                     break;
                 case Phase2:
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.Arm.targetHeight = ( Const.Arm.InitialHeight+Const.GrabGamePiecePhase.armCubeIntakeHeight) / 2 +5;
+                    State.Arm.targetHeight = ( ArmConst.InitialHeight+Const.GrabGamePiecePhase.armCubeIntakeHeight) / 2 +5;
                     State.Arm.targetDepth = Const.GrabGamePiecePhase.armCubeIntakeDepth;
                     State.Hand.rotateState = State.Hand.RotateState.s_moveHandToSpecifiedAngle;
                     if (State.Arm.isAtTarget()) {
@@ -64,8 +64,8 @@ public class ChargeStationMode extends Mode{
             State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
             State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_movetomiddle;
             State.Hand.rotateState = State.Hand.RotateState.s_turnHandBack;
-            State.Arm.targetHeight = Const.Arm.InitialHeight;
-            State.Arm.targetDepth = Const.Arm.InitialDepth;
+            State.Arm.targetHeight = ArmConst.InitialHeight;
+            State.Arm.targetDepth = ArmConst.InitialDepth;
         }
 
         if (joystick.getRawButtonPressed(1)) {
