@@ -126,12 +126,14 @@ public class DriveMode extends Mode {
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
                     State.Arm.targetHeight = Const.GrabGamePiecePhase.armCubeIntakeHeight;
                     State.Arm.targetDepth = Const.GrabGamePiecePhase.armCubeIntakeDepth;
+                    State.Hand.rotateState = State.Hand.RotateState.s_moveHandToSpecifiedAngle;
                     if (State.Arm.isAtTarget()) {
                         phase = GrabGamePiecePhase.Phase4;
                     }
                     break;
                 case Phase4:
                     State.Hand.grabHandState = State.GrabHandState.s_grabHand;
+                    State.Hand.rotateState = State.Hand.RotateState.s_moveHandToSpecifiedAngle;
                     GrabCount++;
                     if (GrabCount >= 20) {
                         phase = GrabGamePiecePhase.Phase5;
