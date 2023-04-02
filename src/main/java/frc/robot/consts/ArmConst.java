@@ -10,24 +10,14 @@ public class ArmConst {
     public static final class Speeds {
         public static double MoveLeftAndRightMotor = 0.05;
     }
-
-
     /**
      * 根本アームの長さ[cm]
      */
     public static final double RootArmLength = 45.0;
     /**
-     * 先端アームの長さ[cm]
+     * 先端アームの長さ[cm]（45.5はハンドの付け根までの長さ）
      */
-    public static final double HeadArmLength = 69.744; // 45.5はハンドの付け根までの長さ
-    /**
-     * 根本アームの重心の位置[cm]（根本からの距離）
-     */
-    public static final double RootArmBarycenter = 12.52;
-    /**
-     * 先端アームの重心の位置[cm]（関節部分からの距離）
-     */
-    public static final double HeadArmBarycenter = 45.43;
+    public static final double HeadArmLength = 45.5;
     /**
      * ハンドの折れた角度（折れ具合）[deg]
      * */
@@ -40,17 +30,25 @@ public class ArmConst {
      * ハンドが折れていることによって生じる仮想アームの折れた角度（折れ具合）[deg]
      * （正の向きに折れ曲がっている）
      * */
-    public static final double VirtualHeadArmLength = Math.toDegrees(
+    public static final double VirtualArmFoldAngle = Math.toDegrees(
             Math.atan((Math.sin(Math.toRadians(HandFoldAngle)) * HandLength) /
                     (HeadArmLength + Math.cos(Math.toRadians(HandFoldAngle)) * HandLength))
     );
     /**
      * 仮想の先端アームの長さ[cm]（関節部分からハンドの先端まで）
      * */
-    public static final double VirtualHeadArmAngle = Math.sqrt(
+    public static final double VirtualHeadArmLength = Math.sqrt(
             Math.pow(HeadArmLength + Math.cos(Math.toRadians(HandFoldAngle)) * HandLength, 2)
                     + Math.pow(Math.sin(Math.toRadians(HandFoldAngle)) * HandLength, 2)
     );
+    /**
+     * 根本アームの重心の位置[cm]（根本からの距離）
+     */
+    public static final double RootArmBarycenter = 12.52;
+    /**
+     * 先端アームの重心の位置[cm]（関節部分からの距離）
+     */
+    public static final double HeadArmBarycenter = 45.43;
     /**
      * 根本アームの重さ[N] 注意 - [N]=[kg*9.8]
      */
@@ -202,11 +200,11 @@ public class ArmConst {
     /**
      * ターゲットの座標の閾値（外側）[cm]
      */
-    public static final double TargetPositionOuterLimit = RootArmLength + HeadArmLength;
+    public static final double TargetPositionOuterLimit = RootArmLength + VirtualHeadArmLength;
     /**
      * ターゲットの座標の閾値（内側）[cm]
      */
-    public static final double TargetPositionInnerLimit = RootArmLength - HeadArmLength;
+    public static final double TargetPositionInnerLimit = RootArmLength - VirtualHeadArmLength;
     /**
      * 関節部分NEOモーターのギア比
      */
@@ -232,26 +230,28 @@ public class ArmConst {
     /**
      * PIDコントロールの誤差の許容量[cn] 注意! isArmAtTargetの判定に用いているだけ
      */
-    public static final double PIDAngleTolerance = 5;
+    public static final double PIDAngleTolerance = 3;
 
     /**
      * アームの理想的な高さ
      */
-    public static final double InitialHeight = -60;
+    public static final double InitialHeight = -80;
     /**
      * アームの理想的な奥行き
      */
-    public static final double InitialDepth = 27;
+    public static final double InitialDepth = 10;
 
     /**
      * アームの根本の高さ[cm]（地面から） -> 座標の原点の高さ
      */
     public static final double RootHeightFromGr = 127;
 
-    public static final double RootHomePosition = -87.5;
-    public static final double JointHomePosition = -52.9;
+    public static final double RootHomePosition = -85.20;
+    public static final double JointHomePosition = -79.32;
+
     public static final double RelayPointHeight = -20;
-    public static final double RelayPointDepth = 30;
+    public static final double RelayPointDepth = 40;
+
 
     public static void ArmConstInit() {
 
