@@ -54,6 +54,8 @@ public class ArmState {
     /** エンコーダーをリセット（その時点の位置を0と定める） */
     public static boolean resetEncoder;
 
+    public static boolean relayPositionOver;
+
     public static class TargetDepth {
         public static double TopCorn;
         public static double MiddleCorn;

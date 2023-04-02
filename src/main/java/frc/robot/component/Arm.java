@@ -15,6 +15,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subClass.Util;
 
 
 public class Arm implements Component {
@@ -265,6 +266,8 @@ public class Arm implements Component {
         double rootRequiredTorque = Tools.calculateRootMotorFeedforward(ArmState.actualRootAngle, ArmState.actualJointAngle) / Const.Arm.JointMotorGearRatio;
         ArmState.jointMotorFeedforward = Tools.changeTorqueToMotorInput(jointRequiredTorque);
         ArmState.rootMotorFeedforward = Tools.changeTorqueToMotorInput(rootRequiredTorque);
+
+        ArmState.relayPositionOver |= Util.Calculate.relayReach(ArmState.actualHeight, ArmState.actualDepth);
         
         SmartDashboard.putNumber("actual leftright angle", ArmState.actualLeftAndRightAngle);
 
