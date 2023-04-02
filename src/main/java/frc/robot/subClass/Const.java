@@ -512,7 +512,7 @@ public class Const {
         public static final double JointHomePosition = -79.32;
 
         public static final double RelayPointHeight = -20;
-        public static final double RelayPointDepth = 30;
+        public static final double RelayPointDepth = 40;
 
     }
 

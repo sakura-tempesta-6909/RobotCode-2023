@@ -70,7 +70,7 @@ public class Util {
          * @return 中継地点に到達しているかどうか
          */
         public static boolean relayReach(double actualHeight, double actualDepth) {
-            return actualHeight > Const.Arm.RelayPointHeight && actualDepth > Const.Arm.RelayPointDepth;
+            return actualHeight > Const.Arm.RelayPointHeight || actualDepth > Const.Arm.RelayPointDepth;
 
         }
     }
