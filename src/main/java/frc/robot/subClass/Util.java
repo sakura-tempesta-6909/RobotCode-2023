@@ -2,6 +2,8 @@ package frc.robot.subClass;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.States.State;
+import frc.robot.consts.ArmConst;
+import frc.robot.consts.DriveConst;
 
 public class Util {
 
@@ -52,7 +54,7 @@ public class Util {
          * @return ドライブのエンコーダーの値をメートルに変換した値
          */
         public static double driveEncoderPointsToMeter(double points) {
-            return points / Const.Calculation.Drive.DrivePointsPerDriveLength;
+            return points / DriveConst.DrivePointsPerDriveLength;
         }
 
         /**
@@ -60,7 +62,7 @@ public class Util {
          * @return メートルをドライブのエンコーダーのポジションに変換した値
          */
         public static double meterToDriveEncoderPoints(double meter) {
-            return meter * Const.Calculation.Drive.DrivePointsPerDriveLength;
+            return meter * DriveConst.DrivePointsPerDriveLength;
         }
 
         /**

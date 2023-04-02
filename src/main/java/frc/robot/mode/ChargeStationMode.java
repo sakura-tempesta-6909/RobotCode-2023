@@ -3,7 +3,9 @@ package frc.robot.mode;
 import java.util.Map;
 
 import frc.robot.States.State;
-import frc.robot.subClass.*;
+import frc.robot.consts.ArmConst;
+import frc.robot.consts.GrabGamePiecePhaseConst;
+import frc.robot.subClass.Tools;;
 
 public class ChargeStationMode extends Mode{
 // 正式名称は「ワクワクドキドキ神様お願いブレイクモード」
@@ -44,8 +46,8 @@ public class ChargeStationMode extends Mode{
                     break;
                 case Phase2:
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.Arm.targetHeight = ( ArmConst.InitialHeight+Const.GrabGamePiecePhase.armCubeIntakeHeight) / 2 +5;
-                    State.Arm.targetDepth = Const.GrabGamePiecePhase.armCubeIntakeDepth;
+                    State.Arm.targetHeight = ( ArmConst.InitialHeight+ GrabGamePiecePhaseConst.armCubeIntakeHeight) / 2 +5;
+                    State.Arm.targetDepth = GrabGamePiecePhaseConst.armCubeIntakeDepth;
                     State.Hand.rotateState = State.Hand.RotateState.s_moveHandToSpecifiedAngle;
                     if (State.Arm.isAtTarget()) {
                         phase = GrabGamePiecePhase.Phase3;
@@ -53,8 +55,8 @@ public class ChargeStationMode extends Mode{
                     break;
                 case Phase3:
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.Arm.targetHeight = Const.GrabGamePiecePhase.armCubeIntakeHeight;
-                    State.Arm.targetDepth = Const.GrabGamePiecePhase.armCubeIntakeDepth;
+                    State.Arm.targetHeight = GrabGamePiecePhaseConst.armCubeIntakeHeight;
+                    State.Arm.targetDepth = GrabGamePiecePhaseConst.armCubeIntakeDepth;
                     break;
             }
 

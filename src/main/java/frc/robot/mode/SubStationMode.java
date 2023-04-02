@@ -3,7 +3,6 @@ package frc.robot.mode;
 import frc.robot.States.State;
 import frc.robot.consts.ArmConst;
 import frc.robot.consts.LimelightConst;
-import frc.robot.subClass.Const;
 
 public class SubStationMode extends Mode {
 

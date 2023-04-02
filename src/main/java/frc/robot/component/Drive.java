@@ -12,7 +12,6 @@ import frc.robot.States.State;
 import frc.robot.consts.CameraConst;
 import frc.robot.consts.DriveConst;
 import frc.robot.consts.LimelightConst;
-import frc.robot.subClass.Const;
 import frc.robot.subClass.Util;
 
 public class Drive implements Component {
@@ -25,10 +24,10 @@ public class Drive implements Component {
 
 
     public Drive() {
-        driveRightFront = new WPI_TalonSRX(Const.Ports.DriveRightFront);
-        driveLeftFront = new WPI_TalonSRX(Const.Ports.DriveLeftFront);
-        driveRightBack = new VictorSPX(Const.Ports.DriveRightBack);
-        driveLeftBack = new VictorSPX(Const.Ports.DriveLeftBack);
+        driveRightFront = new WPI_TalonSRX(DriveConst.Ports.DriveRightFront);
+        driveLeftFront = new WPI_TalonSRX(DriveConst.Ports.DriveLeftFront);
+        driveRightBack = new VictorSPX(DriveConst.Ports.DriveRightBack);
+        driveLeftBack = new VictorSPX(DriveConst.Ports.DriveLeftBack);
 
         driveRightBack.follow(driveRightFront);
         driveLeftBack.follow(driveLeftFront);
@@ -99,7 +98,7 @@ public class Drive implements Component {
         } else if (cameraZRotation < -0.5) {
             cameraZRotation = -0.5;
         }
-        arcadeDrive(State.cameraXSpeed * Const.Speeds.MidDrive, cameraZRotation);
+        arcadeDrive(State.cameraXSpeed * DriveConst.Speeds.MidDrive, cameraZRotation);
     }
 
     /**
@@ -198,16 +197,16 @@ public class Drive implements Component {
 
         switch (State.Drive.state) {
             case s_fastDrive:
-                arcadeDrive(Const.Speeds.FastDrive * State.Drive.xSpeed, Const.Speeds.FastDrive * State.Drive.zRotation);
+                arcadeDrive(DriveConst.Speeds.FastDrive * State.Drive.xSpeed, DriveConst.Speeds.FastDrive * State.Drive.zRotation);
                 break;
             case s_midDrive:
-                arcadeDrive(Const.Speeds.MidDrive * State.Drive.xSpeed, Const.Speeds.MidDrive * State.Drive.zRotation);
+                arcadeDrive(DriveConst.Speeds.MidDrive * State.Drive.xSpeed, DriveConst.Speeds.MidDrive * State.Drive.zRotation);
                 break;
             case s_slowDrive:
-                arcadeDrive(Const.Speeds.SlowDrive * State.Drive.xSpeed, Const.Speeds.SlowDrive * State.Drive.zRotation);
+                arcadeDrive(DriveConst.Speeds.SlowDrive * State.Drive.xSpeed, DriveConst.Speeds.SlowDrive * State.Drive.zRotation);
                 break;
             case s_stopDrive:
-                arcadeDrive(Const.Speeds.Neutral * State.Drive.xSpeed, Const.Speeds.Neutral * State.Drive.zRotation);
+                arcadeDrive(DriveConst.Speeds.Neutral * State.Drive.xSpeed, DriveConst.Speeds.Neutral * State.Drive.zRotation);
                 break;
             case s_limelightTracking:
                 pidControlTargetTracking();

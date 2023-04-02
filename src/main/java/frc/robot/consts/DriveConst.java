@@ -4,6 +4,22 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import edu.wpi.first.math.util.Units;
 
 public class DriveConst {
+
+    public static final class Ports {
+        public static final int DriveRightFront = 8;
+        public static final int DriveLeftFront = 10;
+        public static final int DriveRightBack = 7;
+        public static final int DriveLeftBack = 9;
+    }
+
+    public static final class Speeds {
+        public static final double Neutral = 0;
+
+        public static final double FastDrive = .9;
+        public static final double MidDrive = 0.75;
+        public static final double SlowDrive = 0.3;
+    }
+
     public static final double TrapezoidalAccelerationX = 0.03;
     public static final double TrapezoidalAccelerationZ = 0.06;
     public static final double SkipLowSpeedThreshold = 0.7;

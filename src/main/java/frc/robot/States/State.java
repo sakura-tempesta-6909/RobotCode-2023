@@ -5,9 +5,9 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.consts.ArmConst;
+import frc.robot.consts.ControllerConst;
 import frc.robot.consts.DriveConst;
 import frc.robot.mode.*;
-import frc.robot.subClass.Const;
 import frc.robot.subClass.Util;
 
 import java.util.HashMap;
@@ -266,9 +266,9 @@ public class State {
      * Enableされたときの状態
      */
     public static void StateInit() {
-        XboxController driveController = new XboxController(Const.Ports.DriveController);
-        XboxController operateController = new XboxController(Const.Ports.OperateController);
-        Joystick joystick = new Joystick(Const.Ports.Joystick);
+        XboxController driveController = new XboxController(ControllerConst.Ports.DriveController);
+        XboxController operateController = new XboxController(ControllerConst.Ports.OperateController);
+        Joystick joystick = new Joystick(ControllerConst.Ports.Joystick);
 
         State.mode = State.Modes.k_drive;
 

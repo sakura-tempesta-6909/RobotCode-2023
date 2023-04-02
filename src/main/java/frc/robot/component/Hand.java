@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import frc.robot.States.State;
 import frc.robot.consts.ArmConst;
+import frc.robot.consts.DriveConst;
 import frc.robot.consts.HandConst;
-import frc.robot.subClass.Const;
 
 
 public class Hand implements Component{
@@ -19,9 +19,9 @@ public class Hand implements Component{
     private final SparkMaxPIDController handRotationPidController;
 
     public Hand() {
-        handSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Const.Ports.HandSolenoid);
+        handSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, HandConst.Ports.HandSolenoid);
 
-        handRotationMotor = new CANSparkMax(Const.Ports.HandRotationMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
+        handRotationMotor = new CANSparkMax(HandConst.Ports.HandRotationMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
         handRotationMotor.setInverted(true);
 
         handRotationPidController = handRotationMotor.getPIDController();
@@ -114,18 +114,18 @@ public class Hand implements Component{
 
     /** 手首を回転させる */
     public void rotateHand() {
-        controlHandRotation(Const.Speeds.HandRotationSpeed);
+        controlHandRotation(HandConst.Speeds.HandRotationSpeed);
     }
 
     /** 手首を逆回転させる */
     public void invertRotateHand() {
-        controlHandRotation(-Const.Speeds.HandRotationSpeed);
+        controlHandRotation(-HandConst.Speeds.HandRotationSpeed);
     }
 
 
     /** 手首の回転を止める */
     public void stopHand() {
-         controlHandRotation(Const.Speeds.Neutral);
+         controlHandRotation(DriveConst.Speeds.Neutral);
     }
     /**
      * actual angleを入力してその数に一番近い360の倍数の数を見つけて返す

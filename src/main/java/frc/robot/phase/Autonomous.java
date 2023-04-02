@@ -2,8 +2,10 @@ package frc.robot.phase;
 
 import frc.robot.States.State;
 import frc.robot.States.State.RollerState;
+import frc.robot.consts.ArmConst;
+import frc.robot.consts.CameraConst;
+import frc.robot.consts.GrabGamePiecePhaseConst;
 import frc.robot.mode.ArmMode;
-import frc.robot.subClass.Const;
 import frc.robot.subClass.Util;
 
 public class Autonomous {
@@ -212,7 +214,7 @@ public class Autonomous {
                 "wait"
             ),
             basicArmTo(ArmConst.InitialHeight, ArmConst.InitialDepth, "move arm to basic position"),
-            relayArmTo(Const.GrabGamePiecePhase.armRelayPointHeight, Const.GrabGamePiecePhase.armRelayPointDepth, "move arm to relay point"),
+            relayArmTo(GrabGamePiecePhaseConst.armRelayPointHeight, GrabGamePiecePhaseConst.armRelayPointDepth, "move arm to relay point"),
             moveArmTo(  CameraConst.MiddleGoalHeight - ArmConst.RootHeightFromGr, State.Arm.TargetDepth.MiddleCube, "move arm to cube goal"),
             releaseHand(2, "release cube")
             // drive(-1, 2, "move to target")

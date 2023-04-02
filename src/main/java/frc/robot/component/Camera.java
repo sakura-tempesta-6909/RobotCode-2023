@@ -3,7 +3,6 @@ package frc.robot.component;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.States.State;
 import frc.robot.consts.CameraConst;
-import frc.robot.subClass.Const;
 
 public class Camera implements Component {
     public Camera() {

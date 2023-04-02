@@ -4,7 +4,13 @@ public class ArmConst {
     public static final class Ports {
         public static final int jointMotor = 2;
         public static final int rootMotor = 1;
+        public static final int MoveLeftAndRightMotor = 5;
     }
+
+    public static final class Speeds {
+        public static double MoveLeftAndRightMotor = 0.05;
+    }
+
 
     /**
      * 根本アームの長さ[cm]
