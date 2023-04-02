@@ -77,4 +77,7 @@ public class DriveConst {
             DriveLeft.slot1.maxIntegralAccumulator = 1023 * 0.1 / DriveLeft.slot1.kI;
         }
     }
+    public static void DriveConstInit() {
+
+    }
 }

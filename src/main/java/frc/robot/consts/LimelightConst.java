@@ -53,4 +53,8 @@ public class LimelightConst {
         public static final double LimelightDriveI = 0.02;
         public static final double LimelightDriveD = 0;
     }
+
+    public static void LimelightConstInit() {
+
+    }
 }

@@ -15,4 +15,8 @@ public class IntakeConst {
         public static final double BottomRollerOuttakeSpeed = -1.0;
         public static final double BottomRollerIntakeSpeed = 1.0;
     }
+
+    public static void IntakeConstInit() {
+
+    }
 }

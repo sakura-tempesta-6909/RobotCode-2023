@@ -5,4 +5,8 @@ public class MQTTConst {
     public static final String Topic = "robot/data/main";
     public static final int MaxRetry = 100;
     public static final String ClientId = "robot/test";
+
+    public static void MQTTConstInit() {
+
+    }
 }

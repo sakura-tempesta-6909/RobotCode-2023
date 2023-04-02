@@ -253,4 +253,7 @@ public class ArmConst {
     public static final double RelayPointHeight = -20;
     public static final double RelayPointDepth = 30;
 
+    public static void ArmConstInit() {
+
+    }
 }

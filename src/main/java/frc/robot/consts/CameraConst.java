@@ -94,4 +94,7 @@ public class CameraConst {
         public static final double CameraDriveI = 0.0007;
         public static final double CameraDriveD = 0.003;
     }
+    public static void CameraConstInit() {
+
+    }
 }

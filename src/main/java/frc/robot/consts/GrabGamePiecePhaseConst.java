@@ -28,4 +28,8 @@ public class GrabGamePiecePhaseConst {
 
     public static final double armSubStationHeight = -7;
     public static final double armSubStationDepth = 56;
+
+    public static void GrabGamePiecePhaseConstInit() {
+
+    }
 }
