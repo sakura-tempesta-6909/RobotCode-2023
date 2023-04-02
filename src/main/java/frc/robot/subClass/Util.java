@@ -1,7 +1,10 @@
 package frc.robot.subClass;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.States.State;
+import frc.robot.states.ArmState;
+import frc.robot.states.DriveState;
+import frc.robot.states.HandState;
+import frc.robot.states.State;
 
 public class Util {
 
@@ -26,24 +29,24 @@ public class Util {
 
     public static void allSendConsole() {
         sendConsole("MODE", State.mode.toString());
-        sendConsole("ArmMode", State.Arm.state.toString());
-        sendConsole("armActualHeight", State.Arm.actualHeight);
-        sendConsole("armActualDepth", State.Arm.actualDepth);
-        sendConsole("armActualRootAngle", State.Arm.actualRootAngle);
-        sendConsole("armActualJointAngle", State.Arm.actualJointAngle);
-        sendConsole("armTargetHeight", State.Arm.targetHeight);
-        sendConsole("armTargetDepth", State.Arm.targetDepth);
-        sendConsole("armTargetRootAngle", State.Arm.targetRootAngle);
-        sendConsole("armTargetJointAngle", State.Arm.targetJointAngle);
-        sendConsole("isAtSetpoint", State.Arm.isAtTarget());
-        sendConsole("controlMode", State.Arm.state.toString());
-        sendConsole("rootff", State.Arm.rootMotorFeedforward);
-        sendConsole("jointff", State.Arm.jointMotorFeedforward);
-        sendConsole("handAngle", State.Hand.actualHandAngle % 360);
+        sendConsole("ArmMode", ArmState.armState.toString());
+        sendConsole("armActualHeight", ArmState.actualHeight);
+        sendConsole("armActualDepth", ArmState.actualDepth);
+        sendConsole("armActualRootAngle", ArmState.actualRootAngle);
+        sendConsole("armActualJointAngle", ArmState.actualJointAngle);
+        sendConsole("armTargetHeight", ArmState.targetHeight);
+        sendConsole("armTargetDepth", ArmState.targetDepth);
+        sendConsole("armTargetRootAngle", ArmState.targetRootAngle);
+        sendConsole("armTargetJointAngle", ArmState.targetJointAngle);
+        sendConsole("isAtSetpoint", ArmState.isAtTarget());
+        sendConsole("controlMode", ArmState.armState.toString());
+        sendConsole("rootff", ArmState.rootMotorFeedforward);
+        sendConsole("jointff", ArmState.jointMotorFeedforward);
+        sendConsole("handAngle", HandState.actualHandAngle % 360);
 
-        sendConsole("DriveTargetMeter", State.Drive.targetMeter);
-        sendConsole("RDrivePosition", State.Drive.rightMeter);
-        sendConsole("LDrivePosition", State.Drive.leftMeter);
+        sendConsole("DriveTargetMeter", DriveState.targetMeter);
+        sendConsole("RDrivePosition", DriveState.rightMeter);
+        sendConsole("LDrivePosition", DriveState.leftMeter);
     }
 
     public static class Calculate {

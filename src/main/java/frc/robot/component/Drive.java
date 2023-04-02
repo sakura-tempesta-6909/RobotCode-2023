@@ -5,10 +5,11 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import frc.robot.States.State;
+import frc.robot.states.CameraState;
+import frc.robot.states.DriveState;
+import frc.robot.states.LimelightState;
+import frc.robot.states.State;
 import frc.robot.subClass.Const;
 import frc.robot.subClass.Util;
 
@@ -78,40 +79,40 @@ public class Drive implements Component {
 
     public void pidControlTargetTracking() {
         double limelightTrackingZRotation = 0;
-        if(State.tv) {
-        limelightTrackingZRotation = pidLimelightDrive.calculate(State.tx, 0);
+        if(LimelightState.tv) {
+        limelightTrackingZRotation = pidLimelightDrive.calculate(LimelightState.tx, 0);
         }
         if (limelightTrackingZRotation > 0.7) {
             limelightTrackingZRotation = 0.7;
         } else if (limelightTrackingZRotation < -0.7) {
             limelightTrackingZRotation = -0.7;
         }
-        arcadeDrive(State.limelightXSpeed * 0.7, -limelightTrackingZRotation);
+        arcadeDrive(LimelightState.limelightXSpeed * 0.7, -limelightTrackingZRotation);
     }
 
     public void pidControlAprilTagTracking() {
-        double cameraZRotation = pidCameraDrive.calculate(State.aprilTagAngleWidth, 0);
+        double cameraZRotation = pidCameraDrive.calculate(CameraState.aprilTagAngleWidth, 0);
         if (cameraZRotation > 0.5) {
             cameraZRotation = 0.5;
         } else if (cameraZRotation < -0.5) {
             cameraZRotation = -0.5;
         }
-        arcadeDrive(State.cameraXSpeed * Const.Speeds.MidDrive, cameraZRotation);
+        arcadeDrive(CameraState.cameraXSpeed * Const.Speeds.MidDrive, cameraZRotation);
     }
 
     /**
      * PIDでtargetLength分前後に動かす
      */
     private void drivePosition() {
-        if (Math.abs(State.Drive.targetMeter) > Const.Drive.PID.ShortThreshold) {
+        if (Math.abs(DriveState.targetMeter) > Const.Drive.PID.ShortThreshold) {
             driveRightFront.selectProfileSlot(Const.Drive.PID.LongSlotIdx, 0);
             driveLeftFront.selectProfileSlot(Const.Drive.PID.LongSlotIdx, 0);
         } else {
             driveRightFront.selectProfileSlot(Const.Drive.PID.ShortSlotIdx, 0);
             driveLeftFront.selectProfileSlot(Const.Drive.PID.ShortSlotIdx, 0);
         }
-        driveRightFront.set(ControlMode.Position, Util.Calculate.meterToDriveEncoderPoints(State.Drive.targetMeter));
-        driveLeftFront.set(ControlMode.Position, Util.Calculate.meterToDriveEncoderPoints(State.Drive.targetMeter));
+        driveRightFront.set(ControlMode.Position, Util.Calculate.meterToDriveEncoderPoints(DriveState.targetMeter));
+        driveLeftFront.set(ControlMode.Position, Util.Calculate.meterToDriveEncoderPoints(DriveState.targetMeter));
     }
 
     /**
@@ -129,8 +130,8 @@ public class Drive implements Component {
     }
 
     private boolean isAtTarget() {
-        boolean isLeftMotorAtTarget = Math.abs(State.Drive.leftMeter - State.Drive.targetMeter) < Const.Drive.PID.LossTolerance;
-        boolean isRightMotorAtTarget = Math.abs(State.Drive.rightMeter - State.Drive.targetMeter) < Const.Drive.PID.LossTolerance;
+        boolean isLeftMotorAtTarget = Math.abs(DriveState.leftMeter - DriveState.targetMeter) < Const.Drive.PID.LossTolerance;
+        boolean isRightMotorAtTarget = Math.abs(DriveState.rightMeter - DriveState.targetMeter) < Const.Drive.PID.LossTolerance;
         return isRightMotorAtTarget && isLeftMotorAtTarget;
     }
 
@@ -161,26 +162,26 @@ public class Drive implements Component {
 
     @Override
     public void readSensors() {
-        State.Drive.rightMeter = getRightLength();
-        State.Drive.leftMeter = getLeftLength();
+        DriveState.rightMeter = getRightLength();
+        DriveState.leftMeter = getLeftLength();
     }
 
     @Override
     public void applyState() {
-        if (State.pidLimelightReset) {
+        if (LimelightState.pidLimelightReset) {
             pidLimelightDrive.reset();
         }
-        if (State.Drive.resetPosition) {
+        if (DriveState.resetPosition) {
             driveRightFront.setSelectedSensorPosition(0.0);
             driveLeftFront.setSelectedSensorPosition(0.0);
         }
 
-        if (State.Drive.resetPIDController) {
+        if (DriveState.resetPIDController) {
             driveLeftFront.setIntegralAccumulator(0.0);
             driveRightFront.setIntegralAccumulator(0.0);
         }
 
-        if (State.Drive.isMotorBrake) {
+        if (DriveState.isMotorBrake) {
             driveRightFront.setNeutralMode(NeutralMode.Brake);
             driveLeftFront.setNeutralMode(NeutralMode.Brake);
             driveRightBack.setNeutralMode(NeutralMode.Brake);
@@ -193,18 +194,18 @@ public class Drive implements Component {
         }
 
 
-        switch (State.Drive.state) {
+        switch (DriveState.driveState) {
             case s_fastDrive:
-                arcadeDrive(Const.Speeds.FastDrive * State.Drive.xSpeed, Const.Speeds.FastDrive * State.Drive.zRotation);
+                arcadeDrive(Const.Speeds.FastDrive * DriveState.xSpeed, Const.Speeds.FastDrive * DriveState.zRotation);
                 break;
             case s_midDrive:
-                arcadeDrive(Const.Speeds.MidDrive * State.Drive.xSpeed, Const.Speeds.MidDrive * State.Drive.zRotation);
+                arcadeDrive(Const.Speeds.MidDrive * DriveState.xSpeed, Const.Speeds.MidDrive * DriveState.zRotation);
                 break;
             case s_slowDrive:
-                arcadeDrive(Const.Speeds.SlowDrive * State.Drive.xSpeed, Const.Speeds.SlowDrive * State.Drive.zRotation);
+                arcadeDrive(Const.Speeds.SlowDrive * DriveState.xSpeed, Const.Speeds.SlowDrive * DriveState.zRotation);
                 break;
             case s_stopDrive:
-                arcadeDrive(Const.Speeds.Neutral * State.Drive.xSpeed, Const.Speeds.Neutral * State.Drive.zRotation);
+                arcadeDrive(Const.Speeds.Neutral * DriveState.xSpeed, Const.Speeds.Neutral * DriveState.zRotation);
                 break;
             case s_limelightTracking:
                 pidControlTargetTracking();

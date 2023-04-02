@@ -1,5 +1,5 @@
 package frc.robot.subClass;
-import frc.robot.States.State;
+import frc.robot.states.State;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -155,7 +155,7 @@ public class Tools {
 
     public static void main(String[] args) {
         State.StateReset();
-        double targetDepth = -10;//State.Arm.TargetDepth.TopCorn;
+        double targetDepth = -10;//ArmState.TargetDepth.TopCorn;
         double targetHeight = -60;//Const.Calculation.Limelight.TopGoalHeight - Const.Arm.RootHeightFromGr;
         System.out.println(targetDepth);
         System.out.println(targetHeight);

@@ -6,7 +6,9 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 
-import frc.robot.States.State;
+import frc.robot.states.ArmState;
+import frc.robot.states.LimelightState;
+import frc.robot.states.State;
 import frc.robot.subClass.Const;
 import frc.robot.subClass.Tools;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -83,7 +85,7 @@ public class Arm implements Component {
      * s_moveArmToSpecifiedPositionで実行
      */
     private void pidControlArm(double targetRootAngle, double targetJointAngle) {
-        if(State.Arm.isAtTarget()) {
+        if(ArmState.isAtTarget()) {
             fixPositionWithFF();
         } else {
             // feedforwardなし
@@ -91,8 +93,8 @@ public class Arm implements Component {
             // pidForJoint.setReference(calculateJointRotationFromAngle(targetJointAngle), CANSparkMax.ControlType.kPosition);
 
             // feedforwardあり
-            // pidForRoot.setReference(calculateRootRotationFromAngle(targetRootAngle), CANSparkMax.ControlType.kPosition, 0, State.Arm.rootMotorFeedforward, ArbFFUnits.kPercentOut);
-            pidForJoint.setReference(calculateJointRotationFromAngle(targetJointAngle), CANSparkMax.ControlType.kPosition, 0, State.Arm.jointMotorFeedforward, ArbFFUnits.kPercentOut);
+            // pidForRoot.setReference(calculateRootRotationFromAngle(targetRootAngle), CANSparkMax.ControlType.kPosition, 0, ArmState.rootMotorFeedforward, ArbFFUnits.kPercentOut);
+            pidForJoint.setReference(calculateJointRotationFromAngle(targetJointAngle), CANSparkMax.ControlType.kPosition, 0, ArmState.jointMotorFeedforward, ArbFFUnits.kPercentOut);
         }
     }
 
@@ -107,8 +109,8 @@ public class Arm implements Component {
         // pidForJoint.setReference(calculateJointRotationFromAngle(targetJointAngle), CANSparkMax.ControlType.kPosition, 1);
 
         // feedforwardあり
-        // pidForRoot.setReference(calculateRootRotationFromAngle(targetRootAngle), CANSparkMax.ControlType.kPosition, 0, State.Arm.rootMotorFeedforward, ArbFFUnits.kPercentOut, 1);
-        pidForJoint.setReference(calculateJointRotationFromAngle(targetJointAngle), CANSparkMax.ControlType.kPosition, 1, State.Arm.jointMotorFeedforward, ArbFFUnits.kPercentOut);
+        // pidForRoot.setReference(calculateRootRotationFromAngle(targetRootAngle), CANSparkMax.ControlType.kPosition, 0, ArmState.rootMotorFeedforward, ArbFFUnits.kPercentOut, 1);
+        pidForJoint.setReference(calculateJointRotationFromAngle(targetJointAngle), CANSparkMax.ControlType.kPosition, 1, ArmState.jointMotorFeedforward, ArbFFUnits.kPercentOut);
     }
 
     /**
@@ -124,8 +126,8 @@ public class Arm implements Component {
         jointMotor.set(joint * Const.Arm.JointMotorMoveRatio);
 
         // feedforwardあり
-        // rootMotor.set(root * Const.Arm.RootMotorMoveRatio + State.Arm.rootMotorFeedforward);
-        // jointMotor.set(joint * Const.Arm.JointMotorMoveRatio + State.Arm.jointMotorFeedforward);
+        // rootMotor.set(root * Const.Arm.RootMotorMoveRatio + ArmState.rootMotorFeedforward);
+        // jointMotor.set(joint * Const.Arm.JointMotorMoveRatio + ArmState.jointMotorFeedforward);
     }
 
     /**
@@ -134,7 +136,7 @@ public class Arm implements Component {
      * s_fixArmPositionで実行
      * */
     private void fixPositionWithFF() {
-        // adjustArmPosition(State.Arm.actualRootAngle, State.Arm.actualJointAngle);
+        // adjustArmPosition(ArmState.actualRootAngle, ArmState.actualJointAngle);
         // feedforwardなし
         // rootMotor.set(0.0);
         // jointMotor.set(0.0);
@@ -143,8 +145,8 @@ public class Arm implements Component {
         rootMotor.set(Const.Arm.ConstantRootMotorFF);
 
         // feedforwardあり
-        // rootMotor.set(State.Arm.rootMotorFeedforward);
-        jointMotor.set(State.Arm.jointMotorFeedforward);
+        // rootMotor.set(ArmState.rootMotorFeedforward);
+        jointMotor.set(ArmState.jointMotorFeedforward);
     }
 
     /**
@@ -217,11 +219,11 @@ public class Arm implements Component {
     }
 
     public void pidControlTargetTracking() {
-        State.Arm.targetMoveLeftAndRightAngle = State.tx + State.Arm.actualLeftAndRightAngle;
-        if (!State.tv) {
+        ArmState.targetMoveLeftAndRightAngle = LimelightState.tx + ArmState.actualLeftAndRightAngle;
+        if (!LimelightState.tv) {
             moveRightArm(0.05);
         } else {
-            leftAndRightArmPidController.setReference(calculateLeftAndRightRotationFromAngle(-State.Arm.targetMoveLeftAndRightAngle), CANSparkMax.ControlType.kPosition);
+            leftAndRightArmPidController.setReference(calculateLeftAndRightRotationFromAngle(-ArmState.targetMoveLeftAndRightAngle), CANSparkMax.ControlType.kPosition);
         }
 
     }
@@ -249,22 +251,22 @@ public class Arm implements Component {
     @Override
     public void readSensors() {
         // motorのencodeからアームの実際のX,Z座標を計算
-        State.Arm.actualRootAngle = calculateRootAngleFromRotation(rootMotor.getEncoder().getPosition());
-        State.Arm.actualJointAngle = calculateJointAngleFromRotation(jointMotor.getEncoder().getPosition());
-        State.Arm.actualHeight = Tools.calculateHeight(State.Arm.actualRootAngle, State.Arm.actualJointAngle);
-        State.Arm.actualDepth = Tools.calculateDepth(State.Arm.actualRootAngle, State.Arm.actualJointAngle);
+        ArmState.actualRootAngle = calculateRootAngleFromRotation(rootMotor.getEncoder().getPosition());
+        ArmState.actualJointAngle = calculateJointAngleFromRotation(jointMotor.getEncoder().getPosition());
+        ArmState.actualHeight = Tools.calculateHeight(ArmState.actualRootAngle, ArmState.actualJointAngle);
+        ArmState.actualDepth = Tools.calculateDepth(ArmState.actualRootAngle, ArmState.actualJointAngle);
 
         // armが左右に動いてる時の位置（角度）
-        State.Arm.actualLeftAndRightAngle = calculateLeftAndRightAngleFromRotation(leftAndRightArmEncoder.getPosition());
+        ArmState.actualLeftAndRightAngle = calculateLeftAndRightAngleFromRotation(leftAndRightArmEncoder.getPosition());
 
         // feedforwardを計算する
         // TODO コーンを持っているかによってrequiredTorqueを変える
-        double jointRequiredTorque = Tools.calculateJointMotorFeedforward(State.Arm.actualRootAngle, State.Arm.actualJointAngle) / Const.Arm.JointMotorGearRatio;
-        double rootRequiredTorque = Tools.calculateRootMotorFeedforward(State.Arm.actualRootAngle, State.Arm.actualJointAngle) / Const.Arm.JointMotorGearRatio;
-        State.Arm.jointMotorFeedforward = Tools.changeTorqueToMotorInput(jointRequiredTorque);
-        State.Arm.rootMotorFeedforward = Tools.changeTorqueToMotorInput(rootRequiredTorque);
+        double jointRequiredTorque = Tools.calculateJointMotorFeedforward(ArmState.actualRootAngle, ArmState.actualJointAngle) / Const.Arm.JointMotorGearRatio;
+        double rootRequiredTorque = Tools.calculateRootMotorFeedforward(ArmState.actualRootAngle, ArmState.actualJointAngle) / Const.Arm.JointMotorGearRatio;
+        ArmState.jointMotorFeedforward = Tools.changeTorqueToMotorInput(jointRequiredTorque);
+        ArmState.rootMotorFeedforward = Tools.changeTorqueToMotorInput(rootRequiredTorque);
         
-        SmartDashboard.putNumber("actual leftright angle", State.Arm.actualLeftAndRightAngle);
+        SmartDashboard.putNumber("actual leftright angle", ArmState.actualLeftAndRightAngle);
 
         SmartDashboard.putNumber("cc", rootMotor.getOutputCurrent());
         SmartDashboard.putNumber("tmp", rootMotor.getMotorTemperature());
@@ -274,36 +276,36 @@ public class Arm implements Component {
     @Override
     public void applyState() {
 
-        if (State.Arm.resetPidController) {
+        if (ArmState.resetPidController) {
             pidForRoot.setIAccum(0.0);
             pidForJoint.setIAccum(0.0);
         }
 
-        if (State.Arm.resetEncoder) {
+        if (ArmState.resetEncoder) {
             jointMotor.getEncoder().setPosition(0.0);
             rootMotor.getEncoder().setPosition(0.0);
         }
 
-        if (State.Arm.isMoveLeftAndRightEncoderReset) {
+        if (ArmState.isMoveLeftAndRightEncoderReset) {
             leftAndRightArmEncoder.setPosition(7.5);
         }
 
-        switch (State.Arm.state) {
+        switch (ArmState.armState) {
             case s_moveArmToSpecifiedPosition:
-                pidControlArm(State.Arm.targetRootAngle, State.Arm.targetJointAngle);
+                pidControlArm(ArmState.targetRootAngle, ArmState.targetJointAngle);
                 break;
             case s_adjustArmPosition:
-                adjustArmPosition(State.Arm.targetRootAngle, State.Arm.targetJointAngle);
+                adjustArmPosition(ArmState.targetRootAngle, ArmState.targetJointAngle);
                 break;
             case s_moveArmMotor:
-                rotationControlArm(State.Arm.jointSpeed, State.Arm.rootSpeed);
+                rotationControlArm(ArmState.jointSpeed, ArmState.rootSpeed);
                 break;
             case s_fixArmPosition:
                 fixPositionWithFF();
                 break;
         }
 
-        switch (State.moveLeftAndRightArmState) {
+        switch (ArmState.moveLeftAndRightArmState) {
             case s_moveRightMotor:
                 moveRightArm(Const.Speeds.MoveLeftAndRightMotor);
                 break;

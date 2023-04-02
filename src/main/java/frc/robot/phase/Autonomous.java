@@ -1,7 +1,7 @@
 package frc.robot.phase;
 
-import frc.robot.States.State;
-import frc.robot.States.State.RollerState;
+import frc.robot.component.Intake;
+import frc.robot.states.*;
 import frc.robot.mode.ArmMode;
 import frc.robot.subClass.Const;
 import frc.robot.subClass.Util;
@@ -14,17 +14,17 @@ public class Autonomous {
     private static PhaseTransition.Phase basicArmTo(double targetHeight, double targetDepth, String phaseName) {
         return new PhaseTransition.Phase(
             () -> {
-                State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                State.Arm.targetHeight = targetHeight;
-                State.Arm.targetDepth = targetDepth;
+                ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
+                ArmState.targetHeight = targetHeight;
+                ArmState.targetDepth = targetDepth;
             },
             (double time) -> {
-                return State.Arm.isAtTarget();
+                return ArmState.isAtTarget();
             },
             () -> {
-                State.Drive.resetPIDController = true;
-                State.Drive.resetPosition = true;
-                State.Arm.resetPidController  = true;
+                DriveState.resetPIDController = true;
+                DriveState.resetPosition = true;
+                ArmState.resetPidController  = true;
             }, 
             phaseName
         );
@@ -35,19 +35,19 @@ public class Autonomous {
         return new PhaseTransition.Phase(
             () -> {
         
-                    State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.Arm.targetHeight = relayHeight;
-                    State.Arm.targetDepth = relayDepth;
+                    ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
+                    ArmState.targetHeight = relayHeight;
+                    ArmState.targetDepth = relayDepth;
                 
 
             },
             (double time) -> {
-                return Util.Calculate.relayReach(State.Arm.actualHeight, State.Arm.actualDepth);
+                return Util.Calculate.relayReach(ArmState.actualHeight, ArmState.actualDepth);
             },
             () -> {
-                State.Drive.resetPIDController = true;
-                State.Drive.resetPosition = true;
-                State.Arm.resetPidController = true;
+                DriveState.resetPIDController = true;
+                DriveState.resetPosition = true;
+                ArmState.resetPidController = true;
             },
             phaseName
     );
@@ -57,19 +57,19 @@ public class Autonomous {
         return new PhaseTransition.Phase(
                 () -> {
             
-                        State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                        State.Arm.targetHeight = targetHeight;
-                        State.Arm.targetDepth = targetDepth;
+                        ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
+                        ArmState.targetHeight = targetHeight;
+                        ArmState.targetDepth = targetDepth;
                     
 
                 },
                 (double time) -> {
-                    return State.Arm.isAtTarget();
+                    return ArmState.isAtTarget();
                 },
                 () -> {
-                    State.Drive.resetPIDController = true;
-                    State.Drive.resetPosition = true;
-                    State.Arm.resetPidController = true;
+                    DriveState.resetPIDController = true;
+                    DriveState.resetPosition = true;
+                    ArmState.resetPidController = true;
                 },
                 phaseName
         );
@@ -78,15 +78,15 @@ public class Autonomous {
     public static PhaseTransition.Phase releaseHand(double waiter, String phaseName) {
         return new PhaseTransition.Phase(
                 () -> {
-                    State.Hand.grabHandState = State.GrabHandState.s_releaseHand;
+                    HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
                 },
                 (double time) -> {
                     return time > waiter;
                 },
                 () -> {
-                    State.Drive.resetPIDController = true;
-                    State.Drive.resetPosition = true;
-                    State.Arm.resetPidController = true;
+                    DriveState.resetPIDController = true;
+                    DriveState.resetPosition = true;
+                    ArmState.resetPidController = true;
                 },
                 phaseName
         );
@@ -95,16 +95,16 @@ public class Autonomous {
     public static PhaseTransition.Phase driveTo(double targetMeter, String phaseName) {
         return new PhaseTransition.Phase(
                 () -> {
-                    State.Drive.state = State.Drive.States.s_pidDrive;
-                    State.Drive.targetMeter = targetMeter;
+                    DriveState.driveState = DriveState.DriveStates.s_pidDrive;
+                    DriveState.targetMeter = targetMeter;
                 },
                 (double time) -> {
                     return time > targetMeter;
                 },
                 () -> {
-                    State.Drive.resetPIDController = true;
-                    State.Drive.resetPosition = true;
-                    State.Arm.resetPidController = true;
+                    DriveState.resetPIDController = true;
+                    DriveState.resetPosition = true;
+                    ArmState.resetPidController = true;
                 },
                 phaseName
         );
@@ -113,16 +113,16 @@ public class Autonomous {
     private static PhaseTransition.Phase drive(double xSpeed, double waiter, String phaseName) {
         return new PhaseTransition.Phase(
             () -> {
-                State.Drive.state = State.Drive.States.s_midDrive;
-                State.Drive.xSpeed = xSpeed;
+                DriveState.driveState = DriveState.DriveStates.s_midDrive;
+                DriveState.xSpeed = xSpeed;
             },
             (double time) -> {
                 return time > waiter;
             },
             () -> {
-                State.Drive.resetPIDController = true;
-                State.Drive.resetPosition = true;
-                State.Arm.resetPidController = true;
+                DriveState.resetPIDController = true;
+                DriveState.resetPosition = true;
+                ArmState.resetPidController = true;
             },
             phaseName
         );
@@ -131,16 +131,16 @@ public class Autonomous {
     private static PhaseTransition.Phase armAdjust(double diffH, double diffD, double waiter, String phaseName) {
         return new PhaseTransition.Phase(
         () -> {
-            State.Arm.state = State.Arm.States.s_adjustArmPosition;
+            ArmState.armState = ArmState.ArmStates.s_adjustArmPosition;
             ArmMode.adjustArmPosition(diffH, diffD);
     },
     (double time) -> {
         return time > waiter;
     },
     () -> {
-        State.Drive.resetPIDController = true;
-        State.Drive.resetPosition = true;
-        State.Arm.resetPidController = true;
+        DriveState.resetPIDController = true;
+        DriveState.resetPosition = true;
+        ArmState.resetPidController = true;
     },
     phaseName
 );
@@ -150,15 +150,15 @@ public class Autonomous {
     private static PhaseTransition.Phase outtake(double waiter, String phaseName) {
         return new PhaseTransition.Phase(
             () -> {
-                State.intakeState = RollerState.s_outtakeGamePiece;
+                IntakeState.intakeState = IntakeState.RollerStates.s_outtakeGamePiece;
             },
             (double time) -> {
                 return time > waiter;
             },
             () -> {
-                State.Drive.resetPIDController = true;
-                State.Drive.resetPosition = true;
-                State.Arm.resetPidController = true;
+                DriveState.resetPIDController = true;
+                DriveState.resetPosition = true;
+                ArmState.resetPidController = true;
             },
             phaseName
         );
@@ -179,9 +179,9 @@ public class Autonomous {
                     return time > 10;
                 },
                 () -> {
-                    State.Drive.resetPIDController = true;
-                    State.Drive.resetPosition = true;
-                    State.Arm.resetPidController = true;
+                    DriveState.resetPIDController = true;
+                    DriveState.resetPosition = true;
+                    ArmState.resetPidController = true;
                 },
                 "wait"
             ),
@@ -205,15 +205,15 @@ public class Autonomous {
                     return time > 10;
                 },
                 () -> {
-                    State.Drive.resetPIDController = true;
-                    State.Drive.resetPosition = true;
-                    State.Arm.resetPidController = true;
+                    DriveState.resetPIDController = true;
+                    DriveState.resetPosition = true;
+                    ArmState.resetPidController = true;
                 },
                 "wait"
             ),
             basicArmTo(Const.Arm.InitialHeight, Const.Arm.InitialDepth, "move arm to basic position"),
             relayArmTo(Const.GrabGamePiecePhase.armRelayPointHeight, Const.GrabGamePiecePhase.armRelayPointDepth, "move arm to relay point"),
-            moveArmTo(  Const.Calculation.Camera.MiddleGoalHeight - Const.Arm.RootHeightFromGr, State.Arm.TargetDepth.MiddleCube, "move arm to cube goal"),
+            moveArmTo(  Const.Calculation.Camera.MiddleGoalHeight - Const.Arm.RootHeightFromGr, ArmState.TargetDepth.MiddleCube, "move arm to cube goal"),
             releaseHand(2, "release cube")
             // drive(-1, 2, "move to target")
             // driveTo(-3, "move to target")
@@ -223,10 +223,10 @@ public class Autonomous {
             // drive(1, 0.5, "drive to target"),
             //     new PhaseTransition.Phase(
             //             () -> {
-            //                 State.Drive.resetPIDController = true;
-            //                 State.Drive.resetPosition = true;
-            //                 State.Drive.state = State.Drive.States.s_midDrive;
-            //                 State.Drive.xSpeed = -1;
+            //                 DriveState.resetPIDController = true;
+            //                 DriveState.resetPosition = true;
+            //                 DriveState.state = DriveState.States.s_midDrive;
+            //                 DriveState.xSpeed = -1;
             //             },
             //             (double time) -> {
             //                 return time > 2;

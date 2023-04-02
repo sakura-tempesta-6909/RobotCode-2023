@@ -4,8 +4,8 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.States.LimelightState;
-import frc.robot.States.State;
+import frc.robot.states.LimelightState;
+import frc.robot.states.State;
 import frc.robot.subClass.Const;
 
 
@@ -43,23 +43,23 @@ public class Limelight implements Component {
         // limelightから受け取る情報
         // limelightから見たターゲットの角度
         double targetOffsetAngle_Vertical = -tyEntry.getDouble(0.0);
-        State.tx = -txEntry.getDouble(0);
-        State.tv = tvEntry.getDouble(0) != 0;
+        LimelightState.tx = -txEntry.getDouble(0);
+        LimelightState.tv = tvEntry.getDouble(0) != 0;
         
 
         //計算
         double angleToGoalDegrees = Const.Calculation.Limelight.LimelightMountAngleDegrees + targetOffsetAngle_Vertical;
         double angleToGoalRadians =  Math.toRadians(angleToGoalDegrees);
         // ターゲットまでの距離
-        State.limelightToFrontGoal = (Const.Calculation.Limelight.GoalHeight - Const.Calculation.Limelight.LimelightLensHeight) / Math.tan(angleToGoalRadians);
-        State.armToGoal = State.limelightToFrontGoal - Const.Calculation.Limelight.LimelightToArm;
-        State.limelightToBackGoal = State.limelightToFrontGoal + Const.Calculation.Limelight.FrontGoalToBackGoal;
+        LimelightState.limelightToFrontGoal = (Const.Calculation.Limelight.GoalHeight - Const.Calculation.Limelight.LimelightLensHeight) / Math.tan(angleToGoalRadians);
+        LimelightState.armToGoal = LimelightState.limelightToFrontGoal - Const.Calculation.Limelight.LimelightToArm;
+        LimelightState.limelightToBackGoal = LimelightState.limelightToFrontGoal + Const.Calculation.Limelight.FrontGoalToBackGoal;
 
-        SmartDashboard.putNumber("FrontGoal", State.limelightToFrontGoal);
+        SmartDashboard.putNumber("FrontGoal", LimelightState.limelightToFrontGoal);
         SmartDashboard.putNumber("ty", tyEntry.getDouble(0));
-        SmartDashboard.putNumber("BackGoal", State.limelightToBackGoal);
+        SmartDashboard.putNumber("BackGoal", LimelightState.limelightToBackGoal);
         SmartDashboard.putBoolean("Limelight",  tvEntry.getDouble(0) != 0);
-        SmartDashboard.putNumber("armToFrontGoal", State.armToGoal);
+        SmartDashboard.putNumber("armToFrontGoal", LimelightState.armToGoal);
 
     }
 

@@ -2,7 +2,10 @@ package frc.robot.mode;
 
 import java.util.Map;
 
-import frc.robot.States.State;
+import frc.robot.states.ArmState;
+import frc.robot.states.DriveState;
+import frc.robot.states.HandState;
+import frc.robot.states.State;
 import frc.robot.subClass.*;
 
 public class ChargeStationMode extends Mode{
@@ -23,71 +26,71 @@ public class ChargeStationMode extends Mode{
 
     @Override
     public void changeState() {
-        State.Drive.isMotorBrake = true;
-        State.Drive.xSpeed = -1 * driveController.getLeftY();
-        State.Drive.zRotation = -1 * driveController.getRightX();
+        DriveState.isMotorBrake = true;
+        DriveState.xSpeed = -1 * driveController.getLeftY();
+        DriveState.zRotation = -1 * driveController.getRightX();
 
-        State.Drive.state = State.Drive.States.s_fastDrive;
+        DriveState.driveState = DriveState.DriveStates.s_fastDrive;
 
         if (joystick.getRawButton(1)) {
             switch (phase) {
                 case Phase1:
-                    State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.Arm.targetHeight = Const.Arm.InitialHeight;
-                    State.Arm.targetDepth = Const.Arm.InitialDepth;
-                    State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_movetomiddle;
-                    State.Hand.rotateState = State.Hand.RotateState.s_turnHandBack;
-                    if (State.Arm.isAtTarget()) {
-                        State.Hand.targetAngle = State.Hand.actualHandAngle + 90;
+                    ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
+                    ArmState.targetHeight = Const.Arm.InitialHeight;
+                    ArmState.targetDepth = Const.Arm.InitialDepth;
+                    ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
+                    HandState.rotateState = HandState.RotateStates.s_turnHandBack;
+                    if (ArmState.isAtTarget()) {
+                        HandState.targetAngle = HandState.actualHandAngle + 90;
                         phase = GrabGamePiecePhase.Phase2;
                     }
                     break;
                 case Phase2:
-                    State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.Arm.targetHeight = ( Const.Arm.InitialHeight+Const.GrabGamePiecePhase.armCubeIntakeHeight) / 2 +5;
-                    State.Arm.targetDepth = Const.GrabGamePiecePhase.armCubeIntakeDepth;
-                    State.Hand.rotateState = State.Hand.RotateState.s_moveHandToSpecifiedAngle;
-                    if (State.Arm.isAtTarget()) {
+                    ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
+                    ArmState.targetHeight = ( Const.Arm.InitialHeight+Const.GrabGamePiecePhase.armCubeIntakeHeight) / 2 +5;
+                    ArmState.targetDepth = Const.GrabGamePiecePhase.armCubeIntakeDepth;
+                    HandState.rotateState = HandState.RotateStates.s_moveHandToSpecifiedAngle;
+                    if (ArmState.isAtTarget()) {
                         phase = GrabGamePiecePhase.Phase3;
                     }
                     break;
                 case Phase3:
-                    State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.Arm.targetHeight = Const.GrabGamePiecePhase.armCubeIntakeHeight;
-                    State.Arm.targetDepth = Const.GrabGamePiecePhase.armCubeIntakeDepth;
+                    ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
+                    ArmState.targetHeight = Const.GrabGamePiecePhase.armCubeIntakeHeight;
+                    ArmState.targetDepth = Const.GrabGamePiecePhase.armCubeIntakeDepth;
                     break;
             }
 
           
         } else if (joystick.getRawButton(2)) {
             // すべてBasicPositionに戻る
-            State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-            State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_movetomiddle;
-            State.Hand.rotateState = State.Hand.RotateState.s_turnHandBack;
-            State.Arm.targetHeight = Const.Arm.InitialHeight;
-            State.Arm.targetDepth = Const.Arm.InitialDepth;
+            ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
+            ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
+            HandState.rotateState = HandState.RotateStates.s_turnHandBack;
+            ArmState.targetHeight = Const.Arm.InitialHeight;
+            ArmState.targetDepth = Const.Arm.InitialDepth;
         }
 
         if (joystick.getRawButtonPressed(1)) {
-            State.Arm.resetPidController = true;
+            ArmState.resetPidController = true;
             phase = GrabGamePiecePhase.Phase1;
         } else if (joystick.getRawButtonPressed(2)) {
-            State.Arm.resetPidController = true;
+            ArmState.resetPidController = true;
         }
 
           // ターゲット座標からターゲットの角度を計算する
-          Map<String, Double> targetAngles = Tools.calculateAngles(State.Arm.targetDepth, State.Arm.targetHeight);
+          Map<String, Double> targetAngles = Tools.calculateAngles(ArmState.targetDepth, ArmState.targetHeight);
           Double target = targetAngles.get("RootAngle");
           if(target != null) {
-              State.Arm.targetRootAngle = target;
+              ArmState.targetRootAngle = target;
           } else {
-              State.Arm.targetRootAngle = State.Arm.actualRootAngle;
+              ArmState.targetRootAngle = ArmState.actualRootAngle;
           }
           target = targetAngles.get("JointAngle");
           if(target != null) {
-              State.Arm.targetJointAngle = target;
+              ArmState.targetJointAngle = target;
           } else {
-              State.Arm.targetJointAngle = State.Arm.actualJointAngle;
+              ArmState.targetJointAngle = ArmState.actualJointAngle;
           }
     }
     enum GrabGamePiecePhase {

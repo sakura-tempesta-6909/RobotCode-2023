@@ -6,7 +6,8 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
-import frc.robot.States.State;
+import frc.robot.states.HandState;
+import frc.robot.states.State;
 import frc.robot.subClass.Const;
 
 
@@ -58,7 +59,7 @@ public class Hand implements Component{
     public void readSensors() {
         // TODO Auto-generated method stub
         //手首が回った角度
-        State.Hand.actualHandAngle = calculateHandAngleFromRotation(handRotationEncoder.getPosition());
+        HandState.actualHandAngle = calculateHandAngleFromRotation(handRotationEncoder.getPosition());
     }
     /**
      * 回転数から度数への変換
@@ -143,19 +144,19 @@ public class Hand implements Component{
     }
     /** 手首を所定の位置（元の位置）に戻す*/
     public void bringBackHand() {
-       pidControlHand(basicPositionCalculation(State.Hand.actualHandAngle));
+       pidControlHand(basicPositionCalculation(HandState.actualHandAngle));
     }
     /** 手首を所定の位置に動かす*/
     public void moveHandToSpecifiedAngle() {
-        pidControlHand(State.Hand.targetAngle);
+        pidControlHand(HandState.targetAngle);
     }
     @Override
     public void applyState() {
-        if(State.Hand.isResetHandPID) {
+        if(HandState.isResetHandPID) {
             handRotationPidController.setIAccum(0);
         }
 
-        switch(State.Hand.grabHandState) {
+        switch(HandState.grabHandState) {
             case s_grabHand:
                 grabHand();
                 break;
@@ -164,7 +165,7 @@ public class Hand implements Component{
                 break;            
         }
         
-        switch(State.Hand.rotateState) {
+        switch(HandState.rotateState) {
             case s_rightRotateHand:
                 rotateHand();
                 break;
