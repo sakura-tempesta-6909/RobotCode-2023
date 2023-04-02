@@ -193,7 +193,8 @@ public class State {
         public static boolean resetEncoder;
 
         /** 中継地点のHeightとDepthを一度は超えたか */
-        public static boolean relayPositionOver;
+        public static boolean relayToGoalOver;
+        public static boolean relayToInitOver;
 
         public static class TargetDepth {
             public static double TopCorn;
@@ -241,7 +242,8 @@ public class State {
 
             moveLeftAndRightMotor = 0.0;
 
-            relayPositionOver = true;
+            relayToGoalOver = true;
+            relayToInitOver = true;
         }
 
 

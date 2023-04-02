@@ -266,7 +266,8 @@ public class Arm implements Component {
         State.Arm.jointMotorFeedforward = Tools.changeTorqueToMotorInput(jointRequiredTorque);
         State.Arm.rootMotorFeedforward = Tools.changeTorqueToMotorInput(rootRequiredTorque);
 
-        State.Arm.relayPositionOver |= Util.Calculate.relayReach(State.Arm.actualHeight, State.Arm.actualDepth);
+        State.Arm.relayToGoalOver |= Util.Calculate.isOverRelayToGoal(State.Arm.actualHeight, State.Arm.actualDepth);
+        State.Arm.relayToInitOver |= Util.Calculate.isOverRelayToInit(State.Arm.actualHeight, State.Arm.actualDepth);
         
         SmartDashboard.putNumber("actual leftright angle", State.Arm.actualLeftAndRightAngle);
 

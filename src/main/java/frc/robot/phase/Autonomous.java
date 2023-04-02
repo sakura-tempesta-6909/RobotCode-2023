@@ -44,7 +44,7 @@ public class Autonomous {
 
             },
             (double time) -> {
-                return Util.Calculate.relayReach(State.Arm.actualHeight, State.Arm.actualDepth);
+                return Util.Calculate.isOverRelayToGoal(State.Arm.actualHeight, State.Arm.actualDepth);
             },
             () -> {
                 State.Drive.resetPIDController = true;
@@ -214,7 +214,7 @@ public class Autonomous {
                 "wait"
             ),
             basicArmTo(ArmConst.InitialHeight, ArmConst.InitialDepth, "move arm to basic position"),
-            relayArmTo(GrabGamePiecePhaseConst.armRelayPointHeight, GrabGamePiecePhaseConst.armRelayPointDepth, "move arm to relay point"),
+            relayArmTo(ArmConst.RelayPointToGoalHeight, ArmConst.RelayPointToGoalDepth, "move arm to relay point"),
             moveArmTo(  CameraConst.MiddleGoalHeight - ArmConst.RootHeightFromGr, State.Arm.TargetDepth.MiddleCube, "move arm to cube goal"),
             releaseHand(2, "release cube")
             // drive(-1, 2, "move to target")

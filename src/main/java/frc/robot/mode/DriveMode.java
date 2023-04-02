@@ -2,7 +2,6 @@ package frc.robot.mode;
 
 import java.util.Map;
 
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.States.LimelightState;
 import frc.robot.States.State;
@@ -94,8 +93,13 @@ public class DriveMode extends Mode {
 
         if (joystick.getRawButton(2)) {
             State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-            State.Arm.targetHeight = ArmConst.InitialHeight;
-            State.Arm.targetDepth = ArmConst.InitialDepth;
+            if (State.Arm.relayToInitOver) {
+                State.Arm.targetHeight = ArmConst.InitialHeight;
+                State.Arm.targetDepth = ArmConst.InitialDepth;
+            } else {
+                State.Arm.targetHeight = ArmConst.RelayPointToInitHeight;
+                State.Arm.targetDepth = ArmConst.RelayPointToInitDepth;
+            }
             State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_movetomiddle;
             State.Hand.rotateState = State.Hand.RotateState.s_turnHandBack;
         } else if (joystick.getRawButton(12)) {
@@ -104,8 +108,13 @@ public class DriveMode extends Mode {
             switch (phase) {
                 case Phase1:
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.Arm.targetHeight = ArmConst.InitialHeight;
-                    State.Arm.targetDepth = ArmConst.InitialDepth;
+                    if (State.Arm.relayToInitOver) {
+                        State.Arm.targetHeight = ArmConst.InitialHeight;
+                        State.Arm.targetDepth = ArmConst.InitialDepth;
+                    } else {
+                        State.Arm.targetHeight = ArmConst.RelayPointToInitHeight;
+                        State.Arm.targetDepth = ArmConst.RelayPointToInitDepth;
+                    }
                     State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_movetomiddle;
                     State.Hand.rotateState = State.Hand.RotateState.s_turnHandBack;
                     State.Hand.grabHandState = State.GrabHandState.s_releaseHand;
@@ -146,8 +155,13 @@ public class DriveMode extends Mode {
                 case Phase5:
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
                     State.Hand.rotateState = State.Hand.RotateState.s_turnHandBack;
-                    State.Arm.targetHeight = ArmConst.InitialHeight;
-                    State.Arm.targetDepth = ArmConst.InitialDepth;
+                    if (State.Arm.relayToInitOver) {
+                        State.Arm.targetHeight = ArmConst.InitialHeight;
+                        State.Arm.targetDepth = ArmConst.InitialDepth;
+                    } else {
+                        State.Arm.targetHeight = ArmConst.RelayPointToInitHeight;
+                        State.Arm.targetDepth = ArmConst.RelayPointToInitDepth;
+                    }
                     break;
             }
         } else if (joystick.getRawButton(11)) {
@@ -156,8 +170,13 @@ public class DriveMode extends Mode {
             switch (phase) {
                 case Phase1:
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.Arm.targetHeight = ArmConst.InitialHeight;
-                    State.Arm.targetDepth = ArmConst.InitialDepth;
+                    if (State.Arm.relayToInitOver) {
+                        State.Arm.targetHeight = ArmConst.InitialHeight;
+                        State.Arm.targetDepth = ArmConst.InitialDepth;
+                    } else {
+                        State.Arm.targetHeight = ArmConst.RelayPointToInitHeight;
+                        State.Arm.targetDepth = ArmConst.RelayPointToInitDepth;
+                    }
                     // State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_movetomiddle;
                     State.Hand.rotateState = State.Hand.RotateState.s_turnHandBack;
                     State.Hand.grabHandState = State.GrabHandState.s_grabHand;
@@ -223,8 +242,13 @@ public class DriveMode extends Mode {
                 case Phase8:
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
                     State.Hand.rotateState = State.Hand.RotateState.s_turnHandBack;
-                    State.Arm.targetHeight = ArmConst.InitialHeight;
-                    State.Arm.targetDepth = ArmConst.InitialDepth;
+                    if (State.Arm.relayToInitOver) {
+                        State.Arm.targetHeight = ArmConst.InitialHeight;
+                        State.Arm.targetDepth = ArmConst.InitialDepth;
+                    } else {
+                        State.Arm.targetHeight = ArmConst.RelayPointToInitHeight;
+                        State.Arm.targetDepth = ArmConst.RelayPointToInitDepth;
+                    }
                     break;
             }   
         }else if (joystick.getRawButton(10)) {
@@ -238,8 +262,13 @@ public class DriveMode extends Mode {
                     break;
                 case Phase2:
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.Arm.targetHeight = ArmConst.InitialHeight;
-                    State.Arm.targetDepth = ArmConst.InitialDepth;
+                    if (State.Arm.relayToInitOver) {
+                        State.Arm.targetHeight = ArmConst.InitialHeight;
+                        State.Arm.targetDepth = ArmConst.InitialDepth;
+                    } else {
+                        State.Arm.targetHeight = ArmConst.RelayPointToInitHeight;
+                        State.Arm.targetDepth = ArmConst.RelayPointToInitDepth;
+                    }
                     State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_movetomiddle;
                     State.Hand.rotateState = State.Hand.RotateState.s_turnHandBack;
                     State.Hand.grabHandState = State.GrabHandState.s_grabHand;
@@ -249,9 +278,9 @@ public class DriveMode extends Mode {
                     break;
                 case Phase3:
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.Arm.targetHeight = GrabGamePiecePhaseConst.armRelayPointHeight;
-                    State.Arm.targetDepth = GrabGamePiecePhaseConst.armRelayPointDepth;
-                    if (Util.Calculate.relayReach(State.Arm.actualHeight, State.Arm.actualDepth)) {
+                    State.Arm.targetHeight = ArmConst.RelayPointToGoalHeight;
+                    State.Arm.targetDepth = ArmConst.RelayPointToGoalDepth;
+                    if (Util.Calculate.isOverRelayToGoal(State.Arm.actualHeight, State.Arm.actualDepth)) {
                         phase = GrabGamePiecePhase.Phase4;
                     }
                     break;
@@ -266,8 +295,13 @@ public class DriveMode extends Mode {
             switch (phase) {
                 case Phase1:
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.Arm.targetHeight = ArmConst.InitialHeight;
-                    State.Arm.targetDepth = ArmConst.InitialDepth;
+                    if (State.Arm.relayToInitOver) {
+                        State.Arm.targetHeight = ArmConst.InitialHeight;
+                        State.Arm.targetDepth = ArmConst.InitialDepth;
+                    } else {
+                        State.Arm.targetHeight = ArmConst.RelayPointToInitHeight;
+                        State.Arm.targetDepth = ArmConst.RelayPointToInitDepth;
+                    }
                     State.Hand.rotateState = State.Hand.RotateState.s_turnHandBack;
                     State.Hand.grabHandState = State.GrabHandState.s_releaseHand;
                     if (State.Arm.isAtTarget()) {
@@ -305,8 +339,13 @@ public class DriveMode extends Mode {
                 case Phase5:
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
                     State.Hand.rotateState = State.Hand.RotateState.s_turnHandBack;
-                    State.Arm.targetHeight = ArmConst.InitialHeight;
-                    State.Arm.targetDepth = ArmConst.InitialDepth;
+                    if (State.Arm.relayToInitOver) {
+                        State.Arm.targetHeight = ArmConst.InitialHeight;
+                        State.Arm.targetDepth = ArmConst.InitialDepth;
+                    } else {
+                        State.Arm.targetHeight = ArmConst.RelayPointToInitHeight;
+                        State.Arm.targetDepth = ArmConst.RelayPointToInitDepth;
+                    }
                     break;
             }
        } else 

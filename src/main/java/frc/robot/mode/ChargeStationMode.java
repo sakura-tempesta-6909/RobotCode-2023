@@ -35,8 +35,13 @@ public class ChargeStationMode extends Mode{
             switch (phase) {
                 case Phase1:
                     State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
-                    State.Arm.targetHeight = ArmConst.InitialHeight;
-                    State.Arm.targetDepth = ArmConst.InitialDepth;
+                    if (State.Arm.relayToInitOver) {
+                        State.Arm.targetHeight = ArmConst.InitialHeight;
+                        State.Arm.targetDepth = ArmConst.InitialDepth;
+                    } else {
+                        State.Arm.targetHeight = ArmConst.RelayPointToInitHeight;
+                        State.Arm.targetDepth = ArmConst.RelayPointToInitDepth;
+                    }
                     State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_movetomiddle;
                     State.Hand.rotateState = State.Hand.RotateState.s_turnHandBack;
                     if (State.Arm.isAtTarget()) {
@@ -66,8 +71,13 @@ public class ChargeStationMode extends Mode{
             State.Arm.state = State.Arm.States.s_moveArmToSpecifiedPosition;
             State.moveLeftAndRightArmState = State.MoveLeftAndRightArmState.s_movetomiddle;
             State.Hand.rotateState = State.Hand.RotateState.s_turnHandBack;
-            State.Arm.targetHeight = ArmConst.InitialHeight;
-            State.Arm.targetDepth = ArmConst.InitialDepth;
+            if (State.Arm.relayToInitOver) {
+                State.Arm.targetHeight = ArmConst.InitialHeight;
+                State.Arm.targetDepth = ArmConst.InitialDepth;
+            } else {
+                State.Arm.targetHeight = ArmConst.RelayPointToInitHeight;
+                State.Arm.targetDepth = ArmConst.RelayPointToInitDepth;
+            }
         }
 
         if (joystick.getRawButtonPressed(1)) {
