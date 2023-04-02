@@ -2,6 +2,7 @@ package frc.robot.states;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.component.Camera;
 import frc.robot.mode.*;
 import frc.robot.subClass.Const;
 
@@ -12,9 +13,6 @@ public class State {
     public static Modes mode;
     /** Autonomousの遷移の種類　[ A, B, C ] のいずれか */
     public static String autonomousPhaseTransType = "C";
-
-
-
     public static Map<String, Double> voltage = new HashMap<>();
 
     /**
@@ -28,6 +26,11 @@ public class State {
         State.mode = State.Modes.k_drive;
 
         Mode.addController(driveController, operateController, joystick);
+        ArmState.StatesInit();
+        CameraState.StateInit();
+        DriveState.StatesInit();
+        HandState.StateInit();
+        IntakeState.StateInit();
         LimelightState.StateInit();
 
         voltage = new HashMap<>();
@@ -39,6 +42,11 @@ public class State {
      * コントローラーから手を離している間の状態
      */
     public static void StateReset() {
+        ArmState.StatesReset();
+        CameraState.StateReset();
+        DriveState.StatesReset();
+        HandState.StateReset();
+        IntakeState.StateReset();
         LimelightState.StateReset();
     }
 
