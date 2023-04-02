@@ -1,7 +1,5 @@
 package frc.robot.States;
 
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.consts.ArmConst;
@@ -173,11 +171,13 @@ public class State {
 
         public static double targetMoveLeftAndRightAngle;
         public static boolean isMoveLeftAndRightEncoderReset;
+
         /**
          * アームがターゲット位置にいるかを判定
          * targetAngleとactualAngleの差がPIDAngleTolerance未満でtrue
+         *
          * @return jointMotorとrootMotorの両方がatSetpointかどうか
-         * */
+         */
         public static boolean isAtTarget() {
             boolean isDepthAtSetpoint = Math.abs(State.Arm.targetDepth - State.Arm.actualDepth) < ArmConst.PIDAngleTolerance;
             boolean isHeightMotorAtSetpoint = Math.abs(State.Arm.targetHeight - State.Arm.actualHeight) < ArmConst.PIDAngleTolerance;
@@ -192,6 +192,9 @@ public class State {
         public static boolean resetPidController;
         /** エンコーダーをリセット（その時点の位置を0と定める） */
         public static boolean resetEncoder;
+
+        /** 中継地点のHeightとDepthを一度は超えたか */
+        public static boolean relayPositionOver;
 
         public static class TargetDepth {
             public static double TopCorn;
@@ -238,6 +241,8 @@ public class State {
             jointMotorFeedforward = 0.0;
 
             moveLeftAndRightMotor = 0.0;
+
+            relayPositionOver = true;
         }
 
 
@@ -248,13 +253,13 @@ public class State {
             isMoveLeftAndRightEncoderReset = false;
 
             // TODO どれくらい引くかを計測する
-            TargetDepth.TopCorn = 101.0 ;
+            TargetDepth.TopCorn = 101.0;
             TargetDepth.MiddleCorn = 58.0 + 20;
             TargetDepth.BottomCorn = 30.0 + 10;
 
-            TargetDepth.TopCube = 101.0 -10;
-            TargetDepth.MiddleCube = 58.0 + 20;
-            TargetDepth.BottomCube = 30.0 + 10;
+            TargetDepth.TopCube = 101.0 + 15.0;
+            TargetDepth.MiddleCube = 58.0 + 25.0;
+            TargetDepth.BottomCube = 30.0 + 15.0;
 
             TargetDepth.SubStation = 36 + 20;
         }

@@ -29,6 +29,14 @@ public class ArmConst {
      */
     public static final double HeadArmBarycenter = 45.43;
     /**
+     * ハンドの折れた角度（折れ具合）[deg]
+     * */
+    public static final double HandFoldAngle = 55.0;
+    /**
+     * ハンドの長さ[cm]（ハンドの付け根から先端まで）
+     * */
+    public static final double HandLength = 46.0;
+    /**
      * 根本アームの重さ[N] 注意 - [N]=[kg*9.8]
      */
     public static final double RootArmMass = 3.302 * 9.8;
