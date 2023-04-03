@@ -18,6 +18,8 @@ import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subClass.Util;
 
+import java.util.Map;
+
 
 public class Arm implements Component {
     private final CANSparkMax rootMotor, jointMotor;
@@ -96,7 +98,7 @@ public class Arm implements Component {
      */
     private void pidControlArm(double targetRootAngle, double targetJointAngle) {
         if(ArmState.isAtTarget()) {
-            fixPositionWithFF();
+            fixPosition();
         } else {
             // feedforwardなし
             pidForRoot.setReference(calculateRootRotationFromAngle(targetRootAngle), CANSparkMax.ControlType.kPosition);
@@ -142,24 +144,12 @@ public class Arm implements Component {
 
     /**
      * アームをその位置で止める
-     * feedforwardが必要かに応じてコメントアウトを外す
+     * pidをVelocityで0を目標にする
      * s_fixArmPositionで実行
      * */
-    private void fixPositionWithFF() {
-        // adjustArmPosition(ArmState.actualRootAngle, ArmState.actualJointAngle);
-        // feedforwardなし
-        // rootMotor.set(0.0);
-        // jointMotor.set(0.0);
-
-        // 常に一定の数値をfeedforwardとして入れる
-//        rootMotor.set(ArmConst.ConstantRootMotorFF);
-
-        // feedforwardあり
-        // rootMotor.set(ArmState.rootMotorFeedforward);
-//        jointMotor.set(ArmState.jointMotorFeedforward);
+    private void fixPosition() {
         pidForRoot.setReference(0, CANSparkMax.ControlType.kVelocity ,2);
         pidForJoint.setReference(0, CANSparkMax.ControlType.kVelocity ,2);
-
     }
 
     /**
@@ -290,6 +280,20 @@ public class Arm implements Component {
 
     @Override
     public void applyState() {
+        // ターゲット座標からターゲットの角度を計算する
+        Map<String, Double> targetAngles = Tools.calculateAngles(ArmState.targetDepth, ArmState.targetHeight);
+        Double target = targetAngles.get("RootAngle");
+        if (target != null) {
+            ArmState.targetRootAngle = target;
+        } else {
+            ArmState.targetRootAngle = ArmState.actualRootAngle;
+        }
+        target = targetAngles.get("JointAngle");
+        if (target != null) {
+            ArmState.targetJointAngle = target;
+        } else {
+            ArmState.targetJointAngle = ArmState.actualJointAngle;
+        }
 
         if (ArmState.resetPidController) {
             pidForRoot.setIAccum(0.0);
@@ -316,7 +320,7 @@ public class Arm implements Component {
                 rotationControlArm(ArmState.jointSpeed, ArmState.rootSpeed);
                 break;
             case s_fixArmPosition:
-                fixPositionWithFF();
+                fixPosition();
                 break;
         }
 
