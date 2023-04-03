@@ -29,7 +29,11 @@ public class State {
 
         Mode.addController(driveController, operateController, joystick);
 
-    
+        ArmState.StatesInit();
+        CameraState.StateInit();
+        DriveState.StatesInit();
+        HandState.StateInit();
+        IntakeState.StateInit();
         LimelightState.StateInit();
 
         voltage = new HashMap<>();
@@ -41,7 +45,11 @@ public class State {
      * コントローラーから手を離している間の状態
      */
     public static void StateReset() {
-    
+        ArmState.StatesReset();
+        CameraState.StateReset();
+        DriveState.StatesReset();
+        HandState.StateReset();
+        IntakeState.StateReset();
         LimelightState.StateReset();
     }
 
