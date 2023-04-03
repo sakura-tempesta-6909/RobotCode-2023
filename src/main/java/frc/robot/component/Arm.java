@@ -98,7 +98,6 @@ public class Arm implements Component {
     private void pidControlArm(double targetRootAngle, double targetJointAngle) {
         if(ArmState.isAtTarget()) {
             fixPositionWithFF();
-            fixLeftAndRightArmPositionWithPID();
         } else {
             // feedforwardなし
             pidForRoot.setReference(calculateRootRotationFromAngle(targetRootAngle), CANSparkMax.ControlType.kPosition);
