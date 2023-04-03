@@ -136,10 +136,10 @@ public class ArmConst {
      */
     public static final double IMax_J_1 = 10e5 * 20 / 3;
 
-    public static final double P_R_2 = 0.00031;
+    public static final double P_R_2 = 0.00016;//31
     public static final double I_R_2 = 0;
     public static final double D_R_2 = 0;
-    public static final double P_J_2 = 0.0016;
+    public static final double P_J_2 = 0.00008;
     public static final double I_J_2 = 0.0000015;
     public static final double D_J_2 = 0;
 
