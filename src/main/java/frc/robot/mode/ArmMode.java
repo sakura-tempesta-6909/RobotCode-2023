@@ -114,6 +114,7 @@ public class ArmMode extends Mode {
             ArmState.targetHeight = ArmState.actualHeight;
             ArmState.targetDepth = ArmState.actualDepth;
             ArmState.relayToGoalOver = false;
+            ArmState.relayToInitOver = false;
         }
 
         if (getSeveralRawButton(new int[]{7, 8, 9, 10, 11, 12})) {

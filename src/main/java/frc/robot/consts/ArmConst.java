@@ -242,7 +242,7 @@ public class ArmConst {
     /**
      * アームの理想的な高さ
      */
-    public static final double InitialHeight = -110;
+    public static final double InitialHeight = -100;
     /**
      * アームの理想的な奥行き
      */
