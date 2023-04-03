@@ -86,10 +86,11 @@ public class ArmState {
         /** アームを左に動かす */
         s_moveLeftMotor,
         /** アームを固定する */
-        s_fixLeftAndRightMotor,
+        s_stopLeftAndRightMotor,
         /** アームを真ん中に動かす */
         s_movetomiddle,
         s_limelightTracking,
+        s_fixLeftAndRightArm,
 
     }
 
@@ -119,7 +120,7 @@ public class ArmState {
 
     public static void StatesReset() {
         armState = ArmStates.s_fixArmPosition;
-        moveLeftAndRightArmState = MoveLeftAndRightArmState.s_fixLeftAndRightMotor;
+        moveLeftAndRightArmState = MoveLeftAndRightArmState.s_fixLeftAndRightArm;
         resetPidController = false;
         resetEncoder = false;
         isMoveLeftAndRightEncoderReset = false;

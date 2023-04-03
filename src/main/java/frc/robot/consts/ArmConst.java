@@ -174,6 +174,10 @@ public class ArmConst {
      * アームを左右に動かすモーターの積分値の最大
      */
     public static final double IMax_MID = 0.0;
+
+    public static final double P_MID_1 = 0.0;
+    public static final double I_MID_1 = 0.0;
+    public static final double D_MID_1 = 0.0;
     /**
      * handのモーターののPIDのP
      */
