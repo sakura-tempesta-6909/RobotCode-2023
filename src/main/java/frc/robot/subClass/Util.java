@@ -14,10 +14,6 @@ public class Util {
         return SmartDashboard.getString(key, "None");
     }
 
-    // public static Double getConsole(String key, Double defaultData) {
-    //     return SmartDashboard.getData(key);
-    // }
-
     public static void sendConsole(String key, String text) {
         // System.out.println(key + ":" + text);
         SmartDashboard.putString(key, text);
