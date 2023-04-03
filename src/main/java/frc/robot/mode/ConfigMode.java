@@ -1,6 +1,8 @@
 package frc.robot.mode;
 
-import frc.robot.States.State;
+import frc.robot.states.ArmState;
+import frc.robot.states.IntakeState;
+import frc.robot.states.State;
 
 public class ConfigMode extends Mode{
 
@@ -18,17 +20,17 @@ public class ConfigMode extends Mode{
     @Override
     public void changeState() {
         if (driveController.getXButtonPressed()) {
-            State.Arm.resetEncoder = true;
+            ArmState.resetEncoder = true;
         }
 
         if (driveController.getYButton()) {
-            State.isCompressorEnable = false;
+            IntakeState.isCompressorEnable = false;
         } else if (driveController.getAButton()) {
-            State.isCompressorEnable = true;
+            IntakeState.isCompressorEnable = true;
         }
 
         if (driveController.getAButton()) {
-            State.Arm.isMoveLeftAndRightEncoderReset = true;
+            ArmState.isMoveLeftAndRightEncoderReset = true;
         }
     }
 }

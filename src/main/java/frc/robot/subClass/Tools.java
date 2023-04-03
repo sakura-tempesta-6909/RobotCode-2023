@@ -1,6 +1,5 @@
 package frc.robot.subClass;
-
-import frc.robot.States.State;
+import frc.robot.states.State;
 import frc.robot.consts.ArmConst;
 
 import java.util.HashMap;
@@ -180,7 +179,7 @@ public class Tools {
      * NEOモーターのトルクとRPMの関係を利用 <a href="https://www.revrobotics.com/content/docs/REV-21-1650-DS.pdf">NEOのデータシート</a>
      * [注意] NEOモーターに合わせて出力する
      *
-     * @param torque トルク[N*cm] = モーメント / Const.Arms.[Under/Top]MotorGearRatio（ギア比に合わせて入力）
+     * @param torque トルク[N*cm] = モーメント / ArmConsts.[Under/Top]MotorGearRatio（ギア比に合わせて入力）
      * @return motor.setへの入力[-1.0, 1.0] (CANSparkMax)
      */
     public static double changeTorqueToMotorInput(double torque) {
@@ -190,8 +189,7 @@ public class Tools {
 
     public static void main(String[] args) {
         State.StateReset();
-
-        double targetDepth = -10;//State.Arm.TargetDepth.TopCorn;
+        double targetDepth = -10;//ArmState.TargetDepth.TopCorn;
         double targetHeight = -60;//LimelightConst.TopGoalHeight - ArmConst.RootHeightFromGr;
         System.out.println(targetDepth);
         System.out.println(targetHeight);

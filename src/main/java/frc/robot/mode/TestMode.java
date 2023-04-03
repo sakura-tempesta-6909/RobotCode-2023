@@ -1,6 +1,6 @@
 package frc.robot.mode;
 
-import frc.robot.States.State;
+import frc.robot.states.DriveState;
 
 public class TestMode extends Mode{
     @Override
@@ -10,8 +10,8 @@ public class TestMode extends Mode{
     public void changeState() {
 
         if(driveController.getXButton()){
-            State.Drive.state=State.Drive.States.s_pidDrive;
-            State.Drive.targetMeter = State.Drive.leftMeter;
+            DriveState.driveState =DriveState.DriveStates.s_pidDrive;
+            DriveState.targetMeter = DriveState.leftMeter;
         }
     }
 }

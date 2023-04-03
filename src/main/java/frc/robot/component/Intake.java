@@ -7,10 +7,10 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
-import frc.robot.States.State;
+import frc.robot.states.IntakeState;
+import frc.robot.states.State;
 import frc.robot.consts.DriveConst;
 import frc.robot.consts.IntakeConst;
-import frc.robot.subClass.Const;
 
 public class Intake implements Component{
     private final Solenoid intakeSolenoid;
@@ -102,13 +102,13 @@ public class Intake implements Component{
 
     @Override
     public void applyState() {
-        if (State.isCompressorEnable) {
+        if (IntakeState.isCompressorEnable) {
             compressor.enableDigital();
         } else {
             compressor.disable();
         }
 
-        switch(State.intakeState){
+        switch(IntakeState.intakeState){
             case s_outtakeGamePiece:
                  outtakeGamePiece();
                  break;
@@ -120,7 +120,7 @@ public class Intake implements Component{
                  break;
         }
         
-        switch(State.intakeExtensionState){
+        switch(IntakeState.intakeExtensionState){
             case s_openIntake:
                 openIntake();
                 break;

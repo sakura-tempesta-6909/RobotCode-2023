@@ -1,7 +1,8 @@
 package frc.robot.component;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.States.State;
+import frc.robot.states.CameraState;
+import frc.robot.states.State;
 import frc.robot.consts.CameraConst;
 
 public class Camera implements Component {
@@ -11,20 +12,19 @@ public class Camera implements Component {
 
     public void calculation() {
         //角度を求める
-        State.cameraCenterWidth = SmartDashboard.getNumber("CenterX", 0);
-        State.cameraCenterHeight = SmartDashboard.getNumber("CenterY", 0);
-        State.aprilTagAngleWidth = Math.toDegrees(Math.atan(State.cameraCenterWidth  / CameraConst.FocalLengthWeight));
-        State.aprilTagAngleHeight = Math.toDegrees(Math.atan(State.cameraCenterHeight / CameraConst.FocalLengthHeight));
-        SmartDashboard.putNumber("AngleX", State.aprilTagAngleWidth);
-        SmartDashboard.putNumber("AngleY", State.aprilTagAngleHeight);
+        CameraState.cameraCenterWidth = SmartDashboard.getNumber("CenterX", 0);
+        CameraState.aprilTagAngleWidth = Math.toDegrees(Math.atan(CameraState.cameraCenterWidth  / CameraConst.FocalLengthWeight));
+        CameraState.aprilTagAngleHeight = Math.toDegrees(Math.atan(CameraState.cameraCenterHeight / CameraConst.FocalLengthHeight));
+        SmartDashboard.putNumber("AngleX", CameraState.aprilTagAngleWidth);
+        SmartDashboard.putNumber("AngleY", CameraState.aprilTagAngleHeight);
 
         //距離を求める
-        double angleToGoalDegrees = CameraConst.CameraMountAngleDegrees + State.aprilTagAngleHeight;
+        double angleToGoalDegrees = CameraConst.CameraMountAngleDegrees + CameraState.aprilTagAngleHeight;
         double angleToGoalRadians = angleToGoalDegrees * (Math.PI / 180);
-        State.cameraToTag = (CameraConst.GoalHeight - CameraConst.CameraLensHeight) / Math.tan(angleToGoalRadians);
-        State.armToTag = State.cameraToTag - CameraConst.CameraToArm;
-        SmartDashboard.putNumber("cameraToTag", State.cameraToTag);
-        SmartDashboard.putNumber("armToTag", State.armToTag);
+        CameraState.cameraToTag = (CameraConst.GoalHeight - CameraConst.CameraLensHeight) / Math.tan(angleToGoalRadians);
+        CameraState.armToTag = CameraState.cameraToTag - CameraConst.CameraToArm;
+        SmartDashboard.putNumber("cameraToTag", CameraState.cameraToTag);
+        SmartDashboard.putNumber("armToTag", CameraState.armToTag);
 
 
     }
