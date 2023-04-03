@@ -60,8 +60,13 @@ public class Arm implements Component {
         pidForJoint.setIMaxAccum(ArmConst.IMax_J_1, 1);
         pidForJoint.setOutputRange(-.5, .5, 1);
 
+        pidForRoot.setP(ArmConst.P_R_2, 2);
+        pidForRoot.setI(ArmConst.I_R_2, 2);
+        pidForRoot.setD(ArmConst.D_R_2, 2);
 
-
+        pidForJoint.setP(ArmConst.P_J_2, 2);
+        pidForJoint.setI(ArmConst.I_J_2, 2);
+        pidForJoint.setD(ArmConst.D_J_2, 2);
 
         moveLeftAndRightMotor = new CANSparkMax(ArmConst.Ports.MoveLeftAndRightMotor, MotorType.kBrushless);
         leftAndRightArmPidController = moveLeftAndRightMotor.getPIDController();
@@ -149,11 +154,14 @@ public class Arm implements Component {
         // jointMotor.set(0.0);
 
         // 常に一定の数値をfeedforwardとして入れる
-        rootMotor.set(ArmConst.ConstantRootMotorFF);
+//        rootMotor.set(ArmConst.ConstantRootMotorFF);
 
         // feedforwardあり
         // rootMotor.set(ArmState.rootMotorFeedforward);
-        jointMotor.set(ArmState.jointMotorFeedforward);
+//        jointMotor.set(ArmState.jointMotorFeedforward);
+        pidForRoot.setReference(0, CANSparkMax.ControlType.kVelocity ,2);
+        pidForJoint.setReference(0, CANSparkMax.ControlType.kVelocity ,2);
+
     }
 
     private void fixLeftAndRightArmPositionWithPID() {
