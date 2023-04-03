@@ -54,7 +54,8 @@ public class ArmState {
     /** エンコーダーをリセット（その時点の位置を0と定める） */
     public static boolean resetEncoder;
 
-    public static boolean relayPositionOver;
+    public static boolean relayToGoalOver;
+    public static boolean relayToInitOver;
 
     public static class TargetDepth {
         public static double TopCorn;
@@ -86,10 +87,11 @@ public class ArmState {
         /** アームを左に動かす */
         s_moveLeftMotor,
         /** アームを固定する */
-        s_fixLeftAndRightMotor,
+        s_stopLeftAndRightMotor,
         /** アームを真ん中に動かす */
         s_movetomiddle,
         s_limelightTracking,
+        s_fixLeftAndRightArm,
 
     }
 
@@ -114,12 +116,15 @@ public class ArmState {
         jointMotorFeedforward = 0.0;
 
         moveLeftAndRightMotor = 0.0;
+
+        relayToGoalOver = true;
+        relayToInitOver = true;
     }
 
 
     public static void StatesReset() {
         armState = ArmStates.s_fixArmPosition;
-        moveLeftAndRightArmState = MoveLeftAndRightArmState.s_fixLeftAndRightMotor;
+        moveLeftAndRightArmState = MoveLeftAndRightArmState.s_fixLeftAndRightArm;
         resetPidController = false;
         resetEncoder = false;
         isMoveLeftAndRightEncoderReset = false;

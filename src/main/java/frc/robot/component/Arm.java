@@ -1,14 +1,10 @@
 package frc.robot.component;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.*;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import frc.robot.states.ArmState;
 import frc.robot.states.LimelightState;
-import frc.robot.states.State;
 import frc.robot.consts.ArmConst;
 import frc.robot.consts.DriveConst;
 import frc.robot.subClass.Tools;
@@ -82,6 +78,11 @@ public class Arm implements Component {
         leftAndRightArmPidController.setD(ArmConst.D_MID);
         leftAndRightArmPidController.setIMaxAccum(ArmConst.IMax_MID, 0);
         leftAndRightArmPidController.setOutputRange(-.1, .1);
+
+        leftAndRightArmPidController.setP(ArmConst.P_MID_1, 1);
+        leftAndRightArmPidController.setI(ArmConst.I_MID_1, 1);
+        leftAndRightArmPidController.setD(ArmConst.D_MID_1, 1);
+
         moveLeftAndRightMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 7.5f);
         moveLeftAndRightMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, -7.5f);
         rootMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, (float) calculateRootRotationFromAngle(90));
@@ -150,6 +151,10 @@ public class Arm implements Component {
     private void fixPosition() {
         pidForRoot.setReference(0, CANSparkMax.ControlType.kVelocity ,2);
         pidForJoint.setReference(0, CANSparkMax.ControlType.kVelocity ,2);
+    }
+
+    private void fixLeftAndRightArmPositionWithPID() {
+        leftAndRightArmPidController.setReference(0, CANSparkMax.ControlType.kVelocity, 1);
     }
 
     /**
@@ -269,8 +274,9 @@ public class Arm implements Component {
         ArmState.jointMotorFeedforward = Tools.changeTorqueToMotorInput(jointRequiredTorque);
         ArmState.rootMotorFeedforward = Tools.changeTorqueToMotorInput(rootRequiredTorque);
 
-        ArmState.relayPositionOver |= Util.Calculate.relayReach(ArmState.actualHeight, ArmState.actualDepth);
-        
+        ArmState.relayToGoalOver |= Util.Calculate.isOverRelayToGoal(ArmState.actualHeight, ArmState.actualDepth);
+        ArmState.relayToInitOver |= Util.Calculate.isOverRelayToInit(ArmState.actualHeight, ArmState.actualDepth);
+
         SmartDashboard.putNumber("actual leftright angle", ArmState.actualLeftAndRightAngle);
 
         SmartDashboard.putNumber("cc", rootMotor.getOutputCurrent());
@@ -331,7 +337,7 @@ public class Arm implements Component {
             case s_moveLeftMotor:
                 moveLeftArm(-ArmConst.Speeds.MoveLeftAndRightMotor);
                 break;
-            case s_fixLeftAndRightMotor:
+            case s_stopLeftAndRightMotor:
                 stopLeftAndRightArm();
                 break;
             case s_movetomiddle:
@@ -340,6 +346,8 @@ public class Arm implements Component {
             case s_limelightTracking:
                 pidControlTargetTracking();
                 break;
+            case s_fixLeftAndRightArm:
+                fixLeftAndRightArmPositionWithPID();
         }
     }
 }
