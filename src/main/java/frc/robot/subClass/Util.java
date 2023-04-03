@@ -5,6 +5,8 @@ import frc.robot.states.ArmState;
 import frc.robot.states.DriveState;
 import frc.robot.states.HandState;
 import frc.robot.states.State;
+import frc.robot.consts.ArmConst;
+import frc.robot.consts.DriveConst;
 
 public class Util {
 
@@ -55,7 +57,7 @@ public class Util {
          * @return ドライブのエンコーダーの値をメートルに変換した値
          */
         public static double driveEncoderPointsToMeter(double points) {
-            return points / Const.Calculation.Drive.DrivePointsPerDriveLength;
+            return points / DriveConst.PID.PointsPerLength;
         }
 
         /**
@@ -63,7 +65,7 @@ public class Util {
          * @return メートルをドライブのエンコーダーのポジションに変換した値
          */
         public static double meterToDriveEncoderPoints(double meter) {
-            return meter * Const.Calculation.Drive.DrivePointsPerDriveLength;
+            return meter * DriveConst.PID.PointsPerLength;
         }
 
         /**
@@ -73,7 +75,7 @@ public class Util {
          * @return 中継地点に到達しているかどうか
          */
         public static boolean relayReach(double actualHeight, double actualDepth) {
-            return actualHeight > Const.Arm.RelayPointHeight && actualDepth > Const.Arm.RelayPointDepth;
+            return actualHeight > ArmConst.RelayPointHeight && actualDepth > ArmConst.RelayPointDepth;
 
         }
     }

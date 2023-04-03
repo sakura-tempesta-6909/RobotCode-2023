@@ -9,7 +9,8 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import frc.robot.states.IntakeState;
 import frc.robot.states.State;
-import frc.robot.subClass.Const;
+import frc.robot.consts.DriveConst;
+import frc.robot.consts.IntakeConst;
 
 public class Intake implements Component{
     private final Solenoid intakeSolenoid;
@@ -19,10 +20,10 @@ public class Intake implements Component{
     private final Compressor compressor;
 
     public Intake() {
-        intakeSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Const.Ports.IntakeSolenoid);
-        rightRoller = new TalonSRX(Const.Ports.RightRoller);
-        leftRoller = new TalonSRX(Const.Ports.LeftRoller);
-        bottomRoller = new VictorSPX(Const.Ports.BottomRoller);
+        intakeSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, IntakeConst.Ports.IntakeSolenoid);
+        rightRoller = new TalonSRX(IntakeConst.Ports.RightRoller);
+        leftRoller = new TalonSRX(IntakeConst.Ports.LeftRoller);
+        bottomRoller = new VictorSPX(IntakeConst.Ports.BottomRoller);
         compressor = new Compressor(PneumaticsModuleType.CTREPCM);
 
        bottomRoller.setInverted(true);
@@ -75,17 +76,17 @@ public class Intake implements Component{
 
     // /** CONEとCUBEを出す */
     public void outtakeGamePiece() {
-         rollerControl(Const.Speeds.SideRollerOuttakeSpeed, Const.Speeds.BottomRollerOuttakeSpeed);
+         rollerControl(IntakeConst.Speeds.SideRollerOuttakeSpeed, IntakeConst.Speeds.BottomRollerOuttakeSpeed);
     }
 
      /** CONEとCUBEを回収する */
      public void intakeGamePiece() {
-         rollerControl(Const.Speeds.SideRollerIntakeSpeed, Const.Speeds.BottomRollerIntakeSpeed);
+         rollerControl(IntakeConst.Speeds.SideRollerIntakeSpeed, IntakeConst.Speeds.BottomRollerIntakeSpeed);
      }
 
      /** Conveyorを動かさない */
      public void stopRoller() {
-         rollerControl(Const.Speeds.Neutral, Const.Speeds.Neutral);
+         rollerControl(DriveConst.Speeds.Neutral, DriveConst.Speeds.Neutral);
      }
 
 

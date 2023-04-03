@@ -1,6 +1,6 @@
 package frc.robot.states;
 
-import frc.robot.subClass.Const;
+import frc.robot.consts.*;
 
 public class DriveState {
     public static DriveStates driveState;
@@ -16,8 +16,8 @@ public class DriveState {
     public static boolean isMotorBrake;
 
     public static boolean isAtTarget() {
-        boolean isLeftMotorAtTarget = Math.abs(leftMeter - targetMeter) < Const.Drive.PID.LossTolerance;
-        boolean isRightMotorAtTarget = Math.abs(rightMeter - targetMeter) < Const.Drive.PID.LossTolerance;
+        boolean isLeftMotorAtTarget = Math.abs(leftMeter - targetMeter) < DriveConst.PID.LossTolerance;
+        boolean isRightMotorAtTarget = Math.abs(rightMeter - targetMeter) < DriveConst.PID.LossTolerance;
         return isRightMotorAtTarget && isLeftMotorAtTarget;
     }
 

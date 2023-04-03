@@ -5,8 +5,11 @@ import java.util.Map;
 import frc.robot.states.ArmState;
 import frc.robot.states.DriveState;
 import frc.robot.states.HandState;
-import frc.robot.states.State;
 import frc.robot.subClass.*;
+import frc.robot.states.*;
+import frc.robot.consts.ArmConst;
+import frc.robot.consts.GrabGamePiecePhaseConst;
+import frc.robot.subClass.Tools;;
 
 public class ChargeStationMode extends Mode{
 // 正式名称は「ワクワクドキドキ神様お願いブレイクモード」
@@ -36,8 +39,8 @@ public class ChargeStationMode extends Mode{
             switch (phase) {
                 case Phase1:
                     ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-                    ArmState.targetHeight = Const.Arm.InitialHeight;
-                    ArmState.targetDepth = Const.Arm.InitialDepth;
+                    ArmState.targetHeight = ArmConst.InitialHeight;
+                    ArmState.targetDepth = ArmConst.InitialDepth;
                     ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
                     HandState.rotateState = HandState.RotateStates.s_turnHandBack;
                     if (ArmState.isAtTarget()) {
@@ -47,8 +50,8 @@ public class ChargeStationMode extends Mode{
                     break;
                 case Phase2:
                     ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-                    ArmState.targetHeight = ( Const.Arm.InitialHeight+Const.GrabGamePiecePhase.armCubeIntakeHeight) / 2 +5;
-                    ArmState.targetDepth = Const.GrabGamePiecePhase.armCubeIntakeDepth;
+                    ArmState.targetHeight = ( ArmConst.InitialHeight+GrabGamePiecePhaseConst.armCubeIntakeHeight) / 2 +5;
+                    ArmState.targetDepth = GrabGamePiecePhaseConst.armCubeIntakeDepth;
                     HandState.rotateState = HandState.RotateStates.s_moveHandToSpecifiedAngle;
                     if (ArmState.isAtTarget()) {
                         phase = GrabGamePiecePhase.Phase3;
@@ -56,8 +59,8 @@ public class ChargeStationMode extends Mode{
                     break;
                 case Phase3:
                     ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-                    ArmState.targetHeight = Const.GrabGamePiecePhase.armCubeIntakeHeight;
-                    ArmState.targetDepth = Const.GrabGamePiecePhase.armCubeIntakeDepth;
+                    ArmState.targetHeight = GrabGamePiecePhaseConst.armCubeIntakeHeight;
+                    ArmState.targetDepth = GrabGamePiecePhaseConst.armCubeIntakeDepth;
                     break;
             }
 
@@ -67,8 +70,8 @@ public class ChargeStationMode extends Mode{
             ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
             ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
             HandState.rotateState = HandState.RotateStates.s_turnHandBack;
-            ArmState.targetHeight = Const.Arm.InitialHeight;
-            ArmState.targetDepth = Const.Arm.InitialDepth;
+            ArmState.targetHeight = ArmConst.InitialHeight;
+            ArmState.targetDepth = ArmConst.InitialDepth;
         }
 
         if (joystick.getRawButtonPressed(1)) {

@@ -3,7 +3,7 @@ package frc.robot.component;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.states.CameraState;
 import frc.robot.states.State;
-import frc.robot.subClass.Const;
+import frc.robot.consts.CameraConst;
 
 public class Camera implements Component {
     public Camera() {
@@ -13,16 +13,16 @@ public class Camera implements Component {
     public void calculation() {
         //角度を求める
         CameraState.cameraCenterWidth = SmartDashboard.getNumber("CenterX", 0);
-        CameraState.aprilTagAngleWidth = Math.toDegrees(Math.atan(CameraState.cameraCenterWidth  / Const.Calculation.Camera.FocalLengthWeight));
-        CameraState.aprilTagAngleHeight = Math.toDegrees(Math.atan(CameraState.cameraCenterHeight / Const.Calculation.Camera.FocalLengthHeight));
+        CameraState.aprilTagAngleWidth = Math.toDegrees(Math.atan(CameraState.cameraCenterWidth  / CameraConst.FocalLengthWeight));
+        CameraState.aprilTagAngleHeight = Math.toDegrees(Math.atan(CameraState.cameraCenterHeight / CameraConst.FocalLengthHeight));
         SmartDashboard.putNumber("AngleX", CameraState.aprilTagAngleWidth);
         SmartDashboard.putNumber("AngleY", CameraState.aprilTagAngleHeight);
 
         //距離を求める
-        double angleToGoalDegrees = Const.Calculation.Camera.CameraMountAngleDegrees + CameraState.aprilTagAngleHeight;
+        double angleToGoalDegrees = CameraConst.CameraMountAngleDegrees + CameraState.aprilTagAngleHeight;
         double angleToGoalRadians = angleToGoalDegrees * (Math.PI / 180);
-        CameraState.cameraToTag = (Const.Calculation.Camera.GoalHeight - Const.Calculation.Camera.CameraLensHeight) / Math.tan(angleToGoalRadians);
-        CameraState.armToTag = CameraState.cameraToTag - Const.Calculation.Camera.CameraToArm;
+        CameraState.cameraToTag = (CameraConst.GoalHeight - CameraConst.CameraLensHeight) / Math.tan(angleToGoalRadians);
+        CameraState.armToTag = CameraState.cameraToTag - CameraConst.CameraToArm;
         SmartDashboard.putNumber("cameraToTag", CameraState.cameraToTag);
         SmartDashboard.putNumber("armToTag", CameraState.armToTag);
 

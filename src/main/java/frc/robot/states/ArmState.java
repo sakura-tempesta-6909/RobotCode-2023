@@ -1,6 +1,6 @@
 package frc.robot.states;
 
-import frc.robot.subClass.Const;
+import frc.robot.consts.ArmConst;
 
 public class ArmState {
     /** アームのモード */
@@ -40,8 +40,8 @@ public class ArmState {
      * @return jointMotorとrootMotorの両方がatSetpointかどうか
      * */
     public static boolean isAtTarget() {
-        boolean isDepthAtSetpoint = Math.abs(targetDepth - actualDepth) < Const.Arm.PIDAngleTolerance;
-        boolean isHeightMotorAtSetpoint = Math.abs(targetHeight - actualHeight) < Const.Arm.PIDAngleTolerance;
+        boolean isDepthAtSetpoint = Math.abs(targetDepth - actualDepth) < ArmConst.PIDAngleTolerance;
+        boolean isHeightMotorAtSetpoint = Math.abs(targetHeight - actualHeight) < ArmConst.PIDAngleTolerance;
         return isHeightMotorAtSetpoint && isDepthAtSetpoint;
     }
 

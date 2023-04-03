@@ -2,8 +2,10 @@ package frc.robot.phase;
 
 import frc.robot.component.Intake;
 import frc.robot.states.*;
+import frc.robot.consts.ArmConst;
+import frc.robot.consts.CameraConst;
+import frc.robot.consts.GrabGamePiecePhaseConst;
 import frc.robot.mode.ArmMode;
-import frc.robot.subClass.Const;
 import frc.robot.subClass.Util;
 
 public class Autonomous {
@@ -185,11 +187,11 @@ public class Autonomous {
                 },
                 "wait"
             ),
-            // basicArmTo(Const.Arm.InitialHeight, Const.Arm.InitialDepth, "move arm to basic position"),
-            armAdjust(Const.Arm.TargetModifyRatio, Const.Arm.TargetModifyRatio,2,"move to target"),
-            armAdjust(0, Const.Arm.TargetModifyRatio, 3, "move foward")
-            // relayArmTo(Const.GrabGamePiecePhase.armRelayPointHeight, Const.GrabGamePiecePhase.armRelayPointDepth, "move arm to relay point"),
-            // moveArmTo( Const.Calculation.Camera.GoalHeight - Const.Arm.RootHeightFromGr, State.armToTag, "move arm to cube goal"),
+            // basicArmTo(ArmConst.InitialHeight, ArmConst.InitialDepth, "move arm to basic position"),
+            armAdjust(ArmConst.TargetModifyRatio, ArmConst.TargetModifyRatio,2,"move to target"),
+            armAdjust(0, ArmConst.TargetModifyRatio, 3, "move foward")
+            // relayArmTo(GrabGamePiecePhaseConst.armRelayPointHeight, GrabGamePiecePhaseConst.armRelayPointDepth, "move arm to relay point"),
+            // moveArmTo( CameraConst.GoalHeight - ArmConst.RootHeightFromGr, State.armToTag, "move arm to cube goal"),
             // releaseHand(2, "release cone")
             // drive(-1, 2, "move to target")
             // driveTo(-3, "move to target")
@@ -211,9 +213,9 @@ public class Autonomous {
                 },
                 "wait"
             ),
-            basicArmTo(Const.Arm.InitialHeight, Const.Arm.InitialDepth, "move arm to basic position"),
-            relayArmTo(Const.GrabGamePiecePhase.armRelayPointHeight, Const.GrabGamePiecePhase.armRelayPointDepth, "move arm to relay point"),
-            moveArmTo(  Const.Calculation.Camera.MiddleGoalHeight - Const.Arm.RootHeightFromGr, ArmState.TargetDepth.MiddleCube, "move arm to cube goal"),
+            basicArmTo(ArmConst.InitialHeight, ArmConst.InitialDepth, "move arm to basic position"),
+            relayArmTo(GrabGamePiecePhaseConst.armRelayPointHeight, GrabGamePiecePhaseConst.armRelayPointDepth, "move arm to relay point"),
+            moveArmTo(  CameraConst.MiddleGoalHeight - ArmConst.RootHeightFromGr, ArmState.TargetDepth.MiddleCube, "move arm to cube goal"),
             releaseHand(2, "release cube")
             // drive(-1, 2, "move to target")
             // driveTo(-3, "move to target")

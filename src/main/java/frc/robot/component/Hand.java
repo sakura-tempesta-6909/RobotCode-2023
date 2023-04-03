@@ -8,7 +8,9 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import frc.robot.states.HandState;
 import frc.robot.states.State;
-import frc.robot.subClass.Const;
+import frc.robot.consts.ArmConst;
+import frc.robot.consts.DriveConst;
+import frc.robot.consts.HandConst;
 
 
 public class Hand implements Component{
@@ -18,17 +20,17 @@ public class Hand implements Component{
     private final SparkMaxPIDController handRotationPidController;
 
     public Hand() {
-        handSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, Const.Ports.HandSolenoid);
+        handSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, HandConst.Ports.HandSolenoid);
 
-        handRotationMotor = new CANSparkMax(Const.Ports.HandRotationMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
+        handRotationMotor = new CANSparkMax(HandConst.Ports.HandRotationMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
         handRotationMotor.setInverted(true);
 
         handRotationPidController = handRotationMotor.getPIDController();
         handRotationEncoder = handRotationMotor.getEncoder();
-        handRotationPidController.setP(Const.Arm.P_HANDR);
-        handRotationPidController.setI(Const.Arm.I_HANDR);
-        handRotationPidController.setD(Const.Arm.D_HANDR);
-        handRotationPidController.setIMaxAccum(Const.Arm.IMax_HANDR, 0);
+        handRotationPidController.setP(ArmConst.P_HANDR);
+        handRotationPidController.setI(ArmConst.I_HANDR);
+        handRotationPidController.setD(ArmConst.D_HANDR);
+        handRotationPidController.setIMaxAccum(ArmConst.IMax_HANDR, 0);
     }
 
     @Override
@@ -67,7 +69,7 @@ public class Hand implements Component{
      * @return 変換された角度の度数
      * */
     private double calculateHandAngleFromRotation(double rotation) {
-        return rotation / Const.Hand.HandGearRatio * 360;
+        return rotation / HandConst.HandGearRatio * 360;
     }
 
     /**
@@ -76,7 +78,7 @@ public class Hand implements Component{
      * @return 変換された回転数
      */
     public double calculateRotationFromHandAngle(double angle) {
-        return angle * Const.Hand.HandGearRatio / 360;
+        return angle * HandConst.HandGearRatio / 360;
     }
 
 
@@ -113,18 +115,18 @@ public class Hand implements Component{
 
     /** 手首を回転させる */
     public void rotateHand() {
-        controlHandRotation(Const.Speeds.HandRotationSpeed);
+        controlHandRotation(HandConst.Speeds.HandRotationSpeed);
     }
 
     /** 手首を逆回転させる */
     public void invertRotateHand() {
-        controlHandRotation(-Const.Speeds.HandRotationSpeed);
+        controlHandRotation(-HandConst.Speeds.HandRotationSpeed);
     }
 
 
     /** 手首の回転を止める */
     public void stopHand() {
-         controlHandRotation(Const.Speeds.Neutral);
+         controlHandRotation(DriveConst.Speeds.Neutral);
     }
     /**
      * actual angleを入力してその数に一番近い360の倍数の数を見つけて返す

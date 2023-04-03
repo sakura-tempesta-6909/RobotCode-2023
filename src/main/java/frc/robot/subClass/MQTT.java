@@ -1,6 +1,7 @@
 package frc.robot.subClass;
 
 import frc.robot.states.State;
+import frc.robot.consts.MQTTConst;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -22,7 +23,7 @@ public class MQTT{
     public void connect(){
         if (connectStatus == ConnectStatus.notYet) {
             try {
-                mqttClient = new MqttClient(Const.MQTT.Broker, Const.MQTT.ClientId, new MemoryPersistence());
+                mqttClient = new MqttClient(MQTTConst.Broker, MQTTConst.ClientId, new MemoryPersistence());
             } catch (MqttException e) {
                 connectStatus = ConnectStatus.failedCreateClient;
                 return;
@@ -32,7 +33,7 @@ public class MQTT{
         if(mqttClient.isConnected()) {
             return;
         }
-        if (retryCount < Const.MQTT.MaxRetry) {
+        if (retryCount < MQTTConst.MaxRetry) {
             try {
                 mqttClient.connect(connOpts);
                 connectStatus = ConnectStatus.connected;
@@ -56,7 +57,7 @@ public class MQTT{
     public void publish(JSONObject json){
         if (connectStatus == ConnectStatus.connected) {
             try {
-                mqttClient.publish(Const.MQTT.Topic, new MqttMessage(json.toString().getBytes()));
+                mqttClient.publish(MQTTConst.Topic, new MqttMessage(json.toString().getBytes()));
             } catch (MqttException e) {
                 System.out.println("MQTT Publish Error");
             }
