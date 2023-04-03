@@ -54,7 +54,8 @@ public class ArmState {
     /** エンコーダーをリセット（その時点の位置を0と定める） */
     public static boolean resetEncoder;
 
-    public static boolean relayPositionOver;
+    public static boolean relayToGoalOver;
+    public static boolean relayToInitOver;
 
     public static class TargetDepth {
         public static double TopCorn;
@@ -114,6 +115,9 @@ public class ArmState {
         jointMotorFeedforward = 0.0;
 
         moveLeftAndRightMotor = 0.0;
+
+        relayToGoalOver = true;
+        relayToInitOver = true;
     }
 
 

@@ -7,10 +7,10 @@ import frc.robot.consts.GrabGamePiecePhaseConst;
 import frc.robot.consts.LimelightConst;
 import frc.robot.subClass.Tools;
 
-import java.lang.management.GarbageCollectorMXBean;
 import java.util.Map;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subClass.Util;
 
 public class ArmMode extends Mode {
     private static DriveMode.GrabGamePiecePhase phase = DriveMode.GrabGamePiecePhase.Phase1;
@@ -113,7 +113,7 @@ public class ArmMode extends Mode {
             ArmState.resetPidController = true;
             ArmState.targetHeight = ArmState.actualHeight;
             ArmState.targetDepth = ArmState.actualDepth;
-            ArmState.relayPositionOver = false;
+            ArmState.relayToGoalOver = false;
         }
 
         if (getSeveralRawButton(new int[]{7, 8, 9, 10, 11, 12})) {
@@ -127,18 +127,18 @@ public class ArmMode extends Mode {
             ArmState.jointSpeed = joystickY;
         } else if (joystick.getRawButton(7)) {
             // 奥のコーンのゴールまでアームを伸ばす
-            if (!ArmState.relayPositionOver) {
-                ArmState.targetHeight = GrabGamePiecePhaseConst.armRelayPointHeight;
-                ArmState.targetDepth = GrabGamePiecePhaseConst.armRelayPointDepth;
+            if (!ArmState.relayToGoalOver) {
+                ArmState.targetHeight = ArmConst.RelayPointToGoalHeight;
+                ArmState.targetDepth = ArmConst.RelayPointToGoalDepth;
             } else {
                 ArmState.targetHeight = LimelightConst.TopGoalHeight - ArmConst.RootHeightFromGr;
                 ArmState.targetDepth = ArmState.TargetDepth.TopCorn;
             }
         } else if (joystick.getRawButton(9)) {
             // 真ん中のコーンのゴールまでアームを伸ばす
-            if (!ArmState.relayPositionOver) {
-                ArmState.targetHeight = GrabGamePiecePhaseConst.armRelayPointHeight;
-                ArmState.targetDepth = GrabGamePiecePhaseConst.armRelayPointDepth;
+            if (!ArmState.relayToGoalOver) {
+                ArmState.targetHeight = ArmConst.RelayPointToGoalHeight;
+                ArmState.targetDepth = ArmConst.RelayPointToGoalDepth;
             } else {
                 ArmState.targetHeight = LimelightConst.MiddleGoalHeight - ArmConst.RootHeightFromGr;
                 ArmState.targetDepth = ArmState.TargetDepth.MiddleCorn;
@@ -149,18 +149,18 @@ public class ArmMode extends Mode {
                 ArmState.targetDepth = ArmState.TargetDepth.BottomCorn;
         } else if (joystick.getRawButton(8)) {
             // 奥のキューブのゴールまでアームを伸ばす
-            if (!ArmState.relayPositionOver) {
-                ArmState.targetHeight = GrabGamePiecePhaseConst.armRelayPointHeight;
-                ArmState.targetDepth = GrabGamePiecePhaseConst.armRelayPointDepth;
+            if (!ArmState.relayToGoalOver) {
+                ArmState.targetHeight = ArmConst.RelayPointToGoalHeight;
+                ArmState.targetDepth = ArmConst.RelayPointToGoalDepth;
             } else {
                 ArmState.targetHeight = CameraConst.TopGoalHeight - ArmConst.RootHeightFromGr;
                 ArmState.targetDepth = ArmState.TargetDepth.TopCube;
             }
         } else if (joystick.getRawButton(10)) {
             // 真ん中のキューブのゴールまでアームを伸ばす
-            if(!ArmState.relayPositionOver) {
-                ArmState.targetHeight = GrabGamePiecePhaseConst.armRelayPointHeight;
-                ArmState.targetDepth = GrabGamePiecePhaseConst.armRelayPointDepth;
+            if(!ArmState.relayToGoalOver) {
+                ArmState.targetHeight = ArmConst.RelayPointToGoalHeight;
+                ArmState.targetDepth = ArmConst.RelayPointToGoalDepth;
 
             } else {
                 ArmState.targetHeight = CameraConst.MiddleGoalHeight - ArmConst.RootHeightFromGr;
@@ -206,8 +206,7 @@ public class ArmMode extends Mode {
             ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
             ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
             HandState.rotateState = HandState.RotateStates.s_turnHandBack;
-            ArmState.targetHeight = ArmConst.InitialHeight;
-            ArmState.targetDepth = ArmConst.InitialDepth;
+            Util.Calculate.setInitWithRelay();
         }
 
         if (driveController.getBButton()) {

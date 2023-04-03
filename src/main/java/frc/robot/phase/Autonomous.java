@@ -1,10 +1,8 @@
 package frc.robot.phase;
 
-import frc.robot.component.Intake;
 import frc.robot.states.*;
 import frc.robot.consts.ArmConst;
 import frc.robot.consts.CameraConst;
-import frc.robot.consts.GrabGamePiecePhaseConst;
 import frc.robot.mode.ArmMode;
 import frc.robot.subClass.Util;
 
@@ -44,7 +42,7 @@ public class Autonomous {
 
             },
             (double time) -> {
-                return Util.Calculate.relayReach(ArmState.actualHeight, ArmState.actualDepth);
+                return Util.Calculate.isOverRelayToGoal(ArmState.actualHeight, ArmState.actualDepth);
             },
             () -> {
                 DriveState.resetPIDController = true;
@@ -214,7 +212,7 @@ public class Autonomous {
                 "wait"
             ),
             basicArmTo(ArmConst.InitialHeight, ArmConst.InitialDepth, "move arm to basic position"),
-            relayArmTo(GrabGamePiecePhaseConst.armRelayPointHeight, GrabGamePiecePhaseConst.armRelayPointDepth, "move arm to relay point"),
+            relayArmTo(ArmConst.RelayPointToGoalHeight, ArmConst.RelayPointToGoalDepth, "move arm to relay point"),
             moveArmTo(  CameraConst.MiddleGoalHeight - ArmConst.RootHeightFromGr, ArmState.TargetDepth.MiddleCube, "move arm to cube goal"),
             releaseHand(2, "release cube")
             // drive(-1, 2, "move to target")

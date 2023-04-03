@@ -39,8 +39,7 @@ public class ChargeStationMode extends Mode{
             switch (phase) {
                 case Phase1:
                     ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-                    ArmState.targetHeight = ArmConst.InitialHeight;
-                    ArmState.targetDepth = ArmConst.InitialDepth;
+                    Util.Calculate.setInitWithRelay();
                     ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
                     HandState.rotateState = HandState.RotateStates.s_turnHandBack;
                     if (ArmState.isAtTarget()) {
@@ -70,8 +69,7 @@ public class ChargeStationMode extends Mode{
             ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
             ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
             HandState.rotateState = HandState.RotateStates.s_turnHandBack;
-            ArmState.targetHeight = ArmConst.InitialHeight;
-            ArmState.targetDepth = ArmConst.InitialDepth;
+            Util.Calculate.setInitWithRelay();
         }
 
         if (joystick.getRawButtonPressed(1)) {
