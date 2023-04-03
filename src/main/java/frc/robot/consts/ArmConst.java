@@ -242,11 +242,11 @@ public class ArmConst {
     /**
      * アームの理想的な高さ
      */
-    public static final double InitialHeight = -80;
+    public static final double InitialHeight = -100;
     /**
      * アームの理想的な奥行き
      */
-    public static final double InitialDepth = 10;
+    public static final double InitialDepth = -5;
 
     /**
      * アームの根本の高さ[cm]（地面から） -> 座標の原点の高さ
@@ -256,8 +256,11 @@ public class ArmConst {
     public static final double RootHomePosition = -85.20;
     public static final double JointHomePosition = -79.32;
 
-    public static final double RelayPointHeight = -20;
-    public static final double RelayPointDepth = 40;
+    public static final double RelayPointToGoalHeight = 0;
+    public static final double RelayPointToGoalDepth = 60;
+    public static final double RelayPointToInitHeight = -80;
+    public static final double RelayPointToInitDepth = 10;
+    public static final double RelayPointTolerance = 10;
 
 
     public static void ArmConstInit() {

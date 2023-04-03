@@ -74,9 +74,28 @@ public class Util {
          * @param actualDepth　実際の奥行き
          * @return 中継地点に到達しているかどうか
          */
-        public static boolean relayReach(double actualHeight, double actualDepth) {
-            return actualHeight > ArmConst.RelayPointHeight && actualDepth > ArmConst.RelayPointDepth;
+        public static boolean isOverRelayToGoal(double actualHeight, double actualDepth) {
+            return actualHeight > ArmConst.RelayPointToGoalHeight - ArmConst.RelayPointTolerance && actualDepth > ArmConst.RelayPointToGoalDepth - ArmConst.RelayPointTolerance;
+        }
 
+        /**
+         *
+         * @param actualHeight 実際の高さ
+         * @param actualDepth　実際の奥行き
+         * @return 中継地点に到達しているかどうか
+         */
+        public static boolean isOverRelayToInit(double actualHeight, double actualDepth) {
+            return actualHeight < ArmConst.RelayPointToInitHeight + ArmConst.RelayPointTolerance && actualDepth < ArmConst.RelayPointToInitDepth + ArmConst.RelayPointTolerance;
+        }
+
+        public static void setInitWithRelay() {
+            if (ArmState.relayToInitOver) {
+                ArmState.targetHeight = ArmConst.InitialHeight;
+                ArmState.targetDepth = ArmConst.InitialDepth;
+            } else {
+                ArmState.targetHeight = ArmConst.RelayPointToInitHeight;
+                ArmState.targetDepth = ArmConst.RelayPointToInitDepth;
+            }
         }
     }
 }

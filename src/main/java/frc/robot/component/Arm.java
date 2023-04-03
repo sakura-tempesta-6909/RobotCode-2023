@@ -8,7 +8,6 @@ import com.revrobotics.CANSparkMax.IdleMode;
 
 import frc.robot.states.ArmState;
 import frc.robot.states.LimelightState;
-import frc.robot.states.State;
 import frc.robot.consts.ArmConst;
 import frc.robot.consts.DriveConst;
 import frc.robot.subClass.Tools;
@@ -279,8 +278,9 @@ public class Arm implements Component {
         ArmState.jointMotorFeedforward = Tools.changeTorqueToMotorInput(jointRequiredTorque);
         ArmState.rootMotorFeedforward = Tools.changeTorqueToMotorInput(rootRequiredTorque);
 
-        ArmState.relayPositionOver |= Util.Calculate.relayReach(ArmState.actualHeight, ArmState.actualDepth);
-        
+        ArmState.relayToGoalOver |= Util.Calculate.isOverRelayToGoal(ArmState.actualHeight, ArmState.actualDepth);
+        ArmState.relayToInitOver |= Util.Calculate.isOverRelayToInit(ArmState.actualHeight, ArmState.actualDepth);
+
         SmartDashboard.putNumber("actual leftright angle", ArmState.actualLeftAndRightAngle);
 
         SmartDashboard.putNumber("cc", rootMotor.getOutputCurrent());
