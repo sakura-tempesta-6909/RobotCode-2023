@@ -157,8 +157,8 @@ public class Arm implements Component {
         // feedforwardあり
         // rootMotor.set(ArmState.rootMotorFeedforward);
 //        jointMotor.set(ArmState.jointMotorFeedforward);
-        pidForRoot.setReference(0, CANSparkMax.ControlType.kVelocity ,2, ArmConst.ConstantRootMotorFF, ArbFFUnits.kPercentOut);
-        pidForJoint.setReference(0, CANSparkMax.ControlType.kVelocity ,2, ArmConst.ConstantRootMotorFF, ArbFFUnits.kPercentOut);
+        pidForRoot.setReference(0, CANSparkMax.ControlType.kVelocity ,2);
+        pidForJoint.setReference(0, CANSparkMax.ControlType.kVelocity ,2);
 
     }
 

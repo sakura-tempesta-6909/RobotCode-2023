@@ -139,8 +139,8 @@ public class ArmConst {
     public static final double P_R_2 = 0;
     public static final double I_R_2 = 0;
     public static final double D_R_2 = 0;
-    public static final double P_J_2 = 0;
-    public static final double I_J_2 = 0;
+    public static final double P_J_2 = 0.0016;
+    public static final double I_J_2 = 0.0000015;
     public static final double D_J_2 = 0;
 
     /**
