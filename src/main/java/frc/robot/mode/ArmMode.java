@@ -157,7 +157,7 @@ public class ArmMode extends Mode {
             } else {
                 ArmState.targetHeight = CameraConst.TopGoalHeight - ArmConst.RootHeightFromGr;
                 ArmState.targetDepth = ArmState.TargetDepth.TopCube;
-                if (ArmState.isAtTarget()) {
+                if (!ArmState.targetToGoalOver) {
                     HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
                 }
             }
@@ -169,7 +169,7 @@ public class ArmMode extends Mode {
             } else {
                 ArmState.targetHeight = CameraConst.MiddleGoalHeight - ArmConst.RootHeightFromGr;
                 ArmState.targetDepth = ArmState.TargetDepth.MiddleCube;
-                if (ArmState.isAtTarget()) {
+                if (!ArmState.targetToGoalOver) {
                     HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
                 }
             }
@@ -177,7 +177,7 @@ public class ArmMode extends Mode {
             // 前のキューブのゴールまでアームを伸ばす
             ArmState.targetHeight = CameraConst.BottomGoalHeight - ArmConst.RootHeightFromGr;
             ArmState.targetDepth = ArmState.TargetDepth.BottomCube;
-            if (ArmState.isAtTarget()) {
+            if (!ArmState.targetToGoalOver) {
                 HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
             }
         } else if (driveController.getPOV() == 90) {

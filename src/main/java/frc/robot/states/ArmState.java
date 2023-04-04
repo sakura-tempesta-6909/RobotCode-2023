@@ -57,6 +57,8 @@ public class ArmState {
     public static boolean relayToGoalOver;
     public static boolean relayToInitOver;
 
+    public static boolean targetToGoalOver;
+
     public static class TargetDepth {
         public static double TopCorn;
         public static double MiddleCorn;
@@ -119,6 +121,7 @@ public class ArmState {
 
         relayToGoalOver = true;
         relayToInitOver = true;
+        targetToGoalOver = true;
     }
 
 
