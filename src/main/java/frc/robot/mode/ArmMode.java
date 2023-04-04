@@ -177,13 +177,13 @@ public class ArmMode extends Mode {
             // 前のキューブのゴールまでアームを伸ばす
             ArmState.targetHeight = CameraConst.BottomGoalHeight - ArmConst.RootHeightFromGr;
             ArmState.targetDepth = ArmState.TargetDepth.BottomCube;
+            if (ArmState.isAtTarget()) {
+                HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
+            }
         } else if (driveController.getPOV() == 90) {
             ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
             ArmState.targetHeight = -7;
             ArmState.targetDepth = ArmState.TargetDepth.SubStation;
-            if (ArmState.isAtTarget()) {
-                HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
-            }
         } else {
             if (joystick.getPOV() == 0) {
                 adjustArmPosition(0, ArmConst.TargetModifyRatio);
