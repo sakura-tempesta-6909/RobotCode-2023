@@ -88,8 +88,8 @@ public class Util {
             return actualHeight < ArmConst.RelayPointToInitHeight + ArmConst.RelayPointTolerance && actualDepth < ArmConst.RelayPointToInitDepth + ArmConst.RelayPointTolerance;
         }
 
-        public static boolean isOverTargetToGoal(double actualHeight, double actualDepth) {
-            return actualHeight < ArmState.targetHeight + ArmConst.PIDAngleTolerance && actualDepth < ArmState.targetHeight + ArmConst.PIDAngleTolerance;
+        public static boolean isOverTargetToGoal() {
+            return ArmState.isAtTarget();
         }
 
         public static void setInitWithRelay() {
