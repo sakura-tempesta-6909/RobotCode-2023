@@ -146,8 +146,13 @@ public class ArmMode extends Mode {
             }
         } else if (joystick.getRawButton(11)) {
             // 前のコーンのゴールまでアームを伸ばす
+            if(!ArmState.relayToGoalOver) {
+                ArmState.targetHeight = ArmConst.RelayPointToGoalHeight;
+                ArmState.targetDepth = ArmConst.RelayPointToGoalDepth;
+            } else {
                 ArmState.targetHeight = LimelightConst.BottomGoalHeight - ArmConst.RootHeightFromGr;
                 ArmState.targetDepth = ArmState.TargetDepth.BottomCorn;
+            }
         } else if (joystick.getRawButton(8)) {
             // 奥のキューブのゴールまでアームを伸ばす
             if (!ArmState.relayToGoalOver) {
@@ -169,8 +174,14 @@ public class ArmMode extends Mode {
             }
         } else if (joystick.getRawButton(12)) {
             // 前のキューブのゴールまでアームを伸ばす
-            ArmState.targetHeight = CameraConst.BottomGoalHeight - ArmConst.RootHeightFromGr;
-            ArmState.targetDepth = ArmState.TargetDepth.BottomCube;
+            if(!ArmState.relayToGoalOver) {
+                ArmState.targetHeight = ArmConst.RelayPointToGoalHeight;
+                ArmState.targetDepth = ArmConst.RelayPointToGoalDepth;
+
+            } else {
+                ArmState.targetHeight = CameraConst.BottomGoalHeight - ArmConst.RootHeightFromGr;
+                ArmState.targetDepth = ArmState.TargetDepth.BottomCube;
+            }
         } else if (driveController.getPOV() == 90) {
             ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
             ArmState.targetHeight = -7;
