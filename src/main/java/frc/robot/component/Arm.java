@@ -96,9 +96,6 @@ public class Arm implements Component {
      * s_moveArmToSpecifiedPositionで実行
      */
     private void pidControlArm(double targetRootAngle, double targetJointAngle) {
-        if(ArmState.isAtTarget()) {
-            fixPositionWithFF();
-        } else {
             // feedforwardなし
             pidForRoot.setReference(calculateRootRotationFromAngle(targetRootAngle), CANSparkMax.ControlType.kPosition);
             // pidForJoint.setReference(calculateJointRotationFromAngle(targetJointAngle), CANSparkMax.ControlType.kPosition);
@@ -106,7 +103,6 @@ public class Arm implements Component {
             // feedforwardあり
             // pidForRoot.setReference(calculateRootRotationFromAngle(targetRootAngle), CANSparkMax.ControlType.kPosition, 0, ArmState.rootMotorFeedforward, ArbFFUnits.kPercentOut);
             pidForJoint.setReference(calculateJointRotationFromAngle(targetJointAngle), CANSparkMax.ControlType.kPosition, 0, ArmState.jointMotorFeedforward, ArbFFUnits.kPercentOut);
-        }
     }
 
     /**
@@ -286,6 +282,8 @@ public class Arm implements Component {
 
         ArmState.relayToGoalOver |= Util.Calculate.isOverRelayToGoal(ArmState.actualHeight, ArmState.actualDepth);
         ArmState.relayToInitOver |= Util.Calculate.isOverRelayToInit(ArmState.actualHeight, ArmState.actualDepth);
+        ArmState.targetToGoalOver |= Util.Calculate.isOverTargetToGoal();
+
 
         SmartDashboard.putNumber("actual leftright angle", ArmState.actualLeftAndRightAngle);
 

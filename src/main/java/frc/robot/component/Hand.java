@@ -6,6 +6,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.states.HandState;
 import frc.robot.states.State;
 import frc.robot.consts.ArmConst;
@@ -134,7 +135,6 @@ public class Hand implements Component{
      * @return actualAngle +- howFromFrom360 今の角度に一番近い360の倍数の数字
      */
     static double basicPositionCalculation(double actualAngle) {
-
         if((actualAngle % 360) > 180) {
             double howFarFrom360 = 360 - (actualAngle % 360);
             return actualAngle + howFarFrom360;

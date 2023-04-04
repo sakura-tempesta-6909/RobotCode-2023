@@ -233,11 +233,11 @@ public class ArmConst {
     /**
      * 関節部分NEOモーターをコントローラーで動かす時の最大の速さ
      */
-    public static final double JointMotorMoveRatio = 0.09;
+    public static final double JointMotorMoveRatio = 0.2;
     /**
      * 根本NEOモーターをコントローラーで動かす時の最大の速さ
      */
-    public static final double RootMotorMoveRatio = 1;
+    public static final double RootMotorMoveRatio = 0.3;
     /**
      * PIDコントロールの誤差の許容量[cn] 注意! isArmAtTargetの判定に用いているだけ
      */
