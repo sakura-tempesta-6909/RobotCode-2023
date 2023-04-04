@@ -63,8 +63,6 @@ public class Hand implements Component{
         // TODO Auto-generated method stub
         //手首が回った角度
         HandState.actualHandAngle = calculateHandAngleFromRotation(handRotationEncoder.getPosition());
-
-        SmartDashboard.putNumber("aa", HandState.actualHandAngle);
     }
     /**
      * 回転数から度数への変換
