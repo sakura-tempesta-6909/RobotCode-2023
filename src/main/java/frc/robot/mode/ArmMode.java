@@ -1,5 +1,6 @@
 package frc.robot.mode;
 
+import frc.robot.component.Hand;
 import frc.robot.states.*;
 import frc.robot.consts.ArmConst;
 import frc.robot.consts.CameraConst;
@@ -156,16 +157,21 @@ public class ArmMode extends Mode {
             } else {
                 ArmState.targetHeight = CameraConst.TopGoalHeight - ArmConst.RootHeightFromGr;
                 ArmState.targetDepth = ArmState.TargetDepth.TopCube;
+                if (ArmState.isAtTarget()) {
+                    HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
+                }
             }
         } else if (joystick.getRawButton(10)) {
             // 真ん中のキューブのゴールまでアームを伸ばす
             if(!ArmState.relayToGoalOver) {
                 ArmState.targetHeight = ArmConst.RelayPointToGoalHeight;
                 ArmState.targetDepth = ArmConst.RelayPointToGoalDepth;
-
             } else {
                 ArmState.targetHeight = CameraConst.MiddleGoalHeight - ArmConst.RootHeightFromGr;
                 ArmState.targetDepth = ArmState.TargetDepth.MiddleCube;
+                if (ArmState.isAtTarget()) {
+                    HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
+                }
             }
         } else if (joystick.getRawButton(12)) {
             // 前のキューブのゴールまでアームを伸ばす
@@ -175,6 +181,9 @@ public class ArmMode extends Mode {
             ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
             ArmState.targetHeight = -7;
             ArmState.targetDepth = ArmState.TargetDepth.SubStation;
+            if (ArmState.isAtTarget()) {
+                HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
+            }
         } else {
             if (joystick.getPOV() == 0) {
                 adjustArmPosition(0, ArmConst.TargetModifyRatio);
