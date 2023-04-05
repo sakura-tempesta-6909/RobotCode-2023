@@ -71,7 +71,7 @@ public class ArmConst {
     /**
      * 根本NEOモーターのPIDのP
      */
-    public static final double P_R = 0.04;
+    public static final double P_R = 0.04 + 0.02;
     /**
      * 根本NEOモーターのPIDのI
      */
@@ -88,7 +88,7 @@ public class ArmConst {
     /**
      * 関節部分NEOモーターのPIDのP
      */
-    public static final double P_J = 0.03 + 0.03;
+    public static final double P_J = 0.03 + 0.03 + 0.03;
     /**
      * 関節部分NEOモーターのPIDのI
      */
@@ -168,11 +168,11 @@ public class ArmConst {
     /**
      * アームを左右に動かすモーターのPIDのP
      */
-    public static final double P_MID = 0.008;
+    public static final double P_MID = 0.010;
     /**
      * アームを左右に動かすモーターのPIDのI
      */
-    public static final double I_MID = 0.00001;
+    public static final double I_MID = 0.000003;
     /**
      * アームを左右に動かすモーターのPIDのD
      */

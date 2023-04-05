@@ -189,8 +189,10 @@ public class DriveMode extends Mode {
                     ArmState.targetHeight = GrabGamePiecePhaseConst.armConePrepareHeight;
                     ArmState.targetDepth = GrabGamePiecePhaseConst.armConePrepareDepth;
 
-                    if (ArmState.isAtTarget() && HandState.isAtTarget()) {
+                    GrabCount++;
+                    if (ArmState.isAtTarget() && HandState.isAtTarget() && GrabCount >= 20) {
                         phase = GrabGamePiecePhase.Phase2;
+                        GrabCount = 0;
                     }
                     break;
                 case Phase2:

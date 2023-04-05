@@ -145,8 +145,10 @@ public class ArmMode extends Mode {
                 ArmState.targetDepth = ArmConst.RelayPointToGoalDepth;
             } else {
                 ArmState.targetHeight = LimelightConst.MiddleGoalHeight - ArmConst.RootHeightFromGr;
-                if(LimelightState.tv &&  50 < LimelightState.limelightToFrontGoal && LimelightState.limelightToFrontGoal < 110) {
-                    ArmState.targetDepth = LimelightState.limelightToFrontGoal + 7;
+                if(LimelightState.tv) {
+                    if (50 < LimelightState.armToGoal && LimelightState.armToGoal < 120) {
+                        ArmState.targetDepth = LimelightState.armToGoal;
+                    }
                 } else {
                     ArmState.targetDepth = ArmState.TargetDepth.MiddleCorn;
                 }
