@@ -39,16 +39,16 @@ public class DriveMode extends Mode {
             IntakeState.intakeState = IntakeState.RollerStates.s_intakeGamePiece;
             ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
 
-            // Intake時に引っかからない位置に移動
-            ArmState.targetHeight = IntakeConst.armHeight;
-            ArmState.targetDepth = IntakeConst.armDepth;
+            // Intake時に引っかからない位置に移動（BasicPositionがなんらかの理由により低すぎる時に使う）
+//            ArmState.targetHeight = ArmConst.WhileIntakeHeight;
+//            ArmState.targetDepth = ArmConst.WhileIntakeDepth;
         } else if (driveController.getLeftTriggerAxis() > 0.5) {
             IntakeState.intakeState = IntakeState.RollerStates.s_outtakeGamePiece;
             ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
 
-            // Intake時に引っかからない位置に移動
-            ArmState.targetHeight = IntakeConst.armHeight;
-            ArmState.targetDepth = IntakeConst.armDepth;
+            // Intake時に引っかからない位置に移動（BasicPositionがなんらかの理由により低すぎる時に使う）
+//            ArmState.targetHeight = ArmConst.WhileIntakeHeight;
+//            ArmState.targetDepth = ArmConst.WhileIntakeDepth;
         } else {
             IntakeState.intakeState = IntakeState.RollerStates.s_stopRoller;
         }

@@ -248,7 +248,7 @@ public class ArmConst {
      */
     public static final double InitialHeight = -90;
     /**
-     5 アームの理想的な奥行き
+     * アームの理想的な奥行き
      */
     public static final double InitialDepth = 5;
 
@@ -265,6 +265,9 @@ public class ArmConst {
     public static final double RelayPointToInitHeight = -80;
     public static final double RelayPointToInitDepth = 10;
     public static final double RelayPointTolerance = 10;
+
+    public static final double WhileIntakeHeight = -92;
+    public static final double WhileIntakeDepth = -5;
 
 
     public static void ArmConstInit() {
