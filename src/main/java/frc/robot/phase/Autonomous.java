@@ -186,7 +186,7 @@ public class Autonomous {
 
                         },
                         (double time) -> {
-                            return time > 10;
+                            return time > 1;
                         },
                         () -> {
                             DriveState.resetPIDController = true;
@@ -195,6 +195,8 @@ public class Autonomous {
                         },
                         "Waiting..."
                 ),
+                // アームをBasicPositionに
+                basicPosition(5, "Reset To BasicPosition"),
                 // アームをコーンのゴールまで伸ばす
                 relayArmTo(ArmConst.RelayPointToGoalHeight, ArmConst.RelayPointToGoalDepth, "Move Arm To RelayPoint"),
                 moveArmTo(LimelightConst.MiddleGoalHeight - ArmConst.RootHeightFromGr, ArmState.TargetDepth.MiddleCorn,
@@ -202,7 +204,7 @@ public class Autonomous {
                 // ハンドを開いて、キューブを置く
                 releaseHand(3, "Release Hand"),
                 // バックする
-                driveWithPosition(30, "Drive Back"),
+                driveWithTime(-1, 0, 2, "Drive Back"),
                 // アームをBasicPositionに
                 basicPosition(5, "Reset To BasicPosition")
 
