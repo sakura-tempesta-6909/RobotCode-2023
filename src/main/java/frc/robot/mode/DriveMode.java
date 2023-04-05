@@ -122,16 +122,16 @@ public class DriveMode extends Mode {
                         phase = GrabGamePiecePhase.Phase2;
                     }
                     break;
-                 case Phase2:
-                     // ハンドを開く
-                     HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
-                     // ハンドを90度に回転する
-                     HandState.rotateState = HandState.RotateStates.s_moveHandToSpecifiedAngle;
+                case Phase2:
+                    // ハンドを開く
+                    HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
+                    // ハンドを90度に回転する
+                    HandState.rotateState = HandState.RotateStates.s_moveHandToSpecifiedAngle;
 
-                     if (HandState.isAtTarget()) {
-                         phase = GrabGamePiecePhase.Phase3;
-                     }
-                     break;
+                    if (HandState.isAtTarget()) {
+                        phase = GrabGamePiecePhase.Phase3;
+                    }
+                    break;
                 case Phase3:
                     // アームを掴むところまでおろす
                     ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
@@ -167,7 +167,7 @@ public class DriveMode extends Mode {
                     // BasicPositionにターゲットを設定
                     Util.Calculate.setInitWithRelay();
                     break;
-                    
+
             }
         } else if (joystick.getRawButton(11)) {
             // コーン
@@ -234,7 +234,7 @@ public class DriveMode extends Mode {
                     // BasicPositionにターゲットを設定
                     Util.Calculate.setInitWithRelay();
                     break;
-            }   
+            }
         }else if (joystick.getRawButton(10)) {
             // サブステーション
             SmartDashboard.putString("substationPhase", phase.toString());
@@ -290,24 +290,24 @@ public class DriveMode extends Mode {
                     break;
             }
         } else
-            if(joystick.getPOV() == 0) {
-                ArmMode.adjustArmPosition(0, ArmConst.TargetModifyRatio);
-            } else if(joystick.getPOV() == 180) {
-                ArmMode.adjustArmPosition(0,  -ArmConst.TargetModifyRatio);
-            } else  if(joystick.getPOV() == 90) {
-                ArmMode.adjustArmPosition(ArmConst.TargetModifyRatio, 0);
-            } else if(joystick.getPOV() == 270) {
-                ArmMode.adjustArmPosition(- ArmConst.TargetModifyRatio, 0);
-            } else  if(joystick.getPOV() == 45) {
-                ArmMode.adjustArmPosition(ArmConst.TargetModifyRatio, ArmConst.TargetModifyRatio);
-            } else if(joystick.getPOV() == 135) {
-                ArmMode.adjustArmPosition(ArmConst.TargetModifyRatio, -ArmConst.TargetModifyRatio);
-            }else  if(joystick.getPOV() == 225) {
-                ArmMode.adjustArmPosition(-ArmConst.TargetModifyRatio, -ArmConst.TargetModifyRatio);
-            } else if(joystick.getPOV() == 315) {
-                ArmMode.adjustArmPosition(-ArmConst.TargetModifyRatio, ArmConst.TargetModifyRatio);
-            }
-        
+        if(joystick.getPOV() == 0) {
+            ArmMode.adjustArmPosition(0, ArmConst.TargetModifyRatio);
+        } else if(joystick.getPOV() == 180) {
+            ArmMode.adjustArmPosition(0,  -ArmConst.TargetModifyRatio);
+        } else  if(joystick.getPOV() == 90) {
+            ArmMode.adjustArmPosition(ArmConst.TargetModifyRatio, 0);
+        } else if(joystick.getPOV() == 270) {
+            ArmMode.adjustArmPosition(- ArmConst.TargetModifyRatio, 0);
+        } else  if(joystick.getPOV() == 45) {
+            ArmMode.adjustArmPosition(ArmConst.TargetModifyRatio, ArmConst.TargetModifyRatio);
+        } else if(joystick.getPOV() == 135) {
+            ArmMode.adjustArmPosition(ArmConst.TargetModifyRatio, -ArmConst.TargetModifyRatio);
+        }else  if(joystick.getPOV() == 225) {
+            ArmMode.adjustArmPosition(-ArmConst.TargetModifyRatio, -ArmConst.TargetModifyRatio);
+        } else if(joystick.getPOV() == 315) {
+            ArmMode.adjustArmPosition(-ArmConst.TargetModifyRatio, ArmConst.TargetModifyRatio);
+        }
+
 
         if (driveController.getAButton()) {
             DriveState.driveState = DriveState.DriveStates.s_aprilTagTracking;

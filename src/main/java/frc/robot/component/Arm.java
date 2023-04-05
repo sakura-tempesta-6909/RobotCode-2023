@@ -40,7 +40,7 @@ public class Arm implements Component {
         pidForRoot.setSmartMotionMaxVelocity(3000, 0);
         // pidForRoot.setSmartMotionAccelStrategy(accelStrategy, slotID)
 
-        
+
         pidForRoot.setP(ArmConst.P_R_1, 1);
         pidForRoot.setI(ArmConst.I_R_1, 1);
         pidForRoot.setD(ArmConst.D_R_1, 1);
@@ -53,7 +53,7 @@ public class Arm implements Component {
         pidForJoint.setIMaxAccum(ArmConst.IMax_J, 0);
         pidForJoint.setOutputRange(-.5, .5);
 
-        
+
         pidForJoint.setP(ArmConst.P_J_1, 1);
         pidForJoint.setI(ArmConst.I_J_1, 1);
         pidForJoint.setD(ArmConst.D_J_1, 1);
@@ -96,13 +96,13 @@ public class Arm implements Component {
      * s_moveArmToSpecifiedPositionで実行
      */
     private void pidControlArm(double targetRootAngle, double targetJointAngle) {
-            // feedforwardなし
-            pidForRoot.setReference(calculateRootRotationFromAngle(targetRootAngle), CANSparkMax.ControlType.kPosition);
-            // pidForJoint.setReference(calculateJointRotationFromAngle(targetJointAngle), CANSparkMax.ControlType.kPosition);
+        // feedforwardなし
+        pidForRoot.setReference(calculateRootRotationFromAngle(targetRootAngle), CANSparkMax.ControlType.kPosition);
+        // pidForJoint.setReference(calculateJointRotationFromAngle(targetJointAngle), CANSparkMax.ControlType.kPosition);
 
-            // feedforwardあり
-            // pidForRoot.setReference(calculateRootRotationFromAngle(targetRootAngle), CANSparkMax.ControlType.kPosition, 0, ArmState.rootMotorFeedforward, ArbFFUnits.kPercentOut);
-            pidForJoint.setReference(calculateJointRotationFromAngle(targetJointAngle), CANSparkMax.ControlType.kPosition, 0, ArmState.jointMotorFeedforward, ArbFFUnits.kPercentOut);
+        // feedforwardあり
+        // pidForRoot.setReference(calculateRootRotationFromAngle(targetRootAngle), CANSparkMax.ControlType.kPosition, 0, ArmState.rootMotorFeedforward, ArbFFUnits.kPercentOut);
+        pidForJoint.setReference(calculateJointRotationFromAngle(targetJointAngle), CANSparkMax.ControlType.kPosition, 0, ArmState.jointMotorFeedforward, ArbFFUnits.kPercentOut);
     }
 
     /**

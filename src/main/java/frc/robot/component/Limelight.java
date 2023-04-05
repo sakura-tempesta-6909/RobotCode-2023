@@ -45,7 +45,7 @@ public class Limelight implements Component {
         double targetOffsetAngle_Vertical = -(tyEntry.getDouble(0.0) + 0.38 * 27) ;
         LimelightState.tx = -txEntry.getDouble(0);
         LimelightState.tv = tvEntry.getDouble(0) != 0;
-        
+
 
         //計算
         double angleToGoalDegrees = LimelightConst.LimelightMountAngleDegrees + targetOffsetAngle_Vertical;
@@ -60,7 +60,7 @@ public class Limelight implements Component {
         SmartDashboard.putNumber("ty", tyEntry.getDouble(0));
         SmartDashboard.putNumber("BackGoal", LimelightState.limelightToBackGoal);
         SmartDashboard.putBoolean("Limelight",  tvEntry.getDouble(0) != 0);
-        
+
 
     }
 

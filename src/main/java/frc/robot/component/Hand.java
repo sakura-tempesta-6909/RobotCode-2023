@@ -37,25 +37,25 @@ public class Hand implements Component{
     @Override
     public void autonomousInit() {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void teleopInit() {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void disabledInit() {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void testInit() {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
@@ -83,7 +83,7 @@ public class Hand implements Component{
     }
 
 
-    /** 
+    /**
      * つかむ離すの運動関係のモーターを動かす
      * @param isGrabbingHand trueでつかむ。
      */
@@ -127,7 +127,7 @@ public class Hand implements Component{
 
     /** 手首の回転を止める */
     public void stopHand() {
-         controlHandRotation(DriveConst.Speeds.Neutral);
+        controlHandRotation(DriveConst.Speeds.Neutral);
     }
     /**
      * actual angleを入力してその数に一番近い360の倍数の数を見つけて返す
@@ -165,9 +165,9 @@ public class Hand implements Component{
                 break;
             case s_releaseHand:
                 releaseHand();
-                break;            
+                break;
         }
-        
+
         switch(HandState.rotateState) {
             case s_rightRotateHand:
                 rotateHand();

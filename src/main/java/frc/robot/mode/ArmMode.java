@@ -155,8 +155,8 @@ public class ArmMode extends Mode {
             }
         } else if (joystick.getRawButton(11)) {
             // 前のコーンのゴールまでアームを伸ばす
-                ArmState.targetHeight = LimelightConst.BottomGoalHeight - ArmConst.RootHeightFromGr;
-                ArmState.targetDepth = ArmState.TargetDepth.BottomCorn;
+            ArmState.targetHeight = LimelightConst.BottomGoalHeight - ArmConst.RootHeightFromGr;
+            ArmState.targetDepth = ArmState.TargetDepth.BottomCorn;
         } else if (joystick.getRawButton(8)) {
             // 奥のキューブのゴールまでアームを伸ばす
             if (!ArmState.relayToGoalOver) {

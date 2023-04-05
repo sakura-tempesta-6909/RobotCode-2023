@@ -1,5 +1,6 @@
 package frc.robot.phase;
 
+import frc.robot.consts.LimelightConst;
 import frc.robot.states.*;
 import frc.robot.consts.ArmConst;
 import frc.robot.consts.CameraConst;
@@ -213,7 +214,7 @@ public class Autonomous {
             ),
             basicArmTo(ArmConst.InitialHeight, ArmConst.InitialDepth, "move arm to basic position"),
             relayArmTo(ArmConst.RelayPointToGoalHeight, ArmConst.RelayPointToGoalDepth, "move arm to relay point"),
-            moveArmTo(  CameraConst.MiddleGoalHeight - ArmConst.RootHeightFromGr, ArmState.TargetDepth.MiddleCube, "move arm to cube goal"),
+            moveArmTo(ArmState.targetHeight = LimelightConst.MiddleGoalHeight - ArmConst.RootHeightFromGr,LimelightState.armToGoal , "move arm to cube goal"),
             releaseHand(2, "release cube")
             // drive(-1, 2, "move to target")
             // driveTo(-3, "move to target")
