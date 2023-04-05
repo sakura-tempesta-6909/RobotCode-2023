@@ -133,11 +133,11 @@ public class ArmState {
         isMoveLeftAndRightEncoderReset = false;
 
         // TODO どれくらい引くかを計測する
-        TargetDepth.TopCorn = 101.0 ;
+        TargetDepth.TopCorn = 101.0;
         TargetDepth.MiddleCorn = 58.0 + 38;
         TargetDepth.BottomCorn = 30.0 + 10;
 
-        TargetDepth.TopCube = 101.0 + 15.0;
+        TargetDepth.TopCube = 101.0 + 25.0;
         TargetDepth.MiddleCube = 58.0 + 25.0;
         TargetDepth.BottomCube = 30.0 + 15.0;
 

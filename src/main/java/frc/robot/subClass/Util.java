@@ -49,6 +49,8 @@ public class Util {
         sendConsole("DriveTargetMeter", DriveState.targetMeter);
         sendConsole("RDrivePosition", DriveState.rightMeter);
         sendConsole("LDrivePosition", DriveState.leftMeter);
+
+        sendConsole("HandIsAtTarget", HandState.isAtTarget());
     }
 
     public static class Calculate {

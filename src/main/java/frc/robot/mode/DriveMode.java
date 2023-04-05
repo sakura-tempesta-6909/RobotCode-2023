@@ -1,5 +1,6 @@
 package frc.robot.mode;
 
+import java.time.chrono.HijrahEra;
 import java.util.Map;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -115,9 +116,10 @@ public class DriveMode extends Mode {
                     ArmState.targetHeight = GrabGamePiecePhaseConst.armCubePrepareHeight;
                     ArmState.targetDepth = GrabGamePiecePhaseConst.armCubePrepareDepth;
 
-                    if (ArmState.isAtTarget()) {
+                    if (ArmState.isAtTarget() && HandState.isAtTarget()) {
                         // 次の段階で初期位置から90度回すようにする
                         HandState.targetAngle = HandState.actualHandAngle + 90;
+                        HandState.rotateState = HandState.RotateStates.s_stopHand;
                         phase = GrabGamePiecePhase.Phase2;
                     }
                     break;
@@ -212,8 +214,6 @@ public class DriveMode extends Mode {
                     // 左右はど真ん中にする
                     ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
 
-                    // ハンドを止める
-                    HandState.rotateState = HandState.RotateStates.s_stopHand;
                     // コーンを掴む！！！
                     HandState.grabHandState = HandState.GrabHandStates.s_grabHand;
 
