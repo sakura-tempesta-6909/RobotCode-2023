@@ -162,7 +162,7 @@ public class Autonomous {
      * @param zRotation 回転スピード
      * @param phaseName 出力されるフェーズの名前
      */
-    private static PhaseTransition.Phase midDriveTo(double xSpeed, double zRotation, double waiter, String phaseName) {
+    private static PhaseTransition.Phase midDriveTo(double waiter, double xSpeed, double zRotation, String phaseName) {
         return new PhaseTransition.Phase(
                 () -> {
                     DriveState.driveState = DriveState.DriveStates.s_midDrive;
@@ -268,7 +268,7 @@ public class Autonomous {
                 // ハンドを開いて、コーンを置く
                 releaseHand(3, "Release Hand"),
                 // バックする
-                midDriveTo(-1, 0, 2, "Drive Back"),
+                midDriveTo(2, -1, 0, "Drive Back"),
                 // アームをBasicPositionに
                 basicPosition(5, "Reset To BasicPosition")
 
@@ -297,7 +297,7 @@ public class Autonomous {
                 // ハンドを開いて、キューブを置く
                 releaseHand(3, "Release Hand"),
                 // バックする
-                midDriveTo(-1, 0, 2, "Drive Back"),
+                midDriveTo(2, -1, 0, "Drive Back"),
                 // アームをBasicPositionに
                 basicPosition(5, "Reset To BasicPosition")
 
