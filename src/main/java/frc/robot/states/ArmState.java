@@ -43,7 +43,6 @@ public class ArmState {
         boolean isDepthAtSetpoint = Math.abs(targetDepth - actualDepth) < ArmConst.PIDAngleTolerance;
         boolean isHeightMotorAtSetpoint = Math.abs(targetHeight - actualHeight) < ArmConst.PIDAngleTolerance;
         return isHeightMotorAtSetpoint && isDepthAtSetpoint;
-
     }
 
     public static double moveLeftAndRightMotor;

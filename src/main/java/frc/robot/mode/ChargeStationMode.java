@@ -49,8 +49,8 @@ public class ChargeStationMode extends Mode{
                     break;
                 case Phase2:
                     ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-                    ArmState.targetHeight = ( ArmConst.InitialHeight+GrabGamePiecePhaseConst.armCubeIntakeHeight) / 2 +5;
-                    ArmState.targetDepth = GrabGamePiecePhaseConst.armCubeIntakeDepth;
+                    ArmState.targetHeight = ( ArmConst.InitialHeight+GrabGamePiecePhaseConst.armCubeGrabHeight) / 2 +5;
+                    ArmState.targetDepth = GrabGamePiecePhaseConst.armCubeGrabDepth;
                     HandState.rotateState = HandState.RotateStates.s_moveHandToSpecifiedAngle;
                     if (ArmState.isAtTarget()) {
                         phase = GrabGamePiecePhase.Phase3;
@@ -58,8 +58,8 @@ public class ChargeStationMode extends Mode{
                     break;
                 case Phase3:
                     ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-                    ArmState.targetHeight = GrabGamePiecePhaseConst.armCubeIntakeHeight;
-                    ArmState.targetDepth = GrabGamePiecePhaseConst.armCubeIntakeDepth;
+                    ArmState.targetHeight = GrabGamePiecePhaseConst.armCubeGrabHeight;
+                    ArmState.targetDepth = GrabGamePiecePhaseConst.armCubeGrabDepth;
                     break;
             }
 

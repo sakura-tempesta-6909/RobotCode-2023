@@ -2,13 +2,15 @@ package frc.robot.consts;
 
 public class GrabGamePiecePhaseConst {
     /**
-     * 　キューブを掴むアームの高さ
+     * キューブを掴むアームの高さ
      */
-    public static final double armCubeIntakeHeight = -105;
+    public static final double armCubeGrabHeight = -105;
     /**
      * キューブを掴むアームの奥行き
      */
-    public static final double armCubeIntakeDepth = -3;
+    public static final double armCubeGrabDepth = -5;
+    public static final double armCubePrepareHeight = -90;
+    public static final double armCubePrepareDepth = -5;
 
     /**
      * 　コーンを掴むアームの高さ
@@ -28,6 +30,7 @@ public class GrabGamePiecePhaseConst {
 
     public static final double armSubStationHeight = -7;
     public static final double armSubStationDepth = 56;
+
     public static void GrabGamePiecePhaseConstInit() {
 
     }

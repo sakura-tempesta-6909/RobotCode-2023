@@ -38,13 +38,17 @@ public class DriveMode extends Mode {
         if (driveController.getRightTriggerAxis() > 0.5) {
             IntakeState.intakeState = IntakeState.RollerStates.s_intakeGamePiece;
             ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-            ArmState.targetHeight = -92;
-            ArmState.targetDepth = GrabGamePiecePhaseConst.armCubeIntakeDepth;
+
+            // Intake時に引っかからない位置に移動
+            ArmState.targetHeight = IntakeConst.armHeight;
+            ArmState.targetDepth = IntakeConst.armDepth;
         } else if (driveController.getLeftTriggerAxis() > 0.5) {
             IntakeState.intakeState = IntakeState.RollerStates.s_outtakeGamePiece;
             ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-            ArmState.targetHeight = -92;
-            ArmState.targetDepth = GrabGamePiecePhaseConst.armCubeIntakeDepth;
+
+            // Intake時に引っかからない位置に移動
+            ArmState.targetHeight = IntakeConst.armHeight;
+            ArmState.targetDepth = IntakeConst.armDepth;
         } else {
             IntakeState.intakeState = IntakeState.RollerStates.s_stopRoller;
         }
@@ -105,39 +109,65 @@ public class DriveMode extends Mode {
             SmartDashboard.putString("intakePhase", phase.toString());
             switch (phase) {
                 case Phase1:
+                    // アームを準備段階の高さまで動かす
                     ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-                    Util.Calculate.setInitWithRelay();
+                    // 左右はど真ん中にする
                     ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
+
+                    // ハンドを初期位置に回す
                     HandState.rotateState = HandState.RotateStates.s_turnHandBack;
+                    // ハンドを開く
                     HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
+
+                    // 準備段階の高さ
+                    ArmState.targetHeight = GrabGamePiecePhaseConst.armCubePrepareHeight;
+                    ArmState.targetDepth = GrabGamePiecePhaseConst.armCubePrepareDepth;
+
                     if (ArmState.isAtTarget()) {
+                        // 次の段階で初期位置から90度回すようにする
                         HandState.targetAngle = HandState.actualHandAngle + 90;
-                        phase = GrabGamePiecePhase.Phase3;
+                        phase = GrabGamePiecePhase.Phase2;
                     }
                     break;
-                // case Phase2:
-                //     HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
-                //     ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-                //     ArmState.targetHeight = ( ArmConst.InitialHeight+ -100) / 2 +5;
-                //     ArmState.targetDepth = GrabGamePiecePhaseConst.armCubeIntakeDepth;
-                //     HandState.rotateState = HandState.RotateStates.s_moveHandToSpecifiedAngle;
-                //     if (ArmState.isAtTarget()) {
-                //         phase = GrabGamePiecePhase.Phase3;
-                //     }
-                //     break;
+                 case Phase2:
+                     // アームを止める
+                     ArmState.armState = ArmState.ArmStates.s_fixArmPosition;
+
+                     // ハンドを開く
+                     HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
+                     // ハンドを90度に回転する
+                     HandState.rotateState = HandState.RotateStates.s_moveHandToSpecifiedAngle;
+
+                     if (HandState.isAtTarget()) {
+                         phase = GrabGamePiecePhase.Phase3;
+                     }
+                     break;
                 case Phase3:
-                    HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
+                    // アームを掴むところまでおろす
                     ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-                    ArmState.targetHeight = GrabGamePiecePhaseConst.armCubeIntakeHeight;
-                    ArmState.targetDepth = GrabGamePiecePhaseConst.armCubeIntakeDepth;
-                    HandState.rotateState = HandState.RotateStates.s_moveHandToSpecifiedAngle;
+
+                    // ハンドを開く
+                    HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
+                    // ハンドを止める
+                    HandState.rotateState = HandState.RotateStates.s_stopHand;
+
+                    // アームをおろして掴みにいく
+                    ArmState.targetHeight = GrabGamePiecePhaseConst.armCubeGrabHeight;
+                    ArmState.targetDepth = GrabGamePiecePhaseConst.armCubeGrabDepth;
+
                     if (ArmState.isAtTarget()) {
                         phase = GrabGamePiecePhase.Phase4;
                     }
                     break;
                 case Phase4:
+                    // アームは止めたままにする
+                    ArmState.armState = ArmState.ArmStates.s_fixArmPosition;
+
+                    // キューブを掴む！！
                     HandState.grabHandState = HandState.GrabHandStates.s_grabHand;
-                    HandState.rotateState = HandState.RotateStates.s_moveHandToSpecifiedAngle;
+                    // ハンドを止める
+                    HandState.rotateState = HandState.RotateStates.s_stopHand;
+
                     GrabCount++;
                     if (GrabCount >= 20) {
                         phase = GrabGamePiecePhase.Phase5;
@@ -145,8 +175,13 @@ public class DriveMode extends Mode {
                     }
                     break;
                 case Phase5:
+                    // アームをBasic(Initial)Positionに戻す
                     ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
+
+                    // ハンドを初期位置に戻す
                     HandState.rotateState = HandState.RotateStates.s_turnHandBack;
+
+                    // BasicPositionにターゲットを設定
                     Util.Calculate.setInitWithRelay();
                     break;
                     
@@ -275,8 +310,8 @@ public class DriveMode extends Mode {
                 case Phase2:
                     HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
                     ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-                    ArmState.targetHeight = ( ArmConst.InitialHeight+GrabGamePiecePhaseConst.armCubeIntakeHeight) / 2 +5;
-                    ArmState.targetDepth = GrabGamePiecePhaseConst.armCubeIntakeDepth;
+                    ArmState.targetHeight = ( ArmConst.InitialHeight+GrabGamePiecePhaseConst.armCubeGrabHeight) / 2 +5;
+                    ArmState.targetDepth = GrabGamePiecePhaseConst.armCubeGrabDepth;
                     HandState.rotateState = HandState.RotateStates.s_moveHandToSpecifiedAngle;
                     if (ArmState.isAtTarget()) {
                         phase = GrabGamePiecePhase.Phase3;
@@ -286,7 +321,7 @@ public class DriveMode extends Mode {
                     HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
                     ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
                     ArmState.targetHeight = GrabGamePiecePhaseConst.armConeIntakeHeight;
-                    ArmState.targetDepth = GrabGamePiecePhaseConst.armCubeIntakeDepth;
+                    ArmState.targetDepth = GrabGamePiecePhaseConst.armCubeGrabDepth;
                     if (ArmState.isAtTarget()) {
                         phase = GrabGamePiecePhase.Phase4;
                     }
