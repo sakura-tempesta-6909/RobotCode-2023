@@ -1,5 +1,7 @@
 package frc.robot.mode;
 
+import frc.robot.component.Arm;
+import frc.robot.component.Hand;
 import frc.robot.states.*;
 import frc.robot.consts.ArmConst;
 import frc.robot.consts.CameraConst;
@@ -115,6 +117,7 @@ public class ArmMode extends Mode {
             ArmState.targetDepth = ArmState.actualDepth;
             ArmState.relayToGoalOver = false;
             ArmState.relayToInitOver = false;
+            ArmState.targetToGoalOver = false;
         }
 
         if (getSeveralRawButton(new int[]{7, 8, 9, 10, 11, 12})) {
@@ -146,7 +149,7 @@ public class ArmMode extends Mode {
             }
         } else if (joystick.getRawButton(11)) {
             // 前のコーンのゴールまでアームを伸ばす
-            if(!ArmState.relayToGoalOver) {
+            if (!ArmState.relayToGoalOver) {
                 ArmState.targetHeight = ArmConst.RelayPointToGoalHeight;
                 ArmState.targetDepth = ArmConst.RelayPointToGoalDepth;
             } else {
@@ -161,175 +164,183 @@ public class ArmMode extends Mode {
             } else {
                 ArmState.targetHeight = CameraConst.TopGoalHeight - ArmConst.RootHeightFromGr;
                 ArmState.targetDepth = ArmState.TargetDepth.TopCube;
+                if (ArmState.targetToGoalOver) {
+                    HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
+                }
             }
         } else if (joystick.getRawButton(10)) {
             // 真ん中のキューブのゴールまでアームを伸ばす
-            if(!ArmState.relayToGoalOver) {
+            if (!ArmState.relayToGoalOver) {
                 ArmState.targetHeight = ArmConst.RelayPointToGoalHeight;
                 ArmState.targetDepth = ArmConst.RelayPointToGoalDepth;
-
             } else {
                 ArmState.targetHeight = CameraConst.MiddleGoalHeight - ArmConst.RootHeightFromGr;
                 ArmState.targetDepth = ArmState.TargetDepth.MiddleCube;
+                if (ArmState.targetToGoalOver) {
+                    HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
+                }
             }
         } else if (joystick.getRawButton(12)) {
             // 前のキューブのゴールまでアームを伸ばす
-            if(!ArmState.relayToGoalOver) {
+            if (!ArmState.relayToGoalOver) {
                 ArmState.targetHeight = ArmConst.RelayPointToGoalHeight;
                 ArmState.targetDepth = ArmConst.RelayPointToGoalDepth;
 
             } else {
                 ArmState.targetHeight = CameraConst.BottomGoalHeight - ArmConst.RootHeightFromGr;
                 ArmState.targetDepth = ArmState.TargetDepth.BottomCube;
+                if (ArmState.targetToGoalOver) {
+                    HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
+                }
+            } else if (driveController.getPOV() == 90) {
+                ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
+                ArmState.targetHeight = -7;
+                ArmState.targetDepth = ArmState.TargetDepth.SubStation;
+            } else {
+                if (joystick.getPOV() == 0) {
+                    adjustArmPosition(0, ArmConst.TargetModifyRatio);
+                } else if (joystick.getPOV() == 180) {
+                    adjustArmPosition(0, -ArmConst.TargetModifyRatio);
+                } else if (joystick.getPOV() == 90) {
+                    adjustArmPosition(ArmConst.TargetModifyRatio, 0);
+                } else if (joystick.getPOV() == 270) {
+                    adjustArmPosition(-ArmConst.TargetModifyRatio, 0);
+                } else if (joystick.getPOV() == 45) {
+                    adjustArmPosition(ArmConst.TargetModifyRatio, ArmConst.TargetModifyRatio);
+                } else if (joystick.getPOV() == 135) {
+                    adjustArmPosition(ArmConst.TargetModifyRatio, -ArmConst.TargetModifyRatio);
+                } else if (joystick.getPOV() == 225) {
+                    adjustArmPosition(-ArmConst.TargetModifyRatio, -ArmConst.TargetModifyRatio);
+                } else if (joystick.getPOV() == 315) {
+                    adjustArmPosition(-ArmConst.TargetModifyRatio, ArmConst.TargetModifyRatio);
+                }
             }
-        } else if (driveController.getPOV() == 90) {
-            ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-            ArmState.targetHeight = -7;
-            ArmState.targetDepth = ArmState.TargetDepth.SubStation;
-        } else {
-            if (joystick.getPOV() == 0) {
-                adjustArmPosition(0, ArmConst.TargetModifyRatio);
-            } else if (joystick.getPOV() == 180) {
-                adjustArmPosition(0, -ArmConst.TargetModifyRatio);
-            } else if (joystick.getPOV() == 90) {
-                adjustArmPosition(ArmConst.TargetModifyRatio, 0);
-            } else if (joystick.getPOV() == 270) {
-                adjustArmPosition(-ArmConst.TargetModifyRatio, 0);
-            } else if (joystick.getPOV() == 45) {
-                adjustArmPosition(ArmConst.TargetModifyRatio, ArmConst.TargetModifyRatio);
-            } else if (joystick.getPOV() == 135) {
-                adjustArmPosition(ArmConst.TargetModifyRatio, -ArmConst.TargetModifyRatio);
-            } else if (joystick.getPOV() == 225) {
-                adjustArmPosition(-ArmConst.TargetModifyRatio, -ArmConst.TargetModifyRatio);
-            } else if (joystick.getPOV() == 315) {
-                adjustArmPosition(-ArmConst.TargetModifyRatio, ArmConst.TargetModifyRatio);
+
+            if (joystick.getRawAxis(3) < -0.8) {
+                ArmState.armState = ArmState.ArmStates.s_moveArmMotor;
+                ArmState.rootSpeed = joystickX;
+                ArmState.jointSpeed = joystickY;
+                // 奥のコーン
+            }
+
+            if (joystick.getRawButton(2)) {
+                // すべてBasicPositionに戻る
+                ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
+                ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
+                HandState.rotateState = HandState.RotateStates.s_turnHandBack;
+                Util.Calculate.setInitWithRelay();
+            }
+
+            if (driveController.getBButton()) {
+                ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_limelightTracking;
+            }
+
+            // ターゲット座標からターゲットの角度を計算する
+            Map<String, Double> targetAngles = Tools.calculateAngles(ArmState.targetDepth, ArmState.targetHeight);
+            Double target = targetAngles.get("RootAngle");
+            if (target != null) {
+                ArmState.targetRootAngle = target;
+            } else {
+                ArmState.targetRootAngle = ArmState.actualRootAngle;
+            }
+            target = targetAngles.get("JointAngle");
+            if (target != null) {
+                ArmState.targetJointAngle = target;
+            } else {
+                ArmState.targetJointAngle = ArmState.actualJointAngle;
+            }
+
+        }
+
+        /**
+         * @param Height : ターゲットのX座標[cm]
+         * @param Depth  : ターゲットのZ座標[cm]
+         *               この関数に座標の値域を記述する
+         * @return 入力の座標が正しいか[boolean]
+         */
+        private static boolean isNewTargetPositionInLimit ( double Height, double Depth){
+            double length = Math.sqrt(Math.pow(Height, 2) + Math.pow(Depth, 2));
+
+            boolean isInOuterBorder = length < ArmConst.TargetPositionOuterLimit;
+            boolean isOutInnerBorder = length > ArmConst.TargetPositionInnerLimit;
+            // boolean isInDepthLimit = Depth > -23;
+
+            SmartDashboard.putBoolean("InLimit", isInOuterBorder && isOutInnerBorder);
+
+            // TODO XButtonでコントロールする時のターゲット座標の制限を考える
+            return isInOuterBorder && isOutInnerBorder;
+        }
+
+        /**
+         * 複数のボタンのうちどれかが押されているか判定する
+         * 複数のボタンのgetButtonをORで
+         *
+         * @param buttonIds ボタンの番号の配列
+         * @return 複数のボタンのうちどれか一つがgetButtonでtrueかどうか
+         */
+        private boolean getSeveralRawButton ( int[] buttonIds){
+            boolean flag = false;
+            for (int buttonIdx : buttonIds) {
+                flag |= joystick.getRawButton(buttonIdx);
+            }
+            return flag;
+        }
+
+        /**
+         * 複数のボタンのうちどれかが押されたか判定する
+         * 複数のボタンのgetButtonPressedをORで
+         *
+         * @param buttonIds ボタンの番号の配列
+         * @return 複数のボタンのうちどれか一つがgetButtonPressedでtrueかどうか
+         */
+        private boolean getSeveralRawButtonPressed ( int[] buttonIds){
+            boolean flag = false;
+            for (int buttonIdx : buttonIds) {
+                flag |= joystick.getRawButtonPressed(buttonIdx);
+            }
+            return flag;
+        }
+
+        /**
+         * 複数のボタンのうちどれかが離されたか判定する
+         * 複数のボタンのgetButtonReleasedをORで
+         *
+         * @param buttonIds ボタンの番号の配列
+         * @return 複数のボタンのうちどれか一つがgetButtonReleasedでtrueかどうか
+         */
+        private boolean getSeveralRawButtonReleased ( int[] buttonIds){
+            boolean flag = false;
+            for (int buttonIdx : buttonIds) {
+                flag |= joystick.getRawButtonReleased(buttonIdx);
+            }
+            return flag;
+        }
+
+        public static void adjustArmPosition (double diffH, double diffD){
+            ArmState.armState = ArmState.ArmStates.s_adjustArmPosition;
+            if (isNewTargetPositionInLimit(ArmState.targetHeight + diffH, ArmState.targetDepth + diffD)) {
+                ArmState.targetHeight += diffH;
+                ArmState.targetDepth += diffD;
+            } else {
+                ArmState.targetHeight = ArmState.actualHeight;
+                ArmState.targetDepth = ArmState.actualDepth;
             }
         }
 
-        if (joystick.getRawAxis(3) < -0.8) {
-            ArmState.armState = ArmState.ArmStates.s_moveArmMotor;
-            ArmState.rootSpeed = joystickX;
-            ArmState.jointSpeed = joystickY;
-            // 奥のコーン
-        }
-
-        if (joystick.getRawButton(2)) {
-            // すべてBasicPositionに戻る
-            ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-            ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
-            HandState.rotateState = HandState.RotateStates.s_turnHandBack;
-            Util.Calculate.setInitWithRelay();
-        }
-
-        if (driveController.getBButton()) {
-            ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_limelightTracking;
-        }
-
-        // ターゲット座標からターゲットの角度を計算する
-        Map<String, Double> targetAngles = Tools.calculateAngles(ArmState.targetDepth, ArmState.targetHeight);
-        Double target = targetAngles.get("RootAngle");
-        if (target != null) {
-            ArmState.targetRootAngle = target;
-        } else {
-            ArmState.targetRootAngle = ArmState.actualRootAngle;
-        }
-        target = targetAngles.get("JointAngle");
-        if (target != null) {
-            ArmState.targetJointAngle = target;
-        } else {
-            ArmState.targetJointAngle = ArmState.actualJointAngle;
+        enum GrabGamePiecePhase {
+            //basicPositionに移動する
+            Phase1,
+            //ハンドを開ける, アームを下げる
+            Phase2,
+            //ハンドを閉める
+            Phase3,
+            //アームを上げる
+            Phase4,
+            Phase5,
+            Phase6,
+            Phase7,
+            Phase8,
         }
 
     }
-
-    /**
-     * @param Height : ターゲットのX座標[cm]
-     * @param Depth  : ターゲットのZ座標[cm]
-     *               この関数に座標の値域を記述する
-     * @return 入力の座標が正しいか[boolean]
-     */
-    private static boolean isNewTargetPositionInLimit(double Height, double Depth) {
-        double length = Math.sqrt(Math.pow(Height, 2) + Math.pow(Depth, 2));
-
-        boolean isInOuterBorder = length < ArmConst.TargetPositionOuterLimit;
-        boolean isOutInnerBorder = length > ArmConst.TargetPositionInnerLimit;
-        // boolean isInDepthLimit = Depth > -23;
-
-        SmartDashboard.putBoolean("InLimit", isInOuterBorder && isOutInnerBorder);
-
-        // TODO XButtonでコントロールする時のターゲット座標の制限を考える
-        return isInOuterBorder && isOutInnerBorder;
-    }
-
-    /**
-     * 複数のボタンのうちどれかが押されているか判定する
-     * 複数のボタンのgetButtonをORで
-     *
-     * @param buttonIds ボタンの番号の配列
-     * @return 複数のボタンのうちどれか一つがgetButtonでtrueかどうか
-     */
-    private boolean getSeveralRawButton(int[] buttonIds) {
-        boolean flag = false;
-        for (int buttonIdx : buttonIds) {
-            flag |= joystick.getRawButton(buttonIdx);
-        }
-        return flag;
-    }
-
-    /**
-     * 複数のボタンのうちどれかが押されたか判定する
-     * 複数のボタンのgetButtonPressedをORで
-     *
-     * @param buttonIds ボタンの番号の配列
-     * @return 複数のボタンのうちどれか一つがgetButtonPressedでtrueかどうか
-     */
-    private boolean getSeveralRawButtonPressed(int[] buttonIds) {
-        boolean flag = false;
-        for (int buttonIdx : buttonIds) {
-            flag |= joystick.getRawButtonPressed(buttonIdx);
-        }
-        return flag;
-    }
-
-    /**
-     * 複数のボタンのうちどれかが離されたか判定する
-     * 複数のボタンのgetButtonReleasedをORで
-     *
-     * @param buttonIds ボタンの番号の配列
-     * @return 複数のボタンのうちどれか一つがgetButtonReleasedでtrueかどうか
-     */
-    private boolean getSeveralRawButtonReleased(int[] buttonIds) {
-        boolean flag = false;
-        for (int buttonIdx : buttonIds) {
-            flag |= joystick.getRawButtonReleased(buttonIdx);
-        }
-        return flag;
-    }
-
-    public static void adjustArmPosition(double diffH, double diffD) {
-        ArmState.armState = ArmState.ArmStates.s_adjustArmPosition;
-        if (isNewTargetPositionInLimit(ArmState.targetHeight + diffH, ArmState.targetDepth + diffD)) {
-            ArmState.targetHeight += diffH;
-            ArmState.targetDepth += diffD;
-        } else {
-            ArmState.targetHeight = ArmState.actualHeight;
-            ArmState.targetDepth = ArmState.actualDepth;
-        }
-    }
-
-    enum GrabGamePiecePhase {
-        //basicPositionに移動する
-        Phase1,
-        //ハンドを開ける, アームを下げる
-        Phase2,
-        //ハンドを閉める
-        Phase3,
-        //アームを上げる
-        Phase4,
-        Phase5,
-        Phase6,
-        Phase7,
-        Phase8,
-    }
-
 }

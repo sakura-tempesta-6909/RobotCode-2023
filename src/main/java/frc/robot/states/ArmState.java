@@ -43,6 +43,7 @@ public class ArmState {
         boolean isDepthAtSetpoint = Math.abs(targetDepth - actualDepth) < ArmConst.PIDAngleTolerance;
         boolean isHeightMotorAtSetpoint = Math.abs(targetHeight - actualHeight) < ArmConst.PIDAngleTolerance;
         return isHeightMotorAtSetpoint && isDepthAtSetpoint;
+
     }
 
     public static double moveLeftAndRightMotor;
@@ -56,6 +57,8 @@ public class ArmState {
 
     public static boolean relayToGoalOver;
     public static boolean relayToInitOver;
+
+    public static boolean targetToGoalOver;
 
     public static class TargetDepth {
         public static double TopCorn;
@@ -119,6 +122,7 @@ public class ArmState {
 
         relayToGoalOver = true;
         relayToInitOver = true;
+        targetToGoalOver = true;
     }
 
 
