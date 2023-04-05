@@ -11,24 +11,24 @@ public class Autonomous {
     private static PhaseTransition phaseTransitionB;
     private static PhaseTransition phaseTransitionC;
 
-    private static PhaseTransition.Phase basicArmTo(double targetHeight, double targetDepth, String phaseName) {
-        return new PhaseTransition.Phase(
-            () -> {
-                ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-                ArmState.targetHeight = targetHeight;
-                ArmState.targetDepth = targetDepth;
-            },
-            (double time) -> {
-                return ArmState.isAtTarget();
-            },
-            () -> {
-                DriveState.resetPIDController = true;
-                DriveState.resetPosition = true;
-                ArmState.resetPidController  = true;
-            }, 
-            phaseName
-        );
-    }
+//    private static PhaseTransition.Phase basicArmTo(double targetHeight, double targetDepth, String phaseName) {
+//        return new PhaseTransition.Phase(
+//            () -> {
+//                ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
+//                ArmState.targetHeight = targetHeight;
+//                ArmState.targetDepth = targetDepth;
+//            },
+//            (double time) -> {
+//                return ArmState.isAtTarget();
+//            },
+//            () -> {
+//                DriveState.resetPIDController = true;
+//                DriveState.resetPosition = true;
+//                ArmState.resetPidController  = true;
+//            },
+//            phaseName
+//        );
+//    }
 
 
     private static PhaseTransition.Phase relayArmTo(double relayHeight, double relayDepth, String phaseName) {
@@ -211,10 +211,11 @@ public class Autonomous {
                 },
                 "wait"
             ),
-            basicArmTo(ArmConst.InitialHeight, ArmConst.InitialDepth, "move arm to basic position"),
-            relayArmTo(ArmConst.RelayPointToGoalHeight, ArmConst.RelayPointToGoalDepth, "move arm to relay point"),
-            moveArmTo(  CameraConst.MiddleGoalHeight - ArmConst.RootHeightFromGr, ArmState.TargetDepth.MiddleCube, "move arm to cube goal"),
-            releaseHand(2, "release cube")
+            moveArmTo(ArmConst.InitialHeight, ArmConst.InitialDepth, "move arm to basic position")
+
+//            relayArmTo(ArmConst.RelayPointToGoalHeight, ArmConst.RelayPointToGoalDepth, "move arm to relay point"),
+//            moveArmTo(  CameraConst.MiddleGoalHeight - ArmConst.RootHeightFromGr, ArmState.TargetDepth.MiddleCube, "move arm to cube goal"),
+//            releaseHand(2, "release cube")
             // drive(-1, 2, "move to target")
             // driveTo(-3, "move to target")
         );
