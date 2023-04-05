@@ -266,10 +266,6 @@ public class ArmConst {
     public static final double RelayPointToInitDepth = 10;
     public static final double RelayPointTolerance = 10;
 
-    public static final double WhileIntakeHeight = -92;
-    public static final double WhileIntakeDepth = -5;
-
-
     public static void ArmConstInit() {
 
     }
