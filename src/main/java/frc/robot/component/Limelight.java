@@ -42,7 +42,7 @@ public class Limelight implements Component {
     public void readSensors() {
         // limelightから受け取る情報
         // limelightから見たターゲットの角度
-        double targetOffsetAngle_Vertical = -tyEntry.getDouble(0.0);
+        double targetOffsetAngle_Vertical = -(tyEntry.getDouble(0.0) + 0.38 * 27) ;
         LimelightState.tx = -txEntry.getDouble(0);
         LimelightState.tv = tvEntry.getDouble(0) != 0;
         
@@ -55,11 +55,12 @@ public class Limelight implements Component {
         LimelightState.armToGoal = LimelightState.limelightToFrontGoal - LimelightConst.LimelightToArm;
         LimelightState.limelightToBackGoal = LimelightState.limelightToFrontGoal + LimelightConst.FrontGoalToBackGoal;
 
-        SmartDashboard.putNumber("FrontGoal", LimelightState.limelightToFrontGoal);
+        SmartDashboard.putNumber("FrontGoal", LimelightState.armToGoal);
+        SmartDashboard.putNumber("tx", LimelightState.tx);
         SmartDashboard.putNumber("ty", tyEntry.getDouble(0));
         SmartDashboard.putNumber("BackGoal", LimelightState.limelightToBackGoal);
         SmartDashboard.putBoolean("Limelight",  tvEntry.getDouble(0) != 0);
-        SmartDashboard.putNumber("armToFrontGoal", LimelightState.armToGoal);
+        
 
     }
 

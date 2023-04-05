@@ -1,5 +1,8 @@
 package frc.robot.states;
 
+import frc.robot.consts.ArmConst;
+import frc.robot.consts.HandConst;
+
 public class HandState {
     public static GrabHandStates grabHandState;
     public static HandState.RotateStates rotateState;
@@ -29,6 +32,10 @@ public class HandState {
 
     public static double targetAngle = 0.0;
     public static boolean isResetHandPID = false;
+
+    public static boolean isAtTarget() {
+        return Math.abs(actualHandAngle - targetAngle) < HandConst.PIDAngleTolerance;
+    }
 
     public static void StateInit() {
     }

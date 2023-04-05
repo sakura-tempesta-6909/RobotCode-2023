@@ -146,7 +146,8 @@ public class Hand implements Component{
     }
     /** 手首を所定の位置（元の位置）に戻す*/
     public void bringBackHand() {
-       pidControlHand(basicPositionCalculation(HandState.actualHandAngle));
+        HandState.targetAngle = basicPositionCalculation(HandState.actualHandAngle);
+        moveHandToSpecifiedAngle();
     }
     /** 手首を所定の位置に動かす*/
     public void moveHandToSpecifiedAngle() {

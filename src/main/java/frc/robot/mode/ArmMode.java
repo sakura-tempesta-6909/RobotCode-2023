@@ -145,7 +145,13 @@ public class ArmMode extends Mode {
                 ArmState.targetDepth = ArmConst.RelayPointToGoalDepth;
             } else {
                 ArmState.targetHeight = LimelightConst.MiddleGoalHeight - ArmConst.RootHeightFromGr;
-                ArmState.targetDepth = ArmState.TargetDepth.MiddleCorn;
+                if(LimelightState.tv) {
+                    if (50 < LimelightState.armToGoal && LimelightState.armToGoal < 120) {
+                        ArmState.targetDepth = LimelightState.armToGoal;
+                    }
+                } else {
+                    ArmState.targetDepth = ArmState.TargetDepth.MiddleCorn;
+                }
             }
         } else if (joystick.getRawButton(11)) {
             // 前のコーンのゴールまでアームを伸ばす
