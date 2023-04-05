@@ -342,6 +342,7 @@ public class Arm implements Component {
                 break;
             case s_fixLeftAndRightArm:
                 fixLeftAndRightArmPositionWithPID();
+                break;
         }
     }
 }

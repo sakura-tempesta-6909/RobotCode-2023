@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.states.CameraState;
 import frc.robot.states.DriveState;
 import frc.robot.states.LimelightState;
-import frc.robot.states.State;
 import frc.robot.consts.CameraConst;
 import frc.robot.consts.DriveConst;
 import frc.robot.consts.LimelightConst;
@@ -53,7 +52,7 @@ public class Drive implements Component {
 
     }
 
-    public void arcadeDrive(double xSpeed, double zRotation) {
+    public void trapezoidalAccelerationArcadeDrive(double xSpeed, double zRotation) {
         if(Math.abs(preXSpeed) <  DriveConst.SkipLowSpeedThreshold) {
             xSpeed = xSpeed >  DriveConst.SkipLowSpeedThreshold ?  DriveConst.SkipLowSpeedThreshold : xSpeed < - DriveConst.SkipLowSpeedThreshold ? - DriveConst.SkipLowSpeedThreshold : xSpeed;
         }
@@ -79,6 +78,11 @@ public class Drive implements Component {
         preZRotation = zRotation;
     }
 
+    public void arcadeDrive(double xSpeed, double zRotation) {
+        differentialDrive.arcadeDrive(xSpeed, zRotation);
+        differentialDrive.feed();
+    }
+
     public void pidControlTargetTracking() {
         double limelightTrackingZRotation = 0;
         if(LimelightState.tv) {
@@ -89,7 +93,7 @@ public class Drive implements Component {
         } else if (limelightTrackingZRotation < -0.7) {
             limelightTrackingZRotation = -0.7;
         }
-        arcadeDrive(LimelightState.limelightXSpeed * 0.7, -limelightTrackingZRotation);
+        trapezoidalAccelerationArcadeDrive(LimelightState.limelightXSpeed * 0.7, -limelightTrackingZRotation);
     }
 
     public void pidControlAprilTagTracking() {
@@ -99,7 +103,7 @@ public class Drive implements Component {
         } else if (cameraZRotation < -0.5) {
             cameraZRotation = -0.5;
         }
-        arcadeDrive(CameraState.cameraXSpeed * DriveConst.Speeds.MidDrive, cameraZRotation);
+        trapezoidalAccelerationArcadeDrive(CameraState.cameraXSpeed * DriveConst.Speeds.MidDrive, cameraZRotation);
     }
 
     /**
@@ -198,7 +202,7 @@ public class Drive implements Component {
 
         switch (DriveState.driveState) {
             case s_fastDrive:
-                arcadeDrive(DriveConst.Speeds.FastDrive * DriveState.xSpeed, DriveConst.Speeds.FastDrive * DriveState.zRotation);
+                trapezoidalAccelerationArcadeDrive(DriveConst.Speeds.FastDrive * DriveState.xSpeed, DriveConst.Speeds.FastDrive * DriveState.zRotation);
                 break;
             case s_midDrive:
                 arcadeDrive(DriveConst.Speeds.MidDrive * DriveState.xSpeed, DriveConst.Speeds.MidDrive * DriveState.zRotation);
@@ -207,7 +211,7 @@ public class Drive implements Component {
                 arcadeDrive(DriveConst.Speeds.SlowDrive * DriveState.xSpeed, DriveConst.Speeds.SlowDrive * DriveState.zRotation);
                 break;
             case s_stopDrive:
-                arcadeDrive(DriveConst.Speeds.Neutral * DriveState.xSpeed, DriveConst.Speeds.Neutral * DriveState.zRotation);
+                trapezoidalAccelerationArcadeDrive(DriveConst.Speeds.Neutral * DriveState.xSpeed, DriveConst.Speeds.Neutral * DriveState.zRotation);
                 break;
             case s_limelightTracking:
                 pidControlTargetTracking();

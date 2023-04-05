@@ -29,7 +29,7 @@ public class DriveMode extends Mode {
         DriveState.xSpeed = -1 * driveController.getLeftY();
         DriveState.zRotation = -1 * driveController.getRightX();
         if (driveController.getRightBumper()) {
-            DriveState.driveState = DriveState.DriveStates.s_midDrive;
+            DriveState.driveState = DriveState.DriveStates.s_slowDrive;
         } else {
             DriveState.driveState = DriveState.DriveStates.s_fastDrive;
         }
