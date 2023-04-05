@@ -172,7 +172,7 @@ public class ArmConst {
     /**
      * アームを左右に動かすモーターのPIDのI
      */
-    public static final double I_MID = 0.000001;
+    public static final double I_MID = 0.00001;
     /**
      * アームを左右に動かすモーターのPIDのD
      */
@@ -246,9 +246,9 @@ public class ArmConst {
     /**
      * アームの理想的な高さ
      */
-    public static final double InitialHeight = -100;
+    public static final double InitialHeight = -95;
     /**
-     * アームの理想的な奥行き
+     5 アームの理想的な奥行き
      */
     public static final double InitialDepth = -5;
 

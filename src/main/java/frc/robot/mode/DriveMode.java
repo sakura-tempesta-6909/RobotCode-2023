@@ -112,7 +112,7 @@ public class DriveMode extends Mode {
                 case Phase2:
                     HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
                     ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-                    ArmState.targetHeight = ( ArmConst.InitialHeight+GrabGamePiecePhaseConst.armCubeIntakeHeight) / 2 +5;
+                    ArmState.targetHeight = ( ArmConst.InitialHeight+ -100) / 2 +5;
                     ArmState.targetDepth = GrabGamePiecePhaseConst.armCubeIntakeDepth;
                     HandState.rotateState = HandState.RotateStates.s_moveHandToSpecifiedAngle;
                     if (ArmState.isAtTarget()) {
@@ -143,6 +143,7 @@ public class DriveMode extends Mode {
                     HandState.rotateState = HandState.RotateStates.s_turnHandBack;
                     Util.Calculate.setInitWithRelay();
                     break;
+                    
             }
         } else if (joystick.getRawButton(11)) {
             // コーン

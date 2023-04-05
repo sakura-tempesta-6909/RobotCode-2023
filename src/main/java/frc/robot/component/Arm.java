@@ -229,15 +229,16 @@ public class Arm implements Component {
      * 目標値（真ん中）を0とする
      */
     public void moveArmToMiddle() {
-        leftAndRightArmPidController.setReference(0, CANSparkMax.ControlType.kPosition);
+        leftAndRightArmPidController.setReference(5, CANSparkMax.ControlType.kPosition);
     }
 
     public void pidControlTargetTracking() {
-        ArmState.targetMoveLeftAndRightAngle = LimelightState.tx + ArmState.actualLeftAndRightAngle;
+        ArmState.targetMoveLeftAndRightAngle = -LimelightState.tx + ArmState.actualLeftAndRightAngle;
         if (!LimelightState.tv) {
             moveRightArm(0.05);
         } else {
-            leftAndRightArmPidController.setReference(calculateLeftAndRightRotationFromAngle(-ArmState.targetMoveLeftAndRightAngle), CANSparkMax.ControlType.kPosition);
+            leftAndRightArmPidController.setReference(calculateLeftAndRightRotationFromAngle(ArmState.targetMoveLeftAndRightAngle), CANSparkMax.ControlType.kPosition);
+            SmartDashboard.putNumber("leftRightTargetAngle", ArmState.targetMoveLeftAndRightAngle);
         }
 
     }

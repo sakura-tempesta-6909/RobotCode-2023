@@ -135,7 +135,7 @@ public class ArmState {
 
         // TODO どれくらい引くかを計測する
         TargetDepth.TopCorn = 101.0 ;
-        TargetDepth.MiddleCorn = 58.0 + 20;
+        TargetDepth.MiddleCorn = 58.0 + 38;
         TargetDepth.BottomCorn = 30.0 + 10;
 
         TargetDepth.TopCube = 101.0 + 15.0;

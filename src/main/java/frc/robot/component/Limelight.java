@@ -56,10 +56,10 @@ public class Limelight implements Component {
         LimelightState.limelightToBackGoal = LimelightState.limelightToFrontGoal + LimelightConst.FrontGoalToBackGoal;
 
         SmartDashboard.putNumber("FrontGoal", LimelightState.limelightToFrontGoal);
+        SmartDashboard.putNumber("tx", LimelightState.tx);
         SmartDashboard.putNumber("ty", tyEntry.getDouble(0));
         SmartDashboard.putNumber("BackGoal", LimelightState.limelightToBackGoal);
         SmartDashboard.putBoolean("Limelight",  tvEntry.getDouble(0) != 0);
-        SmartDashboard.putNumber("armToFrontGoal", LimelightState.armToGoal);
 
     }
 
