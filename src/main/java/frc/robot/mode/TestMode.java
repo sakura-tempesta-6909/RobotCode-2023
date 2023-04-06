@@ -13,5 +13,10 @@ public class TestMode extends Mode{
             DriveState.driveState =DriveState.DriveStates.s_pidDrive;
             DriveState.targetMeter = 0.5;
         }
+
+        if (driveController.getXButtonPressed()) {
+            DriveState.resetPosition = true;
+            DriveState.resetPIDController = true;
+        }
     }
 }
