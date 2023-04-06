@@ -20,7 +20,7 @@ public class Drive implements Component {
     private final VictorSPX driveRightBack, driveLeftBack;
     private DifferentialDrive differentialDrive;
     private final PIDController pidLimelightDrive;
-    private final PIDController pidCameraDrive;
+    private final PIDController pidCameraDrive, pidDriveLong, pidDriveMiddle ,pidDriveShort;
     private double preXSpeed, preZRotation;
 
 
@@ -51,6 +51,15 @@ public class Drive implements Component {
         pidLimelightDrive = new PIDController(LimelightConst.PID.LimelightDriveP, LimelightConst.PID.LimelightDriveI, LimelightConst.PID.LimelightDriveD);
         pidCameraDrive = new PIDController(CameraConst.PID.CameraDriveP, CameraConst.PID.CameraDriveI, CameraConst.PID.CameraDriveD);
 
+       
+        pidDriveLong = new PIDController(0.5, 0.1, 0);
+        pidDriveLong.setIntegratorRange(-0.2 / 0.1, 0.6 / 0.1);
+        pidDriveMiddle = new PIDController(0.7,0.1,0);
+        
+    
+        pidDriveShort = new PIDController(1.0,0.4,0);
+        pidDriveShort.setIntegratorRange(-0.05/ 0.4, 1000000000 / 0.4);
+        
     }
 
     public void trapezoidalAccelerationArcadeDrive(double xSpeed, double zRotation) {
@@ -111,15 +120,18 @@ public class Drive implements Component {
      * PIDでtargetLength分前後に動かす
      */
     private void drivePosition() {
-        if (Math.abs(DriveState.targetMeter) > DriveConst.PID.ShortThreshold) {
-            driveRightFront.selectProfileSlot(DriveConst.PID.LongSlotIdx, 0);
-            driveLeftFront.selectProfileSlot(DriveConst.PID.LongSlotIdx, 0);
+        if (Math.abs(DriveState.targetMeter) > DriveConst.PID.MiddleThreshold) {
+            trapezoidalAccelerationArcadeDrive(pidDriveLong.calculate((DriveState.rightMeter + DriveState.leftMeter) / 2, DriveState.targetMeter), 0);
+        } else if (Math.abs(DriveState.targetMeter) > DriveConst.PID.ShortThreshold){
+           trapezoidalAccelerationArcadeDrive(pidDriveMiddle.calculate((DriveState.rightMeter + DriveState.leftMeter) / 2, DriveState.targetMeter), 0);
         } else {
-            driveRightFront.selectProfileSlot(DriveConst.PID.ShortSlotIdx, 0);
-            driveLeftFront.selectProfileSlot(DriveConst.PID.ShortSlotIdx, 0);
+            trapezoidalAccelerationArcadeDrive(pidDriveShort.calculate((DriveState.rightMeter + DriveState.leftMeter) / 2, DriveState.targetMeter), 0);
         }
-        driveRightFront.set(ControlMode.Position, Util.Calculate.meterToDriveEncoderPoints(DriveState.targetMeter));
-        driveLeftFront.set(ControlMode.Position, Util.Calculate.meterToDriveEncoderPoints(DriveState.targetMeter));
+        // driveRightFront.set(ControlMode.Position, Util.Calculate.meterToDriveEncoderPoints(DriveState.targetMeter));
+        // driveLeftFront.set(ControlMode.Position, Util.Calculate.meterToDriveEncoderPoints(DriveState.targetMeter));
+        
+        
+       
     }
 
     /**
@@ -136,11 +148,6 @@ public class Drive implements Component {
         return Util.Calculate.driveEncoderPointsToMeter(driveLeftFront.getSelectedSensorPosition());
     }
 
-    private boolean isAtTarget() {
-        boolean isLeftMotorAtTarget = Math.abs(DriveState.leftMeter - DriveState.targetMeter) < DriveConst.PID.LossTolerance;
-        boolean isRightMotorAtTarget = Math.abs(DriveState.rightMeter - DriveState.targetMeter) < DriveConst.PID.LossTolerance;
-        return isRightMotorAtTarget && isLeftMotorAtTarget;
-    }
 
 
     @Override
@@ -199,6 +206,8 @@ public class Drive implements Component {
         if (DriveState.resetPIDController) {
             driveLeftFront.setIntegralAccumulator(0.0);
             driveRightFront.setIntegralAccumulator(0.0);
+            pidDriveLong.reset();
+            pidDriveMiddle.reset();
         }
 
         if (DriveState.isMotorBrake) {
