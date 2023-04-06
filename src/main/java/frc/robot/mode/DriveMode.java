@@ -352,15 +352,10 @@ public class DriveMode extends Mode {
         }
     }
 
-    // ToDo  嘘なので直す
     enum GrabGamePiecePhase {
-        //basicPositionに移動する
         Phase1,
-        //ハンドを開ける, アームを下げる
         Phase2,
-        //ハンドを閉める
         Phase3,
-        //アームを上げる
         Phase4,
         Phase5,
         Phase6,

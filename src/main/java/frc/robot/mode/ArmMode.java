@@ -105,8 +105,6 @@ public class ArmMode extends Mode {
             HandState.isResetHandPID = true;
         }
 
-        SmartDashboard.putBoolean("test", joystick.getRawButton(5));
-
         if (getSeveralRawButtonPressed(new int[]{2, 6, 7, 8, 9, 10, 11, 12}) || getSeveralRawButtonReleased(new int[]{2, 6, 7, 8, 9, 10, 11, 12})) {
             ArmState.resetPidController = true;
             ArmState.targetHeight = ArmState.actualHeight;
@@ -126,52 +124,39 @@ public class ArmMode extends Mode {
             ArmState.jointSpeed = joystickY;
         } else if (joystick.getRawButton(7)) {
             // 奥のコーンのゴールまでアームを伸ばす
-            if (!ArmState.relayToGoalOver) {
-                ArmState.targetHeight = ArmConst.RelayPointToGoalHeight;
-                ArmState.targetDepth = ArmConst.RelayPointToGoalDepth;
-            } else {
-                ArmState.targetHeight = LimelightConst.TopGoalHeight - ArmConst.RootHeightFromGr;
-                ArmState.targetDepth = ArmState.TargetDepth.TopCorn;
-            }
+            Util.Calculate.setGoalWithRelay(
+                    LimelightConst.TopGoalHeight - ArmConst.RootHeightFromGr,
+                    ArmState.TargetDepth.TopCorn
+            );
         } else if (joystick.getRawButton(9)) {
             // 真ん中のコーンのゴールまでアームを伸ばす
-            if (!ArmState.relayToGoalOver) {
-                ArmState.targetHeight = ArmConst.RelayPointToGoalHeight;
-                ArmState.targetDepth = ArmConst.RelayPointToGoalDepth;
-            } else {
-                ArmState.targetHeight = LimelightConst.MiddleGoalHeight - ArmConst.RootHeightFromGr;
-                ArmState.targetDepth = ArmState.TargetDepth.MiddleCorn;
-            }
+            Util.Calculate.setGoalWithRelay(
+                    LimelightConst.MiddleGoalHeight - ArmConst.RootHeightFromGr,
+                    ArmState.TargetDepth.MiddleCorn
+            );
         } else if (joystick.getRawButton(11)) {
             // 前のコーンのゴールまでアームを伸ばす
             ArmState.targetHeight = LimelightConst.BottomGoalHeight - ArmConst.RootHeightFromGr;
             ArmState.targetDepth = ArmState.TargetDepth.BottomCorn;
         } else if (joystick.getRawButton(8)) {
             // 奥のキューブのゴールまでアームを伸ばす
-            if (!ArmState.relayToGoalOver) {
-                ArmState.targetHeight = ArmConst.RelayPointToGoalHeight;
-                ArmState.targetDepth = ArmConst.RelayPointToGoalDepth;
-            } else {
-                ArmState.targetHeight = CameraConst.TopGoalHeight - ArmConst.RootHeightFromGr;
-                ArmState.targetDepth = ArmState.TargetDepth.TopCube;
-            }
+            Util.Calculate.setGoalWithRelay(
+                    CameraConst.TopGoalHeight - ArmConst.RootHeightFromGr,
+                    ArmState.TargetDepth.TopCube
+            );
         } else if (joystick.getRawButton(10)) {
             // 真ん中のキューブのゴールまでアームを伸ばす
-            if (!ArmState.relayToGoalOver) {
-                ArmState.targetHeight = ArmConst.RelayPointToGoalHeight;
-                ArmState.targetDepth = ArmConst.RelayPointToGoalDepth;
-
-            } else {
-                ArmState.targetHeight = CameraConst.MiddleGoalHeight - ArmConst.RootHeightFromGr;
-                ArmState.targetDepth = ArmState.TargetDepth.MiddleCube;
-            }
+            Util.Calculate.setGoalWithRelay(
+                    CameraConst.MiddleGoalHeight - ArmConst.RootHeightFromGr,
+                    ArmState.TargetDepth.MiddleCube
+            );
         } else if (joystick.getRawButton(12)) {
             // 前のキューブのゴールまでアームを伸ばす
             ArmState.targetHeight = CameraConst.BottomGoalHeight - ArmConst.RootHeightFromGr;
             ArmState.targetDepth = ArmState.TargetDepth.BottomCube;
         } else if (driveController.getPOV() == 90) {
             ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-            ArmState.targetHeight = -7;
+            ArmState.targetHeight = ArmConst.SubStationHeight;
             ArmState.targetDepth = ArmState.TargetDepth.SubStation;
         } else {
             if (joystick.getPOV() == 0) {
@@ -197,7 +182,6 @@ public class ArmMode extends Mode {
             ArmState.armState = ArmState.ArmStates.s_moveArmMotor;
             ArmState.rootSpeed = joystickX;
             ArmState.jointSpeed = joystickY;
-            // 奥のコーン
         }
 
         if (joystick.getRawButton(2)) {
@@ -277,8 +261,12 @@ public class ArmMode extends Mode {
     }
 
     /**
+     * アームの微調整を行う
+     * ちょっとずつターゲットを変える
      *
-     * */
+     * @param diffH 高さ方向の時間[20ms]あたりの変化量[cm]
+     * @param diffD 奥行き方向の時間[20ms]あたりの変化量[cm]
+     */
     public static void adjustArmPosition(double diffH, double diffD) {
         ArmState.armState = ArmState.ArmStates.s_adjustArmPosition;
         if (isNewTargetPositionInLimit(ArmState.targetHeight + diffH, ArmState.targetDepth + diffD)) {

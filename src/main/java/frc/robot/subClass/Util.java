@@ -97,5 +97,15 @@ public class Util {
                 ArmState.targetDepth = ArmConst.RelayPointToInitDepth;
             }
         }
+
+        public static void setGoalWithRelay(double GoalHeight, double GoalDepth) {
+            if (ArmState.relayToGoalOver) {
+                ArmState.targetHeight = GoalHeight;
+                ArmState.targetDepth = GoalDepth;
+            } else {
+                ArmState.targetHeight = ArmConst.RelayPointToGoalHeight;
+                ArmState.targetDepth = ArmConst.RelayPointToGoalDepth;
+            }
+        }
     }
 }

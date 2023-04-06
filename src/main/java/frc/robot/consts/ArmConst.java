@@ -265,6 +265,7 @@ public class ArmConst {
     public static final double RelayPointToInitHeight = -80;
     public static final double RelayPointToInitDepth = 10;
     public static final double RelayPointTolerance = 10;
+    public static final double SubStationHeight = -7;
 
 
     public static void ArmConstInit() {
