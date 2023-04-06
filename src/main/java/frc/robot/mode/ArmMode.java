@@ -13,8 +13,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subClass.Util;
 
 public class ArmMode extends Mode {
-    private static DriveMode.GrabGamePiecePhase phase = DriveMode.GrabGamePiecePhase.Phase1;
-
     /**
      * StartButton - DriveModeに
      */
@@ -146,8 +144,8 @@ public class ArmMode extends Mode {
             }
         } else if (joystick.getRawButton(11)) {
             // 前のコーンのゴールまでアームを伸ばす
-                ArmState.targetHeight = LimelightConst.BottomGoalHeight - ArmConst.RootHeightFromGr;
-                ArmState.targetDepth = ArmState.TargetDepth.BottomCorn;
+            ArmState.targetHeight = LimelightConst.BottomGoalHeight - ArmConst.RootHeightFromGr;
+            ArmState.targetDepth = ArmState.TargetDepth.BottomCorn;
         } else if (joystick.getRawButton(8)) {
             // 奥のキューブのゴールまでアームを伸ばす
             if (!ArmState.relayToGoalOver) {
@@ -159,7 +157,7 @@ public class ArmMode extends Mode {
             }
         } else if (joystick.getRawButton(10)) {
             // 真ん中のキューブのゴールまでアームを伸ばす
-            if(!ArmState.relayToGoalOver) {
+            if (!ArmState.relayToGoalOver) {
                 ArmState.targetHeight = ArmConst.RelayPointToGoalHeight;
                 ArmState.targetDepth = ArmConst.RelayPointToGoalDepth;
 
@@ -227,11 +225,9 @@ public class ArmMode extends Mode {
 
         boolean isInOuterBorder = length < ArmConst.TargetPositionOuterLimit;
         boolean isOutInnerBorder = length > ArmConst.TargetPositionInnerLimit;
-        // boolean isInDepthLimit = Depth > -23;
 
         SmartDashboard.putBoolean("InLimit", isInOuterBorder && isOutInnerBorder);
 
-        // TODO XButtonでコントロールする時のターゲット座標の制限を考える
         return isInOuterBorder && isOutInnerBorder;
     }
 
@@ -280,6 +276,9 @@ public class ArmMode extends Mode {
         return flag;
     }
 
+    /**
+     *
+     * */
     public static void adjustArmPosition(double diffH, double diffD) {
         ArmState.armState = ArmState.ArmStates.s_adjustArmPosition;
         if (isNewTargetPositionInLimit(ArmState.targetHeight + diffH, ArmState.targetDepth + diffD)) {
@@ -290,20 +289,4 @@ public class ArmMode extends Mode {
             ArmState.targetDepth = ArmState.actualDepth;
         }
     }
-
-    enum GrabGamePiecePhase {
-        //basicPositionに移動する
-        Phase1,
-        //ハンドを開ける, アームを下げる
-        Phase2,
-        //ハンドを閉める
-        Phase3,
-        //アームを上げる
-        Phase4,
-        Phase5,
-        Phase6,
-        Phase7,
-        Phase8,
-    }
-
 }
