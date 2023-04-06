@@ -11,7 +11,7 @@ public class TestMode extends Mode{
 
         if(driveController.getXButton()){
             DriveState.driveState =DriveState.DriveStates.s_pidDrive;
-            DriveState.targetMeter = DriveState.leftMeter;
+            DriveState.targetMeter = 0.5;
         }
     }
 }
