@@ -29,20 +29,5 @@ public class TestMode extends Mode{
             DriveState.resetPosition = true;
             DriveState.resetPIDController = true;
         }
-        // SmartDashboard.putNumber("DriveRP", DriveConst.PID.DriveRight.slot0.kP);
-        // SmartDashboard.putNumber("DriveRI", DriveConst.PID.DriveRight.slot0.kI);
-        // SmartDashboard.putNumber("DriveRD", DriveConst.PID.DriveRight.slot0.kD);
-        // SmartDashboard.putNumber("DriveLP", DriveConst.PID.DriveLeft.slot0.kP);
-        // SmartDashboard.putNumber("DriveLI", DriveConst.PID.DriveLeft.slot0.kI);
-        // SmartDashboard.putNumber("DriveLD", DriveConst.PID.DriveLeft.slot0.kD);
-
-        // SmartDashboard.putNumber("DriveRP", 0);
-        // SmartDashboard.putNumber("DriveRI", 0);
-        // SmartDashboard.putNumber("DriveRD", 0);
-        // SmartDashboard.putNumber("DriveLP", 0);
-        // SmartDashboard.putNumber("DriveLI", 0);
-        // SmartDashboard.putNumber("DriveLD", 0);
-
-
     }
 }

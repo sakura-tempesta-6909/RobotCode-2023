@@ -278,6 +278,17 @@ public class DriveMode extends Mode {
                     }
                     break;
                 case Phase4:
+                    // PIDでちょっと進む
+                    DriveState.driveState = DriveState.DriveStates.s_pidDrive;
+
+                    // PIDでどんくらい進むか
+                    DriveState.targetMeter = 1;
+
+                    if (DriveState.isAtTarget()){
+                        phase = GrabGamePiecePhase.Phase5;
+                    }
+                    break;
+                case Phase5:
                     // アームをサブステーションの位置へ
                     ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
 
@@ -287,7 +298,6 @@ public class DriveMode extends Mode {
                     // サブステーションの位置
                     ArmState.targetHeight = GrabGamePiecePhaseConst.armSubStationHeight;
                     ArmState.targetDepth = GrabGamePiecePhaseConst.armSubStationDepth;
-                    break;
             }
         } else
             if(joystick.getPOV() == 0) {
