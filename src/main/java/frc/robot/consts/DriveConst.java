@@ -78,8 +78,6 @@ public class DriveConst {
             DriveLeft.slot1.kD = 0.000;
             DriveLeft.slot1.maxIntegralAccumulator = 1023 * 0.1 / DriveLeft.slot1.kI;
 
-            DriveRight.motionAcceleration = PointsPerLength * 0.000000000001;
-            DriveLeft.motionAcceleration = PointsPerLength * 0.000000000001;
         }
     }
     public static void DriveConstInit() {
