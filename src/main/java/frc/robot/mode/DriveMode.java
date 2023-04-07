@@ -84,10 +84,7 @@ public class DriveMode extends Mode {
 
         if (joystick.getRawButtonPressed(11) || joystick.getRawButtonPressed(12) || joystick.getRawButtonPressed(10) ||  joystick.getRawButtonPressed(7)) {
             phase = GrabGamePiecePhase.Phase1;
-        }
-
-        if (joystick.getRawButtonPressed(10)) {
-            DriveState.resetPosition = true;
+            DriveState.resetPosition= true;
             DriveState.resetPIDController = true;
         }
 
@@ -189,7 +186,7 @@ public class DriveMode extends Mode {
                     ArmState.targetDepth = GrabGamePiecePhaseConst.armConePrepareDepth;
 
                     GrabCount++;
-                    if (ArmState.isAtTarget() && HandState.isAtTarget() && GrabCount >= 20) {
+                    if (ArmState.isAtTarget() && HandState.isAtTarget() && GrabCount >= 40) {
                         phase = GrabGamePiecePhase.Phase2;
                         GrabCount = 0;
                     }
@@ -275,6 +272,8 @@ public class DriveMode extends Mode {
 
                     if (Util.Calculate.isOverRelayToGoal(ArmState.actualHeight, ArmState.actualDepth)) {
                         phase = GrabGamePiecePhase.Phase4;
+                        DriveState.resetPosition= true;
+                        DriveState.resetPIDController = true;
                     }
                     break;
                 case Phase4:
@@ -282,7 +281,7 @@ public class DriveMode extends Mode {
                     DriveState.driveState = DriveState.DriveStates.s_pidDrive;
 
                     // PIDでどんくらい進むか
-                    DriveState.targetMeter = 1;
+                    DriveState.targetMeter = 0.5;
 
                     if (DriveState.isAtTarget()){
                         phase = GrabGamePiecePhase.Phase5;

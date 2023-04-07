@@ -195,6 +195,7 @@ public class Drive implements Component {
             driveRightFront.setIntegralAccumulator(0.0);
             pidDriveLong.reset();
             pidDriveMiddle.reset();
+            pidDriveShort.reset();
         }
 
         if (DriveState.isMotorBrake) {
