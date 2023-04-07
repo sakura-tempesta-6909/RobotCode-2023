@@ -267,7 +267,7 @@ public class DriveMode extends Mode {
                     }
                     break;
                 case Phase3:
-                    LimelightState.isConeDetection = true;
+                    LimelightState.limelightState = LimelightState.States.s_coneDetection;
 
                     ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_limelightTracking;
                     // アームをサブステーションの位置へ

@@ -73,15 +73,16 @@ public class Limelight implements Component {
             LimelightState.table.getEntry("ledMode").setNumber(1);
         }
 
-        if (LimelightState.isConeDetection) {
-            pipelineEntry.setNumber(1);
-        } else {
-            pipelineEntry.setNumber(0);
-        }
-        if (LimelightState.isCubeDetection) {
-            pipelineEntry.setNumber(2);
-        } else {
-            pipelineEntry.setNumber(0);
+
+        switch (LimelightState.limelightState) {
+            case s_tapeDetection:
+                pipelineEntry.setNumber(0);
+                break;
+            case s_coneDetection:
+                pipelineEntry.setNumber(1);
+                break;
+            case s_cubeDetection:
+                pipelineEntry.setNumber(2);
         }
 
     }

@@ -3,6 +3,7 @@ package frc.robot.states;
 import edu.wpi.first.networktables.NetworkTable;
 
 public class LimelightState {
+    public static States limelightState;
     public static NetworkTable table;
     public static boolean isLimelightOn;
     public static boolean isConeDetection;
@@ -21,7 +22,9 @@ public class LimelightState {
 
     public static double armToSubStation;
     public enum States {
-
+        s_coneDetection,
+        s_cubeDetection,
+        s_tapeDetection
     }
 
     public static void StateInit() {
@@ -30,5 +33,6 @@ public class LimelightState {
 
     public static void StateReset() {
         isLimelightOn = false;
+        limelightState = States.s_tapeDetection;
     }
 }
