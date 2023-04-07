@@ -5,6 +5,8 @@ import edu.wpi.first.networktables.NetworkTable;
 public class LimelightState {
     public static NetworkTable table;
     public static boolean isLimelightOn;
+    public static boolean isConeDetection;
+    public static boolean isCubeDetection;
     /** 手前のターゲットまでの距離 */
     public static double limelightToFrontGoal; // [cm]
     public static double limelightToBackGoal; // [cm]

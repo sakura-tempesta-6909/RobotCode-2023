@@ -5,12 +5,11 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.states.LimelightState;
-import frc.robot.states.State;
 import frc.robot.consts.LimelightConst;
 
 
 public class Limelight implements Component {
-    private final NetworkTableEntry txEntry, tyEntry, tvEntry;
+    private final NetworkTableEntry txEntry, tyEntry, tvEntry, pipelineEntry;
 
     public Limelight() {
         LimelightState.table = NetworkTableInstance.getDefault().getTable("limelight");
@@ -18,6 +17,7 @@ public class Limelight implements Component {
         txEntry = LimelightState.table.getEntry("ty");
         tyEntry = LimelightState.table.getEntry("tx");
         tvEntry = LimelightState.table.getEntry("tv");
+        pipelineEntry = LimelightState.table.getEntry("pipeline");
 
         CameraServer.startAutomaticCapture();
 
@@ -69,6 +69,17 @@ public class Limelight implements Component {
             LimelightState.table.getEntry("ledMode").setNumber(3);
         } else {
             LimelightState.table.getEntry("ledMode").setNumber(1);
+        }
+
+        if (LimelightState.isConeDetection) {
+            pipelineEntry.setNumber(1);
+        } else {
+            pipelineEntry.setNumber(0);
+        }
+        if (LimelightState.isCubeDetection) {
+            pipelineEntry.setNumber(2);
+        } else {
+            pipelineEntry.setNumber(0);
         }
 
     }
