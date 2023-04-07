@@ -233,7 +233,7 @@ public class DriveMode extends Mode {
                     break;
             }   
         }else if (joystick.getRawButton(10)) {
-            // サブステーション
+            // サブステーションからコーンを取る
             SmartDashboard.putString("substationPhase", phase.toString());
             switch (phase) {
                 case Phase1:
@@ -270,7 +270,7 @@ public class DriveMode extends Mode {
                     break;
             }
         }else if (joystick.getRawButton(9)) {
-            // サブステーション
+            // サブステーションからキューブを取る
             SmartDashboard.putString("substationPhase", phase.toString());
             switch (phase){
                 case Phase1:
@@ -287,23 +287,12 @@ public class DriveMode extends Mode {
 
                     ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_limelightTracking;
                     if (Util.Calculate.isOverRelayToGoal(ArmState.actualHeight, ArmState.actualDepth)) {
-                        phase = GrabGamePiecePhase.Phase4;
+                        phase = GrabGamePiecePhase.Phase2;
                         DriveState.resetPosition= true;
                         DriveState.resetPIDController = true;
                     }
                     break;
-                case Phase4:
-                    // PIDでちょっと進む
-                    DriveState.driveState = DriveState.DriveStates.s_pidDrive;
-
-                    // PIDでどんくらい進むか
-                    DriveState.targetMeter = 0.5;
-
-                    if (DriveState.isAtTarget()){
-                        phase = GrabGamePiecePhase.Phase5;
-                    }
-                    break;
-                case Phase5:
+                case Phase2:
                     ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_limelightTracking;
                     // アームをサブステーションの位置へ
                     ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
@@ -311,8 +300,8 @@ public class DriveMode extends Mode {
                     // サブステーションの位置
                     ArmState.targetHeight = GrabGamePiecePhaseConst.armSubStationHeight;
                     if(LimelightState.tv) {
-                        if (50 < LimelightState.armToCone && LimelightState.armToCone < 120) {
-                            ArmState.targetDepth = LimelightState.armToCone;
+                        if (50 < LimelightState.armToCube && LimelightState.armToCube < 120) {
+                            ArmState.targetDepth = LimelightState.armToCube;
                         }
                     } else {
                         ArmState.targetDepth = GrabGamePiecePhaseConst.armSubStationDepth;
