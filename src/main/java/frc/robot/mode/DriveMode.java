@@ -240,17 +240,6 @@ public class DriveMode extends Mode {
             SmartDashboard.putString("substationPhase", phase.toString());
             switch (phase){
                 case Phase1:
-                    // PIDでちょっと下がる
-                    DriveState.driveState = DriveState.DriveStates.s_pidDrive;
-
-                    // PIDでどんくらい下がるか
-                    DriveState.targetMeter = -0.5;
-
-                    if (DriveState.isAtTarget()){
-                        phase = GrabGamePiecePhase.Phase2;
-                    }
-                    break;
-                case Phase2:
                     // アームを初期位置に
                     ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
                     // 左右はど真ん中にする
@@ -262,10 +251,10 @@ public class DriveMode extends Mode {
                     // アームの初期位置を設定
                     Util.Calculate.setInitWithRelay();
                     if (ArmState.isAtTarget() && HandState.isAtTarget()) {
-                        phase = GrabGamePiecePhase.Phase3;
+                        phase = GrabGamePiecePhase.Phase2;
                     }
                     break;
-                case Phase3:
+                case Phase2:
                     // アームをリレーポイントへ
                     ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
 
@@ -274,21 +263,10 @@ public class DriveMode extends Mode {
                     ArmState.targetDepth = ArmConst.RelayPointToGoalDepth;
 
                     if (Util.Calculate.isOverRelayToGoal(ArmState.actualHeight, ArmState.actualDepth)) {
-                        phase = GrabGamePiecePhase.Phase4;
+                        phase = GrabGamePiecePhase.Phase3;
                     }
                     break;
-                case Phase4:
-                    // PIDでちょっと進む
-                    DriveState.driveState = DriveState.DriveStates.s_pidDrive;
-
-                    // PIDでどんくらい進むか
-                    DriveState.targetMeter = 0.5;
-
-                    if (DriveState.isAtTarget()){
-                        phase = GrabGamePiecePhase.Phase5;
-                    }
-                    break;
-                case Phase5:
+                case Phase3:
                     LimelightState.isLimelightOn = true;
                     LimelightState.isConeDetection = true;
 
@@ -301,8 +279,14 @@ public class DriveMode extends Mode {
 
                     // サブステーションの位置
                     ArmState.targetHeight = GrabGamePiecePhaseConst.armSubStationHeight;
-                    ArmState.targetDepth = GrabGamePiecePhaseConst.armSubStationDepth;
-
+                    if(LimelightState.tv) {
+                        if (50 < LimelightState.armToGoal && LimelightState.armToGoal < 120) {
+                            ArmState.targetDepth = LimelightState.armToGoal;
+                        }
+                    } else {
+                        ArmState.targetDepth = GrabGamePiecePhaseConst.armSubStationDepth;
+                    }
+                    break;
             }
         } else
             if(joystick.getPOV() == 0) {

@@ -16,6 +16,10 @@ public class LimelightState {
     public static boolean pidLimelightReset;
     /** armからターゲットまでの距離 */
     public static double armToGoal; // [cm]
+
+    public static double limelightToSubStation;
+
+    public static double armToSubStation;
     public enum States {
 
     }

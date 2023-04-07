@@ -54,6 +54,8 @@ public class Limelight implements Component {
         LimelightState.limelightToFrontGoal = (LimelightConst.GoalHeight - LimelightConst.LimelightLensHeight) / Math.tan(angleToGoalRadians);
         LimelightState.armToGoal = LimelightState.limelightToFrontGoal - LimelightConst.LimelightToArm;
         LimelightState.limelightToBackGoal = LimelightState.limelightToFrontGoal + LimelightConst.FrontGoalToBackGoal;
+        LimelightState.limelightToSubStation = (LimelightConst.SubStationHeight - LimelightConst.LimelightLensHeight) / Math.tan(angleToGoalRadians);
+        LimelightState.armToSubStation = LimelightState.limelightToSubStation - LimelightConst.LimelightToArm;
 
         SmartDashboard.putNumber("FrontGoal", LimelightState.armToGoal);
         SmartDashboard.putNumber("tx", LimelightState.tx);
