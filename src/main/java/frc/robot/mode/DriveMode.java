@@ -82,7 +82,7 @@ public class DriveMode extends Mode {
             HandState.isResetHandPID = true;
         }
 
-        if (joystick.getRawButtonPressed(11) || joystick.getRawButtonPressed(12) || joystick.getRawButtonPressed(10) ||  joystick.getRawButtonPressed(7)) {
+        if (joystick.getRawButtonPressed(11) || joystick.getRawButtonPressed(12) || joystick.getRawButtonPressed(10) ||  joystick.getRawButtonPressed(7) || joystick.getRawButtonPressed(9)) {
             phase = GrabGamePiecePhase.Phase1;
             DriveState.resetPosition= true;
             DriveState.resetPIDController = true;
@@ -269,7 +269,7 @@ public class DriveMode extends Mode {
                     }
                     break;
             }
-        }else if (joystick.getRawButton(11)) {
+        }else if (joystick.getRawButton(9)) {
             // サブステーション
             SmartDashboard.putString("substationPhase", phase.toString());
             switch (phase){
