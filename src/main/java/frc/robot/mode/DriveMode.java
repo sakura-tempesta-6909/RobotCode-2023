@@ -279,8 +279,8 @@ public class DriveMode extends Mode {
                     // サブステーションの位置
                     ArmState.targetHeight = GrabGamePiecePhaseConst.armSubStationHeight;
                     if(LimelightState.tv) {
-                        if (50 < LimelightState.armToGoal && LimelightState.armToGoal < 120) {
-                            ArmState.targetDepth = LimelightState.armToGoal;
+                        if (50 < LimelightState.armToSubStation && LimelightState.armToSubStation < 120) {
+                            ArmState.targetDepth = LimelightState.armToSubStation;
                         }
                     } else {
                         ArmState.targetDepth = GrabGamePiecePhaseConst.armSubStationDepth;
