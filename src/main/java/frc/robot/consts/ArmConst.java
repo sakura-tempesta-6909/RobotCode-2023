@@ -200,7 +200,7 @@ public class ArmConst {
     /**
      * handのモーターのの積分値の最大値
      */
-    public static final double IMax_HANDR = 0.03/ 0.00001;
+    public static final double IMax_HANDR = 0.015 / 0.00001;
 
 
     /**
