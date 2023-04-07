@@ -240,41 +240,26 @@ public class DriveMode extends Mode {
             SmartDashboard.putString("substationPhase", phase.toString());
             switch (phase){
                 case Phase1:
-                    // アームを初期位置に
-                    ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-                    // 左右はど真ん中にする
-                    ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
-
-                    // ハンドを初期位置に戻す
-                    HandState.rotateState = HandState.RotateStates.s_turnHandBack;
-
-                    // アームの初期位置を設定
-                    Util.Calculate.setInitWithRelay();
-                    if (ArmState.isAtTarget() && HandState.isAtTarget()) {
-                        phase = GrabGamePiecePhase.Phase2;
-                    }
-                    break;
-                case Phase2:
+                    LimelightState.limelightState = LimelightState.States.s_coneDetection;
                     // アームをリレーポイントへ
                     ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
+
+                    // ハンドを開く
+                    HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
 
                     // リレーポイント
                     ArmState.targetHeight = ArmConst.RelayPointToGoalHeight;
                     ArmState.targetDepth = ArmConst.RelayPointToGoalDepth;
 
+                    ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_limelightTracking;
                     if (Util.Calculate.isOverRelayToGoal(ArmState.actualHeight, ArmState.actualDepth)) {
-                        phase = GrabGamePiecePhase.Phase3;
+                        phase = GrabGamePiecePhase.Phase2;
                     }
                     break;
-                case Phase3:
-                    LimelightState.limelightState = LimelightState.States.s_coneDetection;
-
+                case Phase2:
                     ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_limelightTracking;
                     // アームをサブステーションの位置へ
                     ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-
-                    // ハンドを開く
-                    HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
 
                     // サブステーションの位置
                     ArmState.targetHeight = GrabGamePiecePhaseConst.armSubStationHeight;
