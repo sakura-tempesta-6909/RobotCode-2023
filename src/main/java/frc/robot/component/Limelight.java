@@ -54,8 +54,9 @@ public class Limelight implements Component {
         LimelightState.limelightToFrontGoal = (LimelightConst.GoalHeight - LimelightConst.LimelightLensHeight) / Math.tan(angleToGoalRadians);
         LimelightState.armToGoal = LimelightState.limelightToFrontGoal - LimelightConst.LimelightToArm;
         LimelightState.limelightToBackGoal = LimelightState.limelightToFrontGoal + LimelightConst.FrontGoalToBackGoal;
-        LimelightState.limelightToSubStation = (LimelightConst.SubStationHeight - LimelightConst.LimelightLensHeight) / Math.tan(angleToGoalRadians);
-        LimelightState.armToSubStation = LimelightState.limelightToSubStation - LimelightConst.LimelightToArm;
+        LimelightState.limelightToGamePiece = (LimelightConst.SubStationHeight - LimelightConst.LimelightLensHeight) / Math.tan(angleToGoalRadians);
+        LimelightState.armToCone = LimelightState.limelightToGamePiece - LimelightConst.LimelightToArm;
+        LimelightState.armToCube = LimelightState.limelightToGamePiece - LimelightConst.LimelightToArm;
 
         SmartDashboard.putNumber("FrontGoal", LimelightState.armToGoal);
         SmartDashboard.putNumber("tx", LimelightState.tx);
@@ -72,7 +73,6 @@ public class Limelight implements Component {
         } else {
             LimelightState.table.getEntry("ledMode").setNumber(1);
         }
-
 
         switch (LimelightState.limelightState) {
             case s_tapeDetection:

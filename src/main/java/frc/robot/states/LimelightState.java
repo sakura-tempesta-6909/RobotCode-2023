@@ -18,9 +18,10 @@ public class LimelightState {
     /** armからターゲットまでの距離 */
     public static double armToGoal; // [cm]
 
-    public static double limelightToSubStation;
+    public static double limelightToGamePiece;
 
-    public static double armToSubStation;
+    public static double armToCone;
+    public static double armToCube;
     public enum States {
         s_coneDetection,
         s_cubeDetection,

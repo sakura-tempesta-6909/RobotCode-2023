@@ -238,7 +238,7 @@ public class DriveMode extends Mode {
         }else if (joystick.getRawButton(10)) {
             // サブステーション
             SmartDashboard.putString("substationPhase", phase.toString());
-            switch (phase){
+            switch (phase) {
                 case Phase1:
                     LimelightState.limelightState = LimelightState.States.s_coneDetection;
                     // アームをリレーポイントへ
@@ -263,9 +263,46 @@ public class DriveMode extends Mode {
 
                     // サブステーションの位置
                     ArmState.targetHeight = GrabGamePiecePhaseConst.armSubStationHeight;
+                    if (LimelightState.tv) {
+                        if (50 < LimelightState.armToCone && LimelightState.armToCone < 120) {
+                            ArmState.targetDepth = LimelightState.armToCone;
+                        }
+                    } else {
+                        ArmState.targetDepth = GrabGamePiecePhaseConst.armSubStationDepth;
+                    }
+                    break;
+            }
+        }else if (joystick.getRawButton(11)) {
+            // サブステーション
+            SmartDashboard.putString("substationPhase", phase.toString());
+            switch (phase){
+                case Phase1:
+                    LimelightState.limelightState = LimelightState.States.s_cubeDetection;
+                    // アームをリレーポイントへ
+                    ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
+
+                    // ハンドを開く
+                    HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
+
+                    // リレーポイント
+                    ArmState.targetHeight = ArmConst.RelayPointToGoalHeight;
+                    ArmState.targetDepth = ArmConst.RelayPointToGoalDepth;
+
+                    ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_limelightTracking;
+                    if (Util.Calculate.isOverRelayToGoal(ArmState.actualHeight, ArmState.actualDepth)) {
+                        phase = GrabGamePiecePhase.Phase2;
+                    }
+                    break;
+                case Phase2:
+                    ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_limelightTracking;
+                    // アームをサブステーションの位置へ
+                    ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
+
+                    // サブステーションの位置
+                    ArmState.targetHeight = GrabGamePiecePhaseConst.armSubStationHeight;
                     if(LimelightState.tv) {
-                        if (50 < LimelightState.armToSubStation && LimelightState.armToSubStation < 120) {
-                            ArmState.targetDepth = LimelightState.armToSubStation;
+                        if (50 < LimelightState.armToCone && LimelightState.armToCone < 120) {
+                            ArmState.targetDepth = LimelightState.armToCone;
                         }
                     } else {
                         ArmState.targetDepth = GrabGamePiecePhaseConst.armSubStationDepth;
