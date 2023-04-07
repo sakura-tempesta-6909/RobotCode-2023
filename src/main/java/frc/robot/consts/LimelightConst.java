@@ -48,6 +48,8 @@ public class LimelightConst {
      */
     public static final double FrontGoalToBackGoal = 43; // [cm]
 
+    public static final double SubStationHeight = 100;
+
     public static final class PID {
         public static final double LimelightDriveP = 0.08;
         public static final double LimelightDriveI = 0.02;

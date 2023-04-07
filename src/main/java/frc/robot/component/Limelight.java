@@ -5,12 +5,11 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.states.LimelightState;
-import frc.robot.states.State;
 import frc.robot.consts.LimelightConst;
 
 
 public class Limelight implements Component {
-    private final NetworkTableEntry txEntry, tyEntry, tvEntry;
+    private final NetworkTableEntry txEntry, tyEntry, tvEntry, pipelineEntry;
 
     public Limelight() {
         LimelightState.table = NetworkTableInstance.getDefault().getTable("limelight");
@@ -18,6 +17,7 @@ public class Limelight implements Component {
         txEntry = LimelightState.table.getEntry("ty");
         tyEntry = LimelightState.table.getEntry("tx");
         tvEntry = LimelightState.table.getEntry("tv");
+        pipelineEntry = LimelightState.table.getEntry("pipeline");
 
         CameraServer.startAutomaticCapture();
 
@@ -54,6 +54,9 @@ public class Limelight implements Component {
         LimelightState.limelightToFrontGoal = (LimelightConst.GoalHeight - LimelightConst.LimelightLensHeight) / Math.tan(angleToGoalRadians);
         LimelightState.armToGoal = LimelightState.limelightToFrontGoal - LimelightConst.LimelightToArm;
         LimelightState.limelightToBackGoal = LimelightState.limelightToFrontGoal + LimelightConst.FrontGoalToBackGoal;
+        LimelightState.limelightToGamePiece = (LimelightConst.SubStationHeight - LimelightConst.LimelightLensHeight) / Math.tan(angleToGoalRadians);
+        LimelightState.armToCone = LimelightState.limelightToGamePiece - LimelightConst.LimelightToArm;
+        LimelightState.armToCube = LimelightState.limelightToGamePiece - LimelightConst.LimelightToArm;
 
         SmartDashboard.putNumber("FrontGoal", LimelightState.armToGoal);
         SmartDashboard.putNumber("tx", LimelightState.tx);
@@ -69,6 +72,17 @@ public class Limelight implements Component {
             LimelightState.table.getEntry("ledMode").setNumber(3);
         } else {
             LimelightState.table.getEntry("ledMode").setNumber(1);
+        }
+
+        switch (LimelightState.limelightState) {
+            case s_tapeDetection:
+                pipelineEntry.setNumber(0);
+                break;
+            case s_coneDetection:
+                pipelineEntry.setNumber(1);
+                break;
+            case s_cubeDetection:
+                pipelineEntry.setNumber(2);
         }
 
     }
