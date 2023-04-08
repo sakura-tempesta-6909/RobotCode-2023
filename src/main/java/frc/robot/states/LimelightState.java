@@ -15,10 +15,11 @@ public class LimelightState {
     public static boolean tv;
     public static double limelightXSpeed;
     public static boolean pidLimelightReset;
+    public static double limelightToCone;
     /** armからターゲットまでの距離 */
     public static double armToGoal; // [cm]
 
-    public static double limelightToGamePiece;
+    public static double limelightToCube;
 
     public static double armToCone;
     public static double armToCube;

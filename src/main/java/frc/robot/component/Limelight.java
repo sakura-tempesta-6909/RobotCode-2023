@@ -43,7 +43,7 @@ public class Limelight implements Component {
         // limelightから受け取る情報
         // limelightから見たターゲットの角度
         double targetOffsetAngle_Vertical = -(tyEntry.getDouble(0.0) + 0.38 * 27) ;
-        double gamePieceAngle = tyEntry.getDouble(0.0);
+        double gamePieceAngle = -(tyEntry.getDouble(0.0));
         LimelightState.tx = -txEntry.getDouble(0);
         LimelightState.tv = tvEntry.getDouble(0) != 0;
         
@@ -58,15 +58,19 @@ public class Limelight implements Component {
         LimelightState.limelightToFrontGoal = (LimelightConst.GoalHeight - LimelightConst.LimelightLensHeight) / Math.tan(angleToGoalRadians);
         LimelightState.armToGoal = LimelightState.limelightToFrontGoal - LimelightConst.LimelightToArm;
         LimelightState.limelightToBackGoal = LimelightState.limelightToFrontGoal + LimelightConst.FrontGoalToBackGoal;
-        LimelightState.limelightToGamePiece = (LimelightConst.SubStationHeight - LimelightConst.LimelightLensHeight) / Math.tan(angleToGamePieceRadians);
-        LimelightState.armToCone = LimelightState.limelightToGamePiece - LimelightConst.LimelightToArm;
-        LimelightState.armToCube = LimelightState.limelightToGamePiece - LimelightConst.LimelightToArm;
+        LimelightState.limelightToCube = (LimelightConst.SubStationHeight + 12 - LimelightConst.LimelightLensHeight) / Math.tan(angleToGamePieceRadians);
+        LimelightState.limelightToCone = (LimelightConst.SubStationHeight + 16.5 - LimelightConst.LimelightLensHeight) / Math.tan(angleToGamePieceRadians);
+        LimelightState.armToCone = LimelightState.limelightToCone - LimelightConst.LimelightToArm;
+        LimelightState.armToCube = LimelightState.limelightToCube - LimelightConst.LimelightToArm;
 
         SmartDashboard.putNumber("FrontGoal", LimelightState.armToGoal);
         SmartDashboard.putNumber("tx", LimelightState.tx);
         SmartDashboard.putNumber("ty", tyEntry.getDouble(0));
         SmartDashboard.putNumber("BackGoal", LimelightState.limelightToBackGoal);
         SmartDashboard.putBoolean("Limelight",  tvEntry.getDouble(0) != 0);
+        SmartDashboard.putNumber("cube", LimelightState.armToCube);
+        SmartDashboard.putNumber("cone", LimelightState.armToCone);
+
         
 
     }
