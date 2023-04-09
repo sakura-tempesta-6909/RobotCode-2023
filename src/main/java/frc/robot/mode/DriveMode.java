@@ -232,7 +232,7 @@ public class DriveMode extends Mode {
                     Util.Calculate.setInitWithRelay();
                     break;
             }   
-        }else if (joystick.getRawButton(10)) {
+        }else if (joystick.getRawButton(9)) {
             // サブステーションからコーンを取る
             SmartDashboard.putString("substationPhase", phase.toString());
             switch (phase) {
@@ -240,9 +240,6 @@ public class DriveMode extends Mode {
                     LimelightState.limelightState = LimelightState.States.s_coneDetection;
                     // アームをリレーポイントへ
                     ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-
-                    // ハンドを開く
-                    HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
 
                     // リレーポイント
                     ArmState.targetHeight = ArmConst.RelayPointToGoalHeight;
@@ -262,14 +259,14 @@ public class DriveMode extends Mode {
                     ArmState.targetHeight = GrabGamePiecePhaseConst.armSubStationHeight;
                     if (LimelightState.tv) {
                         if (50 < LimelightState.armToCone && LimelightState.armToCone < 120) {
-                            ArmState.targetDepth = LimelightState.armToCone;
+                            ArmState.targetDepth = LimelightState.armToCone + 5;
                         }
                     } else {
                         ArmState.targetDepth = GrabGamePiecePhaseConst.armSubStationDepth;
                     }
                     break;
             }
-        }else if (joystick.getRawButton(9)) {
+        }else if (joystick.getRawButton(10)) {
             // サブステーションからキューブを取る
             SmartDashboard.putString("substationPhase", phase.toString());
             switch (phase){
@@ -277,9 +274,6 @@ public class DriveMode extends Mode {
                     LimelightState.limelightState = LimelightState.States.s_cubeDetection;
                     // アームをリレーポイントへ
                     ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-
-                    // ハンドを開く
-                    HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
 
                     // リレーポイント
                     ArmState.targetHeight = ArmConst.RelayPointToGoalHeight;
@@ -301,7 +295,7 @@ public class DriveMode extends Mode {
                     ArmState.targetHeight = GrabGamePiecePhaseConst.armSubStationHeight;
                     if(LimelightState.tv) {
                         if (50 < LimelightState.armToCube && LimelightState.armToCube < 120) {
-                            ArmState.targetDepth = LimelightState.armToCube;
+                            ArmState.targetDepth = LimelightState.armToCube + 5;
                         }
                     } else {
                         ArmState.targetDepth = GrabGamePiecePhaseConst.armSubStationDepth;
