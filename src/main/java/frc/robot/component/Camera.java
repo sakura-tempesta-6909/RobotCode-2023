@@ -15,16 +15,13 @@ public class Camera implements Component {
         CameraState.cameraCenterWidth = SmartDashboard.getNumber("CenterX", 0);
         CameraState.aprilTagAngleWidth = Math.toDegrees(Math.atan(CameraState.cameraCenterWidth  / CameraConst.FocalLengthWeight));
         CameraState.aprilTagAngleHeight = Math.toDegrees(Math.atan(CameraState.cameraCenterHeight / CameraConst.FocalLengthHeight));
-        SmartDashboard.putNumber("AngleX", CameraState.aprilTagAngleWidth);
-        SmartDashboard.putNumber("AngleY", CameraState.aprilTagAngleHeight);
 
         //距離を求める
         double angleToGoalDegrees = CameraConst.CameraMountAngleDegrees + CameraState.aprilTagAngleHeight;
         double angleToGoalRadians = angleToGoalDegrees * (Math.PI / 180);
         CameraState.cameraToTag = (CameraConst.GoalHeight - CameraConst.CameraLensHeight) / Math.tan(angleToGoalRadians);
         CameraState.armToTag = CameraState.cameraToTag - CameraConst.CameraToArm;
-        SmartDashboard.putNumber("cameraToTag", CameraState.cameraToTag);
-        SmartDashboard.putNumber("armToTag", CameraState.armToTag);
+
 
 
     }

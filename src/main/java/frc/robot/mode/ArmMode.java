@@ -65,10 +65,6 @@ public class ArmMode extends Mode {
         final double joystickX = -1 * Tools.deadZoneProcess(joystick.getRawAxis(0));
         final double joystickY = 1 * Tools.deadZoneProcess(joystick.getRawAxis(1));
         final double joystickZ = 1 * Tools.deadZoneProcess(joystick.getRawAxis(2));
-        SmartDashboard.putNumber("Axis1", joystickX);
-        SmartDashboard.putNumber("Axis2", joystickY);
-        SmartDashboard.putNumber("Axis3", joystickZ);
-        SmartDashboard.putNumber("Axis4", joystick.getRawAxis(3));
 
         if (driveController.getRightBumper() && driveController.getLeftBumper()) {
             // アームの位置をリセット

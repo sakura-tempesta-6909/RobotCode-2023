@@ -277,11 +277,7 @@ public class Arm implements Component {
         ArmState.relayToGoalOver |= Util.Calculate.isOverRelayToGoal(ArmState.actualHeight, ArmState.actualDepth);
         ArmState.relayToInitOver |= Util.Calculate.isOverRelayToInit(ArmState.actualHeight, ArmState.actualDepth);
 
-        SmartDashboard.putNumber("actual leftright angle", ArmState.actualLeftAndRightAngle);
 
-        SmartDashboard.putNumber("cc", rootMotor.getOutputCurrent());
-        SmartDashboard.putNumber("tmp", rootMotor.getMotorTemperature());
-        SmartDashboard.putNumber("out", rootMotor.getAppliedOutput());
     }
 
     @Override

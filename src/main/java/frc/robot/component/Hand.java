@@ -27,10 +27,10 @@ public class Hand implements Component{
 
         handRotationPidController = handRotationMotor.getPIDController();
         handRotationEncoder = handRotationMotor.getEncoder();
-        handRotationPidController.setP(ArmConst.P_HANDR);
-        handRotationPidController.setI(ArmConst.I_HANDR);
-        handRotationPidController.setD(ArmConst.D_HANDR);
-        handRotationPidController.setIMaxAccum(ArmConst.IMax_HANDR, 0);
+        handRotationPidController.setP(HandConst.P_HANDR);
+        handRotationPidController.setI(HandConst.I_HANDR);
+        handRotationPidController.setD(HandConst.D_HANDR);
+        handRotationPidController.setIMaxAccum(HandConst.IMax_HANDR, 0);
     }
 
     @Override
