@@ -66,6 +66,15 @@ public class ArmMode extends Mode {
             IntakeState.intakeExtensionState = IntakeState.IntakeExtensionStates.s_closeIntake;
         }
 
+        //RT: intake, LT: outtake
+        if (driveController.getRightTriggerAxis() > 0.5) {
+            IntakeState.intakeState = IntakeState.RollerStates.s_intakeGamePiece;
+        } else if (driveController.getLeftTriggerAxis() > 0.5) {
+            IntakeState.intakeState = IntakeState.RollerStates.s_outtakeGamePiece;
+        } else {
+            IntakeState.intakeState = IntakeState.RollerStates.s_stopRoller;
+        }
+
         final double joystickX = -1 * Tools.deadZoneProcess(joystick.getRawAxis(0));
         final double joystickY = 1 * Tools.deadZoneProcess(joystick.getRawAxis(1));
         final double joystickZ = 1 * Tools.deadZoneProcess(joystick.getRawAxis(2));

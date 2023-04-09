@@ -229,7 +229,7 @@ public class Arm implements Component {
      * 目標値（真ん中）を0とする
      */
     public void moveArmToMiddle() {
-        leftAndRightArmPidController.setReference(5, CANSparkMax.ControlType.kPosition);
+        leftAndRightArmPidController.setReference(0, CANSparkMax.ControlType.kPosition);
     }
 
     public void pidControlTargetTracking() {
