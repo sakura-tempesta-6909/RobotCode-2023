@@ -239,19 +239,14 @@ public class DriveMode extends Mode {
                     // ハンドを初期位置に戻す
                     HandState.rotateState = HandState.RotateStates.s_turnHandBack;
 
-                    // BasicPositionにターゲットを設定
-                    Util.Calculate.setInitWithRelay();
-                    if (ArmState.isAtTarget()) {
-                        phase = GrabGamePiecePhase.Phase5;
+                    // BasicPositionのちょっと上にターゲットを設定
+                    if (ArmState.relayToInitOver) {
+                        ArmState.targetHeight = ArmConst.InitialHeight + 10;
+                        ArmState.targetDepth = ArmConst.InitialDepth;
+                    } else {
+                        ArmState.targetHeight = ArmConst.RelayPointToInitHeight;
+                        ArmState.targetDepth = ArmConst.RelayPointToInitDepth;
                     }
-                    break;
-                case Phase5:
-                    // アームをちょっとあげる
-                    ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-
-                    // ちょっと上げた位置
-                    ArmState.targetHeight = ArmConst.InitialHeight + 10;
-                    ArmState.targetDepth = ArmConst.InitialDepth;
                     break;
             }   
         }else if (joystick.getRawButton(10)) {
