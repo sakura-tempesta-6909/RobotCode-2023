@@ -65,7 +65,6 @@ public class ArmMode extends Mode {
         final double joystickX = -1 * Tools.deadZoneProcess(joystick.getRawAxis(0));
         final double joystickY = 1 * Tools.deadZoneProcess(joystick.getRawAxis(1));
         final double joystickZ = 1 * Tools.deadZoneProcess(joystick.getRawAxis(2));
-
         if (driveController.getRightBumper() && driveController.getLeftBumper()) {
             // アームの位置をリセット
             ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;

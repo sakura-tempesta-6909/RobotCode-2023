@@ -1,7 +1,5 @@
 package frc.robot.mode;
 
-import java.util.Map;
-
 import frc.robot.states.ArmState;
 import frc.robot.states.DriveState;
 import frc.robot.states.HandState;
@@ -9,7 +7,6 @@ import frc.robot.subClass.*;
 import frc.robot.states.*;
 import frc.robot.consts.ArmConst;
 import frc.robot.consts.GrabGamePiecePhaseConst;
-import frc.robot.subClass.Tools;;
 
 public class ChargeStationMode extends Mode{
 // 正式名称は「ワクワクドキドキ神様お願いブレイクモード」

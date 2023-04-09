@@ -16,12 +16,12 @@ public class Camera implements Component {
         CameraState.aprilTagAngleWidth = Math.toDegrees(Math.atan(CameraState.cameraCenterWidth  / CameraConst.FocalLengthWeight));
         CameraState.aprilTagAngleHeight = Math.toDegrees(Math.atan(CameraState.cameraCenterHeight / CameraConst.FocalLengthHeight));
 
+
         //距離を求める
         double angleToGoalDegrees = CameraConst.CameraMountAngleDegrees + CameraState.aprilTagAngleHeight;
         double angleToGoalRadians = angleToGoalDegrees * (Math.PI / 180);
         CameraState.cameraToTag = (CameraConst.GoalHeight - CameraConst.CameraLensHeight) / Math.tan(angleToGoalRadians);
         CameraState.armToTag = CameraState.cameraToTag - CameraConst.CameraToArm;
-
 
 
     }

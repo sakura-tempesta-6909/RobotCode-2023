@@ -278,6 +278,10 @@ public class Arm implements Component {
         ArmState.relayToInitOver |= Util.Calculate.isOverRelayToInit(ArmState.actualHeight, ArmState.actualDepth);
 
 
+
+        SmartDashboard.putNumber("cc", rootMotor.getOutputCurrent());
+        SmartDashboard.putNumber("tmp", rootMotor.getMotorTemperature());
+        SmartDashboard.putNumber("out", rootMotor.getAppliedOutput());
     }
 
     @Override

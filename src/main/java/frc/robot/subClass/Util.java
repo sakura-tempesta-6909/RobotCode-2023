@@ -56,7 +56,6 @@ public class Util {
         sendConsole("armToFrontGoal", LimelightState.armToGoal);
 
 
-
     }
 
     public static class Calculate {
