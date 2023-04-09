@@ -145,6 +145,9 @@ public class ArmMode extends Mode {
                     if (50 < LimelightState.armToGoal && LimelightState.armToGoal < 120) {
                         ArmState.targetDepth = LimelightState.armToGoal;
                     }
+                    if (ArmState.targetToGoalOver) {
+                        HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
+                    }
                 } else {
                     ArmState.targetDepth = ArmState.TargetDepth.MiddleCorn;
                 }
@@ -161,9 +164,6 @@ public class ArmMode extends Mode {
             } else {
                 ArmState.targetHeight = CameraConst.TopGoalHeight - ArmConst.RootHeightFromGr;
                 ArmState.targetDepth = ArmState.TargetDepth.TopCube;
-                if (ArmState.targetToGoalOver) {
-                    HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
-                }
             }
         } else if (joystick.getRawButton(10)) {
             // 真ん中のキューブのゴールまでアームを伸ばす
@@ -173,9 +173,6 @@ public class ArmMode extends Mode {
             } else {
                 ArmState.targetHeight = CameraConst.MiddleGoalHeight - ArmConst.RootHeightFromGr;
                 ArmState.targetDepth = ArmState.TargetDepth.MiddleCube;
-                if (ArmState.targetToGoalOver) {
-                    HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
-                }
             }
         } else if (joystick.getRawButton(12)) {
             // 前のキューブのゴールまでアームを伸ばす
