@@ -10,7 +10,7 @@ public class GrabGamePiecePhaseConst {
      */
     public static final double armCubeGrabDepth = -5;
     public static final double armCubePrepareHeight = -90;
-    public static final double armCubePrepareDepth = -5;
+    public static final double armCubePrepareDepth = -7;
 
     /**
      * 　コーンを掴むアームの高さ

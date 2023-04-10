@@ -61,13 +61,12 @@ public class ArmMode extends Mode {
         LimelightState.isLimelightOn = true;
 
         if (driveController.getAButtonPressed()) {
-            IntakeState.isIntakeOpen = !IntakeState.isIntakeOpen;
-        }
-
-        if (IntakeState.isIntakeOpen) {
-            IntakeState.intakeExtensionState = IntakeState.IntakeExtensionStates.s_openIntake;
-        } else {
-            IntakeState.intakeExtensionState = IntakeState.IntakeExtensionStates.s_closeIntake;
+            if (IntakeState.intakeExtensionState == IntakeState.IntakeExtensionStates.s_closeIntake){
+                IntakeState.intakeExtensionState = IntakeState.IntakeExtensionStates.s_openIntake;
+            } else{
+                IntakeState.intakeExtensionState = IntakeState.IntakeExtensionStates.s_closeIntake;
+            }
+            
         }
 
         //RT: intake, LT: outtake
