@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Launch Tools",
+      "request": "launch",
+      "mainClass": "frc.robot.subClass.Tools",
+      "projectName": "RobotCode-2023"
+    },
+    {
+      "type": "java",
       "name": "Launch Apriltag",
       "request": "launch",
       "mainClass": "frc.robot.Apriltag",

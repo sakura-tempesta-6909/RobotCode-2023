@@ -54,7 +54,7 @@ public class Util {
         sendConsole("FrontGoal", LimelightState.limelightToFrontGoal);
         sendConsole("BackGoal", LimelightState.limelightToBackGoal);
         sendConsole("armToFrontGoal", LimelightState.armToGoal);
-
+        sendConsole("HandIsAtTarget", HandState.isAtTarget());
 
     }
 
@@ -93,6 +93,10 @@ public class Util {
          */
         public static boolean isOverRelayToInit(double actualHeight, double actualDepth) {
             return actualHeight < ArmConst.RelayPointToInitHeight + ArmConst.RelayPointTolerance && actualDepth < ArmConst.RelayPointToInitDepth + ArmConst.RelayPointTolerance;
+        }
+
+        public static boolean isOverTargetToGoal() {
+            return ArmState.isAtTarget();
         }
 
         public static void setInitWithRelay() {

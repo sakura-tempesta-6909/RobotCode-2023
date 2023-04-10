@@ -14,8 +14,6 @@ import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subClass.Util;
 
-import java.util.Map;
-
 
 public class Arm implements Component {
     private final CANSparkMax rootMotor, jointMotor;
@@ -42,7 +40,7 @@ public class Arm implements Component {
         pidForRoot.setSmartMotionMaxVelocity(3000, 0);
         // pidForRoot.setSmartMotionAccelStrategy(accelStrategy, slotID)
 
-        
+
         pidForRoot.setP(ArmConst.P_R_1, 1);
         pidForRoot.setI(ArmConst.I_R_1, 1);
         pidForRoot.setD(ArmConst.D_R_1, 1);
@@ -55,7 +53,7 @@ public class Arm implements Component {
         pidForJoint.setIMaxAccum(ArmConst.IMax_J, 0);
         pidForJoint.setOutputRange(-.5, .5);
 
-        
+
         pidForJoint.setP(ArmConst.P_J_1, 1);
         pidForJoint.setI(ArmConst.I_J_1, 1);
         pidForJoint.setD(ArmConst.D_J_1, 1);
@@ -98,17 +96,13 @@ public class Arm implements Component {
      * s_moveArmToSpecifiedPositionで実行
      */
     private void pidControlArm(double targetRootAngle, double targetJointAngle) {
-        if(ArmState.isAtTarget()) {
-            fixPosition();
-        } else {
-            // feedforwardなし
-            pidForRoot.setReference(calculateRootRotationFromAngle(targetRootAngle), CANSparkMax.ControlType.kPosition);
-            // pidForJoint.setReference(calculateJointRotationFromAngle(targetJointAngle), CANSparkMax.ControlType.kPosition);
+        // feedforwardなし
+        pidForRoot.setReference(calculateRootRotationFromAngle(targetRootAngle), CANSparkMax.ControlType.kPosition);
+        // pidForJoint.setReference(calculateJointRotationFromAngle(targetJointAngle), CANSparkMax.ControlType.kPosition);
 
-            // feedforwardあり
-            // pidForRoot.setReference(calculateRootRotationFromAngle(targetRootAngle), CANSparkMax.ControlType.kPosition, 0, ArmState.rootMotorFeedforward, ArbFFUnits.kPercentOut);
-            pidForJoint.setReference(calculateJointRotationFromAngle(targetJointAngle), CANSparkMax.ControlType.kPosition, 0, ArmState.jointMotorFeedforward, ArbFFUnits.kPercentOut);
-        }
+        // feedforwardあり
+        // pidForRoot.setReference(calculateRootRotationFromAngle(targetRootAngle), CANSparkMax.ControlType.kPosition, 0, ArmState.rootMotorFeedforward, ArbFFUnits.kPercentOut);
+        pidForJoint.setReference(calculateJointRotationFromAngle(targetJointAngle), CANSparkMax.ControlType.kPosition, 0, ArmState.jointMotorFeedforward, ArbFFUnits.kPercentOut);
     }
 
     /**
@@ -145,12 +139,24 @@ public class Arm implements Component {
 
     /**
      * アームをその位置で止める
-     * pidをVelocityで0を目標にする
+     * feedforwardが必要かに応じてコメントアウトを外す
      * s_fixArmPositionで実行
      * */
-    private void fixPosition() {
+    private void fixPositionWithFF() {
+        // adjustArmPosition(ArmState.actualRootAngle, ArmState.actualJointAngle);
+        // feedforwardなし
+        // rootMotor.set(0.0);
+        // jointMotor.set(0.0);
+
+        // 常に一定の数値をfeedforwardとして入れる
+//        rootMotor.set(ArmConst.ConstantRootMotorFF);
+
+        // feedforwardあり
+        // rootMotor.set(ArmState.rootMotorFeedforward);
+//        jointMotor.set(ArmState.jointMotorFeedforward);
         pidForRoot.setReference(0, CANSparkMax.ControlType.kVelocity ,2);
         pidForJoint.setReference(0, CANSparkMax.ControlType.kVelocity ,2);
+
     }
 
     private void fixLeftAndRightArmPositionWithPID() {
@@ -223,15 +229,16 @@ public class Arm implements Component {
      * 目標値（真ん中）を0とする
      */
     public void moveArmToMiddle() {
-        leftAndRightArmPidController.setReference(0, CANSparkMax.ControlType.kPosition);
+        leftAndRightArmPidController.setReference(5, CANSparkMax.ControlType.kPosition);
     }
 
     public void pidControlTargetTracking() {
-        ArmState.targetMoveLeftAndRightAngle = LimelightState.tx + ArmState.actualLeftAndRightAngle;
+        ArmState.targetMoveLeftAndRightAngle = -LimelightState.tx + ArmState.actualLeftAndRightAngle;
         if (!LimelightState.tv) {
             moveRightArm(0.05);
         } else {
-            leftAndRightArmPidController.setReference(calculateLeftAndRightRotationFromAngle(-ArmState.targetMoveLeftAndRightAngle), CANSparkMax.ControlType.kPosition);
+            leftAndRightArmPidController.setReference(calculateLeftAndRightRotationFromAngle(ArmState.targetMoveLeftAndRightAngle), CANSparkMax.ControlType.kPosition);
+            SmartDashboard.putNumber("leftRightTargetAngle", ArmState.targetMoveLeftAndRightAngle);
         }
 
     }
@@ -276,8 +283,10 @@ public class Arm implements Component {
 
         ArmState.relayToGoalOver |= Util.Calculate.isOverRelayToGoal(ArmState.actualHeight, ArmState.actualDepth);
         ArmState.relayToInitOver |= Util.Calculate.isOverRelayToInit(ArmState.actualHeight, ArmState.actualDepth);
+        ArmState.targetToGoalOver |= Util.Calculate.isOverTargetToGoal();
 
 
+        SmartDashboard.putNumber("actual leftright angle", ArmState.actualLeftAndRightAngle);
 
         SmartDashboard.putNumber("cc", rootMotor.getOutputCurrent());
         SmartDashboard.putNumber("tmp", rootMotor.getMotorTemperature());
@@ -286,20 +295,6 @@ public class Arm implements Component {
 
     @Override
     public void applyState() {
-        // ターゲット座標からターゲットの角度を計算する
-        Map<String, Double> targetAngles = Tools.calculateAngles(ArmState.targetDepth, ArmState.targetHeight);
-        Double target = targetAngles.get("RootAngle");
-        if (target != null) {
-            ArmState.targetRootAngle = target;
-        } else {
-            ArmState.targetRootAngle = ArmState.actualRootAngle;
-        }
-        target = targetAngles.get("JointAngle");
-        if (target != null) {
-            ArmState.targetJointAngle = target;
-        } else {
-            ArmState.targetJointAngle = ArmState.actualJointAngle;
-        }
 
         if (ArmState.resetPidController) {
             pidForRoot.setIAccum(0.0);
@@ -326,7 +321,7 @@ public class Arm implements Component {
                 rotationControlArm(ArmState.jointSpeed, ArmState.rootSpeed);
                 break;
             case s_fixArmPosition:
-                fixPosition();
+                fixPositionWithFF();
                 break;
         }
 
@@ -348,6 +343,7 @@ public class Arm implements Component {
                 break;
             case s_fixLeftAndRightArm:
                 fixLeftAndRightArmPositionWithPID();
+                break;
         }
     }
 }

@@ -57,6 +57,8 @@ public class ArmState {
     public static boolean relayToGoalOver;
     public static boolean relayToInitOver;
 
+    public static boolean targetToGoalOver;
+
     public static class TargetDepth {
         public static double TopCorn;
         public static double MiddleCorn;
@@ -119,6 +121,7 @@ public class ArmState {
 
         relayToGoalOver = true;
         relayToInitOver = true;
+        targetToGoalOver = true;
     }
 
 
@@ -130,12 +133,12 @@ public class ArmState {
         isMoveLeftAndRightEncoderReset = false;
 
         // TODO どれくらい引くかを計測する
-        TargetDepth.TopCorn = 101.0 ;
-        TargetDepth.MiddleCorn = 58.0 + 20;
+        TargetDepth.TopCorn = 101.0;
+        TargetDepth.MiddleCorn = 58.0 + 38;
         TargetDepth.BottomCorn = 30.0 + 10;
 
-        TargetDepth.TopCube = 101.0 + 15.0;
-        TargetDepth.MiddleCube = 58.0 + 25.0;
+        TargetDepth.TopCube = 101.0 + 20.0;
+        TargetDepth.MiddleCube = 58.0 + 30.0;
         TargetDepth.BottomCube = 30.0 + 15.0;
 
         TargetDepth.SubStation = 36 + 20;

@@ -71,7 +71,7 @@ public class ArmConst {
     /**
      * 根本NEOモーターのPIDのP
      */
-    public static final double P_R = 0.04;
+    public static final double P_R = 0.04 + 0.02;
     /**
      * 根本NEOモーターのPIDのI
      */
@@ -88,7 +88,7 @@ public class ArmConst {
     /**
      * 関節部分NEOモーターのPIDのP
      */
-    public static final double P_J = 0.03 + 0.03;
+    public static final double P_J = 0.03 + 0.03 + 0.03;
     /**
      * 関節部分NEOモーターのPIDのI
      */
@@ -168,11 +168,11 @@ public class ArmConst {
     /**
      * アームを左右に動かすモーターのPIDのP
      */
-    public static final double P_MID = 0.008;
+    public static final double P_MID = 0.010;
     /**
      * アームを左右に動かすモーターのPIDのI
      */
-    public static final double I_MID = 0.000001;
+    public static final double I_MID = 0.000003;
     /**
      * アームを左右に動かすモーターのPIDのD
      */
@@ -184,7 +184,7 @@ public class ArmConst {
 
     public static final double P_MID_1 = 0.0003;
     public static final double I_MID_1 = 0.0;
-    public static final double D_MID_1 = 0.0;
+    public static final double D_MID_1 = 0.0;/**
 
 
     /**
@@ -217,11 +217,11 @@ public class ArmConst {
     /**
      * 関節部分NEOモーターをコントローラーで動かす時の最大の速さ
      */
-    public static final double JointMotorMoveRatio = 0.09;
+    public static final double JointMotorMoveRatio = 0.2;
     /**
      * 根本NEOモーターをコントローラーで動かす時の最大の速さ
      */
-    public static final double RootMotorMoveRatio = 1;
+    public static final double RootMotorMoveRatio = 0.3;
     /**
      * PIDコントロールの誤差の許容量[cn] 注意! isArmAtTargetの判定に用いているだけ
      */
@@ -230,11 +230,11 @@ public class ArmConst {
     /**
      * アームの理想的な高さ
      */
-    public static final double InitialHeight = -100;
+    public static final double InitialHeight = -90;
     /**
      * アームの理想的な奥行き
      */
-    public static final double InitialDepth = -5;
+    public static final double InitialDepth = 5;
 
     /**
      * アームの根本の高さ[cm]（地面から） -> 座標の原点の高さ
@@ -250,7 +250,6 @@ public class ArmConst {
     public static final double RelayPointToInitDepth = 10;
     public static final double RelayPointTolerance = 10;
     public static final double SubStationHeight = -7;
-
 
     public static void ArmConstInit() {
 

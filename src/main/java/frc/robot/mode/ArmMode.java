@@ -1,5 +1,7 @@
 package frc.robot.mode;
 
+import frc.robot.component.Arm;
+import frc.robot.component.Hand;
 import frc.robot.states.*;
 import frc.robot.consts.ArmConst;
 import frc.robot.consts.CameraConst;
@@ -65,6 +67,7 @@ public class ArmMode extends Mode {
         final double joystickX = -1 * Tools.deadZoneProcess(joystick.getRawAxis(0));
         final double joystickY = 1 * Tools.deadZoneProcess(joystick.getRawAxis(1));
         final double joystickZ = 1 * Tools.deadZoneProcess(joystick.getRawAxis(2));
+
         if (driveController.getRightBumper() && driveController.getLeftBumper()) {
             // アームの位置をリセット
             ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
@@ -106,6 +109,7 @@ public class ArmMode extends Mode {
             ArmState.targetDepth = ArmState.actualDepth;
             ArmState.relayToGoalOver = false;
             ArmState.relayToInitOver = false;
+            ArmState.targetToGoalOver = false;
         }
 
         if (getSeveralRawButton(new int[]{7, 8, 9, 10, 11, 12})) {
@@ -129,6 +133,19 @@ public class ArmMode extends Mode {
                     LimelightConst.MiddleGoalHeight - ArmConst.RootHeightFromGr,
                     ArmState.TargetDepth.MiddleCorn
             );
+            if (!ArmState.relayToGoalOver) {
+                ArmState.targetHeight = ArmConst.RelayPointToGoalHeight;
+                ArmState.targetDepth = ArmConst.RelayPointToGoalDepth;
+            } else {
+                ArmState.targetHeight = LimelightConst.MiddleGoalHeight - ArmConst.RootHeightFromGr;
+                if(LimelightState.tv) {
+                    if (50 < LimelightState.armToGoal && LimelightState.armToGoal < 120) {
+                        ArmState.targetDepth = LimelightState.armToGoal;
+                    }
+                } else {
+                    ArmState.targetDepth = ArmState.TargetDepth.MiddleCorn;
+                }
+            }
         } else if (joystick.getRawButton(11)) {
             // 前のコーンのゴールまでアームを伸ばす
             ArmState.targetHeight = LimelightConst.BottomGoalHeight - ArmConst.RootHeightFromGr;
@@ -145,10 +162,35 @@ public class ArmMode extends Mode {
                     CameraConst.MiddleGoalHeight - ArmConst.RootHeightFromGr,
                     ArmState.TargetDepth.MiddleCube
             );
+            if (!ArmState.relayToGoalOver) {
+                ArmState.targetHeight = ArmConst.RelayPointToGoalHeight;
+                ArmState.targetDepth = ArmConst.RelayPointToGoalDepth;
+            } else {
+                ArmState.targetHeight = CameraConst.TopGoalHeight - ArmConst.RootHeightFromGr;
+                ArmState.targetDepth = ArmState.TargetDepth.TopCube;
+                if (ArmState.targetToGoalOver) {
+                    HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
+                }
+            }
+        } else if (joystick.getRawButton(10)) {
+            // 真ん中のキューブのゴールまでアームを伸ばす
+            if(!ArmState.relayToGoalOver) {
+                ArmState.targetHeight = ArmConst.RelayPointToGoalHeight;
+                ArmState.targetDepth = ArmConst.RelayPointToGoalDepth;
+            } else {
+                ArmState.targetHeight = CameraConst.MiddleGoalHeight - ArmConst.RootHeightFromGr;
+                ArmState.targetDepth = ArmState.TargetDepth.MiddleCube;
+                if (ArmState.targetToGoalOver) {
+                    HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
+                }
+            }
         } else if (joystick.getRawButton(12)) {
             // 前のキューブのゴールまでアームを伸ばす
             ArmState.targetHeight = CameraConst.BottomGoalHeight - ArmConst.RootHeightFromGr;
             ArmState.targetDepth = ArmState.TargetDepth.BottomCube;
+            if (ArmState.targetToGoalOver) {
+                HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
+            }
         } else if (driveController.getPOV() == 90) {
             ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
             ArmState.targetHeight = ArmConst.SubStationHeight;

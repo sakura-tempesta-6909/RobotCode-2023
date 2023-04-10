@@ -30,6 +30,8 @@ public class HandConst {
      */
     public static final double HandGearRatio = 12 * 40 / 24;
 
+    public static final double PIDAngleTolerance = 10;
+
     public static void HandConstInit() {
 
     }
