@@ -12,7 +12,7 @@ public class HandConst {
     /**
      * handのモーターののPIDのP
      */
-    public static final double P_HANDR = 0.03;
+    public static final double P_HANDR = 0.01;
     /**
      * handのモーターののPIDのI
      */
@@ -26,7 +26,7 @@ public class HandConst {
      */
     public static final double HandGearRatio = 12 * 40 / 24;
 
-    public static final double PIDAngleTolerance = 10;
+    public static final double PIDAngleTolerance = 5;
 
     public static void HandConstInit() {
 

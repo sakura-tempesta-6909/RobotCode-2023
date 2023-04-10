@@ -20,8 +20,8 @@ public class DriveConst {
         public static final double SlowDrive = 0.6;
     }
 
-    public static final double TrapezoidalAccelerationX = 0.03;
-    public static final double TrapezoidalAccelerationZ = 0.06;
+    public static final double TrapezoidalAccelerationX = 0.045;
+    public static final double TrapezoidalAccelerationZ = 0.09;
     public static final double SkipLowSpeedThreshold = 0.7;
 
     // DrivePoint
