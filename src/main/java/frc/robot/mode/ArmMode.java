@@ -157,7 +157,7 @@ public class ArmMode extends Mode {
                     if (50 < LimelightState.armToGoal && LimelightState.armToGoal < 120) {
                         ArmState.targetDepth = LimelightState.armToGoal;
                     }
-                    if (ArmState.targetToGoalOver) {
+                    if (ArmState.isAtTarget()) {
                         HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
                     }
                 } else {
