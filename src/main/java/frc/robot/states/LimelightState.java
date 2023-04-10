@@ -23,6 +23,7 @@ public class LimelightState {
 
     public static double armToCone;
     public static double armToCube;
+
     public enum States {
         s_coneDetection,
         s_cubeDetection,

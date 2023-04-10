@@ -1,6 +1,7 @@
 package frc.robot.states;
 
 import frc.robot.consts.ArmConst;
+import frc.robot.consts.LimelightConst;
 
 public class ArmState {
     /** アームのモード */
@@ -43,6 +44,10 @@ public class ArmState {
         boolean isDepthAtSetpoint = Math.abs(targetDepth - actualDepth) < ArmConst.PIDAngleTolerance;
         boolean isHeightMotorAtSetpoint = Math.abs(targetHeight - actualHeight) < ArmConst.PIDAngleTolerance;
         return isHeightMotorAtSetpoint && isDepthAtSetpoint;
+    }
+
+    public static boolean isAtLeftAndRightTarget() {
+        return Math.abs(ArmState.targetMoveLeftAndRightAngle  - actualLeftAndRightAngle) < ArmConst.PIDAngleTolerance;
     }
 
     public static double moveLeftAndRightMotor;
