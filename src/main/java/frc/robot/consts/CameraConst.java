@@ -61,7 +61,7 @@ public class CameraConst {
     /**
      * 前のキューブのゴールの高さ[cm] -> ゴールの面の高さは13[cm]
      */
-    public static final double BottomGoalHeight = 13 + 20;
+    public static final double BottomGoalHeight = 13 + 25;
 
 
     //計算

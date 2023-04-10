@@ -33,7 +33,7 @@ public class LimelightConst {
     /**
      * 前のコーンのゴールの高さ[cm] -> ポールの先端（床の面）の高さは13[cm]
      */
-    public static final double BottomGoalHeight = 13 + 30;
+    public static final double BottomGoalHeight = 13 + 35;
     /**
      * 真ん中のコーンのゴールの高さ[cm] -> ポールの先端の高さは87[cm]
      */

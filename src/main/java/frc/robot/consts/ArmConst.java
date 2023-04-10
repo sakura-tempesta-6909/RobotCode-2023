@@ -250,7 +250,7 @@ public class ArmConst {
     /**
      * アームの理想的な奥行き
      */
-    public static final double InitialDepth = 5;
+    public static final double InitialDepth =  2;
 
     /**
      * アームの根本の高さ[cm]（地面から） -> 座標の原点の高さ

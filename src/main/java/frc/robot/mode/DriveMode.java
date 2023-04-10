@@ -4,6 +4,7 @@ import java.util.Map;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.states.*;
+import frc.robot.states.IntakeState.IntakeExtensionStates;
 import frc.robot.consts.*;
 import frc.robot.subClass.Tools;
 import frc.robot.subClass.Util;
@@ -34,6 +35,16 @@ public class DriveMode extends Mode {
             DriveState.driveState = DriveState.DriveStates.s_fastDrive;
         }
 
+        if (driveController.getAButtonPressed()) {
+            if (IntakeState.intakeExtensionState == IntakeState.IntakeExtensionStates.s_closeIntake){
+                IntakeState.intakeExtensionState = IntakeExtensionStates.s_openIntake;
+            } else{
+                IntakeState.intakeExtensionState = IntakeExtensionStates.s_closeIntake;
+            }
+            
+        }
+
+    
         //RT: intake, LT: outtake
         if (driveController.getRightTriggerAxis() > 0.5) {
             IntakeState.intakeState = IntakeState.RollerStates.s_intakeGamePiece;
@@ -228,8 +239,14 @@ public class DriveMode extends Mode {
                     // ハンドを初期位置に戻す
                     HandState.rotateState = HandState.RotateStates.s_turnHandBack;
 
-                    // BasicPositionにターゲットを設定
-                    Util.Calculate.setInitWithRelay();
+                    // BasicPositionのちょっと上にターゲットを設定
+                    if (ArmState.relayToInitOver) {
+                        ArmState.targetHeight = ArmConst.InitialHeight + 10;
+                        ArmState.targetDepth = ArmConst.InitialDepth;
+                    } else {
+                        ArmState.targetHeight = ArmConst.RelayPointToInitHeight;
+                        ArmState.targetDepth = ArmConst.RelayPointToInitDepth;
+                    }
                     break;
             }   
         }else if (joystick.getRawButton(9)) {
@@ -322,10 +339,7 @@ public class DriveMode extends Mode {
             }
         
 
-        if (driveController.getAButton()) {
-            DriveState.driveState = DriveState.DriveStates.s_aprilTagTracking;
-            CameraState.cameraXSpeed = -driveController.getLeftY();
-        } else if (driveController.getBButton()) {
+        if (driveController.getBButton()) {
             LimelightState.isLimelightOn = true;
             DriveState.driveState = DriveState.DriveStates.s_limelightTracking;
             LimelightState.limelightXSpeed = -driveController.getLeftY();

@@ -60,10 +60,22 @@ public class ArmMode extends Mode {
 
         LimelightState.isLimelightOn = true;
 
-        if (driveController.getAButton()) {
-            IntakeState.intakeExtensionState = IntakeState.IntakeExtensionStates.s_openIntake;
+        if (driveController.getAButtonPressed()) {
+            if (IntakeState.intakeExtensionState == IntakeState.IntakeExtensionStates.s_closeIntake){
+                IntakeState.intakeExtensionState = IntakeState.IntakeExtensionStates.s_openIntake;
+            } else{
+                IntakeState.intakeExtensionState = IntakeState.IntakeExtensionStates.s_closeIntake;
+            }
+            
+        }
+
+        //RT: intake, LT: outtake
+        if (driveController.getRightTriggerAxis() > 0.5) {
+            IntakeState.intakeState = IntakeState.RollerStates.s_intakeGamePiece;
+        } else if (driveController.getLeftTriggerAxis() > 0.5) {
+            IntakeState.intakeState = IntakeState.RollerStates.s_outtakeGamePiece;
         } else {
-            IntakeState.intakeExtensionState = IntakeState.IntakeExtensionStates.s_closeIntake;
+            IntakeState.intakeState = IntakeState.RollerStates.s_stopRoller;
         }
 
         final double joystickX = -1 * Tools.deadZoneProcess(joystick.getRawAxis(0));
