@@ -242,6 +242,7 @@ public class ArmConst {
      * PIDコントロールの誤差の許容量[cn] 注意! isArmAtTargetの判定に用いているだけ
      */
     public static final double PIDAngleTolerance = 3;
+    public static final double PIDLeftAndRightAngleTolerance = 1;
 
     /**
      * アームの理想的な高さ

@@ -47,7 +47,7 @@ public class ArmState {
     }
 
     public static boolean isAtLeftAndRightTarget() {
-        return Math.abs(ArmState.targetMoveLeftAndRightAngle  - actualLeftAndRightAngle) < ArmConst.PIDAngleTolerance;
+        return Math.abs(ArmState.targetMoveLeftAndRightAngle  - actualLeftAndRightAngle) < ArmConst.PIDLeftAndRightAngleTolerance;
     }
 
     public static double moveLeftAndRightMotor;
