@@ -43,7 +43,7 @@ public class Limelight implements Component {
         // limelightから受け取る情報
         // limelightから見たターゲットの角度
         double targetOffsetAngle_Vertical = -(tyEntry.getDouble(0.0) + 0.38 * 27) ;
-        double gamePieceAngle = -(tyEntry.getDouble(0.0));
+        double gamePieceAngle = -(tyEntry.getDouble(0.0) - 0.41 * 27);
         LimelightState.tx = -txEntry.getDouble(0);
         LimelightState.tv = tvEntry.getDouble(0) != 0;
         
