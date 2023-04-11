@@ -3,6 +3,7 @@ package frc.robot.mode;
 import frc.robot.component.Arm;
 import frc.robot.component.Hand;
 import frc.robot.states.*;
+import frc.robot.states.LimelightState.States;
 import frc.robot.consts.ArmConst;
 import frc.robot.consts.CameraConst;
 import frc.robot.consts.GrabGamePiecePhaseConst;
@@ -59,6 +60,7 @@ public class ArmMode extends Mode {
         DriveState.driveState = DriveState.DriveStates.s_midDrive;
 
         LimelightState.isLimelightOn = true;
+        LimelightState.limelightState = States.s_tapeDetection;
 
         if (driveController.getAButtonPressed()) {
             if (IntakeState.intakeExtensionState == IntakeState.IntakeExtensionStates.s_closeIntake){

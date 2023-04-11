@@ -145,7 +145,5 @@ public class ArmState {
         TargetDepth.TopCube = 101.0 + 20.0;
         TargetDepth.MiddleCube = 58.0 + 30.0;
         TargetDepth.BottomCube = 30.0 + 15.0;
-
-        TargetDepth.SubStation = 36 + 20;
     }
 }

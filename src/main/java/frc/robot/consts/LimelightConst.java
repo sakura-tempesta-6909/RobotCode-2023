@@ -10,7 +10,7 @@ public class LimelightConst {
     /**
      * Limelightの角度(度数法)
      */
-    public static final double LimelightMountAngleDegrees = -8;
+    public static final double LimelightMountAngleDegrees = -5.2;
 
     /**
      * Limelightの高さ
