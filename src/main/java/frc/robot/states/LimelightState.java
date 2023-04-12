@@ -23,6 +23,7 @@ public class LimelightState {
 
     public static double armToCone;
     public static double armToCube;
+
     public enum States {
         s_coneDetection,
         s_cubeDetection,
@@ -30,11 +31,11 @@ public class LimelightState {
     }
 
     public static void StateInit() {
-
+        limelightState = States.s_tapeDetection;
     }
 
     public static void StateReset() {
         isLimelightOn = false;
-        limelightState = States.s_tapeDetection;
+        
     }
 }

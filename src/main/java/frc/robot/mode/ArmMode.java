@@ -3,6 +3,7 @@ package frc.robot.mode;
 import frc.robot.component.Arm;
 import frc.robot.component.Hand;
 import frc.robot.states.*;
+import frc.robot.states.LimelightState.States;
 import frc.robot.consts.ArmConst;
 import frc.robot.consts.CameraConst;
 import frc.robot.consts.GrabGamePiecePhaseConst;
@@ -59,6 +60,7 @@ public class ArmMode extends Mode {
         DriveState.driveState = DriveState.DriveStates.s_midDrive;
 
         LimelightState.isLimelightOn = true;
+        LimelightState.limelightState = States.s_tapeDetection;
 
         if (driveController.getAButtonPressed()) {
             if (IntakeState.intakeExtensionState == IntakeState.IntakeExtensionStates.s_closeIntake){
@@ -156,7 +158,11 @@ public class ArmMode extends Mode {
                 if(LimelightState.tv) {
                     if (50 < LimelightState.armToGoal && LimelightState.armToGoal < 120) {
                         ArmState.targetDepth = LimelightState.armToGoal;
+                        if (ArmState.isAtTarget() && ArmState.isAtLeftAndRightTarget()) {
+                            HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
+                        }
                     }
+
                 } else {
                     ArmState.targetDepth = ArmState.TargetDepth.MiddleCorn;
                 }
@@ -173,9 +179,6 @@ public class ArmMode extends Mode {
             } else {
                 ArmState.targetHeight = CameraConst.TopGoalHeight - ArmConst.RootHeightFromGr;
                 ArmState.targetDepth = ArmState.TargetDepth.TopCube;
-                if (ArmState.targetToGoalOver) {
-                    HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
-                }
             }
         } else if (joystick.getRawButton(10)) {
             // 真ん中のキューブのゴールまでアームを伸ばす
@@ -185,9 +188,6 @@ public class ArmMode extends Mode {
             } else {
                 ArmState.targetHeight = CameraConst.MiddleGoalHeight - ArmConst.RootHeightFromGr;
                 ArmState.targetDepth = ArmState.TargetDepth.MiddleCube;
-                if (ArmState.targetToGoalOver) {
-                    HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
-                }
             }
         } else if (joystick.getRawButton(12)) {
             // 前のキューブのゴールまでアームを伸ばす

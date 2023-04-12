@@ -4,7 +4,9 @@ import java.util.Map;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.states.*;
+import frc.robot.states.HandState.GrabHandStates;
 import frc.robot.states.IntakeState.IntakeExtensionStates;
+import frc.robot.states.LimelightState.States;
 import frc.robot.consts.*;
 import frc.robot.subClass.Tools;
 import frc.robot.subClass.Util;
@@ -13,6 +15,9 @@ public class DriveMode extends Mode {
 
     private static GrabGamePiecePhase phase = GrabGamePiecePhase.Phase1;
     private static int GrabCount = 0;
+    private static double  limelightTotalDistance;
+    private static double limelightDitectionCount;
+    private static double limelightAveraveDistance;
 
     @Override
     public void changeMode() {
@@ -57,6 +62,8 @@ public class DriveMode extends Mode {
         }
 
         final double joystickZ = 1 * Tools.deadZoneProcess(joystick.getRawAxis(2));
+        
+
 
         if (driveController.getRightBumper() && driveController.getLeftBumper()) {
             // アームの位置をリセット
@@ -97,6 +104,9 @@ public class DriveMode extends Mode {
             phase = GrabGamePiecePhase.Phase1;
             DriveState.resetPosition= true;
             DriveState.resetPIDController = true;
+            limelightDitectionCount = 0;
+            limelightTotalDistance = 0;
+    
         }
 
         if (joystick.getRawButton(2)) {
@@ -249,7 +259,7 @@ public class DriveMode extends Mode {
                     }
                     break;
             }   
-        }else if (joystick.getRawButton(10)) {
+        }else if (joystick.getRawButton(9)) {
             // サブステーションからコーンを取る
             SmartDashboard.putString("substationPhase", phase.toString());
             switch (phase) {
@@ -257,17 +267,30 @@ public class DriveMode extends Mode {
                     LimelightState.limelightState = LimelightState.States.s_coneDetection;
                     // アームをリレーポイントへ
                     ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-
-                    // ハンドを開く
-                    HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
-
+                
                     // リレーポイント
                     ArmState.targetHeight = ArmConst.RelayPointToGoalHeight;
                     ArmState.targetDepth = ArmConst.RelayPointToGoalDepth;
 
                     ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_limelightTracking;
+
+                    if (LimelightState.tv) {
+                        if (60 < LimelightState.armToCone && LimelightState.armToCone < 290/3) {
+                            limelightDitectionCount += 1;
+                            limelightTotalDistance += LimelightState.armToCone;
+                            limelightAveraveDistance = limelightTotalDistance / limelightDitectionCount;
+                        }
+                    
+                    }
                     if (Util.Calculate.isOverRelayToGoal(ArmState.actualHeight, ArmState.actualDepth)) {
                         phase = GrabGamePiecePhase.Phase2;
+                        if (limelightDitectionCount == 0) {
+                            ArmState.targetDepth = GrabGamePiecePhaseConst.armSubStationDepth;
+                        } else {
+                            ArmState.targetHeight = GrabGamePiecePhaseConst.armSubStationHeight;
+                            ArmState.targetDepth =   1.47 * limelightAveraveDistance -22;
+                        }
+
                     }
                     break;
                 case Phase2:
@@ -275,18 +298,12 @@ public class DriveMode extends Mode {
                     // アームをサブステーションの位置へ
                     ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
 
+                
                     // サブステーションの位置
-                    ArmState.targetHeight = GrabGamePiecePhaseConst.armSubStationHeight;
-                    if (LimelightState.tv) {
-                        if (50 < LimelightState.armToCone && LimelightState.armToCone < 120) {
-                            ArmState.targetDepth = LimelightState.armToCone;
-                        }
-                    } else {
-                        ArmState.targetDepth = GrabGamePiecePhaseConst.armSubStationDepth;
-                    }
+                
                     break;
             }
-        }else if (joystick.getRawButton(9)) {
+        }else if (joystick.getRawButton(10)) {
             // サブステーションからキューブを取る
             SmartDashboard.putString("substationPhase", phase.toString());
             switch (phase){
@@ -294,35 +311,43 @@ public class DriveMode extends Mode {
                     LimelightState.limelightState = LimelightState.States.s_cubeDetection;
                     // アームをリレーポイントへ
                     ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-
-                    // ハンドを開く
-                    HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
+                
 
                     // リレーポイント
                     ArmState.targetHeight = ArmConst.RelayPointToGoalHeight;
                     ArmState.targetDepth = ArmConst.RelayPointToGoalDepth;
 
                     ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_limelightTracking;
+                    if (LimelightState.tv) {
+                        if (60 < LimelightState.armToCube && LimelightState.armToCube < 90) {
+                            limelightDitectionCount += 1;
+                            limelightTotalDistance += LimelightState.armToCube;
+                            limelightAveraveDistance = limelightTotalDistance / limelightDitectionCount;
+                        }
+                    
+                    }
                     if (Util.Calculate.isOverRelayToGoal(ArmState.actualHeight, ArmState.actualDepth)) {
                         phase = GrabGamePiecePhase.Phase2;
-                        DriveState.resetPosition= true;
-                        DriveState.resetPIDController = true;
+                        if (limelightDitectionCount == 0) {
+                            ArmState.targetDepth = GrabGamePiecePhaseConst.armSubStationDepth;
+                        } else {
+                            ArmState.targetHeight = GrabGamePiecePhaseConst.armSubStationHeight;
+                            ArmState.targetDepth = limelightAveraveDistance + 25;
+                            if (limelightAveraveDistance > 80) {
+                                ArmState.targetDepth = limelightAveraveDistance + 30;
+                            }
+                        }
+
                     }
                     break;
                 case Phase2:
+                    LimelightState.limelightState = States.s_cubeDetection;
                     ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_limelightTracking;
                     // アームをサブステーションの位置へ
                     ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-
+    
                     // サブステーションの位置
-                    ArmState.targetHeight = GrabGamePiecePhaseConst.armSubStationHeight;
-                    if(LimelightState.tv) {
-                        if (50 < LimelightState.armToCube && LimelightState.armToCube < 120) {
-                            ArmState.targetDepth = LimelightState.armToCube;
-                        }
-                    } else {
-                        ArmState.targetDepth = GrabGamePiecePhaseConst.armSubStationDepth;
-                    }
+                    
                     break;
             }
         } else
