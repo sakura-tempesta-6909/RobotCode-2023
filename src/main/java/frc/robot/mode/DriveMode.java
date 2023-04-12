@@ -17,6 +17,7 @@ public class DriveMode extends Mode {
     private static int GrabCount = 0;
     private static double  limelightTotalDistance;
     private static double limelightDitectionCount;
+    private static double limelightAveraveDistance;
 
     @Override
     public void changeMode() {
@@ -273,6 +274,7 @@ public class DriveMode extends Mode {
                         phase = GrabGamePiecePhase.Phase2;
                         limelightTotalDistance = 0;
                         limelightDitectionCount = 0;
+                        ArmState.targetDepth = GrabGamePiecePhaseConst.armSubStationDepth;
                     }
                     break;
                 case Phase2:
@@ -284,14 +286,13 @@ public class DriveMode extends Mode {
                     // サブステーションの位置
                     ArmState.targetHeight = GrabGamePiecePhaseConst.armSubStationHeight;
                     if (LimelightState.tv) {
-                        if (70 < LimelightState.armToCone && LimelightState.armToCone < 100) {
+                        if (60 < LimelightState.armToCone && LimelightState.armToCone < 290/3) {
                             limelightDitectionCount += 1;
                             limelightTotalDistance += LimelightState.armToCone;
-                            ArmState.targetDepth = limelightTotalDistance / limelightDitectionCount + 20;
-                            
+                            limelightAveraveDistance = limelightTotalDistance / limelightDitectionCount;
+                            ArmState.targetDepth =   3. / 2 * limelightAveraveDistance -25;
                         }
                     } else {
-                        // ArmState.targetDepth = GrabGamePiecePhaseConst.armSubStationDepth;
                         limelightTotalDistance = 0;
                         limelightDitectionCount = 0;
                     }
@@ -318,6 +319,7 @@ public class DriveMode extends Mode {
                         DriveState.resetPIDController = true;
                         limelightTotalDistance = 0;
                         limelightDitectionCount = 0;
+                        ArmState.targetDepth = GrabGamePiecePhaseConst.armSubStationDepth;
                     }
                     break;
                 case Phase2:
@@ -329,13 +331,13 @@ public class DriveMode extends Mode {
                     // サブステーションの位置
                     ArmState.targetHeight = GrabGamePiecePhaseConst.armSubStationHeight;
                     if(LimelightState.tv) {
-                        if (70 < LimelightState.armToCube && LimelightState.armToCube < 100) {
+                        if (70 < LimelightState.armToCube && LimelightState.armToCube < 110) {
                             limelightDitectionCount += 1;
                             limelightTotalDistance += LimelightState.armToCube;
-                            ArmState.targetDepth = limelightTotalDistance / limelightDitectionCount + 20;
+                            
+                            ArmState.targetDepth = limelightTotalDistance / limelightDitectionCount + 10;
                         }
                     } else {
-                        ArmState.targetDepth = GrabGamePiecePhaseConst.armSubStationDepth;
                         limelightTotalDistance = 0;
                         limelightDitectionCount = 0;
                     }

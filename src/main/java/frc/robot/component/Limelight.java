@@ -61,8 +61,8 @@ public class Limelight implements Component {
         LimelightState.limelightToFrontGoal = (LimelightConst.GoalHeight - LimelightConst.LimelightLensHeight) / Math.tan(angleToGoalRadians);
         LimelightState.armToGoal = LimelightState.limelightToFrontGoal - LimelightConst.LimelightToArm;
         LimelightState.limelightToBackGoal = LimelightState.limelightToFrontGoal + LimelightConst.FrontGoalToBackGoal;
-        LimelightState.limelightToCube = Math.abs(LimelightConst.SubStationHeight  - LimelightConst.LimelightLensHeight) / Math.tan(angleToGamePieceRadians);
-        LimelightState.limelightToCone = Math.abs(LimelightConst.SubStationHeight  - LimelightConst.LimelightLensHeight) / Math.tan(angleToGamePieceRadians);
+        LimelightState.limelightToCube = Math.abs(LimelightConst.SubStationHeight + 12  - LimelightConst.LimelightLensHeight) / Math.tan(angleToGamePieceRadians);
+        LimelightState.limelightToCone = Math.abs(LimelightConst.SubStationHeight  + 16.5 - LimelightConst.LimelightLensHeight) / Math.tan(angleToGamePieceRadians);
         LimelightState.armToCone = LimelightState.limelightToCone - LimelightConst.LimelightToArm;
         LimelightState.armToCube = LimelightState.limelightToCube - LimelightConst.LimelightToArm;
 
