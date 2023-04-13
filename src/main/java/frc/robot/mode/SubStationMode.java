@@ -1,7 +1,6 @@
 package frc.robot.mode;
 
 import frc.robot.states.ArmState;
-import frc.robot.states.State;
 import frc.robot.consts.ArmConst;
 import frc.robot.consts.LimelightConst;
 

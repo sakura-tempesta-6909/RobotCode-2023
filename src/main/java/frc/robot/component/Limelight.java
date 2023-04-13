@@ -66,15 +66,6 @@ public class Limelight implements Component {
         LimelightState.armToCone = LimelightState.limelightToCone - LimelightConst.LimelightToArm;
         LimelightState.armToCube = LimelightState.limelightToCube - LimelightConst.LimelightToArm;
 
-        SmartDashboard.putNumber("FrontGoal", LimelightState.armToGoal);
-        SmartDashboard.putNumber("tx", LimelightState.tx);
-        SmartDashboard.putNumber("ty", tyEntry.getDouble(0));
-        SmartDashboard.putNumber("BackGoal", LimelightState.limelightToBackGoal);
-        SmartDashboard.putBoolean("Limelight",  tvEntry.getDouble(0) != 0);
-        SmartDashboard.putNumber("cube", LimelightState.armToCube);
-        SmartDashboard.putNumber("cone", LimelightState.armToCone);
-
-        
 
     }
 

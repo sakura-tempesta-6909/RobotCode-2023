@@ -1,7 +1,5 @@
 package frc.robot.mode;
 
-import java.util.Map;
-
 import frc.robot.states.ArmState;
 import frc.robot.states.DriveState;
 import frc.robot.states.HandState;
@@ -9,7 +7,6 @@ import frc.robot.subClass.*;
 import frc.robot.states.*;
 import frc.robot.consts.ArmConst;
 import frc.robot.consts.GrabGamePiecePhaseConst;
-import frc.robot.subClass.Tools;;
 
 public class ChargeStationMode extends Mode{
 // 正式名称は「ワクワクドキドキ神様お願いブレイクモード」
@@ -78,21 +75,6 @@ public class ChargeStationMode extends Mode{
         } else if (joystick.getRawButtonPressed(2)) {
             ArmState.resetPidController = true;
         }
-
-          // ターゲット座標からターゲットの角度を計算する
-          Map<String, Double> targetAngles = Tools.calculateAngles(ArmState.targetDepth, ArmState.targetHeight);
-          Double target = targetAngles.get("RootAngle");
-          if(target != null) {
-              ArmState.targetRootAngle = target;
-          } else {
-              ArmState.targetRootAngle = ArmState.actualRootAngle;
-          }
-          target = targetAngles.get("JointAngle");
-          if(target != null) {
-              ArmState.targetJointAngle = target;
-          } else {
-              ArmState.targetJointAngle = ArmState.actualJointAngle;
-          }
     }
     enum GrabGamePiecePhase {
         //basicPositionに移動する

@@ -1,10 +1,7 @@
 package frc.robot.subClass;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.states.ArmState;
-import frc.robot.states.DriveState;
-import frc.robot.states.HandState;
-import frc.robot.states.State;
+import frc.robot.states.*;
 import frc.robot.consts.ArmConst;
 import frc.robot.consts.DriveConst;
 
@@ -49,8 +46,16 @@ public class Util {
         sendConsole("DriveTargetMeter", DriveState.targetMeter);
         sendConsole("RDrivePosition", DriveState.rightMeter);
         sendConsole("LDrivePosition", DriveState.leftMeter);
-
+        sendConsole("actual leftright angle", ArmState.actualLeftAndRightAngle);
+        sendConsole("AngleX", CameraState.aprilTagAngleWidth);
+        sendConsole("AngleY", CameraState.aprilTagAngleHeight);
+        sendConsole("cameraToTag", CameraState.cameraToTag);
+        sendConsole("armToTag", CameraState.armToTag);
+        sendConsole("FrontGoal", LimelightState.limelightToFrontGoal);
+        sendConsole("BackGoal", LimelightState.limelightToBackGoal);
+        sendConsole("armToFrontGoal", LimelightState.armToGoal);
         sendConsole("HandIsAtTarget", HandState.isAtTarget());
+
     }
 
     public static class Calculate {
@@ -101,6 +106,16 @@ public class Util {
             } else {
                 ArmState.targetHeight = ArmConst.RelayPointToInitHeight;
                 ArmState.targetDepth = ArmConst.RelayPointToInitDepth;
+            }
+        }
+
+        public static void setGoalWithRelay(double GoalHeight, double GoalDepth) {
+            if (ArmState.relayToGoalOver) {
+                ArmState.targetHeight = GoalHeight;
+                ArmState.targetDepth = GoalDepth;
+            } else {
+                ArmState.targetHeight = ArmConst.RelayPointToGoalHeight;
+                ArmState.targetDepth = ArmConst.RelayPointToGoalDepth;
             }
         }
     }

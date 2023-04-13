@@ -22,6 +22,10 @@ public class HandConst {
      */
     public static final double D_HANDR = 0.0;
     /**
+     * handのモーターのの積分値の最大値
+     */
+    public static final double IMax_HANDR = 0.0;
+    /**
      * アームを左右に動かす時のギア比
      */
     public static final double HandGearRatio = 12 * 40 / 24;
