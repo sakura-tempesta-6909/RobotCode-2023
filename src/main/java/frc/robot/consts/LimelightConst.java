@@ -1,5 +1,8 @@
 package frc.robot.consts;
 
+import frc.robot.mode.DriveMode;
+import frc.robot.states.LimelightState;
+
 public class LimelightConst {
     // limelightの情報
     /**
@@ -10,12 +13,12 @@ public class LimelightConst {
     /**
      * Limelightの角度(度数法)
      */
-    public static final double LimelightMountAngleDegrees = -9;
+    public static final double LimelightMountAngleDegrees = -5.2;
 
     /**
      * Limelightの高さ
      */
-    public static final double LimelightLensHeight = 97.5; //  [cm]
+    public static final double LimelightLensHeight = 96.5; //  [cm]
 
     /**
      * LimelightからArmまでの距離
@@ -33,7 +36,7 @@ public class LimelightConst {
     /**
      * 前のコーンのゴールの高さ[cm] -> ポールの先端（床の面）の高さは13[cm]
      */
-    public static final double BottomGoalHeight = 13 + 30;
+    public static final double BottomGoalHeight = 13 + 35;
     /**
      * 真ん中のコーンのゴールの高さ[cm] -> ポールの先端の高さは87[cm]
      */
@@ -47,6 +50,10 @@ public class LimelightConst {
      * 手前から奥のターゲットまでの距離
      */
     public static final double FrontGoalToBackGoal = 43; // [cm]
+
+    public static final double SubStationHeight = 95;
+
+
 
     public static final class PID {
         public static final double LimelightDriveP = 0.08;

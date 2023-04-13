@@ -4,6 +4,9 @@ import java.util.Map;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.states.*;
+import frc.robot.states.HandState.GrabHandStates;
+import frc.robot.states.IntakeState.IntakeExtensionStates;
+import frc.robot.states.LimelightState.States;
 import frc.robot.consts.*;
 import frc.robot.subClass.Tools;
 import frc.robot.subClass.Util;
@@ -12,6 +15,9 @@ public class DriveMode extends Mode {
 
     private static GrabGamePiecePhase phase = GrabGamePiecePhase.Phase1;
     private static int GrabCount = 0;
+    private static double  limelightTotalDistance;
+    private static double limelightDitectionCount;
+    private static double limelightAveraveDistance;
 
     @Override
     public void changeMode() {
@@ -34,6 +40,16 @@ public class DriveMode extends Mode {
             DriveState.driveState = DriveState.DriveStates.s_fastDrive;
         }
 
+        if (driveController.getAButtonPressed()) {
+            if (IntakeState.intakeExtensionState == IntakeState.IntakeExtensionStates.s_closeIntake){
+                IntakeState.intakeExtensionState = IntakeExtensionStates.s_openIntake;
+            } else{
+                IntakeState.intakeExtensionState = IntakeExtensionStates.s_closeIntake;
+            }
+            
+        }
+
+    
         //RT: intake, LT: outtake
         if (driveController.getRightTriggerAxis() > 0.5) {
             IntakeState.intakeState = IntakeState.RollerStates.s_intakeGamePiece;
@@ -46,6 +62,8 @@ public class DriveMode extends Mode {
         }
 
         final double joystickZ = 1 * Tools.deadZoneProcess(joystick.getRawAxis(2));
+        
+
 
         if (driveController.getRightBumper() && driveController.getLeftBumper()) {
             // アームの位置をリセット
@@ -82,13 +100,13 @@ public class DriveMode extends Mode {
             HandState.isResetHandPID = true;
         }
 
-        if (joystick.getRawButtonPressed(11) || joystick.getRawButtonPressed(12) || joystick.getRawButtonPressed(10) ||  joystick.getRawButtonPressed(7)) {
+        if (joystick.getRawButtonPressed(11) || joystick.getRawButtonPressed(12) || joystick.getRawButtonPressed(10) ||  joystick.getRawButtonPressed(7) || joystick.getRawButtonPressed(9)) {
             phase = GrabGamePiecePhase.Phase1;
-        }
-
-        if (joystick.getRawButtonPressed(10)) {
-            DriveState.resetPosition = true;
+            DriveState.resetPosition= true;
             DriveState.resetPIDController = true;
+            limelightDitectionCount = 0;
+            limelightTotalDistance = 0;
+    
         }
 
         if (joystick.getRawButton(2)) {
@@ -189,7 +207,7 @@ public class DriveMode extends Mode {
                     ArmState.targetDepth = GrabGamePiecePhaseConst.armConePrepareDepth;
 
                     GrabCount++;
-                    if (ArmState.isAtTarget() && HandState.isAtTarget() && GrabCount >= 20) {
+                    if (ArmState.isAtTarget() && HandState.isAtTarget() && GrabCount >= 40) {
                         phase = GrabGamePiecePhase.Phase2;
                         GrabCount = 0;
                     }
@@ -231,62 +249,105 @@ public class DriveMode extends Mode {
                     // ハンドを初期位置に戻す
                     HandState.rotateState = HandState.RotateStates.s_turnHandBack;
 
-                    // BasicPositionにターゲットを設定
-                    Util.Calculate.setInitWithRelay();
+                    // BasicPositionのちょっと上にターゲットを設定
+                    if (ArmState.relayToInitOver) {
+                        ArmState.targetHeight = ArmConst.InitialHeight + 10;
+                        ArmState.targetDepth = ArmConst.InitialDepth;
+                    } else {
+                        ArmState.targetHeight = ArmConst.RelayPointToInitHeight;
+                        ArmState.targetDepth = ArmConst.RelayPointToInitDepth;
+                    }
                     break;
             }   
-        }else if (joystick.getRawButton(10)) {
-            // サブステーション
+        }else if (joystick.getRawButton(9)) {
+            // サブステーションからコーンを取る
             SmartDashboard.putString("substationPhase", phase.toString());
-            switch (phase){
+            switch (phase) {
                 case Phase1:
-                    // PIDでちょっと下がる
-                    DriveState.driveState = DriveState.DriveStates.s_pidDrive;
+                    LimelightState.limelightState = LimelightState.States.s_coneDetection;
+                    // アームをリレーポイントへ
+                    ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
+                
+                    // リレーポイント
+                    ArmState.targetHeight = ArmConst.RelayPointToGoalHeight;
+                    ArmState.targetDepth = ArmConst.RelayPointToGoalDepth;
 
-                    // PIDでどんくらい下がるか
-                    DriveState.targetMeter = -1;
+                    ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_limelightTracking;
 
-                    if (DriveState.isAtTarget()){
+                    if (LimelightState.tv) {
+                        if (60 < LimelightState.armToCone && LimelightState.armToCone < 290/3) {
+                            limelightDitectionCount += 1;
+                            limelightTotalDistance += LimelightState.armToCone;
+                            limelightAveraveDistance = limelightTotalDistance / limelightDitectionCount;
+                        }
+                    
+                    }
+                    if (Util.Calculate.isOverRelayToGoal(ArmState.actualHeight, ArmState.actualDepth)) {
                         phase = GrabGamePiecePhase.Phase2;
+                        if (limelightDitectionCount == 0) {
+                            ArmState.targetDepth = GrabGamePiecePhaseConst.armSubStationDepth;
+                        } else {
+                            ArmState.targetHeight = GrabGamePiecePhaseConst.armSubStationHeight;
+                            ArmState.targetDepth =   1.47 * limelightAveraveDistance -22;
+                        }
+
                     }
                     break;
                 case Phase2:
-                    // アームを初期位置に
+                    ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_limelightTracking;
+                    // アームをサブステーションの位置へ
                     ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-                    // 左右はど真ん中にする
-                    ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
 
-                    // ハンドを初期位置に戻す
-                    HandState.rotateState = HandState.RotateStates.s_turnHandBack;
-
-                    // アームの初期位置を設定
-                    Util.Calculate.setInitWithRelay();
-                    if (ArmState.isAtTarget() && HandState.isAtTarget()) {
-                        phase = GrabGamePiecePhase.Phase3;
-                    }
+                
+                    // サブステーションの位置
+                
                     break;
-                case Phase3:
+            }
+        }else if (joystick.getRawButton(10)) {
+            // サブステーションからキューブを取る
+            SmartDashboard.putString("substationPhase", phase.toString());
+            switch (phase){
+                case Phase1:
+                    LimelightState.limelightState = LimelightState.States.s_cubeDetection;
                     // アームをリレーポイントへ
                     ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
+                
 
                     // リレーポイント
                     ArmState.targetHeight = ArmConst.RelayPointToGoalHeight;
                     ArmState.targetDepth = ArmConst.RelayPointToGoalDepth;
 
+                    ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_limelightTracking;
+                    if (LimelightState.tv) {
+                        if (60 < LimelightState.armToCube && LimelightState.armToCube < 90) {
+                            limelightDitectionCount += 1;
+                            limelightTotalDistance += LimelightState.armToCube;
+                            limelightAveraveDistance = limelightTotalDistance / limelightDitectionCount;
+                        }
+                    
+                    }
                     if (Util.Calculate.isOverRelayToGoal(ArmState.actualHeight, ArmState.actualDepth)) {
-                        phase = GrabGamePiecePhase.Phase4;
+                        phase = GrabGamePiecePhase.Phase2;
+                        if (limelightDitectionCount == 0) {
+                            ArmState.targetDepth = GrabGamePiecePhaseConst.armSubStationDepth;
+                        } else {
+                            ArmState.targetHeight = GrabGamePiecePhaseConst.armSubStationHeight;
+                            ArmState.targetDepth = limelightAveraveDistance + 25;
+                            if (limelightAveraveDistance > 80) {
+                                ArmState.targetDepth = limelightAveraveDistance + 30;
+                            }
+                        }
+
                     }
                     break;
-                case Phase4:
+                case Phase2:
+                    LimelightState.limelightState = States.s_cubeDetection;
+                    ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_limelightTracking;
                     // アームをサブステーションの位置へ
                     ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-
-                    // ハンドを開く
-                    HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
-
+    
                     // サブステーションの位置
-                    ArmState.targetHeight = GrabGamePiecePhaseConst.armSubStationHeight;
-                    ArmState.targetDepth = GrabGamePiecePhaseConst.armSubStationDepth;
+                    
                     break;
             }
         } else
@@ -309,10 +370,7 @@ public class DriveMode extends Mode {
             }
         
 
-        if (driveController.getAButton()) {
-            DriveState.driveState = DriveState.DriveStates.s_aprilTagTracking;
-            CameraState.cameraXSpeed = -driveController.getLeftY();
-        } else if (driveController.getBButton()) {
+        if (driveController.getBButton()) {
             LimelightState.isLimelightOn = true;
             DriveState.driveState = DriveState.DriveStates.s_limelightTracking;
             LimelightState.limelightXSpeed = -driveController.getLeftY();

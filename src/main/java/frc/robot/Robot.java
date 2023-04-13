@@ -150,7 +150,8 @@ public class Robot extends TimedRobot {
         State.mode.changeState();
 
         for (Component component : components) {
-//            component.applyState();
+           component.applyState();
         }
+        Util.allSendConsole();
     }
 }

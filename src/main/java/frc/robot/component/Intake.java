@@ -26,7 +26,7 @@ public class Intake implements Component{
         bottomRoller = new VictorSPX(IntakeConst.Ports.BottomRoller);
         compressor = new Compressor(PneumaticsModuleType.CTREPCM);
 
-       bottomRoller.setInverted(true);
+       bottomRoller.setInverted(false);
     }
         
     @Override

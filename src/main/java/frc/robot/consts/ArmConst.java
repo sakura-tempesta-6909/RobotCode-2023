@@ -192,7 +192,7 @@ public class ArmConst {
     /**
      * handのモーターののPIDのI
      */
-    public static final double I_HANDR = 0.00001;
+    public static final double I_HANDR = 0.0001;
     /**
      * handのモーターののPIDのD
      */
@@ -200,7 +200,7 @@ public class ArmConst {
     /**
      * handのモーターのの積分値の最大値
      */
-    public static final double IMax_HANDR = 0.0;
+    public static final double IMax_HANDR = 0.015 / 0.0001;
 
 
     /**
@@ -242,6 +242,7 @@ public class ArmConst {
      * PIDコントロールの誤差の許容量[cn] 注意! isArmAtTargetの判定に用いているだけ
      */
     public static final double PIDAngleTolerance = 3;
+    public static final double PIDLeftAndRightAngleTolerance = 1;
 
     /**
      * アームの理想的な高さ
@@ -250,7 +251,7 @@ public class ArmConst {
     /**
      * アームの理想的な奥行き
      */
-    public static final double InitialDepth = 5;
+    public static final double InitialDepth =  2;
 
     /**
      * アームの根本の高さ[cm]（地面から） -> 座標の原点の高さ

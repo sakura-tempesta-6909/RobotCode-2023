@@ -23,7 +23,7 @@ public class IntakeState {
 
     public static void StateInit() {
         intakeExtensionState = IntakeExtensionStates.s_openIntake;
-
+       
     }
 
     public static void StateReset() {

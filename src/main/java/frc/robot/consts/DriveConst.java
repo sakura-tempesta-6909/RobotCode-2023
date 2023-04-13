@@ -20,8 +20,8 @@ public class DriveConst {
         public static final double SlowDrive = 0.6;
     }
 
-    public static final double TrapezoidalAccelerationX = 0.03;
-    public static final double TrapezoidalAccelerationZ = 0.06;
+    public static final double TrapezoidalAccelerationX = 0.045;
+    public static final double TrapezoidalAccelerationZ = 0.09;
     public static final double SkipLowSpeedThreshold = 0.7;
 
     // DrivePoint
@@ -38,8 +38,10 @@ public class DriveConst {
         /**
          * 短い移動と判別するための閾値 [m]
          */
+        public static final double MiddleThreshold = 1;
         public static final double ShortThreshold = 0.5;
-        public static final double LossTolerance = 0.1;
+        
+        public static final double LossTolerance = 0.15;
         // DrivePoint
         public static final double EncoderPointsPerRevolution = 4096;
         // タイヤの直径を求める 単位はメートル
@@ -75,6 +77,7 @@ public class DriveConst {
             DriveLeft.slot1.kI = 0.0004;
             DriveLeft.slot1.kD = 0.000;
             DriveLeft.slot1.maxIntegralAccumulator = 1023 * 0.1 / DriveLeft.slot1.kI;
+
         }
     }
     public static void DriveConstInit() {
