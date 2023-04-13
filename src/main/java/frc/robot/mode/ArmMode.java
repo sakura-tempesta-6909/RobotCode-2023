@@ -236,7 +236,7 @@ public class ArmMode extends Mode {
                         ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
                         ArmState.targetHeight = ArmConst.RelayPointIntakeHeight;
                         ArmState.targetDepth = ArmConst.RelayPointIntakeDepth;
-                        if (ArmState.isAtTarget()) {
+                        if (ArmState.actualDepth < 27) {
                             phase = DriveMode.GrabGamePiecePhase.Phase2;
                         }
                         break;
@@ -244,7 +244,6 @@ public class ArmMode extends Mode {
                         // すべてBasicPositionに戻る
                         ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
                         HandState.rotateState = HandState.RotateStates.s_turnHandBack;
-                        Util.Calculate.setInitWithRelay();
                         break;
                 }
             }
