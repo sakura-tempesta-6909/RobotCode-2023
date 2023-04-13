@@ -63,12 +63,12 @@ public class ArmMode extends Mode {
         LimelightState.limelightState = States.s_tapeDetection;
 
         if (driveController.getAButtonPressed()) {
-            if (IntakeState.intakeExtensionState == IntakeState.IntakeExtensionStates.s_closeIntake){
+            if (IntakeState.intakeExtensionState == IntakeState.IntakeExtensionStates.s_closeIntake) {
                 IntakeState.intakeExtensionState = IntakeState.IntakeExtensionStates.s_openIntake;
-            } else{
+            } else {
                 IntakeState.intakeExtensionState = IntakeState.IntakeExtensionStates.s_closeIntake;
             }
-            
+
         }
 
         //RT: intake, LT: outtake
@@ -83,7 +83,7 @@ public class ArmMode extends Mode {
         final double joystickX = -1 * Tools.deadZoneProcess(joystick.getRawAxis(0));
         final double joystickY = 1 * Tools.deadZoneProcess(joystick.getRawAxis(1));
         final double joystickZ = 1 * Tools.deadZoneProcess(joystick.getRawAxis(2));
-        
+
         if (driveController.getRightBumper() && driveController.getLeftBumper()) {
             // アームの位置をリセット
             ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
@@ -155,7 +155,7 @@ public class ArmMode extends Mode {
                 ArmState.targetDepth = ArmConst.RelayPointToGoalDepth;
             } else {
                 ArmState.targetHeight = LimelightConst.MiddleGoalHeight - ArmConst.RootHeightFromGr;
-                if(LimelightState.tv) {
+                if (LimelightState.tv) {
                     if (50 < LimelightState.armToGoal && LimelightState.armToGoal < 120) {
                         ArmState.targetDepth = LimelightState.armToGoal;
                         if (ArmState.isAtTarget() && ArmState.isAtLeftAndRightTarget()) {
@@ -169,8 +169,8 @@ public class ArmMode extends Mode {
             }
         } else if (joystick.getRawButton(11)) {
             // 前のコーンのゴールまでアームを伸ばす
-                ArmState.targetHeight = LimelightConst.BottomGoalHeight - ArmConst.RootHeightFromGr;
-                ArmState.targetDepth = ArmState.TargetDepth.BottomCorn;
+            ArmState.targetHeight = LimelightConst.BottomGoalHeight - ArmConst.RootHeightFromGr;
+            ArmState.targetDepth = ArmState.TargetDepth.BottomCorn;
         } else if (joystick.getRawButton(8)) {
             // 奥のキューブのゴールまでアームを伸ばす
             if (!ArmState.relayToGoalOver) {
@@ -182,7 +182,7 @@ public class ArmMode extends Mode {
             }
         } else if (joystick.getRawButton(10)) {
             // 真ん中のキューブのゴールまでアームを伸ばす
-            if(!ArmState.relayToGoalOver) {
+            if (!ArmState.relayToGoalOver) {
                 ArmState.targetHeight = ArmConst.RelayPointToGoalHeight;
                 ArmState.targetDepth = ArmConst.RelayPointToGoalDepth;
             } else {
@@ -228,25 +228,19 @@ public class ArmMode extends Mode {
         }
 
         if (joystick.getRawButton(2)) {
-            if (ArmState.actualDepth < 0) {
+            if (ArmState.actualDepth < 27) {
+                // すべてBasicPositionに戻る
                 ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
+                ArmState.targetHeight = ArmConst.InitialHeight;
+                ArmState.targetDepth = ArmConst.InitialDepth;
+                ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
+                HandState.rotateState = HandState.RotateStates.s_turnHandBack;
             } else {
-                switch (phase) {
-                    case Phase1:
-                        ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-                        ArmState.targetHeight = ArmConst.RelayPointIntakeHeight;
-                        ArmState.targetDepth = ArmConst.RelayPointIntakeDepth;
-                        if (ArmState.actualDepth < 27) {
-                            phase = DriveMode.GrabGamePiecePhase.Phase2;
-                        }
-                        break;
-                    case Phase2:
-                        // すべてBasicPositionに戻る
-                        ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
-                        HandState.rotateState = HandState.RotateStates.s_turnHandBack;
-                        break;
-                }
+                ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
+                ArmState.targetHeight = ArmConst.RelayPointIntakeHeight;
+                ArmState.targetDepth = ArmConst.RelayPointIntakeDepth;
             }
+
 
         }
 

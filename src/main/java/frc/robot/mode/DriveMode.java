@@ -110,25 +110,19 @@ public class DriveMode extends Mode {
         }
 
         if (joystick.getRawButton(2)) {
-            if (ArmState.actualDepth < 0) {
+            if (ArmState.actualDepth < 27) {
+                // すべてBasicPositionに戻る
                 ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
+                ArmState.targetHeight = ArmConst.InitialHeight;
+                ArmState.targetDepth = ArmConst.InitialDepth;
+                ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
+                HandState.rotateState = HandState.RotateStates.s_turnHandBack;
             } else {
-                switch (phase) {
-                    case Phase1:
-                        ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-                        ArmState.targetHeight = ArmConst.RelayPointIntakeHeight;
-                        ArmState.targetDepth = ArmConst.RelayPointIntakeDepth;
-                        if (ArmState.actualDepth < 27) {
-                            phase = DriveMode.GrabGamePiecePhase.Phase2;
-                        }
-                        break;
-                    case Phase2:
-                        // すべてBasicPositionに戻る
-                        ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
-                        HandState.rotateState = HandState.RotateStates.s_turnHandBack;
-                        break;
-                }
+                ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
+                ArmState.targetHeight = ArmConst.RelayPointIntakeHeight;
+                ArmState.targetDepth = ArmConst.RelayPointIntakeDepth;
             }
+
 
         } else if (joystick.getRawButton(12)) {
             // キューブ
