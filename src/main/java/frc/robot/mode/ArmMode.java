@@ -228,11 +228,23 @@ public class ArmMode extends Mode {
         }
 
         if (joystick.getRawButton(2)) {
-            // すべてBasicPositionに戻る
-            ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-            ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
-            HandState.rotateState = HandState.RotateStates.s_turnHandBack;
-            Util.Calculate.setInitWithRelay();
+            switch (phase) {
+                case Phase1:
+                    ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
+                    ArmState.targetHeight = ArmConst.RelayPointIntakeHeight;
+                    ArmState.targetDepth = ArmConst.RelayPointIntakeDepth;
+                    if (ArmState.isAtTarget()) {
+                        phase = DriveMode.GrabGamePiecePhase.Phase2;
+                    }
+                    break;
+                case Phase2:
+                    // すべてBasicPositionに戻る
+                    ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
+                    HandState.rotateState = HandState.RotateStates.s_turnHandBack;
+                    Util.Calculate.setInitWithRelay();
+                    break;
+            }
+
         }
 
         if (driveController.getBButton()) {
