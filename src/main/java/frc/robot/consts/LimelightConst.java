@@ -13,12 +13,12 @@ public class LimelightConst {
     /**
      * Limelightの角度(度数法)
      */
-    public static final double LimelightMountAngleDegrees = -5.2;
+    public static final double LimelightMountAngleDegrees = 0;
 
     /**
      * Limelightの高さ
      */
-    public static final double LimelightLensHeight = 96.5; //  [cm]
+    public static final double LimelightLensHeight = 94.5; //  [cm]
 
     /**
      * LimelightからArmまでの距離

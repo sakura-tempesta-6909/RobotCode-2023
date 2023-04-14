@@ -17,6 +17,7 @@ import frc.robot.subClass.Util;
 
 public class ArmMode extends Mode {
     private static DriveMode.GrabGamePiecePhase phase = DriveMode.GrabGamePiecePhase.Phase1;
+    private static boolean isBasicRelayOver;
 
     /**
      * StartButton - DriveModeに
@@ -128,6 +129,7 @@ public class ArmMode extends Mode {
             ArmState.relayToGoalOver = false;
             ArmState.relayToInitOver = false;
             ArmState.targetToGoalOver = false;
+            isBasicRelayOver = false;
         }
 
         if (getSeveralRawButton(new int[]{7, 8, 9, 10, 11, 12})) {
@@ -158,9 +160,9 @@ public class ArmMode extends Mode {
                 if (LimelightState.tv) {
                     if (50 < LimelightState.armToGoal && LimelightState.armToGoal < 120) {
                         ArmState.targetDepth = LimelightState.armToGoal;
-                        if (ArmState.isAtTarget() && ArmState.isAtLeftAndRightTarget()) {
-                            HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
-                        }
+                        // if (ArmState.isAtTarget() && ArmState.isAtLeftAndRightTarget()) {
+                        //     HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
+                        // }
                     }
 
                 } else {
@@ -227,8 +229,9 @@ public class ArmMode extends Mode {
             // 奥のコーン
         }
 
+        isBasicRelayOver |= ArmState.actualDepth < 30;
         if (joystick.getRawButton(2)) {
-            if (ArmState.actualDepth < 27) {
+            if (isBasicRelayOver) {
                 // すべてBasicPositionに戻る
                 ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
                 ArmState.targetHeight = ArmConst.InitialHeight;
@@ -242,8 +245,6 @@ public class ArmMode extends Mode {
                 ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
                 HandState.rotateState = HandState.RotateStates.s_turnHandBack;
             }
-
-
         }
 
         if (driveController.getBButton()) {
