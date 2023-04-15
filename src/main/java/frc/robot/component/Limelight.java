@@ -42,7 +42,7 @@ public class Limelight implements Component {
     public void readSensors() {
         // limelightから受け取る情報
         // limelightから見たターゲットの角度
-        double vpw = 2.0*Math.tan(Math.toRadians(29.8/2));
+        double vpw = 2.0*Math.tan(Math.toRadians(59.6/2));
         double targetOffsetAngle_Vertical = vpw/2 *Math.abs(tyEntry.getDouble(0.0));
         double ax = Math.atan2(1, targetOffsetAngle_Vertical);
         double gamePieceAngle = -(tyEntry.getDouble(0.0) - 0.41 * 29.8);
