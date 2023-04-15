@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.function.DoublePredicate;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class PhaseTransition {
 	private ArrayList<Phase> phaseList = new ArrayList<>();
@@ -34,10 +35,13 @@ public class PhaseTransition {
 
 	public void run() {
 		if(is_finished) {
+			SmartDashboard.putString("autonomous phase", "finished");
 			System.out.println("All phases is finished.");
 			return;
 		}
+		SmartDashboard.putString("autonomous phase", currentPhase.toString());
 
+		currentPhase.action.run();
 		if(currentPhase.condition.test(timer.get())) {
 			currentPhase.onSuccess.run();
 			
@@ -51,8 +55,6 @@ public class PhaseTransition {
 				System.out.println("All phases have been finished!!");
 				is_finished = true;
 			}
-		} else {
-			currentPhase.action.run();
 		}
 	}
 
@@ -87,7 +89,10 @@ public class PhaseTransition {
 		}
 
 		public String toString() {
-			return "phase" + this.phaseID + " (" + phaseName + ")";
+			return  phaseName;
+		}
+
 		}
 	}
-}
+
+	

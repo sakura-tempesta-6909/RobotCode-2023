@@ -3,8 +3,13 @@ package frc.robot.phase;
 import frc.robot.consts.CameraConst;
 import frc.robot.consts.LimelightConst;
 import frc.robot.states.*;
+import frc.robot.states.ArmState.MoveLeftAndRightArmState;
+import frc.robot.states.HandState.GrabHandStates;
+import frc.robot.states.IntakeState.IntakeExtensionStates;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.consts.ArmConst;
 import frc.robot.mode.ArmMode;
+import frc.robot.phase.PhaseTransition.Phase;
 import frc.robot.subClass.Util;
 
 public class Autonomous {
@@ -67,7 +72,8 @@ public class Autonomous {
                     ArmState.targetDepth = relayDepth;
                 },
                 (double time) -> {
-                    return Util.Calculate.isOverRelayToGoal(ArmState.actualHeight, ArmState.actualDepth);
+                    return  Util.Calculate.isOverRelayToGoal(ArmState.actualHeight, ArmState.actualDepth);
+                    
                 },
                 () -> {
                     DriveState.resetPIDController = true;
@@ -140,9 +146,10 @@ public class Autonomous {
                 () -> {
                     DriveState.driveState = DriveState.DriveStates.s_pidDrive;
                     DriveState.targetMeter = targetMeter;
+                    HandState.grabHandState = GrabHandStates.s_releaseHand;
                 },
                 (double time) -> {
-                    return time > targetMeter;
+                    return DriveState.isAtTarget();
                 },
                 () -> {
                     DriveState.resetPIDController = true;
@@ -189,6 +196,7 @@ public class Autonomous {
     private static PhaseTransition.Phase outTake(double waiter, String phaseName) {
         return new PhaseTransition.Phase(
                 () -> {
+                    IntakeState.intakeExtensionState = IntakeState.IntakeExtensionStates.s_openIntake;
                     IntakeState.intakeState = IntakeState.RollerStates.s_outtakeGamePiece;
                 },
                 (double time) -> {
@@ -205,16 +213,17 @@ public class Autonomous {
      * @param waiter    戻るのを待つ時間（実行時間）[sec]
      * @param phaseName 出力されるフェーズの名前
      */
-    private static PhaseTransition.Phase basicPosition(double waiter, String phaseName) {
+    private static PhaseTransition.Phase basicPosition(String phaseName) {
         return new PhaseTransition.Phase(
                 () -> {
                     ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
                     ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
                     HandState.rotateState = HandState.RotateStates.s_turnHandBack;
-                    Util.Calculate.setInitWithRelay();
+                    ArmState.targetHeight = ArmConst.InitialHeight;
+                    ArmState.targetDepth = ArmConst.InitialDepth;
                 },
                 (double time) -> {
-                    return time > waiter;
+                    return ArmState.isAtTarget();
                 },
                 () -> {
                     DriveState.resetPIDController = true;
@@ -247,6 +256,69 @@ public class Autonomous {
                 phaseName
         );
     }
+    private static PhaseTransition.Phase relayIntake(double relayHeight, double relayDepth, String phaseName) {
+        return new PhaseTransition.Phase(
+                () -> {
+                    ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
+                    ArmState.targetHeight = relayHeight;
+                    ArmState.targetDepth = relayDepth;
+                
+                },
+                (double time) -> {
+                    return   ArmState.actualDepth < 30;
+                    
+                },
+                () -> {
+                    DriveState.resetPIDController = true;
+                    DriveState.resetPosition = true;
+                    ArmState.resetPidController = true;
+                },
+                phaseName
+        );
+    }
+    private static PhaseTransition.Phase moveToCone(String phaseName) {
+        return new PhaseTransition.Phase(
+                () -> {
+                    ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
+                    ArmState.moveLeftAndRightArmState = MoveLeftAndRightArmState.s_limelightTracking;
+                    ArmState.targetHeight =LimelightConst.MiddleGoalHeight - ArmConst.RootHeightFromGr;
+                    LimelightState.isLimelightOn = true;
+                    if (LimelightState.tv) {
+                        if (50 < LimelightState.armToGoal && LimelightState.armToGoal < 120) {
+                            ArmState.targetDepth = LimelightState.armToGoal - 5;
+                        } else {
+                            ArmState.targetDepth = ArmState.TargetDepth.MiddleCone;
+                        }
+    
+                    } else {
+                        ArmState.targetDepth = ArmState.TargetDepth.MiddleCone;
+                    }
+                
+                },
+                (double time) -> {
+                    return   ArmState.isAtTarget() && ArmState.isAtLeftAndRightTarget();
+                    
+                },
+                () -> {
+                    DriveState.resetPIDController = true;
+                    DriveState.resetPosition = true;
+                    ArmState.resetPidController = true;
+                },
+                phaseName
+        );
+    }
+    
+    // private static PhaseTransition.Phase getPhaseName(double waiter) {
+    //     return new PhaseTransition.Phase(
+    //         () -> {
+    //             SmartDashboard.putString("autonomousPhase", "a");
+
+    //         }, 
+    //         (double time) -> {
+    //             return time > waiter;
+    //         },
+    //         )
+    // }
 
     public static void autonomousInit() {
         phaseTransitionA = new PhaseTransition();
@@ -257,19 +329,22 @@ public class Autonomous {
         phaseTransitionA.registerPhase(
                 // コーン！！
                 // 初期化中につき待機！
-                Init(1, "Initializing And Waiting..."),
+                //SmartDashboard.putString("autonomousPhase", "aaa");
+
                 // アームをBasicPositionに
-                basicPosition(5, "Reset To BasicPosition"),
+                basicPosition("Reset To BasicPosition"),
                 // アームをMiddleのコーンのゴールまで伸ばす
-                relayArmTo(ArmConst.RelayPointToGoalHeight, ArmConst.RelayPointToGoalDepth, "Move Arm To RelayPoint"),
-                moveArmTo(LimelightConst.MiddleGoalHeight - ArmConst.RootHeightFromGr, ArmState.TargetDepth.MiddleCone,
-                        "Move Arm To MiddleConeGoal"),
+
+                relayArmTo( ArmConst.RelayPointToGoalHeight, ArmConst.RelayPointToGoalDepth, "Move Arm To RelayPoint"),
+                moveToCone("Move Arm To MiddleConeGoal"),
                 // ハンドを開いて、コーンを置く
-                releaseHand(3, "Release Hand"),
+                releaseHand(1.5, "Release Hand"),
                 // バックする
-                pidDriveTo(-2, "Drive Back"),
+                pidDriveTo(-0.5, "Drive Back"),
+                relayIntake(ArmConst.RelayPointIntakeHeight, ArmConst.RelayPointIntakeDepth, "relay point"),
                 // アームをBasicPositionに
-                basicPosition(5, "Reset To BasicPosition")
+                basicPosition("Reset To BasicPosition"),
+                pidDriveTo(-1.5, "Drive Back")
 
 
                 // basicArmTo(ArmConst.InitialHeight, ArmConst.InitialDepth, "move arm to basic position"),
@@ -285,20 +360,20 @@ public class Autonomous {
 
         phaseTransitionB.registerPhase(
                 // キューブ！！
-                // 初期化中につき待機！
-                Init(1, "Initializing And Waiting..."),
                 // アームをBasicPositionに
-                basicPosition(5, "Reset To BasicPosition"),
+                basicPosition( "Reset To BasicPosition"),
                 // アームをTopのキューブのゴールまで伸ばす
                 relayArmTo(ArmConst.RelayPointToGoalHeight, ArmConst.RelayPointToGoalDepth, "Move Arm To RelayPoint"),
                 moveArmTo(CameraConst.TopGoalHeight - ArmConst.RootHeightFromGr, ArmState.TargetDepth.TopCube,
                         "Move Arm To TopCubeGoal"),
                 // ハンドを開いて、キューブを置く
-                releaseHand(3, "Release Hand"),
+                releaseHand(1.5, "Release Hand"),
                 // バックする
-                pidDriveTo(-2,  "Drive Back"),
+                pidDriveTo(-0.5,  "Drive Back"),
                 // アームをBasicPositionに
-                basicPosition(5, "Reset To BasicPosition")
+                relayIntake(ArmConst.RelayPointIntakeHeight, ArmConst.RelayPointIntakeDepth, "relay point"),
+                basicPosition( "Reset To BasicPosition"),
+                pidDriveTo(-1.5, "DriveBack")
 
 //            moveArmTo(ArmConst.InitialHeight, ArmConst.InitialDepth, "move arm to basic position")
 //            relayArmTo(ArmConst.RelayPointToGoalHeight, ArmConst.RelayPointToGoalDepth, "move arm to relay point"),
@@ -309,8 +384,8 @@ public class Autonomous {
         );
 
         phaseTransitionC.registerPhase(
-                outTake(5, "GamePiece Outtake"),
-                pidDriveTo(-2, "Drive Back")
+                outTake(5, "GamePiece Outtake")
+               // pidDriveTo(-2, "Drive Back")
         );
     }
 

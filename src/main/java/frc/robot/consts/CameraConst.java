@@ -53,7 +53,8 @@ public class CameraConst {
     /**
      * 奥のキューブのゴールの高さ[cm] -> ゴールの面の高さは90[cm]
      */
-    public static final double TopGoalHeight = 90 + 30;
+    public static final double TopGoalHeight = 90 + 40
+    ;
     /**
      * 真ん中のキューブのゴールの高さ[cm] -> ゴールの面の高さは60[cm]
      */

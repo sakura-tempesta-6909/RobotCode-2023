@@ -15,7 +15,7 @@ public class Limelight implements Component {
         LimelightState.table = NetworkTableInstance.getDefault().getTable("limelight");
         // limelightを縦向きにしたのでtxとtyは逆
         txEntry = LimelightState.table.getEntry("ty");
-        tyEntry = LimelightState.table.getEntry("tx");
+        tyEntry = LimelightState.table.getEntry("tx0");
         tvEntry = LimelightState.table.getEntry("tv");
         pipelineEntry = LimelightState.table.getEntry("pipeline");
 
@@ -42,18 +42,20 @@ public class Limelight implements Component {
     public void readSensors() {
         // limelightから受け取る情報
         // limelightから見たターゲットの角度
-        double targetOffsetAngle_Vertical = -(tyEntry.getDouble(0.0) + 0.38 * 27) ;
-        double gamePieceAngle = -(tyEntry.getDouble(0.0) - 0.41 * 27);
+        double vpw = 2.0*Math.tan(Math.toRadians(29.8/2));
+        double targetOffsetAngle_Vertical = vpw/2 *Math.abs(tyEntry.getDouble(0.0));
+        double ax = Math.atan2(1, targetOffsetAngle_Vertical);
+        double gamePieceAngle = -(tyEntry.getDouble(0.0) - 0.41 * 29.8);
         LimelightState.tx = -txEntry.getDouble(0);
         LimelightState.tv = tvEntry.getDouble(0) != 0;
         
 
         //計算
-        double angleToGoalDegrees = LimelightConst.LimelightMountAngleDegrees + targetOffsetAngle_Vertical;
-        double angleToGoalRadians =  Math.toRadians(angleToGoalDegrees);
+        double angleToGoalDegrees = LimelightConst.LimelightMountAngleDegrees + ax;
+        double angleToGoalRadians =  ax;Math.toRadians(angleToGoalDegrees);
 
-        double angleToGamePieceDegrees = LimelightConst.LimelightMountAngleDegrees + gamePieceAngle;
-        double angleToGamePieceRadians = Math.toRadians(angleToGamePieceDegrees);
+        double angleToGamePieceDegrees = LimelightConst.LimelightMountAngleDegrees + ax;
+        double angleToGamePieceRadians = ax;Math.toRadians(angleToGamePieceDegrees);
 
         
 
