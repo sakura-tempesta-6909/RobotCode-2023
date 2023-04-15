@@ -49,6 +49,9 @@ public class DriveMode extends Mode {
             
         }
 
+        if (IntakeState.intakeExtensionState == IntakeExtensionStates.s_closeIntake) {
+            IntakeState.intakeState = IntakeState.RollerStates.s_stopRoller;
+        }
     
         //RT: intake, LT: outtake
         if (driveController.getRightTriggerAxis() > 0.5) {
