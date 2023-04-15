@@ -67,8 +67,7 @@ public class Autonomous {
                     ArmState.targetDepth = relayDepth;
                 },
                 (double time) -> {
-                    return ArmState.actualHeight > relayHeight - ArmConst.RelayPointTolerance
-                            && ArmState.actualDepth > relayDepth - ArmConst.RelayPointTolerance;
+                    return Util.Calculate.isOverRelayToGoal(ArmState.actualHeight, ArmState.actualDepth);
                 },
                 () -> {
                     DriveState.resetPIDController = true;
@@ -268,7 +267,7 @@ public class Autonomous {
                 // ハンドを開いて、コーンを置く
                 releaseHand(3, "Release Hand"),
                 // バックする
-                midDriveTo(2, -1, 0, "Drive Back"),
+                pidDriveTo(-2, "Drive Back"),
                 // アームをBasicPositionに
                 basicPosition(5, "Reset To BasicPosition")
 
@@ -297,7 +296,7 @@ public class Autonomous {
                 // ハンドを開いて、キューブを置く
                 releaseHand(3, "Release Hand"),
                 // バックする
-                midDriveTo(2, -1, 0, "Drive Back"),
+                pidDriveTo(-2,  "Drive Back"),
                 // アームをBasicPositionに
                 basicPosition(5, "Reset To BasicPosition")
 
@@ -310,18 +309,8 @@ public class Autonomous {
         );
 
         phaseTransitionC.registerPhase(
-                // drive(1, 0.5, "drive to target"),
-                //     new PhaseTransition.Phase(
-                //             () -> {
-                //                 DriveState.resetPIDController = true;
-                //                 DriveState.resetPosition = true;
-                //                 DriveState.state = DriveState.States.s_midDrive;
-                //                 DriveState.xSpeed = -1;
-                //             },
-                //             (double time) -> {
-                //                 return time > 2;
-                //             }
-                //     )
+                outTake(5, "GamePiece Outtake"),
+                pidDriveTo(-2, "Drive Back")
         );
     }
 
