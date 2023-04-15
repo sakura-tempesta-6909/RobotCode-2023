@@ -23,6 +23,7 @@ public class DriveMode extends Mode {
     public void changeMode() {
         if (driveController.getBackButton()) {
             State.mode = State.Modes.k_arm;
+            IntakeState.intakeExtensionState = IntakeExtensionStates.s_closeIntake;
         } else if (driveController.getPOV() == 0) {
             State.mode = State.Modes.k_chargeStation;
         } else if (driveController.getLeftBumperPressed() && driveController.getPOV() == 225) {

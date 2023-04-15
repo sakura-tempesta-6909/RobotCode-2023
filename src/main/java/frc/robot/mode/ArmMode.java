@@ -3,6 +3,7 @@ package frc.robot.mode;
 import frc.robot.component.Arm;
 import frc.robot.component.Hand;
 import frc.robot.states.*;
+import frc.robot.states.IntakeState.IntakeExtensionStates;
 import frc.robot.states.LimelightState.States;
 import frc.robot.consts.ArmConst;
 import frc.robot.consts.CameraConst;
@@ -76,6 +77,7 @@ public class ArmMode extends Mode {
             IntakeState.intakeState = IntakeState.RollerStates.s_intakeGamePiece;
         } else if (driveController.getLeftTriggerAxis() > 0.5) {
             IntakeState.intakeState = IntakeState.RollerStates.s_outtakeGamePiece;
+            IntakeState.intakeExtensionState = IntakeExtensionStates.s_openIntake;
         } else {
             IntakeState.intakeState = IntakeState.RollerStates.s_stopRoller;
         }
