@@ -19,6 +19,8 @@ public class DriveMode extends Mode {
     private static double limelightDitectionCount;
     private static double limelightAveraveDistance;
 
+    private static boolean isBasicRelayOver;
+
     @Override
     public void changeMode() {
         if (driveController.getBackButton()) {
@@ -100,20 +102,32 @@ public class DriveMode extends Mode {
             HandState.isResetHandPID = true;
         }
 
-        if (joystick.getRawButtonPressed(11) || joystick.getRawButtonPressed(12) || joystick.getRawButtonPressed(10) ||  joystick.getRawButtonPressed(7) || joystick.getRawButtonPressed(9)) {
+        if (joystick.getRawButtonPressed(11) || joystick.getRawButtonPressed(12) || joystick.getRawButtonPressed(10) ||  joystick.getRawButtonPressed(7) || joystick.getRawButtonPressed(9) || joystick.getRawButtonPressed(2)) {
             phase = GrabGamePiecePhase.Phase1;
             DriveState.resetPosition= true;
             DriveState.resetPIDController = true;
             limelightDitectionCount = 0;
             limelightTotalDistance = 0;
-    
+            isBasicRelayOver = false;
         }
 
+        isBasicRelayOver |= ArmState.actualDepth < 30;
+        SmartDashboard.putBoolean("BasicRelayOver", isBasicRelayOver);
         if (joystick.getRawButton(2)) {
-            ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-            Util.Calculate.setInitWithRelay();
-            ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
-            HandState.rotateState = HandState.RotateStates.s_turnHandBack;
+            if (isBasicRelayOver) {
+                // すべてBasicPositionに戻る
+                ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
+                ArmState.targetHeight = ArmConst.InitialHeight;
+                ArmState.targetDepth = ArmConst.InitialDepth;
+                ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
+                HandState.rotateState = HandState.RotateStates.s_turnHandBack;
+            } else {
+                ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
+                ArmState.targetHeight = ArmConst.RelayPointIntakeHeight;
+                ArmState.targetDepth = ArmConst.RelayPointIntakeDepth;
+                ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
+                HandState.rotateState = HandState.RotateStates.s_turnHandBack;
+            }
         } else if (joystick.getRawButton(12)) {
             // キューブ
             SmartDashboard.putString("intakePhase", phase.toString());
@@ -275,7 +289,7 @@ public class DriveMode extends Mode {
                     ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_limelightTracking;
 
                     if (LimelightState.tv) {
-                        if (60 < LimelightState.armToCone && LimelightState.armToCone < 290/3) {
+                        if (60 < LimelightState.armToCone && LimelightState.armToCone < 120) {
                             limelightDitectionCount += 1;
                             limelightTotalDistance += LimelightState.armToCone;
                             limelightAveraveDistance = limelightTotalDistance / limelightDitectionCount;
@@ -288,7 +302,7 @@ public class DriveMode extends Mode {
                             ArmState.targetDepth = GrabGamePiecePhaseConst.armSubStationDepth;
                         } else {
                             ArmState.targetHeight = GrabGamePiecePhaseConst.armSubStationHeight;
-                            ArmState.targetDepth =   1.47 * limelightAveraveDistance -22;
+                            ArmState.targetDepth =  limelightAveraveDistance ;
                         }
 
                     }
@@ -319,7 +333,7 @@ public class DriveMode extends Mode {
 
                     ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_limelightTracking;
                     if (LimelightState.tv) {
-                        if (60 < LimelightState.armToCube && LimelightState.armToCube < 90) {
+                        if (60 < LimelightState.armToCube && LimelightState.armToCube < 130) {
                             limelightDitectionCount += 1;
                             limelightTotalDistance += LimelightState.armToCube;
                             limelightAveraveDistance = limelightTotalDistance / limelightDitectionCount;
@@ -332,10 +346,8 @@ public class DriveMode extends Mode {
                             ArmState.targetDepth = GrabGamePiecePhaseConst.armSubStationDepth;
                         } else {
                             ArmState.targetHeight = GrabGamePiecePhaseConst.armSubStationHeight;
-                            ArmState.targetDepth = limelightAveraveDistance + 25;
-                            if (limelightAveraveDistance > 80) {
-                                ArmState.targetDepth = limelightAveraveDistance + 30;
-                            }
+                            ArmState.targetDepth = limelightAveraveDistance ;
+
                         }
 
                     }

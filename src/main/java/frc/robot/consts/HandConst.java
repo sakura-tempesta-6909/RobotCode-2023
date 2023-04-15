@@ -12,7 +12,7 @@ public class HandConst {
     /**
      * handのモーターののPIDのP
      */
-    public static final double P_HANDR = 0.01;
+    public static final double P_HANDR = 0.02;
     /**
      * handのモーターののPIDのI
      */
@@ -21,6 +21,10 @@ public class HandConst {
      * handのモーターののPIDのD
      */
     public static final double D_HANDR = 0.0;
+    /**
+     * handのモーターのの積分値の最大値
+     */
+    public static final double IMax_HANDR = 0.015 / 0.0001;
     /**
      * アームを左右に動かす時のギア比
      */

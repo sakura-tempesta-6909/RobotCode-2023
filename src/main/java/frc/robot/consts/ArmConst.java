@@ -185,22 +185,6 @@ public class ArmConst {
     public static final double P_MID_1 = 0.0003;
     public static final double I_MID_1 = 0.0;
     public static final double D_MID_1 = 0.0;
-    /**
-     * handのモーターののPIDのP
-     */
-    public static final double P_HANDR = 0.03;
-    /**
-     * handのモーターののPIDのI
-     */
-    public static final double I_HANDR = 0.0001;
-    /**
-     * handのモーターののPIDのD
-     */
-    public static final double D_HANDR = 0.0;
-    /**
-     * handのモーターのの積分値の最大値
-     */
-    public static final double IMax_HANDR = 0.015 / 0.0001;
 
 
     /**
@@ -266,6 +250,9 @@ public class ArmConst {
     public static final double RelayPointToInitHeight = -80;
     public static final double RelayPointToInitDepth = 10;
     public static final double RelayPointTolerance = 10;
+
+    public static final double RelayPointIntakeHeight = -60;
+    public static final double RelayPointIntakeDepth = 27;
 
     public static void ArmConstInit() {
 
