@@ -108,6 +108,11 @@ public class Intake implements Component{
             compressor.disable();
         }
 
+        if (IntakeState.intakeExtensionState == IntakeState.IntakeExtensionStates.s_closeIntake) {
+            stopRoller();
+        } else {
+
+
         switch(IntakeState.intakeState){
             case s_outtakeGamePiece:
                  outtakeGamePiece();
@@ -119,6 +124,7 @@ public class Intake implements Component{
                  stopRoller();
                  break;
         }
+    }
         
         switch(IntakeState.intakeExtensionState){
             case s_openIntake:

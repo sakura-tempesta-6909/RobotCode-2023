@@ -49,17 +49,15 @@ public class DriveMode extends Mode {
             
         }
 
-        if (IntakeState.intakeExtensionState == IntakeExtensionStates.s_closeIntake) {
-            IntakeState.intakeState = IntakeState.RollerStates.s_stopRoller;
-        }
+        // if (IntakeState.intakeExtensionState == IntakeExtensionStates.s_closeIntake) {
+        //     IntakeState.intakeState = IntakeState.RollerStates.s_stopRoller;
+        // }
     
         //RT: intake, LT: outtake
         if (driveController.getRightTriggerAxis() > 0.5) {
             IntakeState.intakeState = IntakeState.RollerStates.s_intakeGamePiece;
-            ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
         } else if (driveController.getLeftTriggerAxis() > 0.5) {
             IntakeState.intakeState = IntakeState.RollerStates.s_outtakeGamePiece;
-            ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
         } else {
             IntakeState.intakeState = IntakeState.RollerStates.s_stopRoller;
         }
