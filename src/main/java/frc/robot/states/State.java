@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.mode.*;
 import frc.robot.consts.*;
+import frc.robot.subClass.Util;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +13,7 @@ public class State {
     public static Modes mode;
 
     /** Autonomousの遷移の種類　[ A, B, C ] のいずれか */
-    public static String autonomousPhaseTransType = "C";
+    public static String autonomousPhaseTransType;
     public static Map<String, Double> voltage = new HashMap<>();
 
 
@@ -51,6 +52,8 @@ public class State {
         HandState.StateReset();
         IntakeState.StateReset();
         LimelightState.StateReset();
+
+        autonomousPhaseTransType = Util.getConsole("PhaseTrans", "C");
     }
 
 

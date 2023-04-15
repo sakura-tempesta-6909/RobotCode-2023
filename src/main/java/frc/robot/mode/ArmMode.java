@@ -1,13 +1,10 @@
 package frc.robot.mode;
 
-import frc.robot.component.Arm;
-import frc.robot.component.Hand;
 import frc.robot.states.*;
 import frc.robot.states.IntakeState.IntakeExtensionStates;
 import frc.robot.states.LimelightState.States;
 import frc.robot.consts.ArmConst;
 import frc.robot.consts.CameraConst;
-import frc.robot.consts.GrabGamePiecePhaseConst;
 import frc.robot.consts.LimelightConst;
 import frc.robot.subClass.Tools;
 
@@ -150,7 +147,7 @@ public class ArmMode extends Mode {
                 ArmState.targetDepth = ArmConst.RelayPointToGoalDepth;
             } else {
                 ArmState.targetHeight = LimelightConst.TopGoalHeight - ArmConst.RootHeightFromGr;
-                ArmState.targetDepth = ArmState.TargetDepth.TopCorn;
+                ArmState.targetDepth = ArmState.TargetDepth.TopCone;
             }
         } else if (joystick.getRawButton(9)) {
             // 真ん中のコーンのゴールまでアームを伸ばす
@@ -168,13 +165,13 @@ public class ArmMode extends Mode {
                     }
 
                 } else {
-                    ArmState.targetDepth = ArmState.TargetDepth.MiddleCorn;
+                    ArmState.targetDepth = ArmState.TargetDepth.MiddleCone;
                 }
             }
         } else if (joystick.getRawButton(11)) {
             // 前のコーンのゴールまでアームを伸ばす
-            ArmState.targetHeight = LimelightConst.BottomGoalHeight - ArmConst.RootHeightFromGr;
-            ArmState.targetDepth = ArmState.TargetDepth.BottomCorn;
+                ArmState.targetHeight = LimelightConst.BottomGoalHeight - ArmConst.RootHeightFromGr;
+                ArmState.targetDepth = ArmState.TargetDepth.BottomCone;
         } else if (joystick.getRawButton(8)) {
             // 奥のキューブのゴールまでアームを伸ばす
             if (!ArmState.relayToGoalOver) {
