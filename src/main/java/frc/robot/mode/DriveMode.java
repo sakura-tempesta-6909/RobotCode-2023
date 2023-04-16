@@ -15,7 +15,7 @@ public class DriveMode extends Mode {
 
     private static GrabGamePiecePhase phase = GrabGamePiecePhase.Phase1;
     private static int GrabCount = 0;
-    private static double  limelightTotalDistance;
+    private static double limelightTotalDistance;
     private static double limelightDitectionCount;
     private static double limelightAveraveDistance;
 
@@ -44,18 +44,18 @@ public class DriveMode extends Mode {
         }
 
         if (driveController.getAButtonPressed()) {
-            if (IntakeState.intakeExtensionState == IntakeState.IntakeExtensionStates.s_closeIntake){
+            if (IntakeState.intakeExtensionState == IntakeState.IntakeExtensionStates.s_closeIntake) {
                 IntakeState.intakeExtensionState = IntakeExtensionStates.s_openIntake;
-            } else{
+            } else {
                 IntakeState.intakeExtensionState = IntakeExtensionStates.s_closeIntake;
             }
-            
+
         }
 
         // if (IntakeState.intakeExtensionState == IntakeExtensionStates.s_closeIntake) {
         //     IntakeState.intakeState = IntakeState.RollerStates.s_stopRoller;
         // }
-    
+
         //RT: intake, LT: outtake
         if (driveController.getRightTriggerAxis() > 0.5) {
             IntakeState.intakeState = IntakeState.RollerStates.s_intakeGamePiece;
@@ -66,7 +66,6 @@ public class DriveMode extends Mode {
         }
 
         final double joystickZ = 1 * Tools.deadZoneProcess(joystick.getRawAxis(2));
-        
 
 
         if (driveController.getRightBumper() && driveController.getLeftBumper()) {
@@ -104,9 +103,9 @@ public class DriveMode extends Mode {
             HandState.isResetHandPID = true;
         }
 
-        if (joystick.getRawButtonPressed(11) || joystick.getRawButtonPressed(12) || joystick.getRawButtonPressed(10) ||  joystick.getRawButtonPressed(7) || joystick.getRawButtonPressed(9) || joystick.getRawButtonPressed(2)) {
+        if (joystick.getRawButtonPressed(11) || joystick.getRawButtonPressed(12) || joystick.getRawButtonPressed(10) || joystick.getRawButtonPressed(7) || joystick.getRawButtonPressed(9) || joystick.getRawButtonPressed(2)) {
             phase = GrabGamePiecePhase.Phase1;
-            DriveState.resetPosition= true;
+            DriveState.resetPosition = true;
             DriveState.resetPIDController = true;
             limelightDitectionCount = 0;
             limelightTotalDistance = 0;
@@ -133,149 +132,154 @@ public class DriveMode extends Mode {
         } else if (joystick.getRawButton(12)) {
             // キューブ
             SmartDashboard.putString("intakePhase", phase.toString());
-            switch (phase) {
-                case Phase1:
-                    // アームを準備段階の高さまで動かす
-                    ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-                    // 左右はど真ん中にする
-                    ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
+            if (IntakeState.intakeExtensionState == IntakeExtensionStates.s_openIntake) {
+                switch (phase) {
+                    case Phase1:
+                        // アームを準備段階の高さまで動かす
+                        ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
+                        // 左右はど真ん中にする
+                        ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
 
-                    // ハンドを初期位置に回す
-                    HandState.rotateState = HandState.RotateStates.s_turnHandBack;
-                    // ハンドを開く
-                    HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
+                        // ハンドを初期位置に回す
+                        HandState.rotateState = HandState.RotateStates.s_turnHandBack;
+                        // ハンドを開く
+                        HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
 
-                    // 準備段階の位置
-                    ArmState.targetHeight = GrabGamePiecePhaseConst.armCubePrepareHeight;
-                    ArmState.targetDepth = GrabGamePiecePhaseConst.armCubePrepareDepth;
+                        // 準備段階の位置
+                        ArmState.targetHeight = GrabGamePiecePhaseConst.armCubePrepareHeight;
+                        ArmState.targetDepth = GrabGamePiecePhaseConst.armCubePrepareDepth;
 
-                    if (ArmState.isAtTarget() && HandState.isAtTarget()) {
-                        // 次の段階で初期位置から90度回すようにする
-                        HandState.targetAngle = HandState.actualHandAngle + 90;
-                        HandState.rotateState = HandState.RotateStates.s_stopHand;
-                        phase = GrabGamePiecePhase.Phase2;
-                    }
-                    break;
-                 case Phase2:
-                     // ハンドを開く
-                     HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
-                     // ハンドを90度に回転する
-                     HandState.rotateState = HandState.RotateStates.s_moveHandToSpecifiedAngle;
+                        if (ArmState.isAtTarget() && HandState.isAtTarget()) {
+                            // 次の段階で初期位置から90度回すようにする
+                            HandState.targetAngle = HandState.actualHandAngle + 90;
+                            HandState.rotateState = HandState.RotateStates.s_stopHand;
+                            phase = GrabGamePiecePhase.Phase2;
+                        }
+                        break;
+                    case Phase2:
+                        // ハンドを開く
+                        HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
+                        // ハンドを90度に回転する
+                        HandState.rotateState = HandState.RotateStates.s_moveHandToSpecifiedAngle;
 
-                     if (HandState.isAtTarget()) {
-                         phase = GrabGamePiecePhase.Phase3;
-                     }
-                     break;
-                case Phase3:
-                    // アームを掴むところまでおろす
-                    ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
+                        if (HandState.isAtTarget()) {
+                            phase = GrabGamePiecePhase.Phase3;
+                        }
+                        break;
+                    case Phase3:
+                        // アームを掴むところまでおろす
+                        ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
 
-                    // ハンドを開く
-                    HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
+                        // ハンドを開く
+                        HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
 
-                    // アームをおろして掴む位置
-                    ArmState.targetHeight = GrabGamePiecePhaseConst.armCubeGrabHeight;
-                    ArmState.targetDepth = GrabGamePiecePhaseConst.armCubeGrabDepth;
+                        // アームをおろして掴む位置
+                        ArmState.targetHeight = GrabGamePiecePhaseConst.armCubeGrabHeight;
+                        ArmState.targetDepth = GrabGamePiecePhaseConst.armCubeGrabDepth;
 
-                    if (ArmState.isAtTarget()) {
-                        phase = GrabGamePiecePhase.Phase4;
-                    }
-                    break;
-                case Phase4:
-                    // キューブを掴む！！
-                    HandState.grabHandState = HandState.GrabHandStates.s_grabHand;
+                        if (ArmState.isAtTarget()) {
+                            phase = GrabGamePiecePhase.Phase4;
+                        }
+                        break;
+                    case Phase4:
+                        // キューブを掴む！！
+                        HandState.grabHandState = HandState.GrabHandStates.s_grabHand;
 
-                    GrabCount++;
-                    if (GrabCount >= 20) {
-                        phase = GrabGamePiecePhase.Phase5;
-                        GrabCount = 0;
-                    }
-                    break;
-                case Phase5:
-                    // アームをBasic(Initial)Positionに戻す
-                    ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
+                        GrabCount++;
+                        if (GrabCount >= 20) {
+                            phase = GrabGamePiecePhase.Phase5;
+                            GrabCount = 0;
+                        }
+                        break;
+                    case Phase5:
+                        // アームをBasic(Initial)Positionに戻す
+                        ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
 
-                    // ハンドを初期位置に戻す
-                    HandState.rotateState = HandState.RotateStates.s_turnHandBack;
+                        // ハンドを初期位置に戻す
+                        HandState.rotateState = HandState.RotateStates.s_turnHandBack;
 
-                    // BasicPositionにターゲットを設定
-                    Util.Calculate.setInitWithRelay();
-                    break;
-                    
+                        // BasicPositionにターゲットを設定
+                        Util.Calculate.setInitWithRelay();
+                        break;
+
+                }
             }
+
         } else if (joystick.getRawButton(11)) {
             // コーン
             SmartDashboard.putString("intakePhase", phase.toString());
-            switch (phase) {
-                case Phase1:
-                    // アームを準備段階の高さまで動かす
-                    ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-                    // 左右はど真ん中にする
-                    ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
+            if (IntakeState.intakeExtensionState == IntakeExtensionStates.s_openIntake) {
+                switch (phase) {
+                    case Phase1:
+                        // アームを準備段階の高さまで動かす
+                        ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
+                        // 左右はど真ん中にする
+                        ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
 
-                    // ハンドを初期位置に回す
-                    HandState.rotateState = HandState.RotateStates.s_turnHandBack;
-                    // ハンドを開く
-                    HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
+                        // ハンドを初期位置に回す
+                        HandState.rotateState = HandState.RotateStates.s_turnHandBack;
+                        // ハンドを開く
+                        HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
 
-                    // 準備段階の位置
-                    ArmState.targetHeight = GrabGamePiecePhaseConst.armConePrepareHeight;
-                    ArmState.targetDepth = GrabGamePiecePhaseConst.armConePrepareDepth;
+                        // 準備段階の位置
+                        ArmState.targetHeight = GrabGamePiecePhaseConst.armConePrepareHeight;
+                        ArmState.targetDepth = GrabGamePiecePhaseConst.armConePrepareDepth;
 
-                    GrabCount++;
-                    if (ArmState.isAtTarget() && HandState.isAtTarget() && GrabCount >= 40) {
-                        phase = GrabGamePiecePhase.Phase2;
-                        GrabCount = 0;
-                    }
-                    break;
-                case Phase2:
-                    // アームを下げる
-                    ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-                    // 左右はど真ん中にする
-                    ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
+                        GrabCount++;
+                        if (ArmState.isAtTarget() && HandState.isAtTarget() && GrabCount >= 40) {
+                            phase = GrabGamePiecePhase.Phase2;
+                            GrabCount = 0;
+                        }
+                        break;
+                    case Phase2:
+                        // アームを下げる
+                        ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
+                        // 左右はど真ん中にする
+                        ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
 
-                    // ハンドを開く
-                    HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
+                        // ハンドを開く
+                        HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
 
-                    // コーンを掴む位置
-                    ArmState.targetHeight = GrabGamePiecePhaseConst.armConeGrabHeight;
-                    ArmState.targetDepth = GrabGamePiecePhaseConst.armConeGrabDepth;
+                        // コーンを掴む位置
+                        ArmState.targetHeight = GrabGamePiecePhaseConst.armConeGrabHeight;
+                        ArmState.targetDepth = GrabGamePiecePhaseConst.armConeGrabDepth;
 
-                    if (ArmState.isAtTarget()) {
-                        phase = GrabGamePiecePhase.Phase3;
-                    }
-                    break;
-                case Phase3:
-                    // 左右はど真ん中にする
-                    ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
+                        if (ArmState.isAtTarget()) {
+                            phase = GrabGamePiecePhase.Phase3;
+                        }
+                        break;
+                    case Phase3:
+                        // 左右はど真ん中にする
+                        ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
 
-                    // コーンを掴む！！！
-                    HandState.grabHandState = HandState.GrabHandStates.s_grabHand;
+                        // コーンを掴む！！！
+                        HandState.grabHandState = HandState.GrabHandStates.s_grabHand;
 
-                    GrabCount++;
-                    if (GrabCount >= 20) {
-                        phase = GrabGamePiecePhase.Phase4;
-                        GrabCount = 0;
-                    }
-                    break;
-                case Phase4:
-                    // アームをBasic(Initial)Positionに戻す
-                    ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
+                        GrabCount++;
+                        if (GrabCount >= 20) {
+                            phase = GrabGamePiecePhase.Phase4;
+                            GrabCount = 0;
+                        }
+                        break;
+                    case Phase4:
+                        // アームをBasic(Initial)Positionに戻す
+                        ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
 
-                    // ハンドを初期位置に戻す
-                    HandState.rotateState = HandState.RotateStates.s_turnHandBack;
+                        // ハンドを初期位置に戻す
+                        HandState.rotateState = HandState.RotateStates.s_turnHandBack;
 
-                    // BasicPositionのちょっと上にターゲットを設定
-                    if (ArmState.relayToInitOver) {
-                        ArmState.targetHeight = ArmConst.InitialHeight + 10;
-                        ArmState.targetDepth = ArmConst.InitialDepth;
-                    } else {
-                        ArmState.targetHeight = ArmConst.RelayPointToInitHeight;
-                        ArmState.targetDepth = ArmConst.RelayPointToInitDepth;
-                    }
-                    break;
-            }   
-        }else if (joystick.getRawButton(9)) {
+                        // BasicPositionのちょっと上にターゲットを設定
+                        if (ArmState.relayToInitOver) {
+                            ArmState.targetHeight = ArmConst.InitialHeight + 10;
+                            ArmState.targetDepth = ArmConst.InitialDepth;
+                        } else {
+                            ArmState.targetHeight = ArmConst.RelayPointToInitHeight;
+                            ArmState.targetDepth = ArmConst.RelayPointToInitDepth;
+                        }
+                        break;
+                }
+            }
+        } else if (joystick.getRawButton(9)) {
             // サブステーションからコーンを取る
             SmartDashboard.putString("substationPhase", phase.toString());
             switch (phase) {
@@ -283,7 +287,7 @@ public class DriveMode extends Mode {
                     LimelightState.limelightState = LimelightState.States.s_coneDetection;
                     // アームをリレーポイントへ
                     ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-                
+
                     // リレーポイント
                     ArmState.targetHeight = ArmConst.RelayPointToGoalHeight;
                     ArmState.targetDepth = ArmConst.RelayPointToGoalDepth;
@@ -296,7 +300,7 @@ public class DriveMode extends Mode {
                             limelightTotalDistance += LimelightState.armToCone;
                             limelightAveraveDistance = limelightTotalDistance / limelightDitectionCount;
                         }
-                    
+
                     }
                     if (Util.Calculate.isOverRelayToGoal(ArmState.actualHeight, ArmState.actualDepth)) {
                         phase = GrabGamePiecePhase.Phase2;
@@ -304,7 +308,7 @@ public class DriveMode extends Mode {
                             ArmState.targetDepth = GrabGamePiecePhaseConst.armSubStationDepth;
                         } else {
                             ArmState.targetHeight = GrabGamePiecePhaseConst.armSubStationHeight;
-                            ArmState.targetDepth =  limelightAveraveDistance ;
+                            ArmState.targetDepth = limelightAveraveDistance;
                         }
 
                     }
@@ -314,20 +318,22 @@ public class DriveMode extends Mode {
                     // アームをサブステーションの位置へ
                     ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
 
-                
+
                     // サブステーションの位置
-                
+
                     break;
             }
-        }else if (joystick.getRawButton(10)) {
+
+        } else if (joystick.getRawButton(10)) {
             // サブステーションからキューブを取る
             SmartDashboard.putString("substationPhase", phase.toString());
-            switch (phase){
+
+            switch (phase) {
                 case Phase1:
                     LimelightState.limelightState = LimelightState.States.s_cubeDetection;
                     // アームをリレーポイントへ
                     ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-                
+
 
                     // リレーポイント
                     ArmState.targetHeight = ArmConst.RelayPointToGoalHeight;
@@ -340,7 +346,7 @@ public class DriveMode extends Mode {
                             limelightTotalDistance += LimelightState.armToCube;
                             limelightAveraveDistance = limelightTotalDistance / limelightDitectionCount;
                         }
-                    
+
                     }
                     if (Util.Calculate.isOverRelayToGoal(ArmState.actualHeight, ArmState.actualDepth)) {
                         phase = GrabGamePiecePhase.Phase2;
@@ -348,7 +354,7 @@ public class DriveMode extends Mode {
                             ArmState.targetDepth = GrabGamePiecePhaseConst.armSubStationDepth;
                         } else {
                             ArmState.targetHeight = GrabGamePiecePhaseConst.armSubStationHeight;
-                            ArmState.targetDepth = limelightAveraveDistance ;
+                            ArmState.targetDepth = limelightAveraveDistance;
 
                         }
 
@@ -359,30 +365,31 @@ public class DriveMode extends Mode {
                     ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_limelightTracking;
                     // アームをサブステーションの位置へ
                     ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-    
+
                     // サブステーションの位置
-                    
+
                     break;
-            }
-        } else
-            if(joystick.getPOV() == 0) {
-                ArmMode.adjustArmPosition(0, ArmConst.TargetModifyRatio);
-            } else if(joystick.getPOV() == 180) {
-                ArmMode.adjustArmPosition(0,  -ArmConst.TargetModifyRatio);
-            } else  if(joystick.getPOV() == 90) {
-                ArmMode.adjustArmPosition(ArmConst.TargetModifyRatio, 0);
-            } else if(joystick.getPOV() == 270) {
-                ArmMode.adjustArmPosition(- ArmConst.TargetModifyRatio, 0);
-            } else  if(joystick.getPOV() == 45) {
-                ArmMode.adjustArmPosition(ArmConst.TargetModifyRatio, ArmConst.TargetModifyRatio);
-            } else if(joystick.getPOV() == 135) {
-                ArmMode.adjustArmPosition(ArmConst.TargetModifyRatio, -ArmConst.TargetModifyRatio);
-            }else  if(joystick.getPOV() == 225) {
-                ArmMode.adjustArmPosition(-ArmConst.TargetModifyRatio, -ArmConst.TargetModifyRatio);
-            } else if(joystick.getPOV() == 315) {
-                ArmMode.adjustArmPosition(-ArmConst.TargetModifyRatio, ArmConst.TargetModifyRatio);
-            }
-        
+                }
+
+
+        } else if (joystick.getPOV() == 0) {
+            ArmMode.adjustArmPosition(0, ArmConst.TargetModifyRatio);
+        } else if (joystick.getPOV() == 180) {
+            ArmMode.adjustArmPosition(0, -ArmConst.TargetModifyRatio);
+        } else if (joystick.getPOV() == 90) {
+            ArmMode.adjustArmPosition(ArmConst.TargetModifyRatio, 0);
+        } else if (joystick.getPOV() == 270) {
+            ArmMode.adjustArmPosition(-ArmConst.TargetModifyRatio, 0);
+        } else if (joystick.getPOV() == 45) {
+            ArmMode.adjustArmPosition(ArmConst.TargetModifyRatio, ArmConst.TargetModifyRatio);
+        } else if (joystick.getPOV() == 135) {
+            ArmMode.adjustArmPosition(ArmConst.TargetModifyRatio, -ArmConst.TargetModifyRatio);
+        } else if (joystick.getPOV() == 225) {
+            ArmMode.adjustArmPosition(-ArmConst.TargetModifyRatio, -ArmConst.TargetModifyRatio);
+        } else if (joystick.getPOV() == 315) {
+            ArmMode.adjustArmPosition(-ArmConst.TargetModifyRatio, ArmConst.TargetModifyRatio);
+        }
+
 
         if (driveController.getBButton()) {
             LimelightState.isLimelightOn = true;
@@ -402,13 +409,13 @@ public class DriveMode extends Mode {
         // ターゲット座標からターゲットの角度を計算する
         Map<String, Double> targetAngles = Tools.calculateAngles(ArmState.targetDepth, ArmState.targetHeight);
         Double target = targetAngles.get("RootAngle");
-        if(target != null) {
+        if (target != null) {
             ArmState.targetRootAngle = target;
         } else {
             ArmState.targetRootAngle = ArmState.actualRootAngle;
         }
         target = targetAngles.get("JointAngle");
-        if(target != null) {
+        if (target != null) {
             ArmState.targetJointAngle = target;
         } else {
             ArmState.targetJointAngle = ArmState.actualJointAngle;

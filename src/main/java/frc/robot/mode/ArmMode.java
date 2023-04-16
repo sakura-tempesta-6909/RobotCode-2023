@@ -260,7 +260,7 @@ public class ArmMode extends Mode {
      *               この関数に座標の値域を記述する
      * @return 入力の座標が正しいか[boolean]
      */
-    private static boolean isNewTargetPositionInLimit(double Height, double Depth) {
+    private static boolean isNewTargetPositionInLimit(double Height, double  Depth) {
         double length = Math.sqrt(Math.pow(Height, 2) + Math.pow(Depth, 2));
 
         boolean isInOuterBorder = length < ArmConst.TargetPositionOuterLimit;

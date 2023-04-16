@@ -12,7 +12,7 @@ public class HandConst {
     /**
      * handのモーターののPIDのP
      */
-    public static final double P_HANDR = 0.02;
+    public static final double P_HANDR = 0.035;
     /**
      * handのモーターののPIDのI
      */
