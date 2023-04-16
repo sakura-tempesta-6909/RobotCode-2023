@@ -87,7 +87,7 @@ public class Util {
          * @return 中継地点に到達しているかどうか
          */
         public static boolean isOverRelayToInit(double actualHeight, double actualDepth) {
-            return actualHeight < ArmConst.RelayPointToInitHeight + ArmConst.RelayPointTolerance && actualDepth < ArmConst.RelayPointToInitDepth + ArmConst.RelayPointTolerance;
+            return actualHeight < ArmConst.FirstRelayPointToInitHeight + ArmConst.RelayPointTolerance && actualDepth < ArmConst.FirstRelayPointToInitDepth + ArmConst.RelayPointTolerance;
         }
 
         public static boolean isOverTargetToGoal() {
@@ -99,8 +99,8 @@ public class Util {
                 ArmState.targetHeight = ArmConst.InitialHeight;
                 ArmState.targetDepth = ArmConst.InitialDepth;
             } else {
-                ArmState.targetHeight = ArmConst.RelayPointToInitHeight;
-                ArmState.targetDepth = ArmConst.RelayPointToInitDepth;
+                ArmState.targetHeight = ArmConst.FirstRelayPointToInitHeight;
+                ArmState.targetDepth = ArmConst.FirstRelayPointToInitDepth;
             }
         }
     }

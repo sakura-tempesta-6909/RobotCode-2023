@@ -4,7 +4,6 @@ import java.util.Map;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.states.*;
-import frc.robot.states.HandState.GrabHandStates;
 import frc.robot.states.IntakeState.IntakeExtensionStates;
 import frc.robot.states.LimelightState.States;
 import frc.robot.consts.*;
@@ -273,8 +272,8 @@ public class DriveMode extends Mode {
                             ArmState.targetHeight = ArmConst.InitialHeight + 10;
                             ArmState.targetDepth = ArmConst.InitialDepth;
                         } else {
-                            ArmState.targetHeight = ArmConst.RelayPointToInitHeight;
-                            ArmState.targetDepth = ArmConst.RelayPointToInitDepth;
+                            ArmState.targetHeight = ArmConst.FirstRelayPointToInitHeight;
+                            ArmState.targetDepth = ArmConst.FirstRelayPointToInitDepth;
                         }
                         break;
                 }

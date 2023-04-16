@@ -238,15 +238,13 @@ public class ArmMode extends Mode {
                 ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
                 ArmState.targetHeight = ArmConst.InitialHeight;
                 ArmState.targetDepth = ArmConst.InitialDepth;
-                ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
-                HandState.rotateState = HandState.RotateStates.s_turnHandBack;
             } else {
                 ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
                 ArmState.targetHeight = ArmConst.RelayPointIntakeHeight;
                 ArmState.targetDepth = ArmConst.RelayPointIntakeDepth;
-                ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
-                HandState.rotateState = HandState.RotateStates.s_turnHandBack;
             }
+            ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
+            HandState.rotateState = HandState.RotateStates.s_turnHandBack;
         }
 
         if (driveController.getBButton()) {
