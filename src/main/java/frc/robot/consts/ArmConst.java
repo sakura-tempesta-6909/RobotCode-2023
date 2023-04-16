@@ -247,14 +247,14 @@ public class ArmConst {
 
     public static final double RelayPointToGoalHeight = 0;
     public static final double RelayPointToGoalDepth = 60;
-    public static final double FirstRelayPointToInitHeight = -80;
-    public static final double FirstRelayPointToInitDepth = 10;
-    public static final double SecondRelayPointToInitHeight = -80;
-    public static final double SecondRelayPointToInitDepth = -80;
+    public static final double RelayPointToInitHeight = -80;
+    public static final double RelayPointToInitDepth = 10;
     public static final double RelayPointTolerance = 10;
 
-    public static final double RelayPointIntakeHeight = -60;
-    public static final double RelayPointIntakeDepth = 27;
+    public static final double FirstRelayPointToIntakeHeight = -60;
+    public static final double FirstRelayPointToIntakeDepth = 27;
+    public static final double SecondRelayPointToIntakeHeight = -75;
+    public static final double SecondRelayPointToIntakeDepth = 15;
 
     public static void ArmConstInit() {
 

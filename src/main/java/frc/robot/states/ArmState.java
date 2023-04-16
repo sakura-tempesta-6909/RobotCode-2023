@@ -61,6 +61,8 @@ public class ArmState {
 
     public static boolean relayToGoalOver;
     public static boolean relayToInitOver;
+    public static boolean firstRelayToIntakeOver;
+    public static boolean secondRelayToIntakeOver;
 
     public static boolean targetToGoalOver;
 
@@ -127,6 +129,8 @@ public class ArmState {
         relayToGoalOver = true;
         relayToInitOver = true;
         targetToGoalOver = true;
+        firstRelayToIntakeOver = true;
+        secondRelayToIntakeOver = true;
     }
 
 

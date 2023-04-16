@@ -283,7 +283,9 @@ public class Arm implements Component {
 
         ArmState.relayToGoalOver |= Util.Calculate.isOverRelayToGoal(ArmState.actualHeight, ArmState.actualDepth);
         ArmState.relayToInitOver |= Util.Calculate.isOverRelayToInit(ArmState.actualHeight, ArmState.actualDepth);
-        ArmState.targetToGoalOver |= Util.Calculate.isOverTargetToGoal();
+        ArmState.targetToGoalOver |= ArmState.isAtTarget();
+        ArmState.firstRelayToIntakeOver |= Util.Calculate.isOverFirstRelayToIntake(ArmState.actualHeight, ArmState.actualDepth);
+        ArmState.secondRelayToIntakeOver |= Util.Calculate.isOverSecondRelayToIntake(ArmState.actualHeight, ArmState.actualDepth);
 
 
         SmartDashboard.putNumber("actual leftright angle", ArmState.actualLeftAndRightAngle);

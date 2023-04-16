@@ -87,11 +87,15 @@ public class Util {
          * @return 中継地点に到達しているかどうか
          */
         public static boolean isOverRelayToInit(double actualHeight, double actualDepth) {
-            return actualHeight < ArmConst.FirstRelayPointToInitHeight + ArmConst.RelayPointTolerance && actualDepth < ArmConst.FirstRelayPointToInitDepth + ArmConst.RelayPointTolerance;
+            return actualHeight < ArmConst.RelayPointToInitHeight + ArmConst.RelayPointTolerance && actualDepth < ArmConst.RelayPointToInitDepth + ArmConst.RelayPointTolerance;
         }
 
-        public static boolean isOverTargetToGoal() {
-            return ArmState.isAtTarget();
+        public static boolean isOverFirstRelayToIntake(double actualHeight, double actualDepth) {
+            return actualHeight < ArmConst.FirstRelayPointToIntakeHeight + ArmConst.RelayPointTolerance && actualDepth < ArmConst.FirstRelayPointToIntakeDepth + ArmConst.RelayPointTolerance;
+        }
+
+        public static boolean isOverSecondRelayToIntake(double actualHeight, double actualDepth) {
+            return actualHeight < ArmConst.SecondRelayPointToIntakeHeight + ArmConst.RelayPointTolerance && actualDepth < ArmConst.SecondRelayPointToIntakeDepth + ArmConst.RelayPointTolerance;
         }
 
         public static void setInitWithRelay() {
@@ -99,8 +103,22 @@ public class Util {
                 ArmState.targetHeight = ArmConst.InitialHeight;
                 ArmState.targetDepth = ArmConst.InitialDepth;
             } else {
-                ArmState.targetHeight = ArmConst.FirstRelayPointToInitHeight;
-                ArmState.targetDepth = ArmConst.FirstRelayPointToInitDepth;
+                ArmState.targetHeight = ArmConst.RelayPointToInitHeight;
+                ArmState.targetDepth = ArmConst.RelayPointToInitDepth;
+            }
+        }
+
+        public static void setIntakeWithRelay() {
+            ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
+            if (!ArmState.firstRelayToIntakeOver) {
+                ArmState.targetHeight = ArmConst.FirstRelayPointToIntakeHeight;
+                ArmState.targetDepth = ArmConst.FirstRelayPointToIntakeDepth;
+            } else if (!ArmState.secondRelayToIntakeOver) {
+                ArmState.targetHeight = ArmConst.SecondRelayPointToIntakeHeight;
+                ArmState.targetDepth = ArmConst.SecondRelayPointToIntakeDepth;
+            } else {
+                ArmState.targetHeight = ArmConst.InitialHeight;
+                ArmState.targetDepth = ArmConst.InitialDepth;
             }
         }
     }

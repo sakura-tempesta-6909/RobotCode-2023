@@ -1,20 +1,16 @@
 package frc.robot.mode;
 
-import frc.robot.component.Arm;
-import frc.robot.component.Hand;
 import frc.robot.states.*;
 import frc.robot.states.IntakeState.IntakeExtensionStates;
 import frc.robot.states.LimelightState.States;
 import frc.robot.consts.ArmConst;
 import frc.robot.consts.CameraConst;
-import frc.robot.consts.GrabGamePiecePhaseConst;
 import frc.robot.consts.LimelightConst;
 import frc.robot.subClass.Tools;
 
 import java.util.Map;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subClass.Util;
 
 public class ArmMode extends Mode {
     private static DriveMode.GrabGamePiecePhase phase = DriveMode.GrabGamePiecePhase.Phase1;
@@ -240,8 +236,8 @@ public class ArmMode extends Mode {
                 ArmState.targetDepth = ArmConst.InitialDepth;
             } else {
                 ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-                ArmState.targetHeight = ArmConst.RelayPointIntakeHeight;
-                ArmState.targetDepth = ArmConst.RelayPointIntakeDepth;
+                ArmState.targetHeight = ArmConst.FirstRelayPointToIntakeHeight;
+                ArmState.targetDepth = ArmConst.FirstRelayPointToIntakeDepth;
             }
             ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
             HandState.rotateState = HandState.RotateStates.s_turnHandBack;

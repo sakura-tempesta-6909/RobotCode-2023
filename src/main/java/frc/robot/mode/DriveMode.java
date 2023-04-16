@@ -123,8 +123,8 @@ public class DriveMode extends Mode {
                 HandState.rotateState = HandState.RotateStates.s_turnHandBack;
             } else {
                 ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-                ArmState.targetHeight = ArmConst.RelayPointIntakeHeight;
-                ArmState.targetDepth = ArmConst.RelayPointIntakeDepth;
+                ArmState.targetHeight = ArmConst.FirstRelayPointToIntakeHeight;
+                ArmState.targetDepth = ArmConst.FirstRelayPointToIntakeDepth;
                 ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
                 HandState.rotateState = HandState.RotateStates.s_turnHandBack;
             }
@@ -268,13 +268,8 @@ public class DriveMode extends Mode {
                         HandState.rotateState = HandState.RotateStates.s_turnHandBack;
 
                         // BasicPositionのちょっと上にターゲットを設定
-                        if (ArmState.relayToInitOver) {
-                            ArmState.targetHeight = ArmConst.InitialHeight + 10;
-                            ArmState.targetDepth = ArmConst.InitialDepth;
-                        } else {
-                            ArmState.targetHeight = ArmConst.FirstRelayPointToInitHeight;
-                            ArmState.targetDepth = ArmConst.FirstRelayPointToInitDepth;
-                        }
+                        ArmState.targetHeight = ArmConst.InitialHeight + 10;
+                        ArmState.targetDepth = ArmConst.InitialDepth;
                         break;
                 }
             }
