@@ -40,16 +40,12 @@ public class Limelight implements Component {
     }
 
     public void readSensors() {
-        // limelightから受け取る情報
-        // limelightから見たターゲットの角度
-        double vpw = 2.0*Math.tan(Math.toRadians(59.6/2));
-        double targetOffsetAngle_Vertical = vpw/2 *Math.abs(tyEntry.getDouble(0.0));
+        double vpw = Math.tan(Math.toRadians(59.6/2));
+        double targetOffsetAngle_Vertical = vpw *Math.abs(tyEntry.getDouble(0.0));
        
       
         LimelightState.tx = -txEntry.getDouble(0);
         LimelightState.tv = tvEntry.getDouble(0) != 0;
-        
-        
 
         // ターゲットまでの距離
         LimelightState.limelightToFrontGoal = Math.abs(LimelightConst.GoalHeight - LimelightConst.LimelightLensHeight) /targetOffsetAngle_Vertical;

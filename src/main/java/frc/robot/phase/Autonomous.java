@@ -284,10 +284,11 @@ public class Autonomous {
                     ArmState.targetHeight =LimelightConst.MiddleGoalHeight - ArmConst.RootHeightFromGr;
                     LimelightState.isLimelightOn = true;
                     if (LimelightState.tv) {
-                        if (50 < LimelightState.armToGoal && LimelightState.armToGoal < 120) {
-                            ArmState.targetDepth = LimelightState.armToGoal - 5;
-                        } else {
-                            ArmState.targetDepth = ArmState.TargetDepth.MiddleCone;
+                        if (85 < LimelightState.armToGoal && LimelightState.armToGoal < 120) {
+                            ArmState.targetDepth = 0.6 * LimelightState.armToGoal + 40;
+    
+                        }else if(50 < LimelightState.armToGoal && LimelightState.armToGoal <= 85) {
+                            ArmState.targetDepth = 0.6 * LimelightState.armToGoal + 40 -3;
                         }
     
                     } else {
