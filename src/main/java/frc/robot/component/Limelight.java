@@ -44,7 +44,7 @@ public class Limelight implements Component {
         // limelightから見たターゲットの角度
         double vpw = 2.0*Math.tan(Math.toRadians(59.6/2));
         double targetOffsetAngle_Vertical = vpw/2 *Math.abs(tyEntry.getDouble(0.0));
-        double ax = Math.atan2(1, targetOffsetAngle_Vertical);
+        double ax = Math.atan2(targetOffsetAngle_Vertical, 1);
         double gamePieceAngle = -(tyEntry.getDouble(0.0) - 0.41 * 29.8);
         LimelightState.tx = -txEntry.getDouble(0);
         LimelightState.tv = tvEntry.getDouble(0) != 0;
