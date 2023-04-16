@@ -158,7 +158,7 @@ public class ArmMode extends Mode {
                 ArmState.targetHeight = LimelightConst.MiddleGoalHeight - ArmConst.RootHeightFromGr;
                 if (LimelightState.tv) {
                     if (50 < LimelightState.armToGoal && LimelightState.armToGoal < 120) {
-                        ArmState.targetDepth = LimelightState.armToGoal;
+                        ArmState.targetDepth = LimelightState.armToGoal + 9 + 2;
                         // if (ArmState.isAtTarget() && ArmState.isAtLeftAndRightTarget()) {
                         //     HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
                         // }

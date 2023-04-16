@@ -44,27 +44,19 @@ public class Limelight implements Component {
         // limelightから見たターゲットの角度
         double vpw = 2.0*Math.tan(Math.toRadians(59.6/2));
         double targetOffsetAngle_Vertical = vpw/2 *Math.abs(tyEntry.getDouble(0.0));
-        double ax = Math.atan2(targetOffsetAngle_Vertical, 1);
-        double gamePieceAngle = -(tyEntry.getDouble(0.0) - 0.41 * 29.8);
+       
+      
         LimelightState.tx = -txEntry.getDouble(0);
         LimelightState.tv = tvEntry.getDouble(0) != 0;
         
-
-        //計算
-        double angleToGoalDegrees = LimelightConst.LimelightMountAngleDegrees + ax;
-        double angleToGoalRadians =  ax;Math.toRadians(angleToGoalDegrees);
-
-        double angleToGamePieceDegrees = LimelightConst.LimelightMountAngleDegrees + ax;
-        double angleToGamePieceRadians = ax;Math.toRadians(angleToGamePieceDegrees);
-
         
 
         // ターゲットまでの距離
-        LimelightState.limelightToFrontGoal = (LimelightConst.GoalHeight - LimelightConst.LimelightLensHeight) / Math.tan(angleToGoalRadians);
+        LimelightState.limelightToFrontGoal = Math.abs(LimelightConst.GoalHeight - LimelightConst.LimelightLensHeight) /targetOffsetAngle_Vertical;
         LimelightState.armToGoal = LimelightState.limelightToFrontGoal - LimelightConst.LimelightToArm;
         LimelightState.limelightToBackGoal = LimelightState.limelightToFrontGoal + LimelightConst.FrontGoalToBackGoal;
-        LimelightState.limelightToCube = Math.abs(LimelightConst.SubStationHeight + 12  - LimelightConst.LimelightLensHeight) / Math.tan(angleToGamePieceRadians);
-        LimelightState.limelightToCone = Math.abs(LimelightConst.SubStationHeight  + 16.5 - LimelightConst.LimelightLensHeight) / Math.tan(angleToGamePieceRadians);
+        LimelightState.limelightToCube = Math.abs(LimelightConst.SubStationHeight + 12  - LimelightConst.LimelightLensHeight) / targetOffsetAngle_Vertical;
+        LimelightState.limelightToCone = Math.abs(LimelightConst.SubStationHeight  + 16.5 - LimelightConst.LimelightLensHeight) / targetOffsetAngle_Vertical;
         LimelightState.armToCone = LimelightState.limelightToCone - LimelightConst.LimelightToArm;
         LimelightState.armToCube = LimelightState.limelightToCube - LimelightConst.LimelightToArm;
 

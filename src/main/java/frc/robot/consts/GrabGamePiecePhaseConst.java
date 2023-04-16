@@ -24,7 +24,7 @@ public class GrabGamePiecePhaseConst {
      * コーンを掴むアームの奥行き
      */
     public static final double armConeGrabDepth = -5;
-    public static final double armConePrepareHeight = -105;
+    public static final double armConePrepareHeight = -103;
     public static final double armConePrepareDepth = -6;
 
 //    public static final double armRelayPointHeight = 0;
