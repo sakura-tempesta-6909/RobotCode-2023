@@ -1,5 +1,7 @@
 package frc.robot.component;
 
+import java.util.Map;
+
 import com.revrobotics.*;
 import com.revrobotics.CANSparkMax.IdleMode;
 
@@ -295,6 +297,20 @@ public class Arm implements Component {
 
     @Override
     public void applyState() {
+         // ターゲット座標からターゲットの角度を計算する
+         Map<String, Double> targetAngles = Tools.calculateAngles(ArmState.targetDepth, ArmState.targetHeight);
+         Double target = targetAngles.get("RootAngle");
+         if (target != null) {
+             ArmState.targetRootAngle = target;
+         } else {
+             ArmState.targetRootAngle = ArmState.actualRootAngle;
+         }
+         target = targetAngles.get("JointAngle");
+         if (target != null) {
+             ArmState.targetJointAngle = target;
+         } else {
+             ArmState.targetJointAngle = ArmState.actualJointAngle;
+         }
 
         if (ArmState.resetPidController) {
             pidForRoot.setIAccum(0.0);

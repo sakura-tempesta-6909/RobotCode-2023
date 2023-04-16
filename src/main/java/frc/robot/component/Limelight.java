@@ -15,7 +15,7 @@ public class Limelight implements Component {
         LimelightState.table = NetworkTableInstance.getDefault().getTable("limelight");
         // limelightを縦向きにしたのでtxとtyは逆
         txEntry = LimelightState.table.getEntry("ty");
-        tyEntry = LimelightState.table.getEntry("tx");
+        tyEntry = LimelightState.table.getEntry("tx0");
         tvEntry = LimelightState.table.getEntry("tv");
         pipelineEntry = LimelightState.table.getEntry("pipeline");
 
@@ -40,29 +40,19 @@ public class Limelight implements Component {
     }
 
     public void readSensors() {
-        // limelightから受け取る情報
-        // limelightから見たターゲットの角度
-        double targetOffsetAngle_Vertical = -(tyEntry.getDouble(0.0) + 0.38 * 27) ;
-        double gamePieceAngle = -(tyEntry.getDouble(0.0) - 0.41 * 27);
+        double vpw = Math.tan(Math.toRadians(59.6/2));
+        double targetOffsetAngle_Vertical = vpw *Math.abs(tyEntry.getDouble(0.0));
+       
+      
         LimelightState.tx = -txEntry.getDouble(0);
         LimelightState.tv = tvEntry.getDouble(0) != 0;
-        
-
-        //計算
-        double angleToGoalDegrees = LimelightConst.LimelightMountAngleDegrees + targetOffsetAngle_Vertical;
-        double angleToGoalRadians =  Math.toRadians(angleToGoalDegrees);
-
-        double angleToGamePieceDegrees = LimelightConst.LimelightMountAngleDegrees + gamePieceAngle;
-        double angleToGamePieceRadians = Math.toRadians(angleToGamePieceDegrees);
-
-        
 
         // ターゲットまでの距離
-        LimelightState.limelightToFrontGoal = (LimelightConst.GoalHeight - LimelightConst.LimelightLensHeight) / Math.tan(angleToGoalRadians);
+        LimelightState.limelightToFrontGoal = Math.abs(LimelightConst.GoalHeight - LimelightConst.LimelightLensHeight) /targetOffsetAngle_Vertical;
         LimelightState.armToGoal = LimelightState.limelightToFrontGoal - LimelightConst.LimelightToArm;
         LimelightState.limelightToBackGoal = LimelightState.limelightToFrontGoal + LimelightConst.FrontGoalToBackGoal;
-        LimelightState.limelightToCube = Math.abs(LimelightConst.SubStationHeight + 12  - LimelightConst.LimelightLensHeight) / Math.tan(angleToGamePieceRadians);
-        LimelightState.limelightToCone = Math.abs(LimelightConst.SubStationHeight  + 16.5 - LimelightConst.LimelightLensHeight) / Math.tan(angleToGamePieceRadians);
+        LimelightState.limelightToCube = Math.abs(LimelightConst.SubStationHeight + 12  - LimelightConst.LimelightLensHeight) / targetOffsetAngle_Vertical;
+        LimelightState.limelightToCone = Math.abs(LimelightConst.SubStationHeight  + 16.5 - LimelightConst.LimelightLensHeight) / targetOffsetAngle_Vertical;
         LimelightState.armToCone = LimelightState.limelightToCone - LimelightConst.LimelightToArm;
         LimelightState.armToCube = LimelightState.limelightToCube - LimelightConst.LimelightToArm;
 

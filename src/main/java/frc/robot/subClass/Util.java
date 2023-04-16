@@ -10,8 +10,8 @@ import frc.robot.consts.DriveConst;
 
 public class Util {
 
-    public static String getConsole(String key) {
-        return SmartDashboard.getString(key, "None");
+    public static String getConsole(String key, String defaultText) {
+        return SmartDashboard.getString(key, defaultText);
     }
 
     public static void sendConsole(String key, String text) {
@@ -51,6 +51,7 @@ public class Util {
         sendConsole("LDrivePosition", DriveState.leftMeter);
 
         sendConsole("HandIsAtTarget", HandState.isAtTarget());
+        sendConsole("DriveIsAtTarget", DriveState.isAtTarget());
     }
 
     public static class Calculate {
