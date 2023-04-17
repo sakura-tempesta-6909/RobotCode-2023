@@ -52,6 +52,13 @@ public class DriveMode extends Mode {
             }
 
         }
+        if (driveController.getXButtonPressed()) {
+            if (!LimelightState.isLimelightFlashing) {
+                LimelightState.isLimelightFlashing = true;
+            } else {
+                LimelightState.isLimelightFlashing = false;
+            }
+        }
 
         // if (IntakeState.intakeExtensionState == IntakeExtensionStates.s_closeIntake) {
         //     IntakeState.intakeState = IntakeState.RollerStates.s_stopRoller;
@@ -417,10 +424,6 @@ public class DriveMode extends Mode {
         if (driveController.getBButtonPressed()) {
             LimelightState.pidLimelightReset = true;
             DriveState.driveState = DriveState.DriveStates.s_limelightTracking;
-        }
-
-        if (driveController.getLeftBumper() && driveController.getRightBumper()) {
-            IntakeState.intakeExtensionState = IntakeState.IntakeExtensionStates.s_closeIntake;
         }
 
         // ターゲット座標からターゲットの角度を計算する

@@ -79,6 +79,14 @@ public class ChargeStationMode extends Mode{
             ArmState.resetPidController = true;
         }
 
+        if (driveController.getXButtonPressed()) {
+            if (!LimelightState.isLimelightFlashing) {
+                LimelightState.isLimelightFlashing = true;
+            } else {
+                LimelightState.isLimelightFlashing = false;
+            }
+        }
+
           // ターゲット座標からターゲットの角度を計算する
           Map<String, Double> targetAngles = Tools.calculateAngles(ArmState.targetDepth, ArmState.targetHeight);
           Double target = targetAngles.get("RootAngle");
