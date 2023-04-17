@@ -52,6 +52,13 @@ public class DriveMode extends Mode {
             }
 
         }
+        if (driveController.getXButtonPressed()) {
+            if (!LimelightState.isLimelightFlashing) {
+                LimelightState.isLimelightFlashing = true;
+            } else {
+                LimelightState.isLimelightFlashing = false;
+            }
+        }
 
         // if (IntakeState.intakeExtensionState == IntakeExtensionStates.s_closeIntake) {
         //     IntakeState.intakeState = IntakeState.RollerStates.s_stopRoller;
