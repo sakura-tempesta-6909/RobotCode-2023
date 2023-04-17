@@ -419,10 +419,6 @@ public class DriveMode extends Mode {
             DriveState.driveState = DriveState.DriveStates.s_limelightTracking;
         }
 
-        if (driveController.getLeftBumper() && driveController.getRightBumper()) {
-            IntakeState.intakeExtensionState = IntakeState.IntakeExtensionStates.s_closeIntake;
-        }
-
         // ターゲット座標からターゲットの角度を計算する
         Map<String, Double> targetAngles = Tools.calculateAngles(ArmState.targetDepth, ArmState.targetHeight);
         Double target = targetAngles.get("RootAngle");

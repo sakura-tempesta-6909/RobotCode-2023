@@ -71,6 +71,8 @@ public class Limelight implements Component {
     public void applyState() {
         if (LimelightState.isLimelightOn) {
             LimelightState.table.getEntry("ledMode").setNumber(3);
+        } else if (LimelightState.isLimelightFlashing){
+            LimelightState.table.getEntry("ledMode").setNumber(2);
         } else {
             LimelightState.table.getEntry("ledMode").setNumber(1);
         }
