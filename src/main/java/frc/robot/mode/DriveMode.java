@@ -29,8 +29,6 @@ public class DriveMode extends Mode {
             IntakeState.intakeExtensionState = IntakeExtensionStates.s_closeIntake;
         } else if (driveController.getPOV() == 0) {
             State.mode = State.Modes.k_chargeStation;
-        } else if (driveController.getLeftBumperPressed() && driveController.getPOV() == 225) {
-            State.mode = State.Modes.k_config;
         }
     }
 

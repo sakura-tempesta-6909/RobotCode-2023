@@ -62,7 +62,6 @@ public class State {
         k_drive(new DriveMode()),
         k_arm(new ArmMode()),
         k_test(new TestMode()),
-        k_config(new ConfigMode()),
         k_chargeStation(new ChargeStationMode());
 
         private final Mode mode;
