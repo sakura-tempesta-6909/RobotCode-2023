@@ -67,9 +67,9 @@ public class ArmState {
     public static boolean targetToGoalOver;
 
     public static class TargetDepth {
-        public static double TopCorn;
-        public static double MiddleCorn;
-        public static double BottomCorn;
+        public static double TopCone;
+        public static double MiddleCone;
+        public static double BottomCone;
 
         public static double TopCube;
         public static double MiddleCube;
@@ -142,9 +142,9 @@ public class ArmState {
         isMoveLeftAndRightEncoderReset = false;
 
         // TODO どれくらい引くかを計測する
-        TargetDepth.TopCorn = 101.0;
-        TargetDepth.MiddleCorn = 58.0 + 38;
-        TargetDepth.BottomCorn = 30.0 + 10;
+        TargetDepth.TopCone = 101.0;
+        TargetDepth.MiddleCone = 58.0 + 38;
+        TargetDepth.BottomCone = 30.0 + 10;
 
         TargetDepth.TopCube = 101.0 + 20.0;
         TargetDepth.MiddleCube = 58.0 + 30.0;

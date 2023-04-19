@@ -23,7 +23,7 @@ public class LimelightConst {
     /**
      * LimelightからArmまでの距離
      */
-    public static final double LimelightToArm = 10; // [cm]
+    public static final double LimelightToArm = 8.5; // [cm]
 
 
     // ターゲットの情報

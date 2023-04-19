@@ -22,8 +22,6 @@ public class ChargeStationMode extends Mode{
             State.mode = State.Modes.k_drive;
         } else if (driveController.getBackButtonPressed()) {
             State.mode = State.Modes.k_arm;
-        } else if (driveController.getLeftBumperPressed() && driveController.getPOV() == 225) {
-            State.mode = State.Modes.k_config;
         }
     }
 
@@ -77,6 +75,14 @@ public class ChargeStationMode extends Mode{
             phase = GrabGamePiecePhase.Phase1;
         } else if (joystick.getRawButtonPressed(2)) {
             ArmState.resetPidController = true;
+        }
+
+        if (driveController.getXButtonPressed()) {
+            if (!LimelightState.isLimelightFlashing) {
+                LimelightState.isLimelightFlashing = true;
+            } else {
+                LimelightState.isLimelightFlashing = false;
+            }
         }
 
           // ターゲット座標からターゲットの角度を計算する

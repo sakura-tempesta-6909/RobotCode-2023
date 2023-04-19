@@ -26,8 +26,6 @@ public class ArmMode extends Mode {
             State.mode = State.Modes.k_drive;
         } else if (driveController.getPOV() == 0) {
             State.mode = State.Modes.k_chargeStation;
-        } else if (driveController.getLeftBumperPressed() && driveController.getPOV() == 225) {
-            State.mode = State.Modes.k_config;
         }
     }
 
@@ -149,7 +147,7 @@ public class ArmMode extends Mode {
                 ArmState.targetDepth = ArmConst.RelayPointToGoalDepth;
             } else {
                 ArmState.targetHeight = LimelightConst.TopGoalHeight - ArmConst.RootHeightFromGr;
-                ArmState.targetDepth = ArmState.TargetDepth.TopCorn;
+                ArmState.targetDepth = ArmState.TargetDepth.TopCone;
             }
         } else if (joystick.getRawButton(9)) {
             // 真ん中のコーンのゴールまでアームを伸ばす
@@ -159,21 +157,25 @@ public class ArmMode extends Mode {
             } else {
                 ArmState.targetHeight = LimelightConst.MiddleGoalHeight - ArmConst.RootHeightFromGr;
                 if (LimelightState.tv) {
-                    if (50 < LimelightState.armToGoal && LimelightState.armToGoal < 120) {
-                        ArmState.targetDepth = LimelightState.armToGoal;
+                    if (85 < LimelightState.armToGoal && LimelightState.armToGoal < 120) {
+                        ArmState.targetDepth = 0.6 * LimelightState.armToGoal + 40;
                         // if (ArmState.isAtTarget() && ArmState.isAtLeftAndRightTarget()) {
                         //     HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
                         // }
+
+                    }else if(50 < LimelightState.armToGoal && LimelightState.armToGoal <= 85) {
+                        ArmState.targetDepth = 0.6 * LimelightState.armToGoal + 40 -3;
                     }
 
+
                 } else {
-                    ArmState.targetDepth = ArmState.TargetDepth.MiddleCorn;
+                    ArmState.targetDepth = ArmState.TargetDepth.MiddleCone;
                 }
             }
         } else if (joystick.getRawButton(11)) {
             // 前のコーンのゴールまでアームを伸ばす
-            ArmState.targetHeight = LimelightConst.BottomGoalHeight - ArmConst.RootHeightFromGr;
-            ArmState.targetDepth = ArmState.TargetDepth.BottomCorn;
+                ArmState.targetHeight = LimelightConst.BottomGoalHeight - ArmConst.RootHeightFromGr;
+                ArmState.targetDepth = ArmState.TargetDepth.BottomCone;
         } else if (joystick.getRawButton(8)) {
             // 奥のキューブのゴールまでアームを伸ばす
             if (!ArmState.relayToGoalOver) {
@@ -241,20 +243,7 @@ public class ArmMode extends Mode {
             ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_limelightTracking;
         }
 
-        // ターゲット座標からターゲットの角度を計算する
-        Map<String, Double> targetAngles = Tools.calculateAngles(ArmState.targetDepth, ArmState.targetHeight);
-        Double target = targetAngles.get("RootAngle");
-        if (target != null) {
-            ArmState.targetRootAngle = target;
-        } else {
-            ArmState.targetRootAngle = ArmState.actualRootAngle;
-        }
-        target = targetAngles.get("JointAngle");
-        if (target != null) {
-            ArmState.targetJointAngle = target;
-        } else {
-            ArmState.targetJointAngle = ArmState.actualJointAngle;
-        }
+       
 
     }
 

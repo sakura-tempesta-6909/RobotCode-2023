@@ -6,6 +6,7 @@ public class LimelightState {
     public static States limelightState;
     public static NetworkTable table;
     public static boolean isLimelightOn;
+    public static boolean isLimelightFlashing;
     public static boolean isConeDetection;
     public static boolean isCubeDetection;
     /** 手前のターゲットまでの距離 */
@@ -27,7 +28,7 @@ public class LimelightState {
     public enum States {
         s_coneDetection,
         s_cubeDetection,
-        s_tapeDetection
+        s_tapeDetection,
     }
 
     public static void StateInit() {
@@ -36,6 +37,7 @@ public class LimelightState {
 
     public static void StateReset() {
         isLimelightOn = false;
+        isLimelightFlashing = false;
         
     }
 }
