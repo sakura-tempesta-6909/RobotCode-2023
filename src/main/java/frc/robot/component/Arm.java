@@ -238,7 +238,6 @@ public class Arm implements Component {
             moveRightArm(0.05);
         } else {
             leftAndRightArmPidController.setReference(calculateLeftAndRightRotationFromAngle(ArmState.targetMoveLeftAndRightAngle), CANSparkMax.ControlType.kPosition);
-            SmartDashboard.putNumber("leftRightTargetAngle", ArmState.targetMoveLeftAndRightAngle);
         }
 
     }

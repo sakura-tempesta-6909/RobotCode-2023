@@ -51,6 +51,7 @@ public class Util {
         sendConsole("LDrivePosition", DriveState.leftMeter);
 
         sendConsole("HandIsAtTarget", HandState.isAtTarget());
+        sendConsole("LRTargetAngle", ArmState.targetMoveLeftAndRightAngle);
     }
 
     public static class Calculate {
