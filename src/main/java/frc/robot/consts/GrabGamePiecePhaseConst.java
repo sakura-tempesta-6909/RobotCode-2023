@@ -4,7 +4,7 @@ public class GrabGamePiecePhaseConst {
     /**
      * キューブを掴むアームの高さ
      */
-    public static final double armCubeGrabHeight = -113;
+    public static final double armCubeGrabHeight = -113 + 5;
     /**
      * キューブを掴むアームの奥行き
      */

@@ -7,6 +7,7 @@ import frc.robot.consts.ArmConst;
 import frc.robot.consts.CameraConst;
 import frc.robot.consts.LimelightConst;
 import frc.robot.subClass.Tools;
+import frc.robot.subClass.Util;
 
 import java.util.Map;
 
@@ -229,16 +230,7 @@ public class ArmMode extends Mode {
 
         isBasicRelayOver |= ArmState.actualDepth < 30;
         if (joystick.getRawButton(2)) {
-            if (isBasicRelayOver) {
-                // すべてBasicPositionに戻る
-                ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-                ArmState.targetHeight = ArmConst.InitialHeight;
-                ArmState.targetDepth = ArmConst.InitialDepth;
-            } else {
-                ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-                ArmState.targetHeight = ArmConst.FirstRelayPointToIntakeHeight;
-                ArmState.targetDepth = ArmConst.FirstRelayPointToIntakeDepth;
-            }
+            Util.Calculate.setIntakeWithRelay();
             ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
             HandState.rotateState = HandState.RotateStates.s_turnHandBack;
         }

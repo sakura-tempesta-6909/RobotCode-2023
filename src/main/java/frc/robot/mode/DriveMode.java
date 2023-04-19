@@ -106,6 +106,8 @@ public class DriveMode extends Mode {
             phase = GrabGamePiecePhase.Phase1;
             DriveState.resetPosition = true;
             DriveState.resetPIDController = true;
+            ArmState.firstRelayToIntakeOver = false;
+            ArmState.secondRelayToIntakeOver = false;
             limelightDitectionCount = 0;
             limelightTotalDistance = 0;
             isBasicRelayOver = false;
@@ -114,20 +116,9 @@ public class DriveMode extends Mode {
         isBasicRelayOver |= ArmState.actualDepth < 30;
         SmartDashboard.putBoolean("BasicRelayOver", isBasicRelayOver);
         if (joystick.getRawButton(2)) {
-            if (isBasicRelayOver) {
-                // すべてBasicPositionに戻る
-                ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-                ArmState.targetHeight = ArmConst.InitialHeight;
-                ArmState.targetDepth = ArmConst.InitialDepth;
-                ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
-                HandState.rotateState = HandState.RotateStates.s_turnHandBack;
-            } else {
-                ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-                ArmState.targetHeight = ArmConst.FirstRelayPointToIntakeHeight;
-                ArmState.targetDepth = ArmConst.FirstRelayPointToIntakeDepth;
-                ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
-                HandState.rotateState = HandState.RotateStates.s_turnHandBack;
-            }
+            Util.Calculate.setIntakeWithRelay();
+            ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
+            HandState.rotateState = HandState.RotateStates.s_turnHandBack;
         } else if (joystick.getRawButton(12)) {
             // キューブ
             SmartDashboard.putString("intakePhase", phase.toString());
@@ -287,6 +278,7 @@ public class DriveMode extends Mode {
                     ArmState.targetDepth = ArmConst.RelayPointToGoalDepth;
 
                     ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_limelightTracking;
+                    HandState.rotateState = HandState.RotateStates.s_turnHandBack;
 
                     if (LimelightState.tv) {
                         if (60 < LimelightState.armToCone && LimelightState.armToCone < 120) {
@@ -296,7 +288,7 @@ public class DriveMode extends Mode {
                         }
 
                     }
-                    if (Util.Calculate.isOverRelayToGoal(ArmState.actualHeight, ArmState.actualDepth)) {
+                    if (Util.Calculate.isOverRelayToGoal(ArmState.actualHeight, ArmState.actualDepth) && HandState.isAtTarget()) {
                         phase = GrabGamePiecePhase.Phase2;
                         if (limelightDitectionCount == 0) {
                             ArmState.targetDepth = GrabGamePiecePhaseConst.armSubStationDepth;
@@ -334,6 +326,7 @@ public class DriveMode extends Mode {
                     ArmState.targetDepth = ArmConst.RelayPointToGoalDepth;
 
                     ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_limelightTracking;
+                    HandState.rotateState = HandState.RotateStates.s_turnHandBack;
                     if (LimelightState.tv) {
                         if (60 < LimelightState.armToCube && LimelightState.armToCube < 130) {
                             limelightDitectionCount += 1;
@@ -342,7 +335,7 @@ public class DriveMode extends Mode {
                         }
 
                     }
-                    if (Util.Calculate.isOverRelayToGoal(ArmState.actualHeight, ArmState.actualDepth)) {
+                    if (Util.Calculate.isOverRelayToGoal(ArmState.actualHeight, ArmState.actualDepth) && HandState.isAtTarget()) {
                         phase = GrabGamePiecePhase.Phase2;
                         if (limelightDitectionCount == 0) {
                             ArmState.targetDepth = GrabGamePiecePhaseConst.armSubStationDepth;
