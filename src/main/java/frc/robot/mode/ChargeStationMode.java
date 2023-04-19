@@ -22,8 +22,6 @@ public class ChargeStationMode extends Mode{
             State.mode = State.Modes.k_drive;
         } else if (driveController.getBackButtonPressed()) {
             State.mode = State.Modes.k_arm;
-        } else if (driveController.getLeftBumperPressed() && driveController.getPOV() == 225) {
-            State.mode = State.Modes.k_config;
         }
     }
 
