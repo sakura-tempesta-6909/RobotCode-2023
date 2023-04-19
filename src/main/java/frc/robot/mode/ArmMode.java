@@ -128,6 +128,8 @@ public class ArmMode extends Mode {
             ArmState.relayToGoalOver = false;
             ArmState.relayToInitOver = false;
             ArmState.targetToGoalOver = false;
+            ArmState.firstRelayToIntakeOver = false;
+            ArmState.secondRelayToIntakeOver = false;
             isBasicRelayOver = false;
         }
 
