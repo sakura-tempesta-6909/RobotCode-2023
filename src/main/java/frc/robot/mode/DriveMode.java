@@ -313,7 +313,7 @@ public class DriveMode extends Mode {
                             if(65 >= limelightAveraveDistance) {
                                 ArmState.targetDepth = limelightAveraveDistance;
                             }else {
-                                ArmState.targetDepth = limelightAveraveDistance + 32 - 5;
+                                ArmState.targetDepth = limelightAveraveDistance + 32 - 10;
                             }
                         }
 
@@ -362,9 +362,9 @@ public class DriveMode extends Mode {
                         } else {
                             ArmState.targetHeight = GrabGamePiecePhaseConst.armSubStationHeight;
                             if(70 >= limelightAveraveDistance) {
-                                ArmState.targetDepth = limelightAveraveDistance + 35;
+                                ArmState.targetDepth = limelightAveraveDistance + 35 - 12;
                             }else {
-                                ArmState.targetDepth = limelightAveraveDistance + 45;
+                                ArmState.targetDepth = limelightAveraveDistance + 45 - 12;
                             }
                         }
 

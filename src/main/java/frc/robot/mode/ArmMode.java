@@ -157,14 +157,14 @@ public class ArmMode extends Mode {
             } else {
                 ArmState.targetHeight = LimelightConst.MiddleGoalHeight - ArmConst.RootHeightFromGr;
                 if (LimelightState.tv) {
-                    if (85 < LimelightState.armToGoal && LimelightState.armToGoal < 120) {
-                        ArmState.targetDepth = 0.6 * LimelightState.armToGoal + 40;
+                    if (85 < LimelightState.armToGoal && LimelightState.armToGoal < 130) {
+                        ArmState.targetDepth = 0.6 * LimelightState.armToGoal + 40-10;
                         // if (ArmState.isAtTarget() && ArmState.isAtLeftAndRightTarget()) {
                         //     HandState.grabHandState = HandState.GrabHandStates.s_releaseHand;
                         // }
 
                     }else if(50 < LimelightState.armToGoal && LimelightState.armToGoal <= 85) {
-                        ArmState.targetDepth = 0.6 * LimelightState.armToGoal + 40 -3;
+                        ArmState.targetDepth = 0.6 * LimelightState.armToGoal + 40 -10;
                     }
 
 
