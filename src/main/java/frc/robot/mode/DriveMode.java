@@ -297,7 +297,7 @@ public class DriveMode extends Mode {
                     HandState.rotateState = HandState.RotateStates.s_turnHandBack;
 
                     if (LimelightState.tv) {
-                        if (60 < LimelightState.armToCone && LimelightState.armToCone < 88) {
+                        if (60 < LimelightState.armToCone && LimelightState.armToCone < 93) {
                             limelightDitectionCount += 1;
                             limelightTotalDistance += LimelightState.armToCone;
                             limelightAveraveDistance = limelightTotalDistance / limelightDitectionCount;
@@ -313,7 +313,7 @@ public class DriveMode extends Mode {
                             if(65 >= limelightAveraveDistance) {
                                 ArmState.targetDepth = limelightAveraveDistance;
                             }else {
-                                ArmState.targetDepth = limelightAveraveDistance + 32;
+                                ArmState.targetDepth = limelightAveraveDistance + 32 - 5;
                             }
                         }
 

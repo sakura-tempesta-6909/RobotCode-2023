@@ -25,13 +25,13 @@ public class GrabGamePiecePhaseConst {
      */
     public static final double armConeGrabDepth = -5;
     public static final double armConePrepareHeight = -100;
-    public static final double armConePrepareDepth = -4
+    public static final double armConePrepareDepth = -5;
     ;
 
 //    public static final double armRelayPointHeight = 0;
 //    public static final double armRelayPointDepth = 60;
 
-    public static final double armSubStationHeight = -5;
+    public static final double armSubStationHeight = -10;
     public static final double armSubStationDepth = 70;
 
     public static void GrabGamePiecePhaseConstInit() {
