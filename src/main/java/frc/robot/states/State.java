@@ -53,7 +53,7 @@ public class State {
         IntakeState.StateReset();
         LimelightState.StateReset();
 
-        autonomousPhaseTransType = Util.getConsole("PhaseTrans", "A");
+        autonomousPhaseTransType = Util.getConsole("PhaseTrans", "B");
     }
 
 

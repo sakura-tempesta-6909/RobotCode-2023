@@ -345,7 +345,7 @@ public class Autonomous {
                 relayIntake(ArmConst.FirstRelayPointToIntakeHeight, ArmConst.FirstRelayPointToIntakeDepth, "relay point"),
                 // アームをBasicPositionに
                 basicPosition("Reset To BasicPosition"),
-                pidDriveTo(-1.5, "Drive Back")
+                pidDriveTo(-4.5, "Drive Back")
 
 
                 // basicArmTo(ArmConst.InitialHeight, ArmConst.InitialDepth, "move arm to basic position"),
@@ -374,7 +374,7 @@ public class Autonomous {
                 // アームをBasicPositionに
                 relayIntake(ArmConst.FirstRelayPointToIntakeHeight, ArmConst.FirstRelayPointToIntakeDepth, "relay point"),
                 basicPosition( "Reset To BasicPosition"),
-                pidDriveTo(-1.5, "DriveBack")
+                pidDriveTo(-4.5, "DriveBack")
 
 //            moveArmTo(ArmConst.InitialHeight, ArmConst.InitialDepth, "move arm to basic position")
 //            relayArmTo(ArmConst.RelayPointToGoalHeight, ArmConst.RelayPointToGoalDepth, "move arm to relay point"),
