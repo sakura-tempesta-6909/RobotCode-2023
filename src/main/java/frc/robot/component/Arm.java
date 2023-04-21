@@ -236,9 +236,7 @@ public class Arm implements Component {
 
     public void pidControlTargetTracking() {
         ArmState.targetMoveLeftAndRightAngle = -LimelightState.tx + ArmState.actualLeftAndRightAngle;
-        if (!LimelightState.tv) {
-            moveRightArm(0.05);
-        } else {
+        if (LimelightState.tv) {
             leftAndRightArmPidController.setReference(calculateLeftAndRightRotationFromAngle(ArmState.targetMoveLeftAndRightAngle), CANSparkMax.ControlType.kPosition);
         }
 

@@ -4,6 +4,7 @@ public class IntakeState {
     public static RollerStates intakeState;
     public static IntakeExtensionStates intakeExtensionState;
     public static boolean isCompressorEnable;
+    public static boolean isIntakeOpen;
 
     public enum RollerStates {
         /** Rollerを外向きに動かし、ゲームピースを出す */
@@ -22,7 +23,8 @@ public class IntakeState {
     }
 
     public static void StateInit() {
-        intakeExtensionState = IntakeExtensionStates.s_openIntake;
+        intakeExtensionState = IntakeExtensionStates.s_closeIntake;
+        isIntakeOpen = false;
        
     }
 

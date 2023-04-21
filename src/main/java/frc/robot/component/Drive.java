@@ -219,7 +219,7 @@ public class Drive implements Component {
                 arcadeDrive(DriveConst.Speeds.MidDrive * DriveState.xSpeed, DriveConst.Speeds.MidDrive * DriveState.zRotation);
                 break;
             case s_slowDrive:
-                arcadeDrive(DriveConst.Speeds.SlowDrive * DriveState.xSpeed, DriveConst.Speeds.SlowDrive * DriveState.zRotation);
+                arcadeDrive(DriveConst.Speeds.SlowDrive * DriveState.xSpeed, DriveConst.Speeds.MidDrive * DriveState.zRotation);
                 break;
             case s_stopDrive:
                 trapezoidalAccelerationArcadeDrive(DriveConst.Speeds.Neutral * DriveState.xSpeed, DriveConst.Speeds.Neutral * DriveState.zRotation);

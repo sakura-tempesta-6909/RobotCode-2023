@@ -4,7 +4,9 @@ import java.util.Map;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.states.*;
+import frc.robot.states.DriveState.DriveStates;
 import frc.robot.states.HandState.GrabHandStates;
+import frc.robot.states.HandState.RotateStates;
 import frc.robot.states.IntakeState.IntakeExtensionStates;
 import frc.robot.states.LimelightState.States;
 import frc.robot.consts.*;
@@ -49,6 +51,12 @@ public class DriveMode extends Mode {
                 IntakeState.intakeExtensionState = IntakeExtensionStates.s_closeIntake;
             }
 
+        }
+        if (IntakeState.intakeExtensionState == IntakeExtensionStates.s_openIntake) {
+            LimelightState.isLimelightFlashing = true;
+            IntakeState.isIntakeOpen = true;
+        } else {
+            IntakeState.isIntakeOpen = false;
         }
         if (driveController.getXButtonPressed()) {
             if (!LimelightState.isLimelightFlashing) {
@@ -282,6 +290,8 @@ public class DriveMode extends Mode {
             }
         } else if (joystick.getRawButton(9)) {
             // サブステーションからコーンを取る
+            DriveState.isMotorBrake = true;
+            HandState.rotateState = RotateStates.s_turnHandBack;
             SmartDashboard.putString("substationPhase", phase.toString());
             switch (phase) {
                 case Phase1:
@@ -308,6 +318,7 @@ public class DriveMode extends Mode {
                         phase = GrabGamePiecePhase.Phase2;
                         if (limelightDitectionCount == 0) {
                             ArmState.targetDepth = GrabGamePiecePhaseConst.armSubStationDepth;
+                            ArmState.targetHeight = GrabGamePiecePhaseConst.armSubStationHeight;
                         } else {
                             ArmState.targetHeight = GrabGamePiecePhaseConst.armSubStationHeight;
                             if(65 >= limelightAveraveDistance) {
@@ -324,7 +335,6 @@ public class DriveMode extends Mode {
                     // アームをサブステーションの位置へ
                     ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
 
-
                     // サブステーションの位置
 
                     break;
@@ -332,6 +342,8 @@ public class DriveMode extends Mode {
 
         } else if (joystick.getRawButton(10)) {
             // サブステーションからキューブを取る
+            DriveState.isMotorBrake = true;
+            HandState.rotateState = RotateStates.s_turnHandBack;
             SmartDashboard.putString("substationPhase", phase.toString());
 
             switch (phase) {
@@ -359,6 +371,7 @@ public class DriveMode extends Mode {
                         phase = GrabGamePiecePhase.Phase2;
                         if (limelightDitectionCount == 0) {
                             ArmState.targetDepth = GrabGamePiecePhaseConst.armSubStationDepth;
+                            ArmState.targetHeight = GrabGamePiecePhaseConst.armSubStationHeight;
                         } else {
                             ArmState.targetHeight = GrabGamePiecePhaseConst.armSubStationHeight;
                             if(70 >= limelightAveraveDistance) {
@@ -375,6 +388,7 @@ public class DriveMode extends Mode {
                     ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_limelightTracking;
                     // アームをサブステーションの位置へ
                     ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
+
 
                     // サブステーションの位置
 

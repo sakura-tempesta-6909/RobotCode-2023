@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.states.ArmState;
 import frc.robot.states.DriveState;
 import frc.robot.states.HandState;
+import frc.robot.states.IntakeState;
 import frc.robot.states.State;
 import frc.robot.consts.ArmConst;
 import frc.robot.consts.DriveConst;
@@ -53,6 +54,7 @@ public class Util {
         sendConsole("HandIsAtTarget", HandState.isAtTarget());
         sendConsole("LRTargetAngle", ArmState.targetMoveLeftAndRightAngle);
         sendConsole("DriveIsAtTarget", DriveState.isAtTarget());
+        sendConsole("isIntakeOpen", IntakeState.isIntakeOpen);
     }
 
     public static class Calculate {

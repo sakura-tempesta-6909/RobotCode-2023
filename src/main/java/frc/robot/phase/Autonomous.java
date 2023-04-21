@@ -387,6 +387,9 @@ public class Autonomous {
                 relayArmTo(ArmConst.RelayPointToGoalHeight, ArmConst.RelayPointToGoalDepth, "Move Arm To RelayPoint"),
                 moveArmTo(CameraConst.TopGoalHeight - ArmConst.RootHeightFromGr, ArmState.TargetDepth.TopCube,
                         "Move Arm To TopCubeGoal"),
+                moveArmTo(CameraConst.TopGoalHeight - ArmConst.RootHeightFromGr - 3, ArmState.TargetDepth.TopCube,
+                "Move Arm To TopCubeGoal"),
+
                 // ハンドを開いて、キューブを置く
                 releaseHand(1.5, "Release Hand"),
                 // バックする
@@ -404,8 +407,12 @@ public class Autonomous {
         );
 
         phaseTransitionC.registerPhase(
-        Init(0, "init"),
-                outTake(5, "GamePiece Outtake")
+                Init(0, "init"),
+                outTake(2, "GamePiece Outtake"),
+                pidDriveTo(-0.5,  "Drive Back"),
+                midDriveTo(1.5, -1, 0,"move to target"),
+                basicPosition( "Reset To BasicPosition")
+
                // pidDriveTo(-2, "Drive Back")
         );
 

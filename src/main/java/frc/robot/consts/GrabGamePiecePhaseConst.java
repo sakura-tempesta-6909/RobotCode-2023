@@ -9,7 +9,7 @@ public class GrabGamePiecePhaseConst {
      * キューブを掴むアームの奥行き
      */
     public static final double armCubeGrabDepth = -5;
-    public static final double armCubePrepareHeight = -90;
+    public static final double armCubePrepareHeight = -85;
     public static final double armCubePrepareDepth = -7;
 
     /**
@@ -31,8 +31,9 @@ public class GrabGamePiecePhaseConst {
 //    public static final double armRelayPointHeight = 0;
 //    public static final double armRelayPointDepth = 60;
 
-    public static final double armSubStationHeight = -10;
-    public static final double armSubStationDepth = 70;
+    public static final double armSubStationHeight = -9
+    ;
+    public static final double armSubStationDepth = 90;
 
     public static void GrabGamePiecePhaseConstInit() {
     }
