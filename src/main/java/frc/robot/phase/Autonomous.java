@@ -159,6 +159,24 @@ public class Autonomous {
                 phaseName
         );
     }
+    public static PhaseTransition.Phase lastPidDriveTo(double targetMeter, String phaseName) {
+        return new PhaseTransition.Phase(
+                () -> {
+                    DriveState.driveState = DriveState.DriveStates.s_pidDrive;
+                    DriveState.targetMeter = targetMeter;
+                    HandState.grabHandState = GrabHandStates.s_releaseHand;
+                },
+                (double time) -> {
+                    return false;
+                },
+                () -> {
+                    DriveState.resetPIDController = true;
+                    DriveState.resetPosition = true;
+                    ArmState.resetPidController = true;
+                },
+                phaseName
+        );
+    }
 
     /**
      * 一定のスピードで一定時間[sec]走行する
@@ -328,6 +346,7 @@ public class Autonomous {
         PhaseTransition.Phase.PhaseInit();
 
         phaseTransitionA.registerPhase(
+            Init(0, "init"),
                 // コーン！！
                 // 初期化中につき待機！
                 //SmartDashboard.putString("autonomousPhase", "aaa");
@@ -342,10 +361,10 @@ public class Autonomous {
                 releaseHand(1.5, "Release Hand"),
                 // バックする
                 pidDriveTo(-0.5, "Drive Back"),
-                relayIntake(ArmConst.RelayPointIntakeHeight, ArmConst.RelayPointIntakeDepth, "relay point"),
+                relayIntake(ArmConst.FirstRelayPointToIntakeHeight, ArmConst.FirstRelayPointToIntakeDepth, "relay point"),
                 // アームをBasicPositionに
                 basicPosition("Reset To BasicPosition"),
-                pidDriveTo(-1.5, "Drive Back")
+                lastPidDriveTo(-5, "Drive Back")
 
 
                 // basicArmTo(ArmConst.InitialHeight, ArmConst.InitialDepth, "move arm to basic position"),
@@ -360,6 +379,7 @@ public class Autonomous {
         );
 
         phaseTransitionB.registerPhase(
+                Init(0, "init"),
                 // キューブ！！
                 // アームをBasicPositionに
                 basicPosition( "Reset To BasicPosition"),
@@ -367,27 +387,35 @@ public class Autonomous {
                 relayArmTo(ArmConst.RelayPointToGoalHeight, ArmConst.RelayPointToGoalDepth, "Move Arm To RelayPoint"),
                 moveArmTo(CameraConst.TopGoalHeight - ArmConst.RootHeightFromGr, ArmState.TargetDepth.TopCube,
                         "Move Arm To TopCubeGoal"),
+                moveArmTo(CameraConst.TopGoalHeight - ArmConst.RootHeightFromGr - 3, ArmState.TargetDepth.TopCube,
+                "Move Arm To TopCubeGoal"),
+
                 // ハンドを開いて、キューブを置く
                 releaseHand(1.5, "Release Hand"),
                 // バックする
                 pidDriveTo(-0.5,  "Drive Back"),
                 // アームをBasicPositionに
-                relayIntake(ArmConst.RelayPointIntakeHeight, ArmConst.RelayPointIntakeDepth, "relay point"),
+                relayIntake(ArmConst.FirstRelayPointToIntakeHeight, ArmConst.FirstRelayPointToIntakeDepth, "relay point"),
                 basicPosition( "Reset To BasicPosition"),
-                pidDriveTo(-1.5, "DriveBack")
 
 //            moveArmTo(ArmConst.InitialHeight, ArmConst.InitialDepth, "move arm to basic position")
 //            relayArmTo(ArmConst.RelayPointToGoalHeight, ArmConst.RelayPointToGoalDepth, "move arm to relay point"),
 //            moveArmTo(  CameraConst.MiddleGoalHeight - ArmConst.RootHeightFromGr, ArmState.TargetDepth.MiddleCube, "move arm to cube goal"),
 //            releaseHand(2, "release cube")
-                // drive(-1, 2, "move to target")
+                midDriveTo(1.5, -1, 0,"move to target")
                 // driveTo(-3, "move to target")
         );
 
         phaseTransitionC.registerPhase(
-                outTake(5, "GamePiece Outtake")
+                Init(0, "init"),
+                outTake(2, "GamePiece Outtake"),
+                pidDriveTo(-0.5,  "Drive Back"),
+                midDriveTo(1.5, -1, 0,"move to target"),
+                basicPosition( "Reset To BasicPosition")
+
                // pidDriveTo(-2, "Drive Back")
         );
+
     }
 
     public static void run() {

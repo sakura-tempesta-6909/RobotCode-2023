@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.states.ArmState;
 import frc.robot.states.DriveState;
 import frc.robot.states.HandState;
+import frc.robot.states.IntakeState;
 import frc.robot.states.State;
 import frc.robot.consts.ArmConst;
 import frc.robot.consts.DriveConst;
@@ -51,7 +52,9 @@ public class Util {
         sendConsole("LDrivePosition", DriveState.leftMeter);
 
         sendConsole("HandIsAtTarget", HandState.isAtTarget());
+        sendConsole("LRTargetAngle", ArmState.targetMoveLeftAndRightAngle);
         sendConsole("DriveIsAtTarget", DriveState.isAtTarget());
+        sendConsole("isIntakeOpen", IntakeState.isIntakeOpen);
     }
 
     public static class Calculate {
@@ -91,8 +94,12 @@ public class Util {
             return actualHeight < ArmConst.RelayPointToInitHeight + ArmConst.RelayPointTolerance && actualDepth < ArmConst.RelayPointToInitDepth + ArmConst.RelayPointTolerance;
         }
 
-        public static boolean isOverTargetToGoal() {
-            return ArmState.isAtTarget();
+        public static boolean isOverFirstRelayToIntake(double actualHeight, double actualDepth) {
+            return actualHeight < ArmConst.FirstRelayPointToIntakeHeight + ArmConst.RelayPointTolerance && actualDepth < ArmConst.FirstRelayPointToIntakeDepth + ArmConst.RelayPointTolerance;
+        }
+
+        public static boolean isOverSecondRelayToIntake(double actualHeight, double actualDepth) {
+            return actualHeight < ArmConst.SecondRelayPointToIntakeHeight + ArmConst.RelayPointTolerance && actualDepth < ArmConst.SecondRelayPointToIntakeDepth + ArmConst.RelayPointTolerance;
         }
 
         public static void setInitWithRelay() {
@@ -102,6 +109,20 @@ public class Util {
             } else {
                 ArmState.targetHeight = ArmConst.RelayPointToInitHeight;
                 ArmState.targetDepth = ArmConst.RelayPointToInitDepth;
+            }
+        }
+
+        public static void setIntakeWithRelay() {
+            ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
+            if (!ArmState.firstRelayToIntakeOver) {
+                ArmState.targetHeight = ArmConst.FirstRelayPointToIntakeHeight;
+                ArmState.targetDepth = ArmConst.FirstRelayPointToIntakeDepth;
+            } else if (!ArmState.secondRelayToIntakeOver) {
+                ArmState.targetHeight = ArmConst.SecondRelayPointToIntakeHeight;
+                ArmState.targetDepth = ArmConst.SecondRelayPointToIntakeDepth;
+            } else {
+                ArmState.targetHeight = ArmConst.InitialHeight;
+                ArmState.targetDepth = ArmConst.InitialDepth;
             }
         }
     }

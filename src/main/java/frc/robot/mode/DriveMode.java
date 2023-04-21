@@ -4,7 +4,9 @@ import java.util.Map;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.states.*;
+import frc.robot.states.DriveState.DriveStates;
 import frc.robot.states.HandState.GrabHandStates;
+import frc.robot.states.HandState.RotateStates;
 import frc.robot.states.IntakeState.IntakeExtensionStates;
 import frc.robot.states.LimelightState.States;
 import frc.robot.consts.*;
@@ -49,6 +51,12 @@ public class DriveMode extends Mode {
                 IntakeState.intakeExtensionState = IntakeExtensionStates.s_closeIntake;
             }
 
+        }
+        if (IntakeState.intakeExtensionState == IntakeExtensionStates.s_openIntake) {
+            LimelightState.isLimelightFlashing = true;
+            IntakeState.isIntakeOpen = true;
+        } else {
+            IntakeState.isIntakeOpen = false;
         }
         if (driveController.getXButtonPressed()) {
             if (!LimelightState.isLimelightFlashing) {
@@ -113,6 +121,8 @@ public class DriveMode extends Mode {
             phase = GrabGamePiecePhase.Phase1;
             DriveState.resetPosition = true;
             DriveState.resetPIDController = true;
+            ArmState.firstRelayToIntakeOver = false;
+            ArmState.secondRelayToIntakeOver = false;
             GrabCount = 0;
             limelightDitectionCount = 0;
             limelightTotalDistance = 0;
@@ -122,20 +132,9 @@ public class DriveMode extends Mode {
         isBasicRelayOver |= ArmState.actualDepth < 30;
         SmartDashboard.putBoolean("BasicRelayOver", isBasicRelayOver);
         if (joystick.getRawButton(2)) {
-            if (isBasicRelayOver) {
-                // すべてBasicPositionに戻る
-                ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-                ArmState.targetHeight = ArmConst.InitialHeight;
-                ArmState.targetDepth = ArmConst.InitialDepth;
-                ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
-                HandState.rotateState = HandState.RotateStates.s_turnHandBack;
-            } else {
-                ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
-                ArmState.targetHeight = ArmConst.RelayPointIntakeHeight;
-                ArmState.targetDepth = ArmConst.RelayPointIntakeDepth;
-                ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
-                HandState.rotateState = HandState.RotateStates.s_turnHandBack;
-            }
+            Util.Calculate.setIntakeWithRelay();
+            ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_movetomiddle;
+            HandState.rotateState = HandState.RotateStates.s_turnHandBack;
         } else if (joystick.getRawButton(12)) {
             // キューブ
             SmartDashboard.putString("intakePhase", phase.toString());
@@ -284,18 +283,15 @@ public class DriveMode extends Mode {
                         HandState.rotateState = HandState.RotateStates.s_turnHandBack;
 
                         // BasicPositionのちょっと上にターゲットを設定
-                        if (ArmState.relayToInitOver) {
-                            ArmState.targetHeight = ArmConst.InitialHeight + 10;
-                            ArmState.targetDepth = ArmConst.InitialDepth;
-                        } else {
-                            ArmState.targetHeight = ArmConst.RelayPointToInitHeight;
-                            ArmState.targetDepth = ArmConst.RelayPointToInitDepth;
-                        }
+                        ArmState.targetHeight = ArmConst.InitialHeight + 10;
+                        ArmState.targetDepth = ArmConst.InitialDepth;
                         break;
                 }
             }
         } else if (joystick.getRawButton(9)) {
             // サブステーションからコーンを取る
+            DriveState.isMotorBrake = true;
+            HandState.rotateState = RotateStates.s_turnHandBack;
             SmartDashboard.putString("substationPhase", phase.toString());
             switch (phase) {
                 case Phase1:
@@ -308,25 +304,27 @@ public class DriveMode extends Mode {
                     ArmState.targetDepth = ArmConst.RelayPointToGoalDepth;
 
                     ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_limelightTracking;
+                    HandState.rotateState = HandState.RotateStates.s_turnHandBack;
 
                     if (LimelightState.tv) {
-                        if (60 < LimelightState.armToCone && LimelightState.armToCone < 88) {
+                        if (60 < LimelightState.armToCone && LimelightState.armToCone < 93) {
                             limelightDitectionCount += 1;
                             limelightTotalDistance += LimelightState.armToCone;
                             limelightAveraveDistance = limelightTotalDistance / limelightDitectionCount;
                         }
 
                     }
-                    if (Util.Calculate.isOverRelayToGoal(ArmState.actualHeight, ArmState.actualDepth)) {
+                    if (Util.Calculate.isOverRelayToGoal(ArmState.actualHeight, ArmState.actualDepth) && HandState.isAtTarget()) {
                         phase = GrabGamePiecePhase.Phase2;
                         if (limelightDitectionCount == 0) {
                             ArmState.targetDepth = GrabGamePiecePhaseConst.armSubStationDepth;
+                            ArmState.targetHeight = GrabGamePiecePhaseConst.armSubStationHeight;
                         } else {
                             ArmState.targetHeight = GrabGamePiecePhaseConst.armSubStationHeight;
                             if(65 >= limelightAveraveDistance) {
                                 ArmState.targetDepth = limelightAveraveDistance;
                             }else {
-                                ArmState.targetDepth = limelightAveraveDistance + 32;
+                                ArmState.targetDepth = limelightAveraveDistance + 32 - 10;
                             }
                         }
 
@@ -337,7 +335,6 @@ public class DriveMode extends Mode {
                     // アームをサブステーションの位置へ
                     ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
 
-
                     // サブステーションの位置
 
                     break;
@@ -345,6 +342,8 @@ public class DriveMode extends Mode {
 
         } else if (joystick.getRawButton(10)) {
             // サブステーションからキューブを取る
+            DriveState.isMotorBrake = true;
+            HandState.rotateState = RotateStates.s_turnHandBack;
             SmartDashboard.putString("substationPhase", phase.toString());
 
             switch (phase) {
@@ -359,6 +358,7 @@ public class DriveMode extends Mode {
                     ArmState.targetDepth = ArmConst.RelayPointToGoalDepth;
 
                     ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_limelightTracking;
+                    HandState.rotateState = HandState.RotateStates.s_turnHandBack;
                     if (LimelightState.tv) {
                         if (50 < LimelightState.armToCube && LimelightState.armToCube < 75) {
                             limelightDitectionCount += 1;
@@ -367,16 +367,17 @@ public class DriveMode extends Mode {
                         }
 
                     }
-                    if (Util.Calculate.isOverRelayToGoal(ArmState.actualHeight, ArmState.actualDepth)) {
+                    if (Util.Calculate.isOverRelayToGoal(ArmState.actualHeight, ArmState.actualDepth) && HandState.isAtTarget()) {
                         phase = GrabGamePiecePhase.Phase2;
                         if (limelightDitectionCount == 0) {
                             ArmState.targetDepth = GrabGamePiecePhaseConst.armSubStationDepth;
+                            ArmState.targetHeight = GrabGamePiecePhaseConst.armSubStationHeight;
                         } else {
                             ArmState.targetHeight = GrabGamePiecePhaseConst.armSubStationHeight;
                             if(70 >= limelightAveraveDistance) {
-                                ArmState.targetDepth = limelightAveraveDistance + 35;
+                                ArmState.targetDepth = limelightAveraveDistance + 35 - 12;
                             }else {
-                                ArmState.targetDepth = limelightAveraveDistance + 45;
+                                ArmState.targetDepth = limelightAveraveDistance + 45 - 12;
                             }
                         }
 
@@ -387,6 +388,7 @@ public class DriveMode extends Mode {
                     ArmState.moveLeftAndRightArmState = ArmState.MoveLeftAndRightArmState.s_limelightTracking;
                     // アームをサブステーションの位置へ
                     ArmState.armState = ArmState.ArmStates.s_moveArmToSpecifiedPosition;
+
 
                     // サブステーションの位置
 

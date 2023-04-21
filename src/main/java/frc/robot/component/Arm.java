@@ -236,11 +236,8 @@ public class Arm implements Component {
 
     public void pidControlTargetTracking() {
         ArmState.targetMoveLeftAndRightAngle = -LimelightState.tx + ArmState.actualLeftAndRightAngle;
-        if (!LimelightState.tv) {
-            moveRightArm(0.05);
-        } else {
+        if (LimelightState.tv) {
             leftAndRightArmPidController.setReference(calculateLeftAndRightRotationFromAngle(ArmState.targetMoveLeftAndRightAngle), CANSparkMax.ControlType.kPosition);
-            SmartDashboard.putNumber("leftRightTargetAngle", ArmState.targetMoveLeftAndRightAngle);
         }
 
     }
@@ -285,7 +282,9 @@ public class Arm implements Component {
 
         ArmState.relayToGoalOver |= Util.Calculate.isOverRelayToGoal(ArmState.actualHeight, ArmState.actualDepth);
         ArmState.relayToInitOver |= Util.Calculate.isOverRelayToInit(ArmState.actualHeight, ArmState.actualDepth);
-        ArmState.targetToGoalOver |= Util.Calculate.isOverTargetToGoal();
+        ArmState.targetToGoalOver |= ArmState.isAtTarget();
+        ArmState.firstRelayToIntakeOver |= Util.Calculate.isOverFirstRelayToIntake(ArmState.actualHeight, ArmState.actualDepth);
+        ArmState.secondRelayToIntakeOver |= Util.Calculate.isOverSecondRelayToIntake(ArmState.actualHeight, ArmState.actualDepth);
 
 
         SmartDashboard.putNumber("actual leftright angle", ArmState.actualLeftAndRightAngle);

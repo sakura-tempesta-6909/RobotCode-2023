@@ -17,7 +17,7 @@ public class DriveConst {
 
         public static final double FastDrive = .9;
         public static final double MidDrive = 0.75;
-        public static final double SlowDrive = 0.6;
+        public static final double SlowDrive = 0.5;
     }
 
     public static final double TrapezoidalAccelerationX = 0.045;
